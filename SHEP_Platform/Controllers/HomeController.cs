@@ -10,6 +10,7 @@ namespace SHEP_Platform.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Message = "Welcome To My WebSite!";
             return View();
         }
 
