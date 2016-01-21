@@ -1,4 +1,6 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="../content/common/mapmanipulation.js" />
+/// <reference path="../content/page/home.js" />
 /// <reference path="ai.0.15.0-build58334.min.js" />
 /// <reference path="bootstrap.min.js" />
 /// <reference path="jquery.unobtrusive-ajax.min.js" />

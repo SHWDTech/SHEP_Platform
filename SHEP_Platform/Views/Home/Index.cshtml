@@ -1,29 +1,17 @@
 ﻿@{
     ViewBag.Title = "系统首页";
 }
-@section scripts{
-    <script type="text/javascript">
-        var map = null;
-        $(function () {
-            var load = document.createElement("script");
-            load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init";
-            document.body.appendChild(load);
-        });
 
-        function map_init() {
-            map = new BMap.Map("mapContainer");
-            map.centerAndZoom("上海", 12);
-            map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
-            map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
-        };
-    </script>
-}
-
-<div id="dynamicInfo" style="height: 150px;">
+<div style="height: 150px;">
     <div class="panel panel-default">
-        <div class="panel-body">
-            
+        <div class="panel-body" id="infobroad">
+
         </div>
     </div>
 </div>
 <div id="mapContainer"></div>
+
+@section scripts{
+    <script type="text/javascript" src="/Content/Common/MapManipulation.js"></script>
+    <script type="text/javascript" src="/Content/Page/Home.js"></script>
+}

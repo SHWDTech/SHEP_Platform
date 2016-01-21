@@ -388,6 +388,8 @@
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\Common\MapManipulation.js" />
+    <Content Include="Content\Page\Home.js" />
     <Content Include="ESMonitor.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ESMonitor.edmx</DependentUpon>

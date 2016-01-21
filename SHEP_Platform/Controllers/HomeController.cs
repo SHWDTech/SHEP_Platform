@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 
 namespace SHEP_Platform.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// 数据库Context
+        /// </summary>
+        private ESMonitorEntities Context { get; set; }
+
         public ActionResult Index()
         {
             ViewBag.Message = "Welcome To My WebSite!";
@@ -26,6 +28,13 @@ namespace SHEP_Platform.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public JsonResult GeneralInfo()
+        {
+           // Context.T_ESMin.Select()
+
+            return null;
         }
     }
 }
