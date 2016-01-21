@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3bb2a8e5041e4fcb9ab152fa4fb25fc0" Name="Diagram1">
+        <EntityTypeShape EntityType="ESMonitorModel.T_Alarms" Width="1.5" PointX="5.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_AlarmType" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Country" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_DevAddr" Width="1.5" PointX="7.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Devs" Width="1.5" PointX="7.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_ESDay" Width="1.5" PointX="7.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_ESHour" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_ESMin" Width="1.5" PointX="2.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Files" Width="1.5" PointX="9.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_GroupModules" Width="1.5" PointX="9.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Photos" Width="1.5" PointX="9.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Province" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Stage" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Stats" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_TaskNotice" Width="1.5" PointX="9.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Tasks" Width="1.5" PointX="4.75" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_UserAuthority" Width="1.5" PointX="11.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_UserGroup" Width="1.5" PointX="11.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_UserInGroups" Width="1.5" PointX="11.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Users" Width="1.5" PointX="6.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Camera" Width="1.5" PointX="11.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_ESDaytemp1" Width="1.5" PointX="8.75" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Offset" Width="1.5" PointX="13.75" PointY="2.375" IsExpanded="true" />
+        <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_AlarmType1" ManuallyRouted="false" />
+        <AssociationConnector Association="ESMonitorModel.FK_T_Country_T_Province" ManuallyRouted="false" />
+        <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="ESMonitorModel.FK_T_Stage_T_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_Stage" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
