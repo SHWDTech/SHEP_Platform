@@ -1,0 +1,31 @@
+﻿@using SHEP_Platform.Models.Account
+@model LoginViewModel
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="login-from-section">
+    <div class="login-content">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="section-title">
+                <h3>@ViewBag.LoginTitle</h3>
+            </div>
+            <div class="textbox-wrap">
+                <div class="input-group">
+                    <span class="glyphicon glyphicon-user input-group-addon" aria-hidden="true"></span>
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "请输入用户名" })
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="textbox-wrap">
+                <div class="input-group">
+                    <span class="glyphicon glyphicon-user input-group-addon" aria-hidden="true"></span>
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "请输入密码" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+    </div>
+</div>

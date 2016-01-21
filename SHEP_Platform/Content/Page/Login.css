@@ -1,0 +1,66 @@
+﻿body {
+    height: 808px;
+}
+
+.section-title {
+    padding: 10px 20px;
+}
+
+.section-title h3{
+    color: #1abc9c;
+    font-size: 20px;
+    text-align: center;
+}
+
+.login-form{
+    padding: 50px 0;
+    min-height: 100%;
+    background-color: #1abc9c;
+    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
+}
+
+.login-form .container{
+    margin: auto;
+}
+
+.login-from-section {
+    max-width: 360px;
+    margin: auto;
+}
+
+.login-content {
+    background-color: #fff;
+}
+
+.textbox-wrap {
+    margin: 0 0 0 5px;
+    padding: 20px 20px 20px 15px;
+}
+
+
+.textbox-wrap.focuesd {
+    border-left-color: #3498db;
+    background-color: #f0f0f0;
+}
+
+.glyphicon {
+    top: 0;
+    background-color: #fff;
+    border-right: 0;
+    border-radius: 0;
+}
+
+input[type=text] {
+    border-left: 0;
+}
+
+.form-control {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.form-control:focus {
+    border-color: #ccc;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

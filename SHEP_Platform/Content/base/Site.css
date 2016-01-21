@@ -3,6 +3,7 @@
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
+    min-height: 660px;
     margin-left: 210px;
     border-left: 1px solid #e8e8e8;
     padding: 20px 15px 10px 15px;
@@ -16,11 +17,11 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
     max-width: 280px;
-}
+}*/
 
 .topheadnav {
     border: 0;
