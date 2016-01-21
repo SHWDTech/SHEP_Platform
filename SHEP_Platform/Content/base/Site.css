@@ -3,8 +3,9 @@
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    margin-left: 180px;
-    padding: 20px 15px 0 15px;
+    margin-left: 210px;
+    border-left: 1px solid #e8e8e8;
+    padding: 20px 15px 10px 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -61,10 +62,8 @@ textarea {
 
 .sidebar {
     height: 100%;
-    width: 180px;
-    min-height: 660px;
+    width: 210px;
     float: left;
-    border: 1px solid #e7e7e7;
 }
 
 .sidebar ul {
@@ -86,8 +85,17 @@ textarea {
 }
 
 .sidebar .main-menu li:hover {
-    color: #337ab7;
+    color: #107C10;
     background-color: #e7e7e7;
+}
+
+a {
+    color: #107C10;
+}
+
+a:hover {
+    color: #107C10;
+    text-decoration: none;
 }
 
 .sidebar .sub-menu {
@@ -95,7 +103,7 @@ textarea {
     width: 270px;
     position: absolute;
     top: 1px;
-    left: 172px;
+    left: 202px;
     z-index: 9999;
     background-color: #fff;
     border: 1px solid #c8c8c8;
@@ -124,4 +132,8 @@ textarea {
 
 li .glyphicon {
     padding: 0 8px 0 8px;
+}
+
+#mapContainer {
+    height: 480px;
 }
