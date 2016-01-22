@@ -16,16 +16,29 @@
                 <div class="input-group">
                     <span class="glyphicon glyphicon-user input-group-addon" aria-hidden="true"></span>
                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "请输入用户名" })
-                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                 </div>
+                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
             </div>
             <div class="textbox-wrap">
                 <div class="input-group">
-                    <span class="glyphicon glyphicon-user input-group-addon" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-lock input-group-addon" aria-hidden="true"></span>
                     @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "请输入密码" })
-                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+            <div class="login-form-action">
+                <div class="checkbox-inline">
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe)
+                </div>
+                <button type="submit" class="btn green-btn">
+                    登陆&nbsp;
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="background-color: #2ecc71; vertical-align: middle;"></span>
+                </button>
             </div>
         }
     </div>
 </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

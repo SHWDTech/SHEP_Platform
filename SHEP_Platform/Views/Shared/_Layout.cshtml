@@ -10,8 +10,17 @@
 <body>
     <div class="navbar navbar-default topheadnav">
         <div class="navbar-header">
-            @Html.ActionLink("环保监控平台", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("卫东环保", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
         </div>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right"}))
+            {
+                @Html.AntiForgeryToken()
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="javascript:document.getElementById('logoutFrom').submit()">退出</a>
+                    </li>
+                </ul>
+            }
     </div>
     <div class="navbar-bottom">
         <div>

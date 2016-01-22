@@ -49,7 +49,7 @@ namespace SHEP_Platform.Models.Account
         [Display(Name = "密码")]
         public string Password { get; set; }
 
-        [Display(Name = "记住我?")]
+        [Display(Name = "记住我的账号？")]
         public bool RememberMe { get; set; }
     }
 }

@@ -13,7 +13,7 @@
 }
 
 .login-form{
-    padding: 50px 0;
+    padding: 150px 0;
     min-height: 100%;
     background-color: #1abc9c;
     background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
@@ -50,7 +50,7 @@
     border-radius: 0;
 }
 
-input[type=text] {
+input[type="text"] {
     border-left: 0;
 }
 
@@ -63,4 +63,52 @@ input[type=text] {
     border-color: #ccc;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+.input-group input[type="checkbox"] {
+    margin-top: 7px;
+    margin-left: 0;
+}
+
+button[type="submit"] {
+    float: right;
+}
+
+.login-form-action {
+    padding: 15px 20px 30px 20px;
+    line-height: 16px;
+}
+
+.login-form-action .green-btn {
+    background-color: #2ecc71;
+    border: none;
+    color: #fff;
+}
+
+.login-form-action .btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: none;
+    border-radius: 0;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.login-form-action .checkbox-inline {
+    margin: 6px 0 6px 0;
+}
+
+label {
+    font-weight: normal;
 }
