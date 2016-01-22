@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using SHEP_Platform.Models.Account;
@@ -6,8 +6,14 @@ using SHEP_Platform.Process;
 
 namespace SHEP_Platform.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
+        private AuthenticationProcess AccountProcess { get; }
+
+        public AccountController()
+        {
+            AccountProcess = new AuthenticationProcess();
+        }
         // GET: Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -27,11 +33,12 @@ namespace SHEP_Platform.Controllers
             {
                 return View(model);
             }
-
-            var loginProcess = new AuthenticationProcess();
-            if (loginProcess.Login(model.UserName, model.Password))
+            
+            var user = AccountProcess.Login(model.UserName, model.Password);
+            if (user != null)
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, true);
+                Response.AppendCookie(new HttpCookie("UserId", user.UserId.ToString()));
                 return Redirect(returnUrl);
             }
 

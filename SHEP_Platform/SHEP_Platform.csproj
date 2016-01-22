@@ -162,7 +162,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\Global.cs" />
+    <Compile Include="Common\WDContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="ESMonitor.Context.cs">
       <AutoGen>True</AutoGen>
@@ -394,6 +396,7 @@
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\Page\Login.css" />
     <Content Include="Scripts\Common\MapManipulation.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Page\Home.js" />
     <Content Include="ESMonitor.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -6,9 +6,16 @@
     min-height: 660px;
     margin-left: 210px;
     border-left: 1px solid #e8e8e8;
-    padding: 20px 15px 10px 15px;
+    padding: 15px;
 }
 
+a {
+    color: #1abc9c;
+}
+
+a:hover {
+    color: #10721C;
+}
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -26,7 +33,9 @@ textarea {
 .topheadnav {
     border: 0;
     height: 60px;
-    background: url(/Images/Site/navbg.png) repeat top left;
+    background-color: #1abc9c;
+    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%)
+    /*background: url(/Images/Site/navbg.png) repeat top left;*/
 }
 
 .navbar {
@@ -35,11 +44,12 @@ textarea {
 }
 
 .navbar-bottom {
-    padding: 8px 0 0 20px;
-    height: 30px;
+    padding: 10px 0 0 10px;
+    height: 40px;
     width: 100%;
     border-bottom: 1px solid #c8c8c8;
-    background: url(/Images/Site/5DC21E.png) repeat-x top left;
+    border-top: 3px solid rgb(255, 175,0)
+    /*background: url(/Images/Site/5DC21E.png) repeat-x top left;*/
 }
 
     .navbar-bottom .glyphicon {
@@ -48,12 +58,12 @@ textarea {
     }
 
 .navbar-header .navbar-brand {
-    width: 270px;
+    width: 210px;
     color: #fff;
     height: 60px;
     line-height: 30px;
     font-size: 30px;
-    text-align: left;
+    text-align: right;
 }
 
     .navbar-header .navbar-brand:hover {
@@ -80,13 +90,14 @@ textarea {
             display: block;
             cursor: pointer;
             font-size: 16px;
+            color: #333;
             position: relative;
             border-bottom: 1px solid #e7e7e7;
         }
 
             .sidebar .main-menu li:hover {
-                color: #107C10;
-                background-color: #e7e7e7;
+                color: #1abc9c;
+                background-color: #f1f1f1;
             }
 
     .sidebar .sub-menu {
@@ -101,11 +112,11 @@ textarea {
     }
 
         .sidebar .sub-menu a {
-            color: #107C10;
+            color: #1abc9c;
         }
 
             .sidebar .sub-menu a:hover {
-                color: #107C10;
+                color: #1abc9c;
                 text-decoration: none;
             }
 
@@ -139,7 +150,11 @@ li .glyphicon {
 }
 
 .navbar-right {
-    margin: 0;    
+    margin: 0;   
+}
+
+.logoff-form {
+    margin-right: 10px;    
 }
 
 .navbar-right li {
@@ -156,4 +171,12 @@ li .glyphicon {
 
 .navbar-top-links li:last-child {
     margin-right: 20px;
+}
+
+.slogn {
+    float: left;
+    color: #fff;
+    margin: 15px 0 15px 0;
+    padding: 5px 5px 5px 15px;
+    border-left: 1px solid #fff;
 }

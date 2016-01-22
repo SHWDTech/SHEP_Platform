@@ -1,9 +1,9 @@
 ﻿$(function() {
-    $('input[type=text]').on('focus', function () {
+    $('.form-control').on('focus', function () {
         $(this).parents('.textbox-wrap').addClass("focuesd");
     });
 
-    $('input[type=text]').on('blur', function () {
+    $('.form-control').on('blur', function () {
         $(this).parents('.textbox-wrap').removeClass("focuesd");
     });
 })

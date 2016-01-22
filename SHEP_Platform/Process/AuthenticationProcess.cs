@@ -11,10 +11,10 @@ namespace SHEP_Platform.Process
             DbContext = new ESMonitorEntities();
         }
 
-        public bool Login(string userName, string passWord)
+        public T_Users Login(string userName, string passWord)
         {
             var pwdMd5 = Global.GetMd5(passWord);
-            return DbContext.T_Users.Any(user => user.UserName == userName && user.Pwd == pwdMd5);
+            return DbContext.T_Users.FirstOrDefault(obj => obj.UserName == userName && obj.Pwd == pwdMd5);
         }
     }
 }

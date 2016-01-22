@@ -22,7 +22,7 @@
             <div class="textbox-wrap">
                 <div class="input-group">
                     <span class="glyphicon glyphicon-lock input-group-addon" aria-hidden="true"></span>
-                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "请输入密码" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "请输入密码" })
                 </div>
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>

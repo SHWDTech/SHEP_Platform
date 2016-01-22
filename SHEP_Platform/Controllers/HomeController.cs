@@ -1,17 +1,17 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace SHEP_Platform.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         /// <summary>
         /// 数据库Context
         /// </summary>
-        private ESMonitorEntities Context { get; set; }
-
         public ActionResult Index()
         {
+            ViewBag.CityName = DbContext.T_Country.FirstOrDefault(p => p.Id.ToString() == WdContext.Current.User.Remark)?.Country;
             ViewBag.Message = "Welcome To My WebSite!";
             return View();
         }
