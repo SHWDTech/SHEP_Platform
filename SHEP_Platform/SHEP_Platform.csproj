@@ -401,7 +401,7 @@
     <Content Include="Images\Site\marker_red.png" />
     <Content Include="Images\Site\marker_red_sprite2.png" />
     <Content Include="Scripts\Common\MapManipulation.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Utility\modernizr-2.8.3.js" />
     <Content Include="Scripts\Page\Home.js" />
     <Content Include="ESMonitor.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -433,8 +433,8 @@
     <Content Include="Content\bootstrap\bootstrap.css.map" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap\bootstrap-theme.css.map" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Utility\bootstrap.js" />
+    <Content Include="Scripts\Utility\bootstrap.min.js" />
     <EntityDeploy Include="ESMonitor.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ESMonitor.Designer.cs</LastGenOutput>
@@ -442,22 +442,22 @@
     <Content Include="ESMonitor.edmx.diagram">
       <DependentUpon>ESMonitor.edmx</DependentUpon>
     </Content>
-    <None Include="Scripts\jquery-2.2.0.intellisense.js" />
-    <Content Include="Scripts\jquery-2.2.0.js" />
-    <Content Include="Scripts\jquery-2.2.0.min.js" />
-    <Content Include="Scripts\jquery-2.2.0.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <None Include="Scripts\Utility\jquery-2.2.0.intellisense.js" />
+    <Content Include="Scripts\Utility\jquery-2.2.0.js" />
+    <Content Include="Scripts\Utility\jquery-2.2.0.min.js" />
+    <Content Include="Scripts\Utility\jquery-2.2.0.min.map" />
+    <None Include="Scripts\Utility\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\Utility\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\Utility\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\Utility\jquery.validate.js" />
+    <Content Include="Scripts\Utility\jquery.validate.min.js" />
+    <Content Include="Scripts\Utility\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\Utility\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Page\Login.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
-    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Utility\respond.js" />
+    <Content Include="Scripts\Utility\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\Utility\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\Utility\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -479,7 +479,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Common\" />
-    <Folder Include="Scripts\Utility\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
