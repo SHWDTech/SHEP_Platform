@@ -1,0 +1,53 @@
+﻿.infoWrap {
+    overflow: hidden;
+}
+
+#infobroad > ul {
+    float: left;
+    padding: 5px;
+    margin: 0 20px 0 0;
+    list-style: none;
+}
+
+ul li.title {
+    text-align: left;
+    font-size: 18px;
+    color: #1abc9c;
+    min-width: 160px;
+    margin-bottom: 10px;
+}
+
+ul li {
+    margin-bottom: 3px;
+}
+
+li span.text {
+    text-align: left;   
+    display: inline-block;
+}
+
+li span.num {
+    float: right;
+    text-align: right;
+    display: inline-block;
+}
+
+li span.pm {
+    color: rgb(93, 75, 193);
+}
+
+li span.db {
+    color: #de366d;
+}
+
+li span.date {
+    color: #b2b2b2;
+}
+
+.safe {
+    color: #107c10;
+}
+
+.danger {
+    color: red;
+}

@@ -13,9 +13,9 @@ a {
     color: #1abc9c;
 }
 
-a:hover {
-    color: #10721C;
-}
+    a:hover {
+        color: #10721C;
+    }
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -34,7 +34,7 @@ textarea {
     border: 0;
     height: 60px;
     background-color: #1abc9c;
-    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%)
+    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
     /*background: url(/Images/Site/navbg.png) repeat top left;*/
 }
 
@@ -48,7 +48,7 @@ textarea {
     height: 40px;
     width: 100%;
     border-bottom: 1px solid #c8c8c8;
-    border-top: 3px solid rgb(255, 175,0)
+    border-top: 3px solid rgb(255, 175,0);
     /*background: url(/Images/Site/5DC21E.png) repeat-x top left;*/
 }
 
@@ -85,13 +85,14 @@ textarea {
     }
 
         .sidebar .main-menu li {
-            padding: 10px 0 10px 0;
+            padding: 12px 0 12px 0;
             list-style: none;
             display: block;
             cursor: pointer;
             font-size: 16px;
             color: #333;
             position: relative;
+            margin: 0;
             border-bottom: 1px solid #e7e7e7;
         }
 
@@ -109,10 +110,21 @@ textarea {
         z-index: 9999;
         background-color: #fff;
         border: 1px solid #c8c8c8;
+        box-shadow: 4px 7px 13px #a1a1a1;
+    }
+
+    .sidebar .sub-menu li {
+        padding: 0;
+        cursor: default;
     }
 
         .sidebar .sub-menu a {
+            height: 40px;
+            width: 270px;
+            padding: 10px;
             color: #1abc9c;
+            display: block;
+            cursor: pointer;
         }
 
             .sidebar .sub-menu a:hover {
@@ -121,7 +133,7 @@ textarea {
             }
 
     .sidebar ul .sub-menu li {
-        padding: 10px;
+        margin: 0;
         font-size: 14px;
     }
 
@@ -150,18 +162,18 @@ li .glyphicon {
 }
 
 .navbar-right {
-    margin: 0;   
+    margin: 0;
 }
 
 .logoff-form {
-    margin-right: 10px;    
+    margin-right: 10px;
 }
 
 .navbar-right li {
     padding: 5px;
 }
 
-.navbar-right > li > a{
+.navbar-right > li > a {
     color: #fff !important;
 }
 

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 using SHEP_Platform.Common;
 
 namespace SHEP_Platform.Controllers
@@ -22,6 +24,7 @@ namespace SHEP_Platform.Controllers
             if (WdContext.UserId != null)
             {
                 WdContext.User = DbContext.T_Users.FirstOrDefault(user => user.UserId.ToString() == WdContext.UserId);
+                WdContext.Country = DbContext.T_Country.FirstOrDefault(prov => prov.Id.ToString() == WdContext.User.Remark);
             }
             base.OnActionExecuting(ctx);
         }

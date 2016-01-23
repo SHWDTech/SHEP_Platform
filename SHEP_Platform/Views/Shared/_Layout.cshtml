@@ -7,6 +7,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Css", false)
 </head>
 <body>
     <div class="navbar navbar-default topheadnav">
@@ -47,8 +48,8 @@
                     <span>查询导出</span>
                     <ul class="sub-menu">
                         <li><a>各工程当前情况</a></li>
-                        <li><a>本曲线污染物均值排名情况</a></li>
-                        <li><a>本曲线整体污染物变化情况</a></li>
+                        <li><a>本区县污染物均值排名情况</a></li>
+                        <li><a>本区县整体污染物变化情况</a></li>
                         <li><a>各工程历史污染物变化情况</a></li>
                         <li><a>按工期进行综合对比</a></li>
                     </ul>
