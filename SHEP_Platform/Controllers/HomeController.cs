@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using SHEP_Platform.Enum;
 using SHEP_Platform.Models.Home;
 
 namespace SHEP_Platform.Controllers
@@ -48,7 +49,8 @@ namespace SHEP_Platform.Controllers
                     AvgDb = (dbTotal / validDev).ToString("f2"),
                     UpdateTime = lastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     Longitude = stat.Longitude,
-                    Latitude = stat.Latitude
+                    Latitude = stat.Latitude,
+                    PolluteType = PolluteType.NotOverRange
                 });
             }
 

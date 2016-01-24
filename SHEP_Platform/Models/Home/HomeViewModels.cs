@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SHEP_Platform.Models.Home
+﻿namespace SHEP_Platform.Models.Home
 {
     public class StatStatus
     {
@@ -19,5 +13,7 @@ namespace SHEP_Platform.Models.Home
         public decimal Longitude { get; set; }
 
         public decimal Latitude { get; set; }
+
+        public string PolluteType { get; set; }
     }
 }

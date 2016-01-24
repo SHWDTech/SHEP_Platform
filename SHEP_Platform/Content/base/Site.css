@@ -9,6 +9,11 @@
     padding: 15px;
 }
 
+ul {
+    list-style: none;
+    padding: 10px 8px;
+}
+
 a {
     color: #1abc9c;
 }
@@ -110,10 +115,11 @@ textarea {
         z-index: 9999;
         background-color: #fff;
         border: 1px solid #c8c8c8;
+        -webkit-box-shadow: 4px 7px 13px #a1a1a1;
         box-shadow: 4px 7px 13px #a1a1a1;
     }
 
-    .sidebar .sub-menu li {
+.sidebar .sub-menu li {
         padding: 0;
         cursor: default;
     }
@@ -191,4 +197,23 @@ li .glyphicon {
     margin: 15px 0 15px 0;
     padding: 5px 5px 5px 15px;
     border-left: 1px solid #fff;
+}
+
+.floatInfo {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    font-size: 12px;
+    display: none;
+    -webkit-box-shadow: 0 0 3px #a1a1a1;
+    box-shadow: 0 0 3px #a1a1a1;
+    position: absolute;
+}
+
+.floatInfo li {
+    font-size: 14px !important;    
+}
+
+.floatInfo span {
+    font-size: 12px;
 }

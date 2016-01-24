@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Enum\PolluteType.cs" />
     <Compile Include="ESMonitor.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -401,6 +402,7 @@
     <Content Include="Images\Site\marker_red.png" />
     <Content Include="Images\Site\marker_red_sprite2.png" />
     <Content Include="Scripts\Common\MapManipulation.js" />
+    <Content Include="Scripts\const.js" />
     <Content Include="Scripts\Utility\modernizr-2.8.3.js" />
     <Content Include="Scripts\Page\Home.js" />
     <Content Include="ESMonitor.Context.tt">

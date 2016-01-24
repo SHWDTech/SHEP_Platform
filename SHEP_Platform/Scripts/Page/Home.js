@@ -8,13 +8,15 @@ $(function () {
     centerPosition = '上海';
     zoom = 12;
     var load = document.createElement("script");
-    load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init";
+    load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init(updateStats)";
     document.body.appendChild(load);
+});
 
+var updateStats = function() {
     //加载实时信息
     broad = $('#infobroad');
 
-    $(statusInfo).each(function() {
+    $(statusInfo).each(function () {
         var ul = $('<ul></ul>');
 
         $(ul).append('<li class="title">' + $(this)[0].Name + '</li>');
@@ -22,5 +24,8 @@ $(function () {
         $(ul).append('<li><span class="text db">噪音</span><span class="num safe">' + $(this)[0].AvgDb + '(dB)</span></li>');
         $(ul).append('<li><span class="date">' + $(this)[0].UpdateTime + '</span></li>');
         broad.append(ul);
+
+        var point = { 'longitude': $(this)[0].Longitude, 'latitude': $(this)[0].Latitude }
+        add_MapPoint(point, $(this)[0].PolluteType, $(this)[0]);
     });
-});
+}
