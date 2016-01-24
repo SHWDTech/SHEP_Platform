@@ -4,7 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
+    <title>
+        @ViewBag.Title @{
+            if (!string.IsNullOrWhiteSpace(ViewBag.SiteMapMenu.ActionMenu.Name))
+            {
+                @Html.Raw(" - " + ViewBag.SiteMapMenu.ActionMenu.Name)
+            }
+        }
+    </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/base")
@@ -13,19 +20,19 @@
 <body>
     <div class="navbar navbar-default topheadnav">
         <div class="navbar-header">
-            @Html.ActionLink("卫东环保", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
+            @Html.ActionLink("卫东环保", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             <span class="slogn">@ViewBag.CityName</span>
         </div>
-            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-right logoff-form" }))
-            {
-                @Html.AntiForgeryToken()
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right logoff-form" }))
+        {
+            @Html.AntiForgeryToken()
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="javascript:document.getElementById('logoutForm').submit()">退出</a>
-                    </li>
-                </ul>
-            }
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()">退出</a>
+                </li>
+            </ul>
+        }
     </div>
     <div class="navbar-bottom">
         <div>
@@ -60,7 +67,7 @@
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
                     <span>统计分析</span>
                     <ul class="sub-menu">
-                        <li>@Html.ActionLink("本区县颗粒物平均浓度月度报表", "AveragePolluteReport", "Analysis", new {id = "month"}, null)</li>
+                        <li>@Html.ActionLink("本区县颗粒物平均浓度月度报表", "AveragePolluteReport", "Analysis", new { id = "month" }, null)</li>
                         <li>@Html.ActionLink("本区县颗粒物平均浓度季度报表", "AveragePolluteReport", "Analysis", new { id = "season" }, null)</li>
                         <li>@Html.ActionLink("本区县颗粒物平均浓度年度报表", "AveragePolluteReport", "Analysis", new { id = "year" }, null)</li>
                     </ul>
@@ -87,64 +94,64 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
-<script type="text/javascript">
-    var currentMenuItem = null;
-    var activedMenuItem = null;
-    var delayActive = null;
-    var lastPoint = null;
-    var IsDelay = false;
-    $(function() {
-        $('.sidebar > ul > li').on('mouseenter mouseleave', function(e) {
-            if (e.type === 'mouseenter') {
-                currentMenuItem = $(this);
-            } else {
-                currentMenuItem = null;
-                if (delayActive != null) {
-                    clearTimeout(delayActive);
-                    delayActive = null;
+    <script type="text/javascript">
+        var currentMenuItem = null;
+        var activedMenuItem = null;
+        var delayActive = null;
+        var lastPoint = null;
+        var IsDelay = false;
+        $(function () {
+            $('.sidebar > ul > li').on('mouseenter mouseleave', function (e) {
+                if (e.type === 'mouseenter') {
+                    currentMenuItem = $(this);
+                } else {
+                    currentMenuItem = null;
+                    if (delayActive != null) {
+                        clearTimeout(delayActive);
+                        delayActive = null;
+                    }
                 }
-            }
+            });
+            $('.sidebar').on('mouseleave', function () {
+                $('.sidebar > ul > li').find('ul').hide();
+            });
+
+            $('.sidebar').on('mouseenter mousemove', function (e) {
+                if (e.type === 'mouseenter') {
+                    lastPoint = {
+                        x: e.clientX,
+                        y: e.clientY
+                    }
+                } else {
+                    if ((e.clientY - lastPoint.y) < 0) {
+                        IsDelay = false;
+                    } else {
+                        IsDelay = (e.clientX - lastPoint.x) > 0 ? true : false;
+                    }
+                    lastPoint = {
+                        x: e.clientX,
+                        y: e.clientY
+                    }
+                    if (delayActive != null) {
+                        clearTimeout(delayActive);
+                        delayActive = null;
+                    }
+                    if (IsDelay) {
+                        delayActive = setTimeout("activeChildMenu()", 1500);
+                    } else {
+                        activeChildMenu();
+                    }
+                }
+
+            });
         });
-        $('.sidebar').on('mouseleave', function() {
+
+        function activeChildMenu() {
             $('.sidebar > ul > li').find('ul').hide();
-        });
-
-        $('.sidebar').on('mouseenter mousemove', function(e) {
-            if (e.type === 'mouseenter') {
-                lastPoint = {
-                    x: e.clientX,
-                    y: e.clientY
-                }
-            } else {
-                if ((e.clientY - lastPoint.y) < 0) {
-                    IsDelay = false;
-                } else {
-                    IsDelay = (e.clientX - lastPoint.x) > 0 ? true : false;
-                }
-                lastPoint = {
-                    x: e.clientX,
-                    y: e.clientY
-                }
-                if (delayActive != null) {
-                    clearTimeout(delayActive);
-                    delayActive = null;
-                }
-                if (IsDelay) {
-                    delayActive = setTimeout("activeChildMenu()", 1500);
-                } else {
-                    activeChildMenu();
-                }
-            }
-
-        });
-    });
-
-    function activeChildMenu() {
-        $('.sidebar > ul > li').find('ul').hide();
-        $(currentMenuItem).addClass('hover');
-        $(currentMenuItem).find('ul').show();
-        activedMenuItem = currentMenuItem;
-    }
-</script>
+            $(currentMenuItem).addClass('hover');
+            $(currentMenuItem).find('ul').show();
+            activedMenuItem = currentMenuItem;
+        }
+    </script>
 </body>
 </html>

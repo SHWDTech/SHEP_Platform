@@ -403,7 +403,9 @@
     <Content Include="Images\Site\marker_red.png" />
     <Content Include="Images\Site\marker_red_sprite2.png" />
     <Content Include="Scripts\Common\MapManipulation.js" />
+    <Content Include="Scripts\Common\SetUpCharts.js" />
     <Content Include="Scripts\const.js" />
+    <Content Include="Scripts\Page\Analysis.js" />
     <Content Include="Scripts\Utility\echarts.js" />
     <Content Include="Scripts\Utility\echarts.min.js" />
     <Content Include="Scripts\Utility\modernizr-2.8.3.js" />

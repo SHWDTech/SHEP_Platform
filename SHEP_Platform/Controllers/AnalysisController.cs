@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace SHEP_Platform.Controllers
 {
@@ -13,10 +14,31 @@ namespace SHEP_Platform.Controllers
         // GET: Analysis
         public ActionResult AveragePolluteReport(string id)
         {
-            WdContext.SiteMapMenu.ActionMenu.Name = "本区县颗粒物浓度月报表";
+            var pageName = string.Empty;
+            switch (id)
+            {
+                case "month":
+                pageName = "本区县颗粒物浓度月度报表";
+                    break;
+                case "season":
+                    pageName = "本区县颗粒物浓度季度报表";
+                    break;
+                case "year":
+                    pageName = "本区县颗粒物浓度年度报表";
+                    break;
+            }
+
+            WdContext.SiteMapMenu.ActionMenu.Name = pageName;
 
             ViewBag.ReportType = id;
             return View();
+        }
+
+        [HttpGet]
+        public string AveragePollute()
+        {
+
+            return JsonConvert.SerializeObject("a");
         }
     }
 }
