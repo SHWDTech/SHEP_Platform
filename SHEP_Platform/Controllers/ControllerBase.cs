@@ -26,6 +26,11 @@ namespace SHEP_Platform.Controllers
                 WdContext.User = DbContext.T_Users.FirstOrDefault(user => user.UserId.ToString() == WdContext.UserId);
                 WdContext.Country = DbContext.T_Country.FirstOrDefault(prov => prov.Id.ToString() == WdContext.User.Remark);
             }
+
+            if (WdContext.Country != null) ViewBag.CityName = WdContext.Country.Country;
+
+            ViewBag.SiteMapMenu = WdContext.SiteMapMenu;
+
             base.OnActionExecuting(ctx);
         }
     }

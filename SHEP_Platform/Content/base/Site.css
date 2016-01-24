@@ -175,6 +175,10 @@ li .glyphicon {
     margin-right: 10px;
 }
 
+.logoff-form ul {
+    padding: 0;
+}
+
 .navbar-right li {
     padding: 5px;
 }

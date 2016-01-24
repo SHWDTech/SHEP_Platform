@@ -164,6 +164,7 @@
     <Compile Include="Common\Global.cs" />
     <Compile Include="Common\WDContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AnalysisController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Enum\PolluteType.cs" />
@@ -403,6 +404,8 @@
     <Content Include="Images\Site\marker_red_sprite2.png" />
     <Content Include="Scripts\Common\MapManipulation.js" />
     <Content Include="Scripts\const.js" />
+    <Content Include="Scripts\Utility\echarts.js" />
+    <Content Include="Scripts\Utility\echarts.min.js" />
     <Content Include="Scripts\Utility\modernizr-2.8.3.js" />
     <Content Include="Scripts\Page\Home.js" />
     <Content Include="ESMonitor.Context.tt">
@@ -477,6 +480,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
+    <Content Include="Views\Analysis\AveragePolluteReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

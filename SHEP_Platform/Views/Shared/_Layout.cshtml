@@ -30,20 +30,21 @@
     <div class="navbar-bottom">
         <div>
             <span>当前所在位置：</span><a href="/"><span class="glyphicon glyphicon-home"></span>首页</a>
+            @{
+                if (!string.IsNullOrWhiteSpace(ViewBag.SiteMapMenu.ControllerMenu.Name))
+                {
+                    <span> > @Html.Raw(ViewBag.SiteMapMenu.ControllerMenu.Name)</span>
+                    if (!string.IsNullOrWhiteSpace(ViewBag.SiteMapMenu.ActionMenu.Name))
+                    {
+                        <span> > @Html.Raw(ViewBag.SiteMapMenu.ActionMenu.Name)</span>
+                    }
+                }
+            }
         </div>
     </div>
     <div class="wapper">
         <div class="sidebar">
             <ul class="main-menu">
-                <li>
-                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                    <span>统计分析</span>
-                    <ul class="sub-menu">
-                        <li><a>本区县颗粒物平均浓度月度报表</a></li>
-                        <li><a>本区县颗粒物平均浓度季度报表</a></li>
-                        <li><a>本区县颗粒物平均浓度年度报表</a></li>
-                    </ul>
-                </li>
                 <li>
                     <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
                     <span>查询导出</span>
@@ -53,6 +54,15 @@
                         <li><a>本区县整体污染物变化情况</a></li>
                         <li><a>各工程历史污染物变化情况</a></li>
                         <li><a>按工期进行综合对比</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                    <span>统计分析</span>
+                    <ul class="sub-menu">
+                        <li>@Html.ActionLink("本区县颗粒物平均浓度月度报表", "AveragePolluteReport", "Analysis", new {id = "month"}, null)</li>
+                        <li>@Html.ActionLink("本区县颗粒物平均浓度季度报表", "AveragePolluteReport", "Analysis", new { id = "season" }, null)</li>
+                        <li>@Html.ActionLink("本区县颗粒物平均浓度年度报表", "AveragePolluteReport", "Analysis", new { id = "year" }, null)</li>
                     </ul>
                 </li>
                 <li>

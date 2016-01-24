@@ -15,8 +15,6 @@ namespace SHEP_Platform.Controllers
         /// </summary>
         public ActionResult Index()
         {
-            ViewBag.CityName = WdContext.Country.Country;
-
             var stats = DbContext.T_Stats.Where(stat => stat.Country == WdContext.Country.Id).ToList();
 
             var list = new List<StatStatus>();
@@ -71,13 +69,6 @@ namespace SHEP_Platform.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
-        }
-
-        public JsonResult GeneralInfo()
-        {
-            // Context.T_ESMin.Select()
-
-            return null;
         }
     }
 }
