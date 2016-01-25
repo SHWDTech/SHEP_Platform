@@ -1,14 +1,12 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
 using SHEP_Platform.Common;
 
 namespace SHEP_Platform.Controllers
 {
     public class ControllerBase : Controller
     {
-        public WdContext WdContext { get; private set; }
+        public WdContext WdContext { get; }
 
         protected ESMonitorEntities DbContext { get; set; }
 

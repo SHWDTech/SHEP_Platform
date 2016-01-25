@@ -2,7 +2,7 @@
 {
     public class WdContext
     {
-        public WdContext Current { get; private set; }
+        public WdContext Current { get; }
 
         public T_Users User { get; set; }
 
