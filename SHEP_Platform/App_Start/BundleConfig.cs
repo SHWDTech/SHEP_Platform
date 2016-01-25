@@ -14,7 +14,8 @@ namespace SHEP_Platform
                         "~/Scripts/Utility/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/base").Include(
-                "~/Scripts/const.js"));
+                        "~/Scripts/Utility/base.js",
+                        "~/Scripts/const.js"));
 
             // 使用要用于开发和学习的 Modernizr 的开发版本。然后，当你做好
             // 生产准备时，请使用 http://modernizr.com 上的生成工具来仅选择所需的测试。
@@ -25,9 +26,16 @@ namespace SHEP_Platform
                       "~/Scripts/Utility/bootstrap.js",
                       "~/Scripts/Utility/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/datetimepicker").Include(
+                "~/Scripts/Utility/moment-with-locales.js",
+                "~/Scripts/Utility/bootstrap-datetimepicker.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap/bootstrap.css",
                       "~/Content/base/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/datetimepickercss").Include(
+                "~/Content/bootstrap/bootstrap-datetimepicker.css"));
         }
     }
 }

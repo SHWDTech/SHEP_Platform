@@ -164,10 +164,14 @@
     <Compile Include="Common\Global.cs" />
     <Compile Include="Common\WDContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AjaxController.cs" />
+    <Compile Include="Controllers\AjaxControllerBase.cs" />
     <Compile Include="Controllers\AnalysisController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Enum\PollutantType.cs" />
     <Compile Include="Enum\PolluteType.cs" />
+    <Compile Include="Enum\QueryDateRange.cs" />
     <Compile Include="ESMonitor.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -393,6 +397,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap.css" />
@@ -404,15 +410,16 @@
     <Content Include="Images\Site\marker_red_sprite2.png" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Utility\base.js" />
+    <Content Include="Scripts\Utility\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\Utility\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\Common\MapManipulation.js" />
     <Content Include="Scripts\Common\SetUpCharts.js" />
     <Content Include="Scripts\const.js" />
-    <Content Include="Scripts\moment-with-locales.js" />
-    <Content Include="Scripts\moment-with-locales.min.js" />
-    <Content Include="Scripts\moment.js" />
-    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\Utility\moment-with-locales.js" />
+    <Content Include="Scripts\Utility\moment-with-locales.min.js" />
+    <Content Include="Scripts\Utility\moment.js" />
+    <Content Include="Scripts\Utility\moment.min.js" />
     <Content Include="Scripts\Page\Analysis.js" />
     <Content Include="Scripts\Utility\echarts.js" />
     <Content Include="Scripts\Utility\echarts.min.js" />
@@ -547,7 +554,9 @@
     <Content Include="Scripts\Utility\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\Utility\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -568,6 +577,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Common\" />
+    <Folder Include="Views\AjaxControllerBase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

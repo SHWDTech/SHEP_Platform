@@ -9,6 +9,11 @@
     padding: 15px;
 }
 
+.container {
+    width: 100%;
+    padding: 0;
+}
+
 ul {
     list-style: none;
     padding: 10px 8px;
@@ -220,4 +225,32 @@ li .glyphicon {
 
 .floatInfo span {
     font-size: 12px;
+}
+
+.date {
+    width: 160px;
+}
+
+.form-control {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.glyphicon {
+    top: 0;
+    background-color: #fff;
+    border-radius: 0;
+}
+
+.daterange {
+    width: 100px;
+}
+
+select {
+    margin-right: 20px;
+}
+
+.btn {
+    border-radius: 0;
 }

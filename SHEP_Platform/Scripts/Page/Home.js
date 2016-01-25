@@ -26,6 +26,6 @@ var updateStats = function() {
         broad.append(ul);
 
         var point = { 'longitude': $(this)[0].Longitude, 'latitude': $(this)[0].Latitude }
-        add_MapPoint(point, $(this)[0].PolluteType, $(this)[0]);
+        add_MapPoint(point, $(this)[0].PolluteStatus, $(this)[0]);
     });
 }

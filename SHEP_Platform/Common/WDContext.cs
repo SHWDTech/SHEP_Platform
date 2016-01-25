@@ -1,4 +1,6 @@
-﻿namespace SHEP_Platform.Common
+﻿using System.Collections.Generic;
+
+namespace SHEP_Platform.Common
 {
     public class WdContext
     {
@@ -8,6 +10,8 @@
 
         public T_Country Country { get; set; }
 
+        public List<T_Stats> StatList { get; set; } 
+
         public string UserId { get; set; }
 
         public SiteMapMenu SiteMapMenu { get; set; }
@@ -15,6 +19,7 @@
         public WdContext()
         {
             Current = this;
+            StatList = new List<T_Stats>();
             SiteMapMenu = new SiteMapMenu();
         }
     }

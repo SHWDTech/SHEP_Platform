@@ -25,13 +25,13 @@ function map_init(func) {
 var add_MapPoint = function (point, polluteType, extroInfo) {
     var iconAddr = '';
     switch (polluteType) {
-        case PolluteType.NotOverRange:
+        case PolluteStatus.NotOverRange:
             iconAddr = '/Images/Site/marker_red_sprite2.png';
             break;
-        case PolluteType.OverRange:
+        case PolluteStatus.OverRange:
             iconAddr = '/Images/Site/marker_red.png';
             break;
-        case PolluteType.NoData:
+        case PolluteStatus.NoData:
             iconAddr = '/Images/Site/marker_gray_sprite1.png';
             break;
     }
