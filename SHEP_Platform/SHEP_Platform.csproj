@@ -169,6 +169,7 @@
     <Compile Include="Controllers\AnalysisController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MonitorController.cs" />
     <Compile Include="Enum\PollutantType.cs" />
     <Compile Include="Enum\PolluteType.cs" />
     <Compile Include="Enum\QueryDateRange.cs" />
@@ -573,11 +574,11 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Analysis\AveragePolluteReport.cshtml" />
+    <Content Include="Views\Monitor\ActualStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Common\" />
-    <Folder Include="Views\AjaxControllerBase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
