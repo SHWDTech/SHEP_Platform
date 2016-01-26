@@ -67,7 +67,7 @@ var Echart_Tools = {
                 text: ''
             },
             tooltip: {
-                formatter: "{a} <br/>{b} : {c}%"
+                formatter: "{a} <br/>{b} : {c}"
             },
             toolbox: {
                 show: true,
