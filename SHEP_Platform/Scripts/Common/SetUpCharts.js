@@ -91,7 +91,7 @@ var Echart_Tools = {
                         show: true,
                         offsetCenter: [
                             0,
-                            80
+                            90
                         ],
                         textStyle: {
                             color: "#333",
@@ -99,7 +99,9 @@ var Echart_Tools = {
                         }
                     },
                     detail: {
-                        formatter: "{value}"
+                        formatter: "{value}",
+                        offsetCenter: [0, '70%'],
+                        height: 40
                     },
                     data: [
                         {
