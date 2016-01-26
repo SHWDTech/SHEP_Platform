@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -20,6 +21,8 @@ namespace SHEP_Platform.Controllers
             {
                 case "getStatAvgReport":
                     return GetStatAvgReport();
+                case "getStatsActualData":
+                    return GetStatsActualData();
             }
 
             return null;
@@ -103,6 +106,17 @@ namespace SHEP_Platform.Controllers
             }
 
             return null;
+        }
+
+        private JsonResult GetStatsActualData()
+        {
+            var statId = int.Parse(Request["statId"]);
+            var startDate = DateTime.Now.AddHours(-1);
+            var ret = DbContext.T_ESMin.Where(item => item.StatId == statId && item.UpdateTime > startDate)
+                .OrderBy(obj => obj.UpdateTime).ToList()
+                .Select(i => new { TP = (i.TP / 1000).ToString("f2"), DB = i.DB.ToString("f2"), UpdateTime = ((DateTime)i.UpdateTime).ToString("HH:mm:ss") });
+
+            return Json(ret);
         }
     }
 }

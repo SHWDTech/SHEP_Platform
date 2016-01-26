@@ -46,3 +46,70 @@ $(function () {
         }]
     };
 });
+
+var Echart_Tools = {
+    getSeries: function () {
+        var series = {
+            itemStyle: {
+                normal: {
+                    color: '#1abc9c'
+                }
+            },
+            name: '',
+            type: 'bar',
+            data: []
+        };
+        return series;
+    },
+    getGaugeOption: function () {
+        var option = {
+            title: {
+                text: ''
+            },
+            tooltip: {
+                formatter: "{a} <br/>{b} : {c}%"
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {
+                        type: 'png',
+                        backgroundColor: 'auto',
+                        excludeComponents: ['toolbox'],
+                        show: true,
+                        title: '保存为图片'
+                    }
+                }
+            },
+            series: [
+                {
+                    name: "",
+                    type: "gauge",
+                    min: 0,
+                    max: 2,
+                    title: {
+                        show: true,
+                        offsetCenter: [
+                            0,
+                            80
+                        ],
+                        textStyle: {
+                            color: "#333",
+                            fontSize: 16
+                        }
+                    },
+                    detail: {
+                        formatter: "{value}"
+                    },
+                    data: [
+                        {
+                            name: "",
+                            value: ""
+                        }
+                    ]
+                }]
+        }
+
+        return option;
+    }
+};

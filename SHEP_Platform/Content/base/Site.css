@@ -7,6 +7,7 @@
     margin-left: 210px;
     border-left: 1px solid #e8e8e8;
     padding: 15px;
+    overflow: auto;
 }
 
 .container {
@@ -124,10 +125,10 @@ textarea {
         box-shadow: 4px 7px 13px #a1a1a1;
     }
 
-.sidebar .sub-menu li {
-        padding: 0;
-        cursor: default;
-    }
+        .sidebar .sub-menu li {
+            padding: 0;
+            cursor: default;
+        }
 
         .sidebar .sub-menu a {
             height: 40px;
@@ -180,9 +181,9 @@ li .glyphicon {
     margin-right: 10px;
 }
 
-.logoff-form ul {
-    padding: 0;
-}
+    .logoff-form ul {
+        padding: 0;
+    }
 
 .navbar-right li {
     padding: 5px;
@@ -219,13 +220,13 @@ li .glyphicon {
     position: absolute;
 }
 
-.floatInfo li {
-    font-size: 14px !important;    
-}
+    .floatInfo li {
+        font-size: 14px !important;
+    }
 
-.floatInfo span {
-    font-size: 12px;
-}
+    .floatInfo span {
+        font-size: 12px;
+    }
 
 .date {
     width: 160px;
@@ -253,4 +254,24 @@ select {
 
 .btn {
     border-radius: 0;
+}
+
+.pm {
+    color: #5d4bc1;
+}
+
+.db {
+    color: #de366d;
+}
+
+li span.date {
+    color: #b2b2b2;
+}
+
+.safe {
+    color: #107c10;
+}
+
+.danger {
+    color: red;
 }

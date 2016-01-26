@@ -411,6 +411,7 @@
     <Content Include="Images\Site\marker_red_sprite2.png" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\Monitor\ActualStatus.js" />
     <Content Include="Scripts\Utility\base.js" />
     <Content Include="Scripts\Utility\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\Utility\bootstrap-datetimepicker.min.js" />

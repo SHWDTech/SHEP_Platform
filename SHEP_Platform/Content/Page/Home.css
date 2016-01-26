@@ -31,23 +31,3 @@ li span.num {
     text-align: right;
     display: inline-block;
 }
-
-li span.pm {
-    color: #5d4bc1;
-}
-
-li span.db {
-    color: #de366d;
-}
-
-li span.date {
-    color: #b2b2b2;
-}
-
-.safe {
-    color: #107c10;
-}
-
-.danger {
-    color: red;
-}
