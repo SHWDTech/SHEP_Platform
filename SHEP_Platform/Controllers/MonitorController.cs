@@ -35,6 +35,16 @@ namespace SHEP_Platform.Controllers
         public ActionResult HistoryChange()
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "各工程历史污染物变化情况";
+            var dict = new Dictionary<object, object>();
+            foreach (var stat in WdContext.StatList)
+            {
+                var hour = DateTime.Now.AddHours(-1);
+                var value = DbContext.T_ESHour.FirstOrDefault(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
+                dict.Add(stat, value);
+            }
+
+            ViewBag.StatDict = dict;
+            ViewBag.defaultId = WdContext.StatList[0].Id;
 
             return View();
         }

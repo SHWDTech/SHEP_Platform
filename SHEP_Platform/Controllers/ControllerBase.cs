@@ -28,19 +28,17 @@ namespace SHEP_Platform.Controllers
                 WdContext.Country =
                     DbContext.T_Country.FirstOrDefault(prov => prov.Id.ToString() == WdContext.User.Remark);
                 WdContext.StatList = DbContext.T_Stats.Where(stat => stat.Country == WdContext.Country.Id).ToList();
+                if (WdContext.Country != null) ViewBag.CityName = WdContext.Country.Country;
+
+                ViewBag.SiteMapMenu = WdContext.SiteMapMenu;
+
+                base.OnActionExecuting(ctx);
             }
             else
             {
                 FormsAuthentication.SignOut();
                 RedirectToAction("Login", "Account");
-                return;
             }
-
-            if (WdContext.Country != null) ViewBag.CityName = WdContext.Country.Country;
-
-            ViewBag.SiteMapMenu = WdContext.SiteMapMenu;
-
-            base.OnActionExecuting(ctx);
         }
     }
 }

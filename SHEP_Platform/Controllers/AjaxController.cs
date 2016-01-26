@@ -23,6 +23,8 @@ namespace SHEP_Platform.Controllers
                     return GetStatAvgReport();
                 case "getStatsActualData":
                     return GetStatsActualData();
+                case "load":
+                    return GetHistoryReport();
             }
 
             return null;
@@ -114,9 +116,87 @@ namespace SHEP_Platform.Controllers
             var startDate = DateTime.Now.AddHours(-1);
             var ret = DbContext.T_ESMin.Where(item => item.StatId == statId && item.UpdateTime > startDate)
                 .OrderBy(obj => obj.UpdateTime).ToList()
+                // ReSharper disable once PossibleInvalidOperationException
                 .Select(i => new { TP = (i.TP / 1000).ToString("f2"), DB = i.DB.ToString("f2"), UpdateTime = ((DateTime)i.UpdateTime).ToString("HH:mm:ss") });
 
             return Json(ret);
+        }
+
+        private JsonResult GetHistoryReport()
+        {
+            var statId = int.Parse(Request["id"]);
+            var queryDateRange = Request["queryDateRange"];
+            var datePickerValue = Request["datePickerValue"]?.Split(',');
+
+            var startDate = DateTime.MinValue;
+            var endDate = DateTime.Now;
+            var dtType = string.Empty;
+            switch (queryDateRange)
+            {
+                case QueryDateRange.LastHour:
+                    startDate = DateTime.Now.AddHours(-1);
+                    dtType = "Min";
+                    break;
+                case QueryDateRange.LastDay:
+                    startDate = DateTime.Now.AddDays(-1);
+                    dtType = "Hour";
+                    break;
+                case QueryDateRange.LastWeek:
+                    startDate = DateTime.Now.AddDays(-7);
+                    dtType = "Day";
+                    break;
+                case QueryDateRange.LastMonth:
+                    startDate = DateTime.Now.AddMonths(-1);
+                    dtType = "Day";
+                    break;
+                case QueryDateRange.LastYear:
+                    startDate = DateTime.Now.AddYears(-1);
+                    dtType = "Day";
+                    break;
+                case QueryDateRange.Customer:
+                    if (datePickerValue == null || datePickerValue.Length < 2)
+                    {
+                        throw new Exception("参数错误");
+                    }
+                    startDate = DateTime.Parse(datePickerValue[0]);
+                    endDate = DateTime.Parse(datePickerValue[1]);
+                    dtType = "Day";
+                    break;
+            }
+
+            var dict = new Dictionary<string, object>();
+            if (dtType == "Min")
+            {
+                var ret =
+                    DbContext.T_ESMin.Where(
+                        item => item.StatId == statId && item.UpdateTime > startDate && item.UpdateTime < endDate)
+                        .ToList()
+                        // ReSharper disable once PossibleInvalidOperationException
+                        .Select(obj => new { TP = (obj.TP / 1000).ToString("f2"), DB = obj.DB.ToString("f2"), UpdateTime = ((DateTime)obj.UpdateTime).ToString("HH:mm:ss") });
+                dict.Add("data", ret);
+            }
+            else if (dtType == "Hour")
+            {
+                var ret =
+                    DbContext.T_ESHour.Where(
+                        item => item.StatId == statId && item.UpdateTime > startDate && item.UpdateTime < endDate)
+                        .ToList()
+                        // ReSharper disable once PossibleInvalidOperationException
+                        .Select(obj => new { TP = (obj.TP / 1000).ToString("f2"), DB = obj.DB.ToString("f2"), UpdateTime = obj.UpdateTime.ToString("HH:mm:ss") });
+                dict.Add("data", ret);
+            }
+            else
+            {
+                var ret =
+                    DbContext.T_ESDay.Where(
+                        item => item.StatId == statId && item.UpdateTime > startDate && item.UpdateTime < endDate)
+                        .ToList()
+                        // ReSharper disable once PossibleInvalidOperationException
+                        .Select(obj => new { TP = (obj.TP / 1000).ToString("f2"), DB = obj.DB.ToString("f2"), UpdateTime = obj.UpdateTime.ToString("yyyy-MM-dd") });
+                dict.Add("data", ret);
+            }
+
+            return Json(dict);
         }
     }
 }
