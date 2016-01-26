@@ -25,3 +25,15 @@ var IsNullOrEmpty = function (obj) {
         return false;
     }
 }
+
+var msg = {
+    warning: function (msg) {
+        $("#statusMsg").remove();
+        $('body').append($('<p class="bg-info msg" id="statusMsg"></p>'));
+        $('#statusMsg').html(msg);
+        $('#statusMsg').fadeIn();
+        setTimeout(function() {
+            $('#statusMsg').fadeOut('slow');
+        }, 3000);
+    }
+};

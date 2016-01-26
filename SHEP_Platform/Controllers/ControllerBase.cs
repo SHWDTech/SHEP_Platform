@@ -33,6 +33,7 @@ namespace SHEP_Platform.Controllers
             {
                 FormsAuthentication.SignOut();
                 RedirectToAction("Login", "Account");
+                return;
             }
 
             if (WdContext.Country != null) ViewBag.CityName = WdContext.Country.Country;

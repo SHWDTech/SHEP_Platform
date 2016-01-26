@@ -576,6 +576,7 @@
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Analysis\AveragePolluteReport.cshtml" />
     <Content Include="Views\Monitor\ActualStatus.cshtml" />
+    <Content Include="Views\Monitor\HistoryChange.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

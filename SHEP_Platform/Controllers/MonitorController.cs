@@ -31,5 +31,12 @@ namespace SHEP_Platform.Controllers
 
             return View();
         }
+
+        public ActionResult HistoryChange()
+        {
+            WdContext.SiteMapMenu.ActionMenu.Name = "各工程历史污染物变化情况";
+
+            return View();
+        }
     }
 }

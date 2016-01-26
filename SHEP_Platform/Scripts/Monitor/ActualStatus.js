@@ -8,6 +8,8 @@ var mainChart = null;
 var ajaxUrl = '/Ajax/Access';
 //表格主体
 var tbody = $('#divTable').find('tbody');
+//每分钟更新一次数据
+var timeoutId = null;
 
 $(function () {
     tpGauge = echarts.init(document.getElementById('tpGauge'));
@@ -32,7 +34,7 @@ var load = function (id, name) {
 
 var setChart = function (list, name) {
     if (list.length === 0) {
-        alert('暂无数据');
+        msg.warning('暂无最新数据！');
         return;
     }
     Echart_option.series = [];
@@ -46,7 +48,6 @@ var setChart = function (list, name) {
     var seriesTp = Echart_Tools.getSeries();
     var seriesDb = Echart_Tools.getSeries();
     seriesTp.name = '颗粒物';
-    seriesTp.type = 'line';
     seriesTp.yAxisIndex = 1;
     seriesTp.itemStyle.normal.color = '#5d4bc1';
     seriesDb.name = '噪音值';
@@ -80,4 +81,7 @@ var setChart = function (list, name) {
     tpGauge.setOption(tpGaugeOption);
     dbGauge.setOption(dbGaugeOption);
     $('#itemTitle').find('h1').html(name + '实时数据');
+
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(function () { load(id, name); }, 60000);
 };
