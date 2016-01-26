@@ -56,7 +56,7 @@
                     <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
                     <span>查询导出</span>
                     <ul class="sub-menu">
-                        <li>@Html.ActionLink("各工程当前情况", "ActualStatus", "Monitor", null, null)</li>
+                        <li>@Html.ActionLink("各工程当前情况", "ActualStatus", "Monitor", new {id = ""}, null)</li>
                         <li>@Html.ActionLink("各工程历史污染物变化情况", "HistoryChange", "Monitor", null, null)</li>
                         <li><a>按工期进行综合对比</a></li>
                     </ul>

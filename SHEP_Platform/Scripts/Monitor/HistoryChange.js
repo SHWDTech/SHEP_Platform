@@ -40,6 +40,8 @@ $(function () {
 
 var load = function (statId) {
     curId = statId;
+    tpChart.showLoading();
+    dbChart.showLoading();
     if (IsNullOrEmpty($('.daterange').val())) return;
 
     var param = {
@@ -52,6 +54,8 @@ var load = function (statId) {
     $.post(ajaxUrl, param, function (ret) {
         if (ret) {
             reSetChart(ret);
+            tpChart.hideLoading();
+            dbChart.hideLoading();
         }
     });
 };

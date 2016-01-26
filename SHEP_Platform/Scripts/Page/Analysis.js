@@ -44,6 +44,7 @@ $(function () {
 });
 
 var getStatAvgReport = function (pollutantType, queryDateRange, datePickerValue) {
+    avgChart.showLoading();
     var param = {
         'fun': 'getStatAvgReport',
         'pollutantType': pollutantType,
@@ -54,6 +55,7 @@ var getStatAvgReport = function (pollutantType, queryDateRange, datePickerValue)
     $.post(ajaxUrl, param, function (ret) {
         if (ret) {
             RefreashPage(ret);
+            avgChart.hideLoading();
         }
     });
 };

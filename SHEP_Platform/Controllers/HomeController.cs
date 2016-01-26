@@ -43,6 +43,7 @@ namespace SHEP_Platform.Controllers
                 list.Add(new StatStatus()
                 {
                     Name = stat.StatName,
+                    Id = stat.Id,
                     AvgTp = (tpTotal / validDev / 1000.0).ToString("f2"),
                     AvgDb = (dbTotal / validDev).ToString("f2"),
                     UpdateTime = lastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss"),

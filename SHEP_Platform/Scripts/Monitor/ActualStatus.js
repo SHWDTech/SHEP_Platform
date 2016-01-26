@@ -20,6 +20,9 @@ $(function () {
 });
 
 var load = function (id, name) {
+    mainChart.showLoading();
+    tpGauge.showLoading();
+    dbGauge.showLoading();
     var param = {
         'fun': 'getStatsActualData',
         'statId': id
@@ -27,19 +30,25 @@ var load = function (id, name) {
 
     $.post(ajaxUrl, param, function (ret) {
         if (ret) {
-            setChart(ret, name);
+            setChart(ret, name, id);
+            mainChart.hideLoading();
+            tpGauge.hideLoading();
+            dbGauge.hideLoading();
         }
     });
 };
 
-var setChart = function (list, name) {
+var setChart = function (list, name, id) {
     if (list.length === 0) {
         msg.warning('暂无最新数据！');
         return;
     }
-    Echart_option.series = [];
-    Echart_option.legend.data = ['颗粒物', '噪音值'];
-    Echart_option.yAxis = [
+
+    var option = Echart_Tools.getOption();
+
+    option.series = [];
+    option.legend.data = ['颗粒物', '噪音值'];
+    option.yAxis = [
     {
          type: 'value', name: 'tp', axisLabel: { formatter: '{value}' }
     }, {
@@ -60,14 +69,14 @@ var setChart = function (list, name) {
         xAxisData.push($(this)[0].UpdateTime);
         seriesTpData.push($(this)[0].TP);
         seriesDbData.push($(this)[0].DB);
-        Echart_option.xAxis.data = xAxisData;
+        option.xAxis.data = xAxisData;
         seriesTp.data = seriesTpData;
         seriesDb.data = seriesDbData;
     });
-    Echart_option.series.push(seriesTp);
-    Echart_option.series.push(seriesDb);
+    option.series.push(seriesTp);
+    option.series.push(seriesDb);
 
-    mainChart.setOption(Echart_option);
+    mainChart.setOption(option);
 
     var tpGaugeOption = Echart_Tools.getGaugeOption();
     var dbGaugeOption = Echart_Tools.getGaugeOption();

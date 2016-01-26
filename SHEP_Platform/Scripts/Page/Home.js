@@ -19,7 +19,7 @@ var updateStats = function() {
     $(statusInfo).each(function () {
         var ul = $('<ul></ul>');
 
-        $(ul).append('<li class="title">' + $(this)[0].Name + '</li>');
+        $(ul).append('<li class="title"><a href="/Monitor/ActualStatus/' + $(this)[0].Id + '">' + $(this)[0].Name + '</a></li>');
         $(ul).append('<li><span class="text pm">颗粒物</span><span class="num safe">' + $(this)[0].AvgTp + '(mg/m³)</span></li>');
         $(ul).append('<li><span class="text db">噪音</span><span class="num safe">' + $(this)[0].AvgDb + '(dB)</span></li>');
         $(ul).append('<li><span class="date">' + $(this)[0].UpdateTime + '</span></li>');

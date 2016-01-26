@@ -14,7 +14,7 @@ namespace SHEP_Platform.Controllers
         }
 
         // GET: Monitor
-        public ActionResult ActualStatus()
+        public ActionResult ActualStatus(string id)
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "各工程当前情况";
             var dict = new Dictionary<object, object>();
@@ -26,8 +26,8 @@ namespace SHEP_Platform.Controllers
             }
 
             ViewBag.StatDict = dict;
-            ViewBag.defaultId = WdContext.StatList[0].Id;
-            ViewBag.defaultName = WdContext.StatList[0].StatName;
+            ViewBag.defaultId = !string.IsNullOrEmpty(id) ? int.Parse(id) : WdContext.StatList[0].Id;
+            ViewBag.defaultName = WdContext.StatList.First(stat => stat.Id == ViewBag.defaultId).StatName;
 
             return View();
         }
