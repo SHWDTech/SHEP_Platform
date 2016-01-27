@@ -1,0 +1,89 @@
+﻿@using SHEP_Platform.Models.Monitor
+@model ScheduleCompareViewModel
+@{
+    ViewBag.Title = "查询导出";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="display: flex;">
+    <div id="divCharts" style="height: 600px; border: 1px solid #e7e7e7; margin-right: 20px;">
+        <div id="divBasic" style="height: 300px; width: 800px">
+        </div>
+        <div id="divStructure" style="height: 300px; width: 800px">
+        </div>
+    </div>
+    <div id="divTable" style="-moz-min-width: 300px; -ms-min-width: 300px; -o-min-width: 300px; -webkit-min-width: 300px; min-width: 300px; float: left;">
+        <table class="table table-striped table-bordered table-hover">
+            <colgroup>
+                <col style="width: 75px;" />
+                <col style="width: 75px;" />
+                <col style="width: 75px;" />
+                <col style="width: 75px;" />
+            </colgroup>
+            <thead>
+                <tr><td colspan="4" style="text-align: center;">按工期综合对比</td></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4">基础工期日均值</td>
+                </tr>
+                <tr>
+                    <td>颗粒物</td>
+                    <td class="pm">@Model.BasicAvgTp</td>
+                    <td>噪音</td>
+                    <td class="db">@Model.BasicAvgDb</td>
+                </tr>
+                <tr>
+                    <td colspan="4">结构工期日均值</td>
+                </tr>
+                <tr>
+                    <td>颗粒物</td>
+                    <td class="pm">@Model.StructureTp</td>
+                    <td>噪音</td>
+                    <td class="db">@Model.StructureDb</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="/Scripts/Utility/echarts.js"></script>
+    <script type="text/javascript" src="/Scripts/Common/SetUpCharts.js"></script>
+    <script type="text/javascript">
+        var dict = JSON.parse('@Html.Raw(ViewBag.Dict)');
+        var tpChart = echarts.init(document.getElementById('divBasic'));
+        var dbChart = echarts.init(document.getElementById('divStructure'));
+
+        var tpOption = Echart_Tools.getOption();
+        var dbOption = Echart_Tools.getOption();
+
+        tpOption.title.text = '颗粒物对比数据';
+        tpOption.legend.data = ['颗粒物'];
+        tpOption.series[0].name = '颗粒物';
+        tpOption.series[0].itemStyle.normal.color = '#5d4bc1';
+
+        dbOption.title.text = '噪音值对比数据';
+        dbOption.legend.data = ['噪音值'];
+        dbOption.series[0].name = '噪音值';
+        dbOption.series[0].itemStyle.normal.color = '#de366d';
+
+        var xAxisData = [];
+        var seriesTpData = [];
+        var seriesDbData = [];
+        $.each(dict.basic, function () {
+            xAxisData.push($(this)[0].UpdateTime);
+            seriesTpData.push($(this)[0].TP);
+            seriesDbData.push($(this)[0].DB);
+        });
+
+        tpOption.xAxis.data = xAxisData;
+        dbOption.xAxis.data = xAxisData;
+
+        tpOption.series[0].data = seriesTpData;
+        dbOption.series[0].data = seriesDbData;
+
+        tpChart.setOption(tpOption);
+        dbChart.setOption(dbOption);
+    </script>
+}

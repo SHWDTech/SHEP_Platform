@@ -173,6 +173,7 @@
     <Compile Include="Enum\PollutantType.cs" />
     <Compile Include="Enum\PolluteType.cs" />
     <Compile Include="Enum\QueryDateRange.cs" />
+    <Compile Include="Enum\Stage.cs" />
     <Compile Include="ESMonitor.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -193,6 +194,7 @@
     </Compile>
     <Compile Include="Models\Account\AccountViewModels.cs" />
     <Compile Include="Models\Home\HomeViewModels.cs" />
+    <Compile Include="Models\Monitor\MonitorViewModels.cs" />
     <Compile Include="Process\AuthenticationProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="T_Alarms.cs">
@@ -578,6 +580,7 @@
     <Content Include="Views\Analysis\AveragePolluteReport.cshtml" />
     <Content Include="Views\Monitor\ActualStatus.cshtml" />
     <Content Include="Views\Monitor\HistoryChange.cshtml" />
+    <Content Include="Views\Monitor\ScheduleCompare.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

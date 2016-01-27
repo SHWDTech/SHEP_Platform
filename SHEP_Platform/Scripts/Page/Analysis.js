@@ -70,10 +70,12 @@ var RefreashPage = function(ret) {
         polluteType = '噪音值';
         color = '#de366d';
     }
-    Echart_option.title.text = '污染物均值';
-    Echart_option.legend.data = [polluteType];
-    Echart_option.series[0].name = polluteType;
-    Echart_option.series[0].itemStyle.normal.color = color;
+
+    var option = Echart_Tools.getOption();
+    option.title.text = '污染物均值';
+    option.legend.data = [polluteType];
+    option.series[0].name = polluteType;
+    option.series[0].itemStyle.normal.color = color;
 
     var xAxisData = [];
     var seriesData = [];
@@ -81,10 +83,10 @@ var RefreashPage = function(ret) {
         xAxisData.push($(this)[0].Name);
         seriesData.push($(this)[0].AvgVal);
     });
-    Echart_option.xAxis.data = xAxisData;
-    Echart_option.series[0].data = seriesData;
+    option.xAxis.data = xAxisData;
+    option.series[0].data = seriesData;
 
-    avgChart.setOption(Echart_option);
+    avgChart.setOption(option);
 
     tbody.html('');
     $.each(ret, function () {

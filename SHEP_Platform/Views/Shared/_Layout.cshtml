@@ -20,7 +20,7 @@
 <body>
     <div class="navbar navbar-default topheadnav">
         <div class="navbar-header">
-            @Html.ActionLink("卫东环保", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("上海卫东", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             <span class="slogn">@ViewBag.CityName</span>
         </div>
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right logoff-form" }))
@@ -57,15 +57,15 @@
                     <span>查询导出</span>
                     <ul class="sub-menu">
                         <li>@Html.ActionLink("各工程当前情况", "ActualStatus", "Monitor", new {id = ""}, null)</li>
-                        <li>@Html.ActionLink("各工程历史污染物变化情况", "HistoryChange", "Monitor", null, null)</li>
-                        <li><a>按工期进行综合对比</a></li>
+                        <li>@Html.ActionLink("各工程历史污染物变化情况", "HistoryChange", "Monitor")</li>
+                        <li>@Html.ActionLink("按工期进行综合对比", "ScheduleCompare", "Monitor")</li>
                     </ul>
                 </li>
                 <li>
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
                     <span>统计分析</span>
                     <ul class="sub-menu">
-                        <li>@Html.ActionLink("本区县污染物平均浓度报表", "AveragePolluteReport", "Analysis", null, null)</li>
+                        <li>@Html.ActionLink("本区县污染物平均浓度报表", "AveragePolluteReport", "Analysis")</li>
                     </ul>
                 </li>
                 <li>

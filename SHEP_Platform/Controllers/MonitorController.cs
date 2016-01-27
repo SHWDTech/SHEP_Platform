@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using SHEP_Platform.Enum;
+using SHEP_Platform.Models.Monitor;
 
 namespace SHEP_Platform.Controllers
 {
@@ -47,6 +50,40 @@ namespace SHEP_Platform.Controllers
             ViewBag.defaultId = WdContext.StatList[0].Id;
 
             return View();
+        }
+
+        public ActionResult ScheduleCompare()
+        {
+            WdContext.SiteMapMenu.ActionMenu.Name = "按工期进行综合对比";
+            var basic = WdContext.StatList.Where(stat => stat.Stage == (int) Stage.Basic).Select(obj => obj.Id).ToList();
+            var structure = WdContext.StatList.Where(stat => stat.Stage == (int) Stage.Structure).Select(obj =>  obj.Id ).ToList();
+
+            var startDate = DateTime.Now.AddMonths(-1);
+            var basicList = DbContext.T_ESDay.Where(obj => basic.Contains(obj.StatId) && obj.UpdateTime > startDate) .ToList()
+                .Select(item => new {
+                    TP = double.Parse((item.TP / 1000).ToString("f2")),
+                    DB = double.Parse(item.DB.ToString("f2")),
+                    UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd")
+                });
+            var structureList = DbContext.T_ESDay.Where(obj => structure.Contains(obj.StatId) && obj.UpdateTime > startDate).ToList()
+                .Select(item => new {
+                    TP = double.Parse((item.TP / 1000).ToString("f2")),
+                    DB = double.Parse(item.DB.ToString("f2")),
+                    UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd") });
+
+            var dict = new Dictionary<string, object> {{"basic", basicList}, {"structure", structureList}};
+            
+            var model = new ScheduleCompareViewModel
+            {
+                BasicAvgTp = basicList.Any() ? basicList.Average(i => i.TP).ToString("f2") : "暂无数据",
+                BasicAvgDb = basicList.Any() ? basicList.Average(i => i.DB).ToString("f2"): "暂无数据",
+                StructureTp = structureList.Any() ? structureList.Average(i => i.TP).ToString("f2") : "暂无数据",
+                StructureDb = structureList.Any() ? structureList.Average(i => i.DB).ToString("f2") : "暂无数据"
+            };
+            
+            ViewBag.Dict = JsonConvert.SerializeObject(dict);
+
+            return View(model);
         }
     }
 }

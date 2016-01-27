@@ -39,6 +39,10 @@ namespace SHEP_Platform.Controllers
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, true);
                 Response.AppendCookie(new HttpCookie("UserId", user.UserId.ToString()));
+                if (string.IsNullOrWhiteSpace(returnUrl))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
                 return Redirect(returnUrl);
             }
 
