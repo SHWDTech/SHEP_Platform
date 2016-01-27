@@ -9,6 +9,7 @@
             name: '',
             type: 'bar',
             data: [],
+            stack:'',
             markPoint: {
                 data: []
             },
@@ -120,6 +121,45 @@
                     data: []
                 }
             }]
+        };
+
+        return option;
+    },
+    getStackLineOption: function() {
+        var option = {
+            title: {
+                text: ''
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: []
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: []
         };
 
         return option;

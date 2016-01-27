@@ -25,6 +25,8 @@ namespace SHEP_Platform.Controllers
                     return GetStatsActualData();
                 case "load":
                     return GetHistoryReport();
+                case "getAlarmChange":
+                    return GetAlarmChange();
             }
 
             return null;
@@ -197,6 +199,52 @@ namespace SHEP_Platform.Controllers
             }
 
             return Json(dict);
+        }
+
+        private JsonResult GetAlarmChange()
+        {
+            var queryDateRange = Request["queryDateRange"];
+            var datePickerValue = Request["datePickerValue"]?.Split(',');
+
+            var startDate = DateTime.MinValue;
+            var endDate = DateTime.Now;
+            var dtType = string.Empty;
+            switch (queryDateRange)
+            {
+                case QueryDateRange.LastHour:
+                    startDate = DateTime.Now.AddHours(-1);
+                    dtType = "Min";
+                    break;
+                case QueryDateRange.LastDay:
+                    startDate = DateTime.Now.AddDays(-1);
+                    dtType = "Hour";
+                    break;
+                case QueryDateRange.LastWeek:
+                    startDate = DateTime.Now.AddDays(-7);
+                    dtType = "Day";
+                    break;
+                case QueryDateRange.LastMonth:
+                    startDate = DateTime.Now.AddMonths(-1);
+                    dtType = "Day";
+                    break;
+                case QueryDateRange.LastYear:
+                    startDate = DateTime.Now.AddYears(-1);
+                    dtType = "Day";
+                    break;
+                case QueryDateRange.Customer:
+                    if (datePickerValue == null || datePickerValue.Length < 2)
+                    {
+                        throw new Exception("参数错误");
+                    }
+                    startDate = DateTime.Parse(datePickerValue[0]);
+                    endDate = DateTime.Parse(datePickerValue[1]);
+                    dtType = "Day";
+                    break;
+            }
+
+            var dict = new Dictionary<string, object>();
+
+            return null;
         }
     }
 }

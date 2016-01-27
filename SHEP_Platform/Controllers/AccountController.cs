@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using SHEP_Platform.Models.Account;
@@ -38,7 +39,8 @@ namespace SHEP_Platform.Controllers
             if (user != null)
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, true);
-                Response.AppendCookie(new HttpCookie("UserId", user.UserId.ToString()));
+                var cookie = new HttpCookie("UserId", user.UserId.ToString()) {Expires = DateTime.Now.AddMinutes(30)};
+                Response.AppendCookie(cookie);
                 if (string.IsNullOrWhiteSpace(returnUrl))
                 {
                     return RedirectToAction("Index", "Home");

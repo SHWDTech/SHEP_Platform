@@ -20,7 +20,7 @@
 <body>
     <div class="navbar navbar-default topheadnav">
         <div class="navbar-header">
-            @Html.ActionLink("上海卫东", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("上海工地扬尘环境监控平台", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", style = "text-align: center;" })
             <span class="slogn">@ViewBag.CityName</span>
         </div>
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right logoff-form" }))
@@ -72,7 +72,7 @@
                     <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
                     <span>综合评价</span>
                     <ul class="sub-menu">
-                        <li><a>本曲线整体超标情况变化趋势</a></li>
+                        <li>@Html.ActionLink("本曲线整体超标情况变化趋势", "AlarmChange", "Analysis")</li>
                     </ul>
                 </li>
             </ul>

@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "综合评价";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h2 style="text-align: center;">本区县整体污染物超标情况变化趋势</h2>
+</div>
+<div style="text-align: center;">
+    <div id="alarmChart" style="height: 600px; width: 800px; margin: auto;">
+
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/datetimepicker")
+    <script type="text/javascript" src="/Scripts/Utility/echarts.js"></script>
+    <script type="text/javascript" src="/Scripts/Common/SetUpCharts.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var alarmChart = echarts.init(document.getElementById('alarmChart'));
+            var option = Echart_Tools.getStackLineOption();
+            alarmChart.setOption(option);
+        });
+    </script>
+}

@@ -581,6 +581,7 @@
     <Content Include="Views\Monitor\ActualStatus.cshtml" />
     <Content Include="Views\Monitor\HistoryChange.cshtml" />
     <Content Include="Views\Monitor\ScheduleCompare.cshtml" />
+    <Content Include="Views\Analysis\AlarmChange.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
