@@ -23,5 +23,15 @@
             var option = Echart_Tools.getStackLineOption();
             alarmChart.setOption(option);
         });
+
+        var test = function() {
+            var param = {
+                'fun': 'getAlarmChange',
+                'pollutantType': 'DB'
+            }
+            $.post('/Ajax/Access', param, function(obj) {
+
+            });
+        };
     </script>
 }

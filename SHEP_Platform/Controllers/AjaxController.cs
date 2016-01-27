@@ -209,15 +209,46 @@ namespace SHEP_Platform.Controllers
 
             if (pollutantType == PollutantType.ParticulateMatter)
             {
-                var alarm = DbContext.T_Alarms.Where(obj => obj.DustType == 0 && obj.UpdateTime > startDate).ToList()
-                    .Select(item => new {Val = item.FaultVal, UpdateTime = ((DateTime)item.UpdateTime).ToString("yyyy-MM-dd"), item.StatId});
+                foreach (var statse in WdContext.StatList)
+                {
+                    var alarms =
+                        DbContext.T_Alarms.Where(
+                            ala => ala.StatId == statse.Id && ala.UpdateTime > startDate && ala.DustType == 0).ToList()
+                            .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
+
+                    var list = new List<object>();
+
+                    if (!alarms.Any()) continue;
+                    foreach (var alarm in alarms)
+                    {
+                        dynamic d = new { UpdateTime = alarm.ToList()[0].UpdateTime.Value.ToString("yyyy-MM-dd"), Count = alarm.Count() };
+                        list.Add(d);
+                    }
+
+                    dict.Add(statse.StatName, list);
+                }
             }
             else
             {
-                var alarm = DbContext.T_Alarms.Where(obj => obj.DustType == 1 && obj.UpdateTime > startDate).ToList()
-                    .Select(item => new {Val = item.FaultVal, UpdateTime = ((DateTime)item.UpdateTime).ToString("yyyy-MM-dd"), item.StatId});
-            }
+                foreach (var statse in WdContext.StatList)
+                {
+                    var alarms =
+                        DbContext.T_Alarms.Where(
+                            ala => ala.StatId == statse.Id && ala.UpdateTime > startDate && ala.DustType == 1).ToList()
+                            .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
 
+                    var list = new List<object>();
+
+                    if(!alarms.Any()) continue;
+                    foreach (var alarm in alarms)
+                    {
+                        dynamic d = new {UpdateTime = alarm.ToList()[0].UpdateTime.Value.ToString("yyyy-MM-dd"), Count = alarm.Count()};
+                        list.Add(d);
+                    }
+
+                    dict.Add(statse.StatName, list);
+                }
+            }
 
             return Json(dict);
         }
