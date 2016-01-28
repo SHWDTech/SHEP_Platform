@@ -16,9 +16,12 @@ namespace SHEP_Platform.Common
 
         public SiteMapMenu SiteMapMenu { get; set; }
 
+        public List<string> UserGroup { get; set; }
+
         public WdContext()
         {
             Current = this;
+            UserGroup = new List<string>();
             StatList = new List<T_Stats>();
             SiteMapMenu = new SiteMapMenu();
         }
