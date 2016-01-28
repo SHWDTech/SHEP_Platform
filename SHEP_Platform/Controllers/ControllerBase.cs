@@ -37,7 +37,7 @@ namespace SHEP_Platform.Controllers
             else
             {
                 FormsAuthentication.SignOut();
-                RedirectToAction("Login", "Account");
+                ctx.Result = RedirectToAction("Login", "Account");
             }
         }
     }
