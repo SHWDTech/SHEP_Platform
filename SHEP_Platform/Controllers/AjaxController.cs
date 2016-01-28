@@ -205,49 +205,35 @@ namespace SHEP_Platform.Controllers
         {
             var pollutantType = Request["pollutantType"];
             var startDate = DateTime.Now.AddMonths(-1);
-            var dict = new Dictionary<string, object>();
+            var dict = new List<object>();
 
             if (pollutantType == PollutantType.ParticulateMatter)
             {
-                foreach (var statse in WdContext.StatList)
+                var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString() 
+                && item.UpdateTime > startDate && item.DustType == 0).ToList()
+                    .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
+
+                var list = new List<object>();
+                foreach (var alarm in alarms)
                 {
-                    var alarms =
-                        DbContext.T_Alarms.Where(
-                            ala => ala.StatId == statse.Id && ala.UpdateTime > startDate && ala.DustType == 0).ToList()
-                            .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
-
-                    var list = new List<object>();
-
-                    if (!alarms.Any()) continue;
-                    foreach (var alarm in alarms)
-                    {
-                        dynamic d = new { UpdateTime = alarm.ToList()[0].UpdateTime.Value.ToString("yyyy-MM-dd"), Count = alarm.Count() };
-                        list.Add(d);
-                    }
-
-                    dict.Add(statse.StatName, list);
+                    list.Add(new { UpdateTime = alarm.Key, Count = alarm.Count() });
                 }
+
+                dict.Add(list);
             }
             else
             {
-                foreach (var statse in WdContext.StatList)
+                var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString()
+                && item.UpdateTime > startDate && item.DustType == 1).ToList()
+                    .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
+
+                var list = new List<object>();
+                foreach (var alarm in alarms)
                 {
-                    var alarms =
-                        DbContext.T_Alarms.Where(
-                            ala => ala.StatId == statse.Id && ala.UpdateTime > startDate && ala.DustType == 1).ToList()
-                            .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
-
-                    var list = new List<object>();
-
-                    if(!alarms.Any()) continue;
-                    foreach (var alarm in alarms)
-                    {
-                        dynamic d = new {UpdateTime = alarm.ToList()[0].UpdateTime.Value.ToString("yyyy-MM-dd"), Count = alarm.Count()};
-                        list.Add(d);
-                    }
-
-                    dict.Add(statse.StatName, list);
+                    list.Add(new {UpdateTime = alarm.Key, Count = alarm.Count()});
                 }
+
+                dict.Add(list);
             }
 
             return Json(dict);
