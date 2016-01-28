@@ -542,6 +542,7 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <None Include="Properties\PublishProfiles\Default.pubxml" />
     <None Include="Scripts\Utility\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\Utility\jquery-2.2.0.js" />
     <Content Include="Scripts\Utility\jquery-2.2.0.min.js" />

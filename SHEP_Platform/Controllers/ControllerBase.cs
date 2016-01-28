@@ -21,6 +21,12 @@ namespace SHEP_Platform.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext ctx)
         {
+            if (ctx.ActionDescriptor.ActionName == "Login")
+            {
+                base.OnActionExecuting(ctx);
+                return;
+            }
+
             WdContext.UserId = HttpContext?.Request?.Cookies?.Get("UserId")?.Value;
             if (WdContext.UserId != null)
             {
