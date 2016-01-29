@@ -46,6 +46,8 @@ namespace SHEP_Platform.Controllers
                     }
                 }
 
+                ViewBag.IsAdmin = WdContext.User != null && WdContext.User.UserName == "admin";
+
                 ViewBag.SiteMapMenu = WdContext.SiteMapMenu;
 
                 base.OnActionExecuting(ctx);
