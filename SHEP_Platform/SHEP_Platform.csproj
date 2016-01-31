@@ -194,6 +194,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account\AccountViewModels.cs" />
+    <Compile Include="Models\Admin\AdminVIewModels.cs" />
     <Compile Include="Models\Home\HomeViewModels.cs" />
     <Compile Include="Models\Monitor\MonitorViewModels.cs" />
     <Compile Include="Process\AuthenticationProcess.cs" />
@@ -584,7 +585,10 @@
     <Content Include="Views\Monitor\HistoryChange.cshtml" />
     <Content Include="Views\Monitor\ScheduleCompare.cshtml" />
     <Content Include="Views\Analysis\AlarmChange.cshtml" />
-    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\StatManage.cshtml" />
+    <Content Include="Views\Admin\DevManage.cshtml" />
+    <Content Include="Views\Admin\UserManage.cshtml" />
+    <Content Include="Views\Admin\StatEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -75,6 +75,21 @@
                         <li>@Html.ActionLink("本曲线整体超标情况变化趋势", "AlarmChange", "Analysis")</li>
                     </ul>
                 </li>
+                @{
+                    if (ViewBag.IsAdmin != null && ViewBag.IsAdmin)
+                    {
+                        <li>
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            <span>系统管理</span>
+                            <ul class="sub-menu">
+                                <li>@Html.ActionLink("新增监测点", "StatEdit", "Admin", new { id = "" }, null)</li>
+                                <li>@Html.ActionLink("监测点管理", "StatManage", "Admin")</li>
+                                <li><a>设备管理</a></li>
+                                <li><a>用户管理</a></li>
+                            </ul>
+                        </li>
+                    }
+                }
             </ul>
         </div>
         <div class="body-content">

@@ -14,6 +14,11 @@ $(function () {
 
 function map_init(func) {
     map = new BMap.Map(containerName);
+    if (centerPosition !== '上海') {
+        var pos = centerPosition.split(',');
+        centerPosition = new BMap.Point(Number(pos[0]), Number(pos[1]));
+        zoom = 20;
+    }
     map.centerAndZoom(centerPosition, zoom);
     map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
     map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
@@ -45,11 +50,13 @@ var add_MapPoint = function (point, polluteType, extroInfo) {
 
     map.addOverlay(marker);
 
-    marker.addEventListener('mouseover', function (e) {
-        markerShowView(e, extroInfo);
-    });
+    if (extroInfo != null) {
+        marker.addEventListener('mouseover', function (e) {
+            markerShowView(e, extroInfo);
+        });
 
-    marker.addEventListener('mouseout', markerHideView);
+        marker.addEventListener('mouseout', markerHideView);
+    }
 };
 
 var markerShowView = function (event, statInfo) {

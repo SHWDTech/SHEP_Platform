@@ -37,3 +37,13 @@ var msg = {
         }, 3000);
     }
 };
+
+msg.info = function(msg) {
+    $("#statusMsg").remove();
+    $('body').append($('<p class="bg-success msg" id="statusMsg"></p>'));
+    $('#statusMsg').html(msg);
+    $('#statusMsg').fadeIn();
+    setTimeout(function () {
+        $('#statusMsg').fadeOut('slow');
+    }, 3000);
+};
