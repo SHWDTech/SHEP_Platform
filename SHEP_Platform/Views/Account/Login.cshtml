@@ -5,9 +5,13 @@
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
-<div class="login-from-section">
+<div class="login-from-section" style="display: flex;">
+    <div style="padding-top: 30px; margin: auto; display: flex; margin-top: 0;">
+        <img src="/Images/Site/Logo-256.ico" style="width: 128px; height: 128px; margin-right: 20px;" />
+        <p style="font-size: 84px; color: #4c22fc;">环保系统集成解决方案</p>
+    </div>
     <div class="login-content">
-        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form"}))
+        @using (Html.BeginForm("Login", "Account", new {ViewBag.ReturnUrl}, FormMethod.Post, new {role = "form"}))
         {
             @Html.AntiForgeryToken()
             <div class="section-title">
@@ -16,16 +20,16 @@
             <div class="textbox-wrap">
                 <div class="input-group">
                     <span class="glyphicon glyphicon-user input-group-addon" aria-hidden="true"></span>
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "请输入用户名" })
+                    @Html.TextBoxFor(m => m.UserName, new {@class = "form-control", placeholder = "请输入用户名"})
                 </div>
-                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.UserName, "", new {@class = "text-danger"})
             </div>
             <div class="textbox-wrap">
                 <div class="input-group">
                     <span class="glyphicon glyphicon-lock input-group-addon" aria-hidden="true"></span>
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "请输入密码" })
+                    @Html.PasswordFor(m => m.Password, new {@class = "form-control", placeholder = "请输入密码"})
                 </div>
-                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger"})
             </div>
             <div class="login-form-action">
                 <div class="checkbox-inline">

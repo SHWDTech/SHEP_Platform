@@ -1,8 +1,4 @@
-﻿body {
-    height: 808px;
-}
-
-.section-title {
+﻿.section-title {
     padding: 10px 20px;
 }
 
@@ -12,23 +8,30 @@
     text-align: center;
 }
 
+.login-from-section {
+    float: right !important;
+    margin: auto;
+}
+
 .login-form{
-    padding: 150px 0;
+    padding: 150px 0 300px 0;
     min-height: 100%;
-    background-color: #1abc9c;
-    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
+    background-image: url(/Images/Site/login-bg.png)
+    /*background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);*/
+}
+
+.login-content {
+    -webkit-box-shadow: 3px 3px 10px #5f9ea0;
+    box-shadow: 3px 3px 10px #5f9ea0;
 }
 
 .login-form .container{
     margin: auto;
 }
 
-.login-from-section {
-    max-width: 360px;
-    margin: auto;
-}
-
 .login-content {
+    max-width: 360px;
+    margin-left: 50px;
     background-color: #fff;
 }
 
