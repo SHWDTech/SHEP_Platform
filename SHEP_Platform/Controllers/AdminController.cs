@@ -61,6 +61,7 @@ namespace SHEP_Platform.Controllers
                 model.Latitude = stat.Latitude;
                 model.Department = stat.Department;
                 model.Address = stat.Address;
+                model.Street = stat.Street;
                 model.Square = stat.Square;
                 model.ProStartTime = stat.ProStartTime;
                 model.T_Stage = stat.T_Stage;

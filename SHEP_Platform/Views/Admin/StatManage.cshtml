@@ -1,0 +1,71 @@
+﻿@using SHEP_Platform.Models.Admin
+@model StatManageViewModel
+
+@{
+    ViewBag.Title = "系统管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-bordered table-hover">
+    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 150px;"></colgroup>
+    <thead>
+        <tr>
+            <td>编号</td>
+            <td>名称</td>
+            <td>负责人</td>
+            <td>联系电话</td>
+            <td>施工单位</td>
+            <td>施工地址</td>
+            <td>占地面积</td>
+            <td>开始时间</td>
+            <td>施工进展</td>
+            <td>操作</td>
+        </tr>
+    </thead>
+    <tbody>
+    @{
+        foreach (var statse in Model.StatList)
+        {
+            <tr id='@statse.Id'>
+                <td>@statse.StatCode</td>
+                <td>@statse.StatName</td>
+                <td>@statse.ChargeMan</td>
+                <td>@statse.Telepone</td>
+                <td>@statse.Department</td>
+                <td>@statse.Address</td>
+                <td>@statse.Square</td>
+                <td>@statse.ProStartTime.ToString("yyyy-MM-dd")</td>
+                <td>@statse.T_Stage.StageName</td>
+                <td>
+                    <a href="/Admin/StatEdit/@statse.Id"><span class="glyphicon glyphicon-pencil"></span>更新</a> -
+                    <a href="javascript:delConfirm('@statse.Id')"><span class="glyphicon glyphicon-remove"></span>删除</a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+@section scripts{
+    <script type="text/javascript">
+        var delConfirm = function(id) {
+            if (confirm('确定删除该工地吗？')) {
+                $.get('/Admin/StatDelete/' + id, null, function(ret) {
+                    if (ret.msg === 'success') {
+                        $('#' + id).remove();
+                        msg.info('删除成功');
+                    }
+                });
+            }
+        };
+    </script>
+}

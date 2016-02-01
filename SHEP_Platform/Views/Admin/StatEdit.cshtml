@@ -1,0 +1,147 @@
+﻿@using SHEP_Platform.Models.Admin
+@model StatEditViewModel
+
+@{
+    ViewBag.Title = "系统管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="display: flex;">
+    <div style="width: 360px;">
+        @using (Html.BeginForm("StatEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.LabelFor(m => m.StatCode)
+                @Html.TextBoxFor(m => m.StatCode, new { @class = "form-control", placeholder = "请输入监测点编码" })
+            </div>
+            @Html.ValidationMessageFor(m => m.StatCode, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.StatName)
+                @Html.TextBoxFor(m => m.StatName, new { @class = "form-control", placeholder = "请输入监测点名称" })
+            </div>
+            @Html.ValidationMessageFor(m => m.StatName, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.ChargeMan)
+                @Html.TextBoxFor(m => m.ChargeMan, new { @class = "form-control", placeholder = "请输入负责人" })
+            </div>
+            @Html.ValidationMessageFor(m => m.ChargeMan, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Telepone)
+                @Html.TextBoxFor(m => m.Telepone, new { @class = "form-control", placeholder = "请输入联系电话" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Telepone, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Department)
+                @Html.TextBoxFor(m => m.Department, new { @class = "form-control", placeholder = "请输入施工单位" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Department, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Address)
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "请输入施工地址" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Street)
+                @Html.TextBoxFor(m => m.Street, new { @class = "form-control", placeholder = "请输入所属街道" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Street, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Country)
+                @Html.DropDownListFor(m => m.Country, Model.CountryList, new { @class = "form-control" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Country, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Square)
+                @Html.TextBoxFor(m => m.Square, new { @class = "form-control" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Square, "", new { @class = "text-danger" })
+            <div class="form-group" style="position: relative;">
+                @Html.LabelFor(m => m.ProStartTime)
+                @Html.TextBoxFor(m => m.ProStartTime, new { @class = "form-control" })
+            </div>
+            @Html.ValidationMessageFor(m => m.ProStartTime, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Stage)
+                @Html.DropDownListFor(m => m.Stage, Model.StageList, new { @class = "form-control" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Stage, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Longitude)
+                @Html.TextBoxFor(m => m.Longitude, new { @class = "form-control", placeholder = "请输入监测点编码" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Longitude, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Latitude)
+                @Html.TextBoxFor(m => m.Latitude, new { @class = "form-control", placeholder = "请输入监测点编码" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Latitude, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">
+                    提交
+                </button>
+            </div>
+        }
+    </div>
+    <div id="mapContainer" style="width: 900px; height: 640px;">
+
+    </div>
+</div>
+
+@section css{
+    @Styles.Render("~/Content/datetimepickercss")
+    <style type="text/css">
+        label {
+            width: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 10px !important;
+        }
+
+        .form-control {
+            -moz-min-width: 230px;
+            -ms-min-width: 230px;
+            -o-min-width: 230px;
+            -webkit-min-width: 230px;
+            min-width: 230px;
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/datetimepicker")
+    <script type="text/javascript" src="/Scripts/Common/MapManipulation.js"></script>
+    <script type="text/javascript">
+        var IsNew = '@Model.IsNew' === 'True';
+        var Longitude = @Model.Longitude;
+        var Latitude = @Model.Latitude;
+        $(function () {
+            $('#ProStartTime').datetimepicker({
+                locale: 'zh-cn',
+                format: 'L'
+            });
+
+            containerName = 'mapContainer';
+            centerPosition = IsNew ? '上海' : Longitude + ',' + Latitude;
+            zoom = IsNew ? 12 : 20;
+            var load = document.createElement("script");
+            load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init(init_page)";
+            document.body.appendChild(load);
+        });
+
+        var init_page = function () {
+            if (!IsNew) {
+                add_MapPoint({longitude:Longitude, latitude:Latitude}, PolluteStatus.NotOverRange, null);
+            }
+
+            map.addEventListener("click", function (e) {
+                this.clearOverlays();
+                this.closeInfoWindow();
+                add_MapPoint({longitude:e.point.lng, latitude:e.point.lat}, PolluteStatus.NotOverRange, null);
+                $('#Longitude').val(e.point.lng);
+                $('#Latitude').val(e.point.lat);
+            });
+        };
+    </script>
+}
