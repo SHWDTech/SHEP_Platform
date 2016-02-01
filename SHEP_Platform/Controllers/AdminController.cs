@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using SHEP_Platform.Common;
 using SHEP_Platform.Models.Admin;
 
 namespace SHEP_Platform.Controllers
@@ -72,7 +73,7 @@ namespace SHEP_Platform.Controllers
                 model.T_Country = stat.T_Country;
             }
 
-            ViewBag.ReturnUrl = "/Admin/DevManage";
+            ViewBag.ReturnUrl = "/Admin/StatManage";
 
             model.StageList = new SelectList(DbContext.T_Stage, "Id", "StageName", model.Stage);
 
@@ -146,7 +147,7 @@ namespace SHEP_Platform.Controllers
             }
 
             WdContext.SiteMapMenu.ActionMenu.Name = "设备管理";
-            
+
             var list = DbContext.T_Devs.ToList().Select(source => new Devs
             {
                 Id = source.Id,
@@ -197,6 +198,7 @@ namespace SHEP_Platform.Controllers
                 model.PreEndTime = dev.PreEndTime;
                 model.EndTime = dev.EndTime;
                 model.DevStatus = dev.DevStatus;
+                model.StatId = int.Parse(dev.StatId);
                 model.VideoUrl = dev.VideoURL;
             }
 
@@ -279,7 +281,177 @@ namespace SHEP_Platform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            var list = DbContext.T_Users.ToList().Select(source => new User
+            {
+                UserId = source.UserId,
+                UserName = source.UserName,
+                RoleName = source.RoleId == 1 ? "超级管理员" : "管理员",
+                Status = Global.GetUserStatus(source.Status),
+                CountryName = DbContext.T_Country.FirstOrDefault(obj => obj.Id.ToString() == source.Remark)?.Country,
+                RegTime = source.RegTime,
+                LastTime = source.LastTime
+            }).ToList();
+
+            var model = new UserManageViewModel()
+            {
+                PageIndex = 0,
+                PageSize = 10,
+                UserList = list
+            };
+
+            return View(model);
+        }
+
+        public ActionResult Lock(string id)
+        {
+            if (!ViewBag.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = DbContext.T_Users.First(obj => obj.UserId.ToString() == id);
+            user.Status = 1;
+            DbContext.SaveChanges();
+
+            return RedirectToAction("UserManage", "Admin");
+        }
+
+        public ActionResult UnLock(string id)
+        {
+            if (!ViewBag.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = DbContext.T_Users.First(obj => obj.UserId.ToString() == id);
+            user.Status = 2;
+            DbContext.SaveChanges();
+
+            return RedirectToAction("UserManage", "Admin");
+        }
+
+        [HttpGet]
+        public JsonResult UserDelete(int id)
+        {
+            if (!ViewBag.IsAdmin)
+            {
+                RedirectToAction("Index", "Home");
+
+                return null;
+            }
+
+            var user = DbContext.T_Users.First(item => item.UserId == id);
+            DbContext.T_Users.Remove(user);
+            DbContext.SaveChanges();
+
+            var ret = new
+            {
+                msg = "success"
+            };
+
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult UserEdit(string id)
+        {
+            if (!ViewBag.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            WdContext.SiteMapMenu.ActionMenu.Name = "编辑用户";
+            var model = new UserEditViewModel();
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                WdContext.SiteMapMenu.ActionMenu.Name = "新增用户";
+                model.UserId = -1;
+                model.IsNew = true;
+                model.RegTime = DateTime.Now;
+                model.LastTime = DateTime.Now;
+                model.Status = 1;
+            }
+            else
+            {
+                var user = DbContext.T_Users.First(item => item.UserId.ToString() == id);
+                model.UserId = user.UserId;
+                model.Mobile = user.Mobile;
+                model.EmailAddress = user.Email;
+                model.Remark = user.Remark;
+                model.Status = user.Status;
+                model.UserName = user.UserName;
+            }
+
+            ViewBag.ReturnUrl = "/Admin/UserManage";
+
+            model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
+
+            var statusList = new List<SelectListItem>
+            {
+                new SelectListItem()
+                {
+                    Text = "超级管理员",
+                    Value = "1"
+                },
+                new SelectListItem()
+                {
+                    Text = "管理员",
+                    Value = "2"
+                }
+            };
+            model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UserEdit(UserEditViewModel model)
+        {
+            if (!ViewBag.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (string.IsNullOrWhiteSpace(model.PassWord))
+            {
+                ModelState.AddModelError("PassWord", "密码不能为空！");
+                model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
+                var statusList = new List<SelectListItem>
+            {
+                new SelectListItem()
+                {
+                    Text = "超级管理员",
+                    Value = "1"
+                },
+                new SelectListItem()
+                {
+                    Text = "管理员",
+                    Value = "2"
+                }
+            };
+                model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
+                return View(model);
+            }
+
+            var user = model.UserId == -1 ? new T_Users() : DbContext.T_Users.First(item => item.UserId == model.UserId);
+
+            user.Mobile = model.Mobile;
+            user.Email = model.EmailAddress;
+            user.Remark = model.Remark;
+            user.RoleId = model.RoleId;
+            user.UserName = model.UserName;
+            user.Pwd = Global.GetMd5(model.PassWord);
+
+            if (model.UserId == -1)
+            {
+                user.Status = 1;
+                user.RegTime = DateTime.Now;
+                DbContext.T_Users.Add(user);
+            }
+
+            DbContext.SaveChanges();
+
+            return RedirectToAction("UserManage", "Admin");
         }
     }
 }

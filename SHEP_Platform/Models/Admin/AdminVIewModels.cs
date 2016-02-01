@@ -173,4 +173,85 @@ namespace SHEP_Platform.Models.Admin
 
         public SelectList StatusLIst { get; set; }
     }
+
+    public class UserManageViewModel
+    {
+        public UserManageViewModel()
+        {
+            UserList = new List<User>();
+            PageIndex = 0;
+            PageSize = 10;
+        }
+
+        public List<User> UserList { get; set; }
+
+        public int PageSize { get; set; }
+
+        public int PageIndex { get; set; }
+    }
+
+    public class User
+    {
+        public int UserId { get; set; }
+
+        public string UserName { get; set; }
+
+        public string Status { get; set; }
+
+        public DateTime RegTime { get; set; }
+
+        public string RoleName { get; set; }
+
+        public DateTime? LastTime { get; set; }
+
+        public DateTime? NowTime { get; set; }
+
+        public string CountryName { get; set; }
+    }
+
+    public class UserEditViewModel
+    {
+        [Required]
+        public int UserId { get; set; }
+
+        [Required]
+        [Display(Name = "用户名")]
+        public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "密码")]
+        [DataType(DataType.Password)]
+        public string PassWord { get; set; }
+
+        [Display(Name = "联系电话")]
+        [DataType(DataType.PhoneNumber)]
+        public string Mobile { get; set; }
+
+        [Display(Name = "邮箱地址")]
+        [DataType(DataType.EmailAddress)]
+        public string EmailAddress { get; set; }
+        
+        public Nullable<byte> Status { get; set; }
+
+
+        public System.DateTime RegTime { get; set; }
+
+        [Display(Name = "所属用户组")]
+        public int RoleId { get; set; }
+
+
+        public Nullable<System.DateTime> LastTime { get; set; }
+
+
+        public Nullable<System.DateTime> NowTime { get; set; }
+
+        [Display(Name = "所属区域")]
+        public string Remark { get; set; }
+
+        public SelectList CountryList { get; set; }
+
+        public SelectList RoleList { get; set; }
+
+        public bool IsNew { get; set; }
+    }
 }

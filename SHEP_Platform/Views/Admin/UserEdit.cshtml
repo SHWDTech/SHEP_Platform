@@ -1,0 +1,79 @@
+﻿@using SHEP_Platform.Models.Admin
+@model UserEditViewModel
+
+@{
+    ViewBag.Title = "系统管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @using (Html.BeginForm("UserEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.UserId)
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control"})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Mobile)
+            @Html.TextBoxFor(m => m.Mobile, new {@class = "form-control"})
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.EmailAddress)
+            @Html.TextBoxFor(m => m.EmailAddress, new {@class = "form-control"})
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Remark)
+            @Html.DropDownListFor(m => m.Remark, Model.CountryList, new {@class = "form-control"})
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.Remark, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.RoleId)
+            @Html.DropDownListFor(m => m.RoleId, Model.RoleList, new {@class = "form-control"})
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PassWord)
+            @Html.PasswordFor(m => m.PassWord, new {@class = "form-control"})
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.PassWord, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">
+                提交
+            </button>
+        </div>
+    }
+</div>
+
+@section css{
+    <style type="text/css">
+        label {
+            width: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 10px !important;
+        }
+
+        .form-control {
+            -moz-min-width: 310px !important;
+            -ms-min-width: 310px !important;
+            -o-min-width: 310px !important;
+            -webkit-min-width: 310px !important;
+            min-width: 310px !important;
+        }
+    </style>
+}
