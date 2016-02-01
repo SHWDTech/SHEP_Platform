@@ -589,6 +589,7 @@
     <Content Include="Views\Admin\UserManage.cshtml" />
     <Content Include="Views\Admin\StatManage.cshtml" />
     <Content Include="Views\Admin\StatEdit.cshtml" />
+    <Content Include="Views\Admin\DevEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

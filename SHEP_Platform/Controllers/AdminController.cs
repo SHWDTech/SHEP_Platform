@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using SHEP_Platform.Models.Admin;
@@ -144,7 +145,131 @@ namespace SHEP_Platform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            WdContext.SiteMapMenu.ActionMenu.Name = "设备管理";
+            
+            var list = DbContext.T_Devs.ToList().Select(source => new Devs
+            {
+                Id = source.Id,
+                StatName = DbContext.T_Stats.FirstOrDefault(obj => obj.Id.ToString() == source.StatId)?.StatCode,
+                DevCode = source.DevCode,
+                StartTime = source.StartTime.ToString("yyyy-MM-dd"),
+                PreEndTime = source.PreEndTime.ToString("yyyy-MM-dd"),
+                EndTime = source.EndTime.ToString("yyyy-MM-dd"),
+                DevStatus = source.DevStatus == 1 ? "是" : "否",
+                VideoURL = source.VideoURL
+            }).ToList();
+
+            var model = new DevManageViewModel
+            {
+                PageIndex = 0,
+                PageSize = 10,
+                DevList = list
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult DevEdit(string id)
+        {
+            if (!ViewBag.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            WdContext.SiteMapMenu.ActionMenu.Name = "编辑监测点";
+            var model = new DevEditViewModel();
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                WdContext.SiteMapMenu.ActionMenu.Name = "新增监测点";
+                model.Id = -1;
+                model.IsNew = true;
+                model.StartTime = DateTime.Now;
+                model.PreEndTime = DateTime.Now;
+                model.EndTime = DateTime.Now;
+            }
+            else
+            {
+                var dev = DbContext.T_Devs.First(item => item.Id.ToString() == id);
+                model.Id = dev.Id;
+                model.DevCode = dev.DevCode;
+                model.StartTime = dev.StartTime;
+                model.PreEndTime = dev.PreEndTime;
+                model.EndTime = dev.EndTime;
+                model.DevStatus = dev.DevStatus;
+                model.VideoUrl = dev.VideoURL;
+            }
+
+            ViewBag.ReturnUrl = "/Admin/DevManage";
+
+            model.StatList = new SelectList(DbContext.T_Stats, "Id", "StatName", model.StatId);
+
+            var statusList = new List<SelectListItem>
+            {
+                new SelectListItem()
+                {
+                    Text = "是",
+                    Value = "1"
+                },
+                new SelectListItem()
+                {
+                    Text = "否",
+                    Value = "0"
+                }
+            };
+            model.StatusLIst = new SelectList(statusList, "Value", "Text", model.DevStatus);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult DevEdit(DevEditViewModel model)
+        {
+            if (!ViewBag.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var dev = model.Id == -1 ? new T_Devs() : DbContext.T_Devs.First(item => item.Id == model.Id);
+
+            dev.DevCode = model.DevCode;
+            dev.StartTime = model.StartTime;
+            dev.PreEndTime = model.PreEndTime;
+            dev.EndTime = model.EndTime;
+            dev.VideoURL = model.VideoUrl;
+            dev.StatId = model.StatId.ToString();
+            dev.DevStatus = model.DevStatus;
+
+            if (model.Id == -1)
+            {
+                DbContext.T_Devs.Add(dev);
+            }
+
+            DbContext.SaveChanges();
+
+            return RedirectToAction("DevManage", "Admin");
+        }
+
+        [HttpGet]
+        public JsonResult DevDelete(int id)
+        {
+            if (!ViewBag.IsAdmin)
+            {
+                RedirectToAction("Index", "Home");
+
+                return null;
+            }
+
+            var dev = DbContext.T_Devs.First(item => item.Id == id);
+            DbContext.T_Devs.Remove(dev);
+            DbContext.SaveChanges();
+
+            var ret = new
+            {
+                msg = "success"
+            };
+
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult UserManage()

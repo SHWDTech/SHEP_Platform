@@ -11,6 +11,7 @@
         @using (Html.BeginForm("StatEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form" }))
         {
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
             <div class="form-group">
                 @Html.LabelFor(m => m.StatCode)
                 @Html.TextBoxFor(m => m.StatCode, new { @class = "form-control", placeholder = "请输入监测点编码" })

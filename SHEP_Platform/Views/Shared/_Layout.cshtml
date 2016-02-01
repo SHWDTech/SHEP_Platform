@@ -84,7 +84,8 @@
                             <ul class="sub-menu">
                                 <li>@Html.ActionLink("新增监测点", "StatEdit", "Admin", new { id = "" }, null)</li>
                                 <li>@Html.ActionLink("监测点管理", "StatManage", "Admin")</li>
-                                <li><a>设备管理</a></li>
+                                <li>@Html.ActionLink("新增设备", "DevEdit", "Admin", new {id = ""}, null)</li>
+                                <li>@Html.ActionLink("设备管理", "DevManage", "Admin")</li>
                                 <li><a>用户管理</a></li>
                             </ul>
                         </li>

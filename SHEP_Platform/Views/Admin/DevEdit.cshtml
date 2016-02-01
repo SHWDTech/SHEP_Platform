@@ -1,0 +1,96 @@
+﻿@using SHEP_Platform.Models.Admin
+@model DevEditViewModel
+
+@{
+    ViewBag.Title = "系统管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @using (Html.BeginForm("DevEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            @Html.LabelFor(m => m.DevCode)
+            @Html.TextBoxFor(m => m.DevCode, new { @class = "form-control", placeholder = "请输入设备编码" })
+        </div>
+        @Html.ValidationMessageFor(m => m.DevCode, "", new { @class = "text-danger" })
+        <div class="form-group" style="position: relative;">
+            @Html.LabelFor(m => m.StartTime)
+            @Html.TextBoxFor(m => m.StartTime, new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.StartTime, "", new { @class = "text-danger" })
+        <div class="form-group" style="position: relative;">
+            @Html.LabelFor(m => m.PreEndTime)
+            @Html.TextBoxFor(m => m.PreEndTime, new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.PreEndTime, "", new { @class = "text-danger" })
+        <div class="form-group" style="position: relative;">
+            @Html.LabelFor(m => m.EndTime)
+            @Html.TextBoxFor(m => m.EndTime, new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.EndTime, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.VideoUrl)
+            @Html.TextBoxFor(m => m.VideoUrl, new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.VideoUrl, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.StatId)
+            @Html.DropDownListFor(m => m.StatId, Model.StatList, new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.StatId, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.DevStatus)
+            @Html.DropDownListFor(m => m.DevStatus, Model.StatusLIst, new { @class = "form-control" })
+        </div>
+        @Html.ValidationMessageFor(m => m.DevStatus, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">
+                提交
+            </button>
+        </div>
+    }
+</div>
+
+@section css{
+    @Styles.Render("~/Content/datetimepickercss")
+    <style type="text/css">
+        label {
+            width: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 10px !important;
+        }
+
+        .form-control {
+            -moz-min-width: 300px !important;
+            -ms-min-width: 300px !important;
+            -o-min-width: 300px !important;
+            -webkit-min-width: 300px !important;
+            min-width: 300px !important;
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/datetimepicker")
+    <script type="text/javascript">
+        $(function() {
+            $('#StartTime').datetimepicker({
+                locale: 'zh-cn',
+                format: 'L'
+            });
+            $('#PreEndTime').datetimepicker({
+                locale: 'zh-cn',
+                format: 'L'
+            });
+            $('#EndTime').datetimepicker({
+                locale: 'zh-cn',
+                format: 'L'
+            });
+        });
+    </script>
+}

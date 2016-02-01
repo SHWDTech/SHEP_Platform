@@ -1,8 +1,65 @@
-﻿@model dynamic
+﻿@using SHEP_Platform.Models.Admin
+@model DevManageViewModel
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+            ViewBag.Title = "系统管理";
+            Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>title</h2>
+<table class="table table-bordered table-hover">
+    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 150px;"></colgroup>
+    <thead>
+        <tr>
+            <td>监测点编号</td>
+            <td>设备编号</td>
+            <td>安装时间</td>
+            <td>预计结束时间</td>
+            <td>实际结束时间</td>
+            <td>启动</td>
+            <td>视频地址</td>
+            <td>操作</td>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var devse in Model.DevList)
+            {
+                <tr id="@devse.Id">
+                    <td>@devse.StatName</td>
+                    <td>@devse.DevCode</td>
+                    <td>@devse.StartTime</td>
+                    <td>@devse.PreEndTime</td>
+                    <td>@devse.EndTime</td>
+                    <td>@devse.DevStatus</td>
+                    <td>@devse.VideoURL</td>
+                    <td>
+                        <a href="/Admin/DevEdit/@devse.Id"><span class="glyphicon glyphicon-pencil"></span>更新</a> -
+                        <a href="javascript:delConfirm('@devse.Id')"><span class="glyphicon glyphicon-remove"></span>删除</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section scripts{
+    <script type="text/javascript">
+        var delConfirm = function (id) {
+            if (confirm('确定删除该设备吗？')) {
+                $.get('/Admin/DevDelete/' + id, null, function (ret) {
+                    if (ret.msg === 'success') {
+                        $('#' + id).remove();
+                        msg.info('删除成功');
+                    }
+                });
+            }
+        };
+    </script>
+}
