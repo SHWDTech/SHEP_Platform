@@ -35,5 +35,16 @@ namespace SHEP_Platform.Common
 
             return status;
         }
+
+        public static byte[] StringToHexByte(string hexString)
+        {
+            hexString = hexString.Replace(" ", "");
+            if (hexString.Length % 2 != 0)
+                hexString += " ";
+            byte[] numArray = new byte[hexString.Length / 2];
+            for (int index = 0; index < numArray.Length; ++index)
+                numArray[index] = Convert.ToByte(hexString.Substring(index * 2, 2), 16);
+            return numArray;
+        }
     }
 }

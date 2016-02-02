@@ -200,6 +200,10 @@ namespace SHEP_Platform.Controllers
                 model.DevStatus = dev.DevStatus;
                 model.StatId = int.Parse(dev.StatId);
                 model.VideoUrl = dev.VideoURL;
+
+                var devAddr = DbContext.T_DevAddr.First(obj => obj.DevId == dev.Id).NodeId;
+
+                model.Addr = BitConverter.ToString(devAddr).Replace("-", string.Empty);
             }
 
             ViewBag.ReturnUrl = "/Admin/DevManage";
@@ -242,10 +246,23 @@ namespace SHEP_Platform.Controllers
             dev.StatId = model.StatId.ToString();
             dev.DevStatus = model.DevStatus;
 
+
             if (model.Id == -1)
             {
                 DbContext.T_Devs.Add(dev);
+                DbContext.SaveChanges();
+                var addr = new T_DevAddr
+                {
+                    DevId = DbContext.T_Devs.First(obj => obj.DevCode == model.DevCode).Id,
+                    NodeId = Global.StringToHexByte(model.Addr)
+                };
+                DbContext.T_DevAddr.Add(addr);
             }
+            else
+            {
+                DbContext.T_Devs.Add(dev);
+            }
+
 
             DbContext.SaveChanges();
 
@@ -380,6 +397,7 @@ namespace SHEP_Platform.Controllers
                 model.Remark = user.Remark;
                 model.Status = user.Status;
                 model.UserName = user.UserName;
+                model.RoleId = user.RoleId;
             }
 
             ViewBag.ReturnUrl = "/Admin/UserManage";
@@ -441,6 +459,7 @@ namespace SHEP_Platform.Controllers
             user.RoleId = model.RoleId;
             user.UserName = model.UserName;
             user.Pwd = Global.GetMd5(model.PassWord);
+            user.RoleId = model.RoleId;
 
             if (model.UserId == -1)
             {
