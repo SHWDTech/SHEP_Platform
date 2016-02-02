@@ -60,7 +60,8 @@ var getStatAvgReport = function (pollutantType, queryDateRange, datePickerValue)
     });
 };
 
-var RefreashPage = function(ret) {
+var RefreashPage = function (ret) {
+    if (ret === '请求失败！') return;
     var polluteType;
     var color;
     if ($('.PollutantType').val() === PollutantType.ParticulateMatter) {

@@ -74,14 +74,16 @@ namespace SHEP_Platform.Controllers
                     into newresult
                     select newresult;
 
-                var dict = ret.ToDictionary(p => p.Key).Select(item => new
-                {
-                    Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
-                    MaxVal = double.Parse((item.Value.OrderBy(i => i.AvgTP).First().AvgTP / 1000).ToString()).ToString("f2"),
-                    AvgVal = double.Parse((item.Value.Average(j => j.AvgTP) / 1000).ToString()).ToString("f2"),
-                    MinVal = double.Parse((item.Value.OrderByDescending(k => k.AvgTP).First().AvgTP / 1000).ToString()).ToString("f2"),
-                    ValidNum = item.Value.Count()
-                }).ToList();
+                var dict = ret.ToDictionary(p => p.Key)
+                    .Where(obj => WdContext.StatList.FirstOrDefault(item => item.Id == obj.Key) != null)
+                    .Select(item => new
+                    {
+                        Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
+                        MaxVal = double.Parse((item.Value.OrderBy(i => i.AvgTP).First().AvgTP / 1000).ToString()).ToString("f2"),
+                        AvgVal = double.Parse((item.Value.Average(j => j.AvgTP) / 1000).ToString()).ToString("f2"),
+                        MinVal = double.Parse((item.Value.OrderByDescending(k => k.AvgTP).First().AvgTP / 1000).ToString()).ToString("f2"),
+                        ValidNum = item.Value.Count()
+                    }).ToList();
 
                 return Json(dict);
             }
@@ -97,14 +99,16 @@ namespace SHEP_Platform.Controllers
                     into newresult
                     select newresult;
 
-                var dict = ret.ToDictionary(p => p.Key).Select(item => new
-                {
-                    Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
-                    MaxVal = double.Parse(item.Value.OrderBy(i => i.AvgDB).First().AvgDB.ToString()).ToString("f2"),
-                    AvgVal = double.Parse(item.Value.Average(j => j.AvgDB).ToString()).ToString("f2"),
-                    MinVal = double.Parse(item.Value.OrderByDescending(k => k.AvgDB).First().AvgDB.ToString()).ToString("f2"),
-                    ValidNum = item.Value.Count()
-                }).ToList();
+                var dict = ret.ToDictionary(p => p.Key)
+                    .Where(obj => WdContext.StatList.FirstOrDefault(item => item.Id == obj.Key) != null)
+                    .Select(item => new
+                    {
+                        Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
+                        MaxVal = double.Parse(item.Value.OrderBy(i => i.AvgDB).First().AvgDB.ToString()).ToString("f2"),
+                        AvgVal = double.Parse(item.Value.Average(j => j.AvgDB).ToString()).ToString("f2"),
+                        MinVal = double.Parse(item.Value.OrderByDescending(k => k.AvgDB).First().AvgDB.ToString()).ToString("f2"),
+                        ValidNum = item.Value.Count()
+                    }).ToList();
 
                 return Json(dict);
             }
@@ -209,7 +213,7 @@ namespace SHEP_Platform.Controllers
 
             if (pollutantType == PollutantType.ParticulateMatter)
             {
-                var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString() 
+                var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString()
                 && item.UpdateTime > startDate && item.DustType == 0).ToList()
                     .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
 
@@ -230,7 +234,7 @@ namespace SHEP_Platform.Controllers
                 var list = new List<object>();
                 foreach (var alarm in alarms)
                 {
-                    list.Add(new {UpdateTime = alarm.Key, Count = alarm.Count()});
+                    list.Add(new { UpdateTime = alarm.Key, Count = alarm.Count() });
                 }
 
                 dict.Add(list);
