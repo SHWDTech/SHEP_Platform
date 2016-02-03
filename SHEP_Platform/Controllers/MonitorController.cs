@@ -29,8 +29,20 @@ namespace SHEP_Platform.Controllers
             }
 
             ViewBag.StatDict = dict;
-            ViewBag.defaultId = !string.IsNullOrEmpty(id) ? int.Parse(id) : WdContext.StatList[0].Id;
-            ViewBag.defaultName = WdContext.StatList.First(stat => stat.Id == ViewBag.defaultId).StatName;
+            var defaultId = -1;
+            var defaultName = "null";
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                defaultId = int.Parse(id);
+                defaultName = WdContext.StatList.First(stat => stat.Id == ViewBag.defaultId).StatName;
+            }
+            else if(WdContext.StatList.Count != 0)
+            {
+                defaultId = WdContext.StatList[0].Id;
+                defaultName = WdContext.StatList.First(stat => stat.Id == ViewBag.defaultId).StatName;
+            }
+            ViewBag.defaultId = defaultId;
+            ViewBag.defaultName = defaultName;
 
             return View();
         }
@@ -47,7 +59,13 @@ namespace SHEP_Platform.Controllers
             }
 
             ViewBag.StatDict = dict;
-            ViewBag.defaultId = WdContext.StatList[0].Id;
+
+            var defaultId = -1;
+            if (WdContext.StatList.Count > 0)
+            {
+                defaultId = WdContext.StatList[0].Id;
+            }
+            ViewBag.defaultId = defaultId;
 
             return View();
         }

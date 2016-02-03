@@ -39,6 +39,7 @@ $(function () {
 });
 
 var load = function (statId) {
+    if (curId === -1) return;
     curId = statId;
     tpChart.showLoading();
     dbChart.showLoading();

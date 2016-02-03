@@ -20,6 +20,7 @@ $(function () {
 });
 
 var load = function (id, name) {
+    if (id === -1 || name === 'null') return;
     mainChart.showLoading();
     tpGauge.showLoading();
     dbGauge.showLoading();

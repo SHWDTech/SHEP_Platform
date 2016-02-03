@@ -20,7 +20,7 @@
 <body>
     <div class="navbar navbar-default topheadnav">
         <div class="navbar-header">
-            @Html.ActionLink("上海工地扬尘环境监控平台", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", style = "text-align: center;" })
+            @Html.ActionLink("工地扬尘环境监控平台", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", style = "text-align: center;" })
             <span class="slogn">@ViewBag.CityName</span>
         </div>
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right logoff-form" }))
@@ -100,7 +100,7 @@
     </div>
     <div class="footer">
         <footer>
-            <p>&copy; @DateTime.Now.Year - 上海卫东信息科技有限公司。保留所有权利。</p>
+            <p>&copy; @DateTime.Now.Year - 上海境优环保。</p>
         </footer>
     </div>
     @Scripts.Render("~/bundles/jquery")
