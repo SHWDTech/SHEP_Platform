@@ -408,6 +408,7 @@
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Page\Home.css" />
     <Content Include="Content\Page\Login.css" />
     <Content Include="Images\Site\login-bg.png" />
@@ -418,6 +419,10 @@
     <Content Include="Images\Site\WEB_LOGO.ico" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\Utility\moment-with-locales.js" />
+    <Content Include="Scripts\Utility\moment-with-locales.min.js" />
+    <Content Include="Scripts\Utility\moment.js" />
+    <Content Include="Scripts\Utility\moment.min.js" />
     <Content Include="Scripts\Monitor\ActualStatus.js" />
     <Content Include="Scripts\Monitor\HistoryChange.js" />
     <Content Include="Scripts\Utility\base.js" />
@@ -426,10 +431,6 @@
     <Content Include="Scripts\Common\MapManipulation.js" />
     <Content Include="Scripts\Common\SetUpCharts.js" />
     <Content Include="Scripts\const.js" />
-    <Content Include="Scripts\Utility\moment-with-locales.js" />
-    <Content Include="Scripts\Utility\moment-with-locales.min.js" />
-    <Content Include="Scripts\Utility\moment.js" />
-    <Content Include="Scripts\Utility\moment.min.js" />
     <Content Include="Scripts\Page\Analysis.js" />
     <Content Include="Scripts\Utility\echarts.js" />
     <Content Include="Scripts\Utility\echarts.min.js" />
@@ -445,7 +446,6 @@
       <DependentUpon>ESMonitor.edmx</DependentUpon>
       <LastGenOutput>ESMonitor.cs</LastGenOutput>
     </Content>
-    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\base\Site.css" />
     <Content Include="Images\Site\107C10.png" />
@@ -456,10 +456,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap\bootstrap.css.map" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css.map" />
@@ -474,6 +470,12 @@
     <Content Include="ESMonitor.edmx.diagram">
       <DependentUpon>ESMonitor.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\_bootstrap-datetimepicker.less" />
+    <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap\wells.less" />
     <Content Include="Content\bootstrap\variables.less" />
     <Content Include="Content\bootstrap\utilities.less" />
@@ -545,8 +547,6 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <Content Include="Content\_bootstrap-datetimepicker.less" />
-    <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <None Include="Properties\PublishProfiles\Default.pubxml" />
     <None Include="Scripts\Utility\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\Utility\jquery-2.2.0.js" />
@@ -601,10 +601,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

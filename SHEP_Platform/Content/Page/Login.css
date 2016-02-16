@@ -23,16 +23,12 @@
 .login-content {
     -webkit-box-shadow: 3px 3px 10px #5f9ea0;
     box-shadow: 3px 3px 10px #5f9ea0;
+    max-width: 360px;
+    background-color: #fff;
 }
 
 .login-form .container{
     margin: auto;
-}
-
-.login-content {
-    max-width: 360px;
-    margin-left: 50px;
-    background-color: #fff;
 }
 
 .textbox-wrap {
