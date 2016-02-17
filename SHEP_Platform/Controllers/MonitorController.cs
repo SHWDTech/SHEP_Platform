@@ -34,12 +34,12 @@ namespace SHEP_Platform.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 defaultId = int.Parse(id);
-                defaultName = WdContext.StatList.First(stat => stat.Id == ViewBag.defaultId).StatName;
+                defaultName = WdContext.StatList.First(stat => stat.Id == defaultId).StatName;
             }
             else if(WdContext.StatList.Count != 0)
             {
                 defaultId = WdContext.StatList[0].Id;
-                defaultName = WdContext.StatList.First(stat => stat.Id == ViewBag.defaultId).StatName;
+                defaultName = WdContext.StatList.First(stat => stat.Id == defaultId).StatName;
             }
             ViewBag.defaultId = defaultId;
             ViewBag.defaultName = defaultName;

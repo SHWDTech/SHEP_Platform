@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SHEP_Platform.Common
 {
@@ -45,6 +43,12 @@ namespace SHEP_Platform.Common
             for (int index = 0; index < numArray.Length; ++index)
                 numArray[index] = Convert.ToByte(hexString.Substring(index * 2, 2), 16);
             return numArray;
+        }
+
+        public static bool IsMobileDevice(string userAgent)
+        {
+            var pattern = "iPhone|iPod|Android|ios|iPad|UCWEB|Windows Phone OS";
+            return Regex.IsMatch(userAgent, pattern);
         }
     }
 }

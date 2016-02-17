@@ -1,3 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    if (ViewContext.ViewData.ContainsKey("IsMobileDevice") && bool.Parse(ViewContext.ViewData["IsMobileDevice"].ToString()))
+    {
+        Layout =  "~/Views/Shared/_LayoutMobile.cshtml";
+    }
 }

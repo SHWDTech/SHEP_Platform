@@ -38,7 +38,7 @@ namespace SHEP_Platform.Controllers
                var groups = DbContext.T_UserInGroups.Where(user => user.UserId.ToString() == WdContext.UserId)
                     .Select(group => new { GroupId = group.GroupId.ToString() }).ToList();
 
-                if (groups.Count > 0)
+                if (groups.Count > 0)                                                                     
                 {
                     foreach (var item in groups)
                     {
@@ -49,6 +49,8 @@ namespace SHEP_Platform.Controllers
                 ViewBag.IsAdmin = WdContext.User != null && WdContext.User.UserName == "admin";
 
                 ViewBag.SiteMapMenu = WdContext.SiteMapMenu;
+
+                ViewBag.IsMobileDevice = Global.IsMobileDevice(ctx.HttpContext.Request.UserAgent);
 
                 base.OnActionExecuting(ctx);
             }
