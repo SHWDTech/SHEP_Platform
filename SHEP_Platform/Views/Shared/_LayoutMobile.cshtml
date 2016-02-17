@@ -12,17 +12,60 @@
             }
         }
     </title>
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/mobilecss")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/base")
     @RenderSection("Css", false)
 </head>
 <body>
+    <div class="navbar navbar-default topheadnavmobile">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" style="background-color: transparent; border-color: transparent;">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @{
+                    string cityName = ViewBag.CityName.ToString();
+                    @Html.ActionLink(cityName, "Index", "Home", new { id = "" }, new { @class = "navbar-brand" })
+                }
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">查询导出 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("各工程当前情况", "ActualStatus", "Monitor", new { id = "" }, null)</li>
+                            <li>@Html.ActionLink("各工程历史污染物变化情况", "HistoryChange", "Monitor")</li>
+                            <li>@Html.ActionLink("按工期进行综合对比", "ScheduleCompare", "Monitor")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">统计分析 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("本区县污染物平均浓度报表", "AveragePolluteReport", "Analysis")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">综合评价 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("本区县整体超标情况变化趋势", "AlarmChange", "Analysis")</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div>
         @RenderBody()
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script>
+        BaseInfo.IsMobileDevice = true;
+    </script>
 </body>
 </html>

@@ -46,12 +46,21 @@ textarea {
     height: 60px;
     background-color: #1abc9c;
     background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
-    /*background: url(/Images/Site/navbg.png) repeat top left;*/
+}
+
+.topheadnavmobile {
+    border: 0;
+    background-color: #1abc9c;
+    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
 }
 
 .navbar {
     margin-bottom: 0;
     border-radius: 0;
+}
+
+.dropdown-menu .divider {
+    background-color: rgb(255, 255, 17);
 }
 
 .navbar-bottom {
@@ -60,7 +69,6 @@ textarea {
     width: 100%;
     border-bottom: 1px solid #c8c8c8;
     border-top: 3px solid rgb(255, 175,0);
-    /*background: url(/Images/Site/5DC21E.png) repeat-x top left;*/
 }
 
     .navbar-bottom .glyphicon {

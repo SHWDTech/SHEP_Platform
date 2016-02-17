@@ -34,6 +34,11 @@ namespace SHEP_Platform
                       "~/Content/bootstrap/bootstrap.css",
                       "~/Content/base/site.css"));
 
+            bundles.Add(new StyleBundle("~/Content/mobilecss").Include(
+                      "~/Content/bootstrap/bootstrap.css",
+                      "~/Content/base/site.css",
+                      "~/Content/base/sitemobile.css"));
+
             bundles.Add(new StyleBundle("~/Content/datetimepickercss").Include(
                 "~/Content/bootstrap/bootstrap-datetimepicker.css"));
         }

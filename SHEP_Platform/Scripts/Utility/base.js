@@ -1,4 +1,8 @@
-﻿var trimStr = function (str) {
+﻿var BaseInfo = {};
+
+BaseInfo.IsMobileDevice = false;
+
+var trimStr = function (str) {
     var re = /^\s+|\s+$/;
     return !str ? "" : str.replace(re, "");
 }

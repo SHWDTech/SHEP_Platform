@@ -402,6 +402,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\base\SiteMobile.css" />
     <Content Include="Content\bootstrap\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.css" />

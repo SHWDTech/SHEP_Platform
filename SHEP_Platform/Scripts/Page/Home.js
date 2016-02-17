@@ -5,6 +5,12 @@ var broad = null;
 $(function () {
     //先加载地图控件
     containerName = 'mapContainer';
+
+    //如果是移动设备，重新设置地图的高宽
+    if (BaseInfo.IsMobileDevice) {
+        $('#' + containerName).width(window.screen.width);
+        $('#' + containerName).height(window.screen.height - 210);
+    }
     centerPosition = '上海';
     zoom = 12;
     var load = document.createElement("script");
