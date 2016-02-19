@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "系统首页";
+}
+
+<div id="infoContainer">
+    <div class="panel panel-default">
+        <div class="panel-body infoWrap">
+            <div id="infobroad">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mapContainer"></div>
+<div class="btnArea">
+    <input type="button" class="btn btn-success" value="查看地图" id="mapSwitcher"/>
+</div>
+
+@section Css{
+    <link type="text/css" href="/Content/Page/Home.css" rel="stylesheet" />
+}
+
+@section scripts{
+    <script type="text/javascript" src="/Scripts/Common/MapManipulation.js"></script>
+    <script type="text/javascript" src="/Scripts/Page/Home.js"></script>
+    <script type="text/javascript">
+        var statusInfo = JSON.parse('@Html.Raw(ViewBag.Status)');
+    </script>
+}

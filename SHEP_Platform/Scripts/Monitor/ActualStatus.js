@@ -12,16 +12,25 @@ var tbody = $('#divTable').find('tbody');
 var timeoutId = null;
 
 $(function () {
+    if (BaseInfo.IsMobileDevice) {
+        $('#tpGauge').width(window.screen.width).height(window.screen.width);
+        $('#dbGauge').width(window.screen.width).height(window.screen.width);
+    }
+
     tpGauge = echarts.init(document.getElementById('tpGauge'));
 
     dbGauge = echarts.init(document.getElementById('dbGauge'));
 
-    mainChart = echarts.init(document.getElementById('divBar'));
+    if (!BaseInfo.IsMobileDevice) {
+        mainChart = echarts.init(document.getElementById('divBar'));
+    }
 });
 
 var load = function (id, name) {
     if (id === -1 || name === 'null') return;
-    mainChart.showLoading();
+    if (!BaseInfo.IsMobileDevice) {
+        mainChart.showLoading();
+    }
     tpGauge.showLoading();
     dbGauge.showLoading();
     var param = {
@@ -32,7 +41,9 @@ var load = function (id, name) {
     $.post(ajaxUrl, param, function (ret) {
         if (ret) {
             setChart(ret, name, id);
-            mainChart.hideLoading();
+            if (!BaseInfo.IsMobileDevice) {
+                mainChart.hideLoading();
+            }
             tpGauge.hideLoading();
             dbGauge.hideLoading();
         }
@@ -77,7 +88,9 @@ var setChart = function (list, name, id) {
     option.series.push(seriesTp);
     option.series.push(seriesDb);
 
-    mainChart.setOption(option);
+    if (!BaseInfo.IsMobileDevice) {
+        mainChart.setOption(option);
+    }
 
     var tpGaugeOption = Echart_Tools.getGaugeOption();
     var dbGaugeOption = Echart_Tools.getGaugeOption();
@@ -90,7 +103,7 @@ var setChart = function (list, name, id) {
     dbGaugeOption.series[0].data = { name: '噪音值', value: $(list).last()[0].DB };
     tpGauge.setOption(tpGaugeOption);
     dbGauge.setOption(dbGaugeOption);
-    $('#itemTitle').find('h1').html(name + '实时数据');
+    $('#itemTitle').find('#chartTitle').html(name + '实时数据');
 
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function () { load(id, name); }, 60000);

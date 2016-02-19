@@ -1,6 +1,13 @@
 ﻿var BaseInfo = {};
 
 BaseInfo.IsMobileDevice = false;
+BaseInfo.Orient = WindowOrientation.Portrait;
+
+$(function() {
+    $(window).on('onorientationchange', function() {
+        orient();
+    });
+});
 
 var trimStr = function (str) {
     var re = /^\s+|\s+$/;
@@ -51,3 +58,21 @@ msg.info = function(msg) {
         $('#statusMsg').fadeOut('slow');
     }, 3000);
 };
+
+var IsShow = function (targetId, targetClass) {
+    if (targetId !== null) {
+        return ($('#' + targetId).css('display') === 'none');
+    } else {
+        return ($('.' + targetClass).css('display') === 'none');
+    }
+};
+
+var orient = function() {
+    if (window.orientation === 0 || window.orientation === 180) {
+        BaseInfo.Orient = WindowOrientation.Portrait;
+    } else {
+        BaseInfo.Orient = WindowOrientation.Landscape;
+    }
+
+    return BaseInfo.Orient;
+}

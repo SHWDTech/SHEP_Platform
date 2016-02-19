@@ -17,3 +17,8 @@ var QueryDateRange = {
     'LastYear': 'LY',
     'Customer': 'CUS'
 }
+
+var WindowOrientation = {
+    'Portrait': 'portrait',
+    'Landscape': 'landscape'
+}

@@ -594,6 +594,9 @@
     <Content Include="Views\Admin\DevEdit.cshtml" />
     <Content Include="Views\Admin\UserEdit.cshtml" />
     <Content Include="Views\Shared\_LayoutMobile.cshtml" />
+    <Content Include="Views\Home\Index_m.cshtml" />
+    <Content Include="Views\Monitor\ActualStatus_m.cshtml" />
+    <Content Include="Views\Monitor\HistoryChange_m.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

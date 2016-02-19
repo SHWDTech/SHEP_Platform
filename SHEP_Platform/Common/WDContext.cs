@@ -18,6 +18,8 @@ namespace SHEP_Platform.Common
 
         public List<string> UserGroup { get; set; }
 
+        public bool IsMobileDevice { get; set; }
+
         public WdContext()
         {
             Current = this;

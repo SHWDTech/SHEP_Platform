@@ -8,8 +8,13 @@ $(function () {
 
     //如果是移动设备，重新设置地图的高宽
     if (BaseInfo.IsMobileDevice) {
+        $('.infoWrap').height(window.screen.height - 160);
         $('#' + containerName).width(window.screen.width);
-        $('#' + containerName).height(window.screen.height - 210);
+        $('#' + containerName).height(window.screen.height - 120);
+        $('#' + containerName).css('position', 'absolute');
+        $('#' + containerName).css('top', 60);
+        $('#' + containerName).hide();
+        $('#mapSwitcher').on('click', function() { switchMap() });
     }
     centerPosition = '上海';
     zoom = 12;
@@ -34,4 +39,13 @@ var updateStats = function() {
         var point = { 'longitude': $(this)[0].Longitude, 'latitude': $(this)[0].Latitude }
         add_MapPoint(point, $(this)[0].PolluteType, $(this)[0]);
     });
+}
+
+var switchMap = function () {
+    map.centerAndZoom(centerPosition, zoom);
+    if (IsShow(containerName)) {
+        $('#' + containerName).fadeIn();
+    } else {
+        $('#' + containerName).fadeOut();
+    }
 }

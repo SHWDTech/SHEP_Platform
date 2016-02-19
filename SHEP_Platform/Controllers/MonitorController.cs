@@ -44,7 +44,7 @@ namespace SHEP_Platform.Controllers
             ViewBag.defaultId = defaultId;
             ViewBag.defaultName = defaultName;
 
-            return View();
+            return DynamicView("ActualStatus");
         }
 
         public ActionResult HistoryChange()
@@ -67,7 +67,7 @@ namespace SHEP_Platform.Controllers
             }
             ViewBag.defaultId = defaultId;
 
-            return View();
+            return DynamicView("HistoryChange");
         }
 
         public ActionResult ScheduleCompare()

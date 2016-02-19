@@ -8,17 +8,21 @@
 
 .navbar-default .navbar-nav > .active > a {
     color: #fff;
-    background-color: rgb(255, 255, 17);
+    background-color: #ffff11;
 }
 
 .navbar-default .navbar-nav > .active > a:hover {
-    background-color: rgb(255, 255, 17);
+    background-color: #ffff11;
 }
 
 .navbar-default .navbar-nav > .open > a{
-    background-color: rgb(255, 255, 17);
+    background-color: #ffff11;
 }
 
 .navbar-default .navbar-nav > .open > a:hover{
-    background-color: rgb(255, 255, 17);
+    background-color: #ffff11;
+}
+
+.btnArea {
+    padding: 0 40px 0 40px;
 }

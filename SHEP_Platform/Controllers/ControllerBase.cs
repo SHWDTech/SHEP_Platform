@@ -50,7 +50,7 @@ namespace SHEP_Platform.Controllers
 
                 ViewBag.SiteMapMenu = WdContext.SiteMapMenu;
 
-                ViewBag.IsMobileDevice = Global.IsMobileDevice(ctx.HttpContext.Request.UserAgent);
+                ViewBag.IsMobileDevice = WdContext.IsMobileDevice = Global.IsMobileDevice(ctx.HttpContext.Request.UserAgent);
 
                 base.OnActionExecuting(ctx);
             }
@@ -59,6 +59,16 @@ namespace SHEP_Platform.Controllers
                 FormsAuthentication.SignOut();
                 ctx.Result = RedirectToAction("Login", "Account");
             }
+        }
+
+        protected ViewResult DynamicView(string viewName)
+        {
+            return View(WdContext.IsMobileDevice ? $"{viewName}_m" : viewName);
+        }
+
+        protected ViewResult DynamicView(string viewName, object model)
+        {
+            return View(viewName, model);
         }
     }
 }

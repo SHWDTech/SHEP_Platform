@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "查询导出";
+}
+
+<div>
+    <div id="divCharts" style="border: 1px solid #e7e7e7;">
+        <div id="itemTitle" style="height: 50px;">
+            <h3 style="text-align: center;" id="chartTitle"></h3>
+        </div>
+        <div id="divGauge">
+            <div id="tpGauge">
+
+            </div>
+            <div id="dbGauge">
+
+            </div>
+        </div>
+        @*<div id="divBar" style="height: 300px;">
+
+        </div>*@
+    </div>
+    <div id="divTable">
+        <table class="table table-striped table-bordered table-hover">
+            <colgroup>
+                <col style="width: 75px;" />
+                <col style="width: 75px;" />
+                <col style="width: 75px;" />
+                <col style="width: 75px;" />
+            </colgroup>
+            <thead>
+                <tr><td colspan="4" style="text-align: center;">近一小时均值</td></tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (KeyValuePair<object, object> stat in ViewBag.StatDict)
+                    {
+                        var tStat = stat.Key as T_Stats;
+                        var info = stat.Value as T_ESHour;
+
+                        if (tStat == null)
+                        {
+                            continue;
+                        }
+
+                        if (info != null)
+                        {
+                            <tr class="statName">
+                                <td colspan="4">@Html.ActionLink(tStat.StatName, null, null, new { href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName + "')" })</td>
+                            </tr>
+                            <tr>
+                                <td>颗粒物</td>
+                                <td class="pm">@(((info.TP) / 1000).ToString("f2"))</td>
+                                <td>噪音</td>
+                                <td class="db">@info.DB.ToString("f2")</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="statName">
+                                <td colspan="4">
+                                    @Html.ActionLink(tStat.StatName, null, null, new
+                                           {
+                                               href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName
+                                               + "')"
+                                           })
+                            </td>
+                        </tr>
+                            <tr>
+                                <td>颗粒物</td>
+                                <td class="danger">暂无数据</td>
+                                <td>噪音</td>
+                                <td></td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="/Scripts/Utility/echarts.js"></script>
+    <script type="text/javascript" src="/Scripts/Common/SetUpCharts.js"></script>
+    <script type="text/javascript" src="/Scripts/Monitor/ActualStatus.js"></script>
+    <script type="text/javascript">
+            $(function() {
+                load(@ViewBag.defaultId, '@ViewBag.defaultName');
+            })
+    </script>
+}
