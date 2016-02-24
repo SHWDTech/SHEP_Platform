@@ -68,7 +68,7 @@ namespace SHEP_Platform.Controllers
 
         protected ViewResult DynamicView(string viewName, object model)
         {
-            return View(viewName, model);
+            return View(WdContext.IsMobileDevice ? $"{viewName}_m" : viewName, model);
         }
     }
 }

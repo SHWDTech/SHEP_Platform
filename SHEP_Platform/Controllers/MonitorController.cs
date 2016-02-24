@@ -101,7 +101,7 @@ namespace SHEP_Platform.Controllers
             
             ViewBag.Dict = JsonConvert.SerializeObject(dict);
 
-            return View(model);
+            return DynamicView("ScheduleCompare", model);
         }
     }
 }

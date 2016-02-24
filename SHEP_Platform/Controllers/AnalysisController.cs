@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace SHEP_Platform.Controllers
 {
@@ -18,7 +15,7 @@ namespace SHEP_Platform.Controllers
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "本区县污染物平均浓度报表";
             
-            return View();
+            return DynamicView("AveragePolluteReport");
         }
 
         public ActionResult AlarmChange()
@@ -26,7 +23,7 @@ namespace SHEP_Platform.Controllers
             WdContext.SiteMapMenu.ControllerMenu.Name = "综合评价";
             WdContext.SiteMapMenu.ActionMenu.Name = "本曲线整体超标情况变化趋势";
 
-            return View();
+            return DynamicView("AlarmChange");
         }
     }
 }

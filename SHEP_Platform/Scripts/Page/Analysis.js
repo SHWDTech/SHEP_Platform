@@ -39,6 +39,12 @@ $(function () {
         getStatAvgReport($('.PollutantType').val(), $('.daterange').val(), getDatePickerString());
     });
 
+    if (BaseInfo.IsMobileDevice) {
+        $('.date').width(window.screen.width);
+        $('#avgChart').width(window.screen.width);
+        $('.daterange').css('width', '100%');
+    }
+
     avgChart = echarts.init(document.getElementById('avgChart'));
     getStatAvgReport($('.PollutantType').val(), $('.daterange').val(), getDatePickerString());
 });

@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "综合评价";
+}
+
+<div>
+    <h2 style="text-align: center;">本区县整体污染物超标情况变化趋势</h2>
+</div>
+<div style="text-align: center;">
+    <div style="margin-bottom: 50px;">
+        <form class="form-inline">
+            <div class="form-group">
+                <label>选择污染物类型：</label>
+                <select class="form-control PollutantType">
+                    <option value="PM">颗粒物</option>
+                    <option value="NOI">噪音</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <div id="alarmChart" style="height: 500px; margin: auto;">
+
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/datetimepicker")
+    <script type="text/javascript" src="/Scripts/Utility/echarts.js"></script>
+    <script type="text/javascript" src="/Scripts/Common/SetUpCharts.js"></script>
+    <script type="text/javascript">
+        if (BaseInfo.IsMobileDevice) {
+            $('#alarmChart').width(window.screen.width);
+        }
+
+        var alarmChart = null;
+        $(function () {
+            alarmChart = echarts.init(document.getElementById('alarmChart'));
+            $('.PollutantType').on('change', function() {
+                load();
+            });
+            load();
+        });
+
+        var load = function () {
+            alarmChart.showLoading();
+            var pullutantType = $('.PollutantType').val();
+            var param = {
+                'fun': 'getAlarmChange',
+                'pollutantType': pullutantType
+            }
+            $.post('/Ajax/Access', param, function (obj) {
+                alarmChart.hideLoading();
+                if (obj[0].length === 0) {
+                    msg.warning('暂无最新数据');
+                }
+                var color;
+                var title;
+                var name;
+                var option = Echart_Tools.getOption();
+                if (pullutantType === PollutantType.ParticulateMatter) {
+                    color = '#5d4bc1';
+                    title = '颗粒物超标变化趋势';
+                    name = '颗粒物';
+                } else {
+                    color = '#de366d';
+                    title = '噪音值超标变化趋势';
+                    name = '噪音值';
+                }
+
+                option.title.text = title;
+                option.legend.data = [name];
+                option.series[0].name = name;
+                option.series[0].itemStyle.normal.color = color;
+
+                var xAxisData = [];
+                var seriesData = [];
+                $.each(obj[0], function () {
+                    xAxisData.push($(this)[0].UpdateTime);
+                    seriesData.push($(this)[0].Count);
+                });
+
+                option.xAxis.data = xAxisData;
+
+                option.series[0].data = seriesData;
+
+                alarmChart.setOption(option);
+            });
+        };
+    </script>
+}

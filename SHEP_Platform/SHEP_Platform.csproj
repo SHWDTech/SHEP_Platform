@@ -597,6 +597,9 @@
     <Content Include="Views\Home\Index_m.cshtml" />
     <Content Include="Views\Monitor\ActualStatus_m.cshtml" />
     <Content Include="Views\Monitor\HistoryChange_m.cshtml" />
+    <Content Include="Views\Monitor\ScheduleCompare_m.cshtml" />
+    <Content Include="Views\Analysis\AveragePolluteReport_m.cshtml" />
+    <Content Include="Views\Analysis\AlarmChange_m.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

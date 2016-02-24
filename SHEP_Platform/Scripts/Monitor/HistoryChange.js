@@ -32,6 +32,12 @@ $(function () {
         load(curId);
     });
 
+    if (BaseInfo.IsMobileDevice) {
+        $('.date').width(window.screen.width);
+        $('#tpChart').width(window.screen.width);
+        $('#dbChart').width(window.screen.width);
+    }
+
     tpChart = echarts.init(document.getElementById('tpChart'));
     dbChart = echarts.init(document.getElementById('dbChart'));
 
