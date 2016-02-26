@@ -81,29 +81,48 @@ var reSetChart = function (obj) {
     var dbOption = Echart_Tools.getOption();
 
     tpOption.title.text = '颗粒物历史数据';
-    tpOption.legend.data = ['颗粒物'];
-    tpOption.series[0].name = '颗粒物';
-    tpOption.series[0].itemStyle.normal.color = '#5d4bc1';
+    tpOption.legend.data = ['颗粒物','PM2.5', 'PM10'];
+    tpOption.series = [];
+    var seriesTp = Echart_Tools.getSeries('颗粒物', 'bar', PollutantColor.PM);
+    var seriesPm25 = Echart_Tools.getSeries('PM2.5', 'bar', PollutantColor.PM25);
+    var seriesPm100 = Echart_Tools.getSeries('PM10', 'bar', PollutantColor.PM100);
 
     dbOption.title.text = '噪音值历史数据';
     dbOption.legend.data = ['噪音值'];
     dbOption.series[0].name = '噪音值';
-    dbOption.series[0].itemStyle.normal.color = '#de366d';
+    dbOption.series[0].itemStyle.normal.color = PollutantColor.Noise;
 
     var xAxisData = [];
     var seriesTpData = [];
     var seriesDbData = [];
+    var seriesPm25Data = [];
+    var seriesPm100Data = [];
     $.each(obj.data, function () {
         xAxisData.push($(this)[0].UpdateTime);
         seriesTpData.push($(this)[0].TP);
         seriesDbData.push($(this)[0].DB);
+        seriesPm25Data.push($(this)[0].PM25);
+        seriesPm100Data.push($(this)[0].PM100);
     });
 
     tpOption.xAxis.data = xAxisData;
     dbOption.xAxis.data = xAxisData;
 
-    tpOption.series[0].data = seriesTpData;
+    seriesTp.data = seriesTpData;
+    seriesPm25.data = seriesPm25Data;
+    seriesPm100.data = seriesPm100Data;
     dbOption.series[0].data = seriesDbData;
+
+    if ($('.daterange').val() === QueryDateRange.LastHour) {
+        seriesTp.type = 'line';
+        seriesPm25.type = 'line';
+        seriesPm100.type = 'line';
+        dbOption.series[0].type = 'line';
+    }
+
+    tpOption.series.push(seriesTp);
+    tpOption.series.push(seriesPm25);
+    tpOption.series.push(seriesPm100);
 
     tpChart.setOption(tpOption);
     dbChart.setOption(dbOption);

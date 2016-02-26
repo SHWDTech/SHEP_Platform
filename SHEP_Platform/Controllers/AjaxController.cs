@@ -123,7 +123,15 @@ namespace SHEP_Platform.Controllers
             var ret = DbContext.T_ESMin.Where(item => item.StatId == statId && item.UpdateTime > startDate)
                 .OrderBy(obj => obj.UpdateTime).ToList()
                 // ReSharper disable once PossibleInvalidOperationException
-                .Select(i => new { TP = (i.TP / 1000).ToString("f2"), DB = i.DB.ToString("f2"), UpdateTime = ((DateTime)i.UpdateTime).ToString("HH:mm:ss") });
+                .Select(i => new
+                {
+                    TP = (i.TP / 1000).ToString("f2"),
+                    DB = i.DB.ToString("f2"),
+                    PM25 = (i.PM25 / 1000).GetValueOrDefault().ToString("f2"),
+                    PM100 = (i.PM100 / 1000).GetValueOrDefault().ToString("f2"),
+                    // ReSharper disable once PossibleInvalidOperationException
+                    UpdateTime = ((DateTime)i.UpdateTime).ToString("HH:mm:ss")
+                });
 
             return Json(ret);
         }
@@ -177,8 +185,15 @@ namespace SHEP_Platform.Controllers
                     DbContext.T_ESMin.Where(
                         item => item.StatId == statId && item.UpdateTime > startDate && item.UpdateTime < endDate)
                         .ToList()
-                        // ReSharper disable once PossibleInvalidOperationException
-                        .Select(obj => new { TP = (obj.TP / 1000).ToString("f2"), DB = obj.DB.ToString("f2"), UpdateTime = ((DateTime)obj.UpdateTime).ToString("HH:mm:ss") });
+                        .Select(obj => new
+                        {
+                            TP = (obj.TP / 1000).ToString("f2"),
+                            DB = obj.DB.ToString("f2"),
+                            PM25 = (obj.PM25.GetValueOrDefault() / 1000).ToString("f2"),
+                            PM100 = (obj.PM100.GetValueOrDefault() / 1000).ToString("f2"),
+                            // ReSharper disable once PossibleInvalidOperationException
+                            UpdateTime = ((DateTime)obj.UpdateTime).ToString("HH:mm:ss")
+                        });
                 dict.Add("data", ret);
             }
             else if (dtType == "Hour")
@@ -187,8 +202,15 @@ namespace SHEP_Platform.Controllers
                     DbContext.T_ESHour.Where(
                         item => item.StatId == statId && item.UpdateTime > startDate && item.UpdateTime < endDate)
                         .ToList()
-                        // ReSharper disable once PossibleInvalidOperationException
-                        .Select(obj => new { TP = (obj.TP / 1000).ToString("f2"), DB = obj.DB.ToString("f2"), UpdateTime = obj.UpdateTime.ToString("HH:mm:ss") });
+                        .Select(obj => new
+                        {
+                            TP = (obj.TP / 1000).ToString("f2"),
+                            DB = obj.DB.ToString("f2"),
+                            PM25 = (obj.PM25.GetValueOrDefault() / 1000).ToString("f2"),
+                            PM100 = (obj.PM100.GetValueOrDefault() / 1000).ToString("f2"),
+                            // ReSharper disable once PossibleInvalidOperationException
+                            UpdateTime = obj.UpdateTime.ToString("HH:mm:ss")
+                        });
                 dict.Add("data", ret);
             }
             else
@@ -197,8 +219,15 @@ namespace SHEP_Platform.Controllers
                     DbContext.T_ESDay.Where(
                         item => item.StatId == statId && item.UpdateTime > startDate && item.UpdateTime < endDate)
                         .ToList()
-                        // ReSharper disable once PossibleInvalidOperationException
-                        .Select(obj => new { TP = (obj.TP / 1000).ToString("f2"), DB = obj.DB.ToString("f2"), UpdateTime = obj.UpdateTime.ToString("yyyy-MM-dd") });
+                        .Select(obj => new
+                        {
+                            TP = (obj.TP / 1000).ToString("f2"),
+                            DB = obj.DB.ToString("f2"),
+                            PM25 = (obj.PM25.GetValueOrDefault() / 1000).ToString("f2"),
+                            PM100 = (obj.PM100.GetValueOrDefault() / 1000).ToString("f2"),
+                            // ReSharper disable once PossibleInvalidOperationException
+                            UpdateTime = obj.UpdateTime.ToString("yyyy-MM-dd")
+                        });
                 dict.Add("data", ret);
             }
 
@@ -215,6 +244,7 @@ namespace SHEP_Platform.Controllers
             {
                 var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString()
                 && item.UpdateTime > startDate && item.DustType == 0).ToList()
+                    // ReSharper disable once PossibleInvalidOperationException
                     .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
 
                 var list = new List<object>();
@@ -229,6 +259,7 @@ namespace SHEP_Platform.Controllers
             {
                 var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString()
                 && item.UpdateTime > startDate && item.DustType == 1).ToList()
+                    // ReSharper disable once PossibleInvalidOperationException
                     .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
 
                 var list = new List<object>();

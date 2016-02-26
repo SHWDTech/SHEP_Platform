@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "工程实时状况查看";
+}
+
+<div style="display: flex;">
+    <div style="width: 500px; padding-left: 30px;" class="form-inline">
+        <div class="form-group" style="margin-bottom: 30px;">
+            <input type="button" class="form-control camerabtn" value="近景" onclick="near()"/>
+            <input type="button" class="form-control camerabtn" value="上" onclick="up()"/>
+            <input type="button" class="form-control camerabtn" value="远景" onclick="far()"/>
+        </div>
+        <div style="margin-bottom: 30px;">
+            <input type="button" class="form-control camerabtn" value="左" onclick="left()"/>
+            <input type="button" class="form-control camerabtn" value="拍照" onclick="takepicture()"/>
+            <input type="button" class="form-control camerabtn" value="右" onclick="right()"/>
+        </div>
+        <div>
+            <input type="button" class="form-control camerabtn" value="焦点调远" onclick="focus_far()"/>
+            <input type="button" class="form-control camerabtn" value="下" onclick="down()"/>
+            <input type="button" class="form-control camerabtn" value="焦点调近" onclick="focus_near()"/>
+        </div>
+    </div>
+    <div style="width: 100%;">
+        <div>
+            <div id="flashContent">
+                <p>
+                    To view this page ensure that Adobe Flash Player version
+                    11.1.0 or greater is installed.
+                </p>
+                <script type="text/javascript">
+                    var pageHost = ((document.location.protocol === "https:") ? "https://" : "http://");
+                    document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='"
+                        + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>");
+                </script>
+            </div>
+            <noscript>
+                <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" style="width: 100%; height: 100%;" id="WebAPI2">
+                    <param name="movie" value="http://121.42.34.0:2600/webclient_api/WebAPI2.swf" />
+                    <param name="quality" value="high" />
+                    <param name="bgcolor" value="#ffffff" />
+                    <param name="allowScriptAccess" value="always" />
+                    <param name="allowFullScreen" value="true" />
+                </object>
+                <!--[if !IE]>-->
+                <object type="application/x-shockwave-flash" data="http://121.42.34.0:2600/webclient_api/WebAPI2.swf" style="width: 100%; height: 100%;">
+                    <param name="quality" value="high" />
+                    <param name="bgcolor" value="#ffffff" />
+                    <param name="allowScriptAccess" value="always" />
+                    <param name="allowFullScreen" value="true" />
+                    <!--<![endif]-->
+                    <!--[if gte IE 6]>-->
+                    <p>
+                        Either scripts and active content are not permitted to run or Adobe Flash Player version
+                        11.1.0 or greater is not installed.
+                    </p>
+                    <!--<![endif]-->
+                    <a href="http://www.adobe.com/go/getflashplayer">
+                        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash Player" />
+                    </a>
+                    <!--[if !IE]>-->
+                </object>
+                <!--<![endif]-->
+            </noscript>
+        </div>
+        <div style="margin-top: 15px;">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label>选择设备：</label>
+                    <select class="form-control" id="selDevs"></select>
+                    <input type="button" class="form-control" value="连接云台服务器" onclick="connect()"/>
+                    <input type="button" class="form-control" value="获取视频" onclick="getvideo()"/>
+                    <input type="button" class="form-control" value="关闭视频" onclick="closevideo()"/>
+                    <input type="button" class="form-control" value="远程调阅" onclick="remote()"/>
+                    <Label>拍照质量：</Label>
+                    <select class="form-control">
+                        <option selected="selected" value="0">最好</option>
+                        <option value="1">很好</option>
+                        <option value="2">较好</option>
+                        <option value="3">一般</option>
+                        <option value="4">较差</option>
+                        <option value="5">最差</option>
+                    </select>
+                    <label>分辨率：</label>
+                    <select class="form-control" id="res">
+                        <option selected="selected" value="0">默认</option>
+                        <option value="1">D1</option>
+                        <option value="2">720P</option>
+                        <option value="3">1080P</option>
+                        <option value="4">CIF</option>
+                        <option value="5">QCIF</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Css{
+    <style type="text/css">
+        .camerabtn {
+            width: 80px !important;
+            margin-right: 25px;
+            height: 45px;
+        }
+    </style>
+}
+
+@section scripts{
+    <script src="~/Scripts/Common/FABridge.js"></script>
+    <script src="~/Scripts/Common/swfobject.js"></script>
+    <script src="~/Scripts/Common/video.js"></script>
+    <script>
+        $(function () {
+            getlist();
+        });
+
+        function getlist() {
+            var serverip = "121.42.34.0";
+            var user = "test";
+            var pwd = "123";
+            var urlxx = "http://" + serverip + ":2600/bin/getUserAccessDevicesimpleforwebapi?uname=" + user + "&pwd=" + pwd;
+
+            $.ajax({
+                type: "get",
+                url: urlxx,
+                dataType: "jsonp",
+                jsonpCallback: "success_jsonpCallback",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+                success: function (json) {
+                    var r = json[0].resultxx;
+                    if (r == "ok") {
+                        setupdevlist(json[0].data);
+                    }
+                    else {
+                        alert(json[0].data);
+                    }
+                    //alert(json[0].did);
+                    //alert(json[0].dname);
+
+                },
+                error: function () {
+                    alert('fail');
+                }
+            });
+            //document.getElementById("WebAPI2").initservice(serverip);
+        };
+        function setupdevlist(data) {
+            var selDevs = $("#selDevs");
+            var selDevspic = $("#selDevspic");
+            for (var i = 0; i < data.length ; i++) {
+                selDevs.append('<option value=' + data[i].did + '>' + data[i].dname + '</option>');
+                selDevspic.append('<option value=' + data[i].did + '>' + data[i].dname + '</option>');
+            }
+        };
+    </script>
+}

@@ -53,6 +53,12 @@
                                 <td>噪音</td>
                                 <td class="db">@info.DB.ToString("f2")</td>
                             </tr>
+                            <tr>
+                                <td>PM2.5</td>
+                                <td class="pm25">@((info.PM25.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                                <td>PM10</td>
+                                <td class="pm100">@((info.PM100.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                            </tr>
                         }
                         else
                         {
@@ -64,7 +70,13 @@
                                 <td>颗粒物</td>
                                 <td class="danger">暂无数据</td>
                                 <td>噪音</td>
-                                <td></td>
+                                <td class="danger">暂无数据</td>
+                            </tr>
+                            <tr>
+                                <td>PM2.5</td>
+                                <td class="danger">暂无数据</td>
+                                <td>PM10</td>
+                                <td class="danger">暂无数据</td>
                             </tr>
                         }
                     }

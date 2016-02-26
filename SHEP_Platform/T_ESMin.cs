@@ -29,5 +29,8 @@ namespace SHEP_Platform
         public string DataStatus { get; set; }
         public Nullable<int> DevId { get; set; }
         public string Country { get; set; }
+        public Nullable<double> PM25 { get; set; }
+        public Nullable<double> PM100 { get; set; }
+        public Nullable<double> VOCs { get; set; }
     }
 }

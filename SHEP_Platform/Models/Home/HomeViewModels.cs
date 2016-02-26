@@ -10,6 +10,12 @@
 
         public string AvgDb { get; set; }
 
+        public string AvgPm25 { get; set; }
+
+        public string AvgPm100 { get; set; }
+
+        public string AvgVoc{ get; set; }
+
         public string UpdateTime { get; set; }
 
         public decimal Longitude { get; set; }

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using SHEP_Platform.Common;
 using SHEP_Platform.Models.Admin;
+using System.Collections.Generic;
 
 namespace SHEP_Platform.Controllers
 {
@@ -258,11 +258,6 @@ namespace SHEP_Platform.Controllers
                 };
                 DbContext.T_DevAddr.Add(addr);
             }
-            else
-            {
-                DbContext.T_Devs.Add(dev);
-            }
-
 
             DbContext.SaveChanges();
 

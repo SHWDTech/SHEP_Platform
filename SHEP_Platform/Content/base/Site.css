@@ -270,6 +270,14 @@ select {
     color: #de366d;
 }
 
+.pm25 {
+    color: #0ecba8;
+}
+
+.pm100 {
+    color: #d7761f;
+}
+
 li span.date {
     color: #b2b2b2;
 }

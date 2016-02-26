@@ -10,21 +10,11 @@
 namespace SHEP_Platform
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class T_ESHour
+    public partial class T_ESHour_GetAvgPM25StatList_Result
     {
-        public long Id { get; set; }
+        public Nullable<double> AvgPM25 { get; set; }
         public int StatId { get; set; }
-        public double TP { get; set; }
-        public double DB { get; set; }
         public System.DateTime UpdateTime { get; set; }
-        public string DataStatus { get; set; }
-        public int ValidDataNum { get; set; }
-        public int DevId { get; set; }
-        public string Country { get; set; }
-        public Nullable<double> PM25 { get; set; }
-        public Nullable<double> PM100 { get; set; }
-        public Nullable<double> VOCs { get; set; }
     }
 }
