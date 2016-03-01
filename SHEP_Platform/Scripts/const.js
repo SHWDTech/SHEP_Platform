@@ -6,7 +6,9 @@
 
 var PollutantType = {
     'ParticulateMatter': 'PM',
-    'Noise': 'NOI'
+    'Noise': 'NOI',
+    'PM25': 'PM25',
+    'PM100': 'PM100'
 }
 
 var QueryDateRange = {

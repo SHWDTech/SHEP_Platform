@@ -72,10 +72,16 @@ var RefreashPage = function (ret) {
     var color;
     if ($('.PollutantType').val() === PollutantType.ParticulateMatter) {
         polluteType = '颗粒物';
-        color = '#5d4bc1';
-    } else {
+        color = PollutantColor.PM;
+    } else if ($('.PollutantType').val() === PollutantType.Noise) {
         polluteType = '噪音值';
-        color = '#de366d';
+        color = PollutantColor.Noise;
+    } else if ($('.PollutantType').val() === PollutantType.PM25) {
+        polluteType = 'PM2.5';
+        color = PollutantColor.PM25;
+    } else {
+        polluteType = 'PM10';
+        color = PollutantColor.PM100;
     }
 
     var option = Echart_Tools.getOption();
@@ -93,6 +99,7 @@ var RefreashPage = function (ret) {
     option.xAxis.data = xAxisData;
     option.series[0].data = seriesData;
 
+    avgChart.clear();
     avgChart.setOption(option);
 
     tbody.html('');

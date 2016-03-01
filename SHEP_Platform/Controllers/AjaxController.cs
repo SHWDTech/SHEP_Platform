@@ -113,6 +113,57 @@ namespace SHEP_Platform.Controllers
                 return Json(dict);
             }
 
+
+            if (pollutantType == PollutantType.Pm25)
+            {
+                stringBuilder.AppendFormat("UpdateTime >='{0}' and UpdateTime <='{1}'",
+                    startDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                var ret =
+                    from item in DbContext.T_ESDay_GetAvgPM25StatList(WdContext.User.Remark, stringBuilder.ToString())
+                    group item by item.StatId
+                    into newresult
+                    select newresult;
+
+                var dict = ret.ToDictionary(p => p.Key)
+                    .Where(obj => WdContext.StatList.FirstOrDefault(item => item.Id == obj.Key) != null)
+                    .Select(item => new
+                    {
+                        Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
+                        MaxVal = double.Parse((item.Value.OrderBy(i => i.AvgPM25).First().AvgPM25 / 1000).ToString()).ToString("f2"),
+                        AvgVal = double.Parse((item.Value.Average(j => j.AvgPM25) / 1000).ToString()).ToString("f2"),
+                        MinVal = double.Parse((item.Value.OrderByDescending(k => k.AvgPM25).First().AvgPM25 / 1000).ToString()).ToString("f2"),
+                        ValidNum = item.Value.Count()
+                    }).ToList();
+
+                return Json(dict);
+            }
+
+            if (pollutantType == PollutantType.Pm100)
+            {
+                stringBuilder.AppendFormat("UpdateTime >='{0}' and UpdateTime <='{1}'",
+                    startDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                var ret =
+                    from item in DbContext.T_ESDay_GetAvgPM100StatList(WdContext.User.Remark, stringBuilder.ToString())
+                    group item by item.StatId
+                    into newresult
+                    select newresult;
+
+                var dict = ret.ToDictionary(p => p.Key)
+                    .Where(obj => WdContext.StatList.FirstOrDefault(item => item.Id == obj.Key) != null)
+                    .Select(item => new
+                    {
+                        Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
+                        MaxVal = double.Parse((item.Value.OrderBy(i => i.AvgPM100).First().AvgPM100 / 1000).ToString()).ToString("f2"),
+                        AvgVal = double.Parse((item.Value.Average(j => j.AvgPM100) / 1000).ToString()).ToString("f2"),
+                        MinVal = double.Parse((item.Value.OrderByDescending(k => k.AvgPM100).First().AvgPM100 / 1000).ToString()).ToString("f2"),
+                        ValidNum = item.Value.Count()
+                    }).ToList();
+
+                return Json(dict);
+            }
+
             return null;
         }
 
