@@ -93,6 +93,7 @@ var RefreashPage = function (ret) {
     option.xAxis.data = xAxisData;
     option.series[0].data = seriesData;
 
+    avgChart.clear();
     avgChart.setOption(option);
 
     tbody.html('');
