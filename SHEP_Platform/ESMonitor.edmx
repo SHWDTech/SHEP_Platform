@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ESMonitorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ESMonitorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="T_Alarms">
           <Key>
             <PropertyRef Name="Id" />
@@ -27,7 +27,7 @@
           <Property Name="DbRange" Type="float" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“ESMonitor.dbo.T_Camera”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“ESMonitor2.dbo.T_Camera”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="T_Camera">
           <Key>
             <PropertyRef Name="ID" />
@@ -83,6 +83,9 @@
           <Property Name="StatId" Type="int" Nullable="false" />
           <Property Name="TP" Type="float" Nullable="false" />
           <Property Name="DB" Type="float" Nullable="false" />
+          <Property Name="PM25" Type="float" />
+          <Property Name="PM100" Type="float" />
+          <Property Name="VOCs" Type="float" />
           <Property Name="UpdateTime" Type="date" Nullable="false" />
           <Property Name="DataStatus" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="ValidDataNum" Type="int" Nullable="false" />
@@ -90,7 +93,7 @@
           <Property Name="Country" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“ESMonitor.dbo.T_ESDaytemp1”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“ESMonitor2.dbo.T_ESDaytemp1”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="T_ESDaytemp1">
           <Key>
             <PropertyRef Name="Id" />
@@ -116,6 +119,9 @@
           <Property Name="StatId" Type="int" Nullable="false" />
           <Property Name="TP" Type="float" Nullable="false" />
           <Property Name="DB" Type="float" Nullable="false" />
+          <Property Name="PM25" Type="float" />
+          <Property Name="PM100" Type="float" />
+          <Property Name="VOCs" Type="float" />
           <Property Name="UpdateTime" Type="datetime" Nullable="false" />
           <Property Name="DataStatus" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="ValidDataNum" Type="int" Nullable="false" />
@@ -131,6 +137,9 @@
           <Property Name="StatId" Type="int" Nullable="false" />
           <Property Name="TP" Type="float" Nullable="false" />
           <Property Name="DB" Type="float" Nullable="false" />
+          <Property Name="PM25" Type="float" />
+          <Property Name="PM100" Type="float" />
+          <Property Name="VOCs" Type="float" />
           <Property Name="UpdateTime" Type="datetime" />
           <Property Name="WindSpeed" Type="float" Nullable="false" />
           <Property Name="Rain" Type="float" />
@@ -162,7 +171,7 @@
           <Property Name="ModuleId" Type="int" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“ESMonitor.dbo.T_Offset”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“ESMonitor2.dbo.T_Offset”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="T_Offset">
           <Key>
             <PropertyRef Name="OffSetCpm" />
@@ -482,8 +491,9 @@
           <Parameter Name="ValidDataNum" Type="int" Mode="In" />
           <Parameter Name="DevId" Type="int" Mode="In" />
           <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="Pm25" Type="float" Mode="In" />
+          <Parameter Name="Pm100" Type="float" Mode="In" />
         </Function>
-        <Function Name="T_ESDay_AVGFromESHour" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_ESDay_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="bigint" Mode="In" />
         </Function>
@@ -509,6 +519,28 @@
           <Parameter Name="strWhere" Type="varchar" Mode="In" />
         </Function>
         <Function Name="T_ESDay_GetAvgNoiseStatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM100List" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM100OrderList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM100StatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM25List" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM25OrderList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM25StatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Country" Type="varchar" Mode="In" />
           <Parameter Name="strWhere" Type="varchar" Mode="In" />
         </Function>
@@ -538,8 +570,9 @@
           <Parameter Name="Country" Type="float" Mode="In" />
           <Parameter Name="DataStatus" Type="char" Mode="In" />
           <Parameter Name="ValidDataNum" Type="int" Mode="In" />
+          <Parameter Name="Pm25" Type="float" Mode="In" />
+          <Parameter Name="Pm100" Type="float" Mode="In" />
         </Function>
-        <Function Name="T_ESHour_AVGFromESMin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_ESHour_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
         </Function>
@@ -551,6 +584,14 @@
           <Parameter Name="strWhere" Type="varchar" Mode="In" />
         </Function>
         <Function Name="T_ESHour_GetAvgNoiseStatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESHour_GetAvgPM100StatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESHour_GetAvgPM25StatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Country" Type="varchar" Mode="In" />
           <Parameter Name="strWhere" Type="varchar" Mode="In" />
         </Function>
@@ -585,6 +626,8 @@
           <Parameter Name="DataStatus" Type="char" Mode="In" />
           <Parameter Name="DevId" Type="int" Mode="In" />
           <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="Pm25" Type="float" Mode="In" />
+          <Parameter Name="Pm100" Type="float" Mode="In" />
         </Function>
         <Function Name="T_ESMin_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="bigint" Mode="In" />
@@ -635,8 +678,6 @@
           <Parameter Name="GroupId" Type="int" Mode="In" />
           <Parameter Name="ModuleId" Type="int" Mode="In" />
         </Function>
-        <Function Name="T_InsertTable_AutoForESDay" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="T_InsertTable_AutoForESHour" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_Photos_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="InOut" />
           <Parameter Name="DevId" Type="int" Mode="In" />
@@ -975,8 +1016,7 @@
             <End Role="T_Stats" EntitySet="T_Stats" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ESMonitorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1046,6 +1086,9 @@
           <Property Name="ValidDataNum" Type="Int32" Nullable="false" />
           <Property Name="DevId" Type="Int32" Nullable="false" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="VOCs" Type="Double" />
         </EntityType>
         <EntityType Name="T_ESHour">
           <Key>
@@ -1060,6 +1103,9 @@
           <Property Name="ValidDataNum" Type="Int32" Nullable="false" />
           <Property Name="DevId" Type="Int32" Nullable="false" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="VOCs" Type="Double" />
         </EntityType>
         <EntityType Name="T_ESMin">
           <Key>
@@ -1080,6 +1126,9 @@
           <Property Name="DataStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="DevId" Type="Int32" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="VOCs" Type="Double" />
         </EntityType>
         <EntityType Name="T_Files">
           <Key>
@@ -1379,21 +1428,21 @@
             <Parameter Name="Country" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_Exists">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_GetDataFromESMin" />
           <FunctionImport Name="T_Alarms_GetDustOverDataCount" ReturnType="Collection(ESMonitorModel.T_Alarms_GetDustOverDataCount_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_GetDustOverDataPerDay" ReturnType="Collection(ESMonitorModel.T_Alarms_GetDustOverDataPerDay_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_GetList" ReturnType="Collection(ESMonitorModel.T_Alarms_GetList_Result)" />
           <FunctionImport Name="T_Alarms_GetModel" ReturnType="Collection(ESMonitorModel.T_Alarms_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1411,10 +1460,10 @@
             <Parameter Name="DbRange" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_AlarmType_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_AlarmType_GetModel" ReturnType="Collection(ESMonitorModel.T_AlarmType_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_AlarmType_Update">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
@@ -1430,13 +1479,13 @@
             <Parameter Name="PassWord" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_Exists">
-            <Parameter Name="DnsAddr" Mode="In" Type="String" />
+          <Parameter Name="DnsAddr" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_GetModel" ReturnType="Collection(ESMonitorModel.T_Camera_GetModel_Result)">
-            <Parameter Name="DevId" Mode="In" Type="Int32" />
+          <Parameter Name="DevId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_Update">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
@@ -1450,7 +1499,7 @@
             <Parameter Name="NodeId" Mode="In" Type="Binary" />
           </FunctionImport>
           <FunctionImport Name="T_DevAddr_Exists">
-            <Parameter Name="NodeId" Mode="In" Type="Binary" />
+          <Parameter Name="NodeId" Mode="In" Type="Binary" />
           </FunctionImport>
           <FunctionImport Name="T_DevAddr_Update">
             <Parameter Name="DevId" Mode="In" Type="Int32" />
@@ -1467,10 +1516,10 @@
             <Parameter Name="VideoURL" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_Exists">
-            <Parameter Name="DevCode" Mode="In" Type="String" />
+          <Parameter Name="DevCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_GetList" ReturnType="Collection(ESMonitorModel.T_Devs_GetList_Result)" />
           <FunctionImport Name="T_Devs_GetListByPage">
@@ -1480,10 +1529,10 @@
           </FunctionImport>
           <FunctionImport Name="T_Devs_GetMaxId" />
           <FunctionImport Name="T_Devs_GetModel" ReturnType="Collection(ESMonitorModel.T_Devs_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_GetRelatedStat" ReturnType="Collection(ESMonitorModel.T_Devs_GetRelatedStat_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1505,16 +1554,18 @@
             <Parameter Name="ValidDataNum" Mode="In" Type="Int32" />
             <Parameter Name="DevId" Mode="In" Type="Int32" />
             <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="Pm25" Mode="In" Type="Double" />
+            <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_AVGFromESHour" />
           <FunctionImport Name="T_ESDay_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_Exists">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgCMPList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgCMPList_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgCMPOrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgCMPOrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1525,7 +1576,7 @@
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgNoiseList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgNoiseList_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgNoiseOrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgNoiseOrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1538,7 +1589,7 @@
           <FunctionImport Name="T_ESDay_GetList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetList_Result)" />
           <FunctionImport Name="T_ESDay_GetMaxId" />
           <FunctionImport Name="T_ESDay_GetModel" ReturnType="Collection(ESMonitorModel.T_ESDay_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_Update">
             <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1561,13 +1612,15 @@
             <Parameter Name="Country" Mode="In" Type="Double" />
             <Parameter Name="DataStatus" Mode="In" Type="String" />
             <Parameter Name="ValidDataNum" Mode="In" Type="Int32" />
+            <Parameter Name="Pm25" Mode="In" Type="Double" />
+            <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_AVGFromESMin" />
           <FunctionImport Name="T_ESHour_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_Exists">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_GetAvgCMPStatList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetAvgCMPStatList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1579,7 +1632,7 @@
           </FunctionImport>
           <FunctionImport Name="T_ESHour_GetList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetList_Result)" />
           <FunctionImport Name="T_ESHour_GetModel" ReturnType="Collection(ESMonitorModel.T_ESHour_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_Update">
             <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1608,22 +1661,24 @@
             <Parameter Name="DataStatus" Mode="In" Type="String" />
             <Parameter Name="DevId" Mode="In" Type="Int32" />
             <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="Pm25" Mode="In" Type="Double" />
+            <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Exists">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_GetCurData" ReturnType="Collection(ESMonitorModel.T_ESMin_GetCurData_Result)">
-            <Parameter Name="StatId" Mode="In" Type="Int32" />
+          <Parameter Name="StatId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_GetCurDevData" ReturnType="Collection(ESMonitorModel.T_ESMin_GetCurDevData_Result)">
-            <Parameter Name="devId" Mode="In" Type="Int32" />
+          <Parameter Name="devId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_GetList" ReturnType="Collection(ESMonitorModel.T_ESMin_GetList_Result)" />
           <FunctionImport Name="T_ESMin_GetModel" ReturnType="Collection(ESMonitorModel.T_ESMin_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Update">
             <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1667,7 +1722,7 @@
             <Parameter Name="FileName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Photos_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Photos_GetListByPage">
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -1675,7 +1730,7 @@
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Photos_GetModel" ReturnType="Collection(ESMonitorModel.T_Photos_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ProduceReport" ReturnType="Collection(ESMonitorModel.T_ProduceReport_Result)">
             <Parameter Name="selectControl" Mode="In" Type="Int32" />
@@ -1713,10 +1768,10 @@
             <Parameter Name="AlarmType" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_Exists">
-            <Parameter Name="StatCode" Mode="In" Type="String" />
+          <Parameter Name="StatCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_GetList" ReturnType="Collection(ESMonitorModel.T_Stats_GetList_Result)" />
           <FunctionImport Name="T_Stats_GetListByPage">
@@ -1726,7 +1781,7 @@
           </FunctionImport>
           <FunctionImport Name="T_Stats_GetMaxId" />
           <FunctionImport Name="T_Stats_GetModel" ReturnType="Collection(ESMonitorModel.T_Stats_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1752,7 +1807,7 @@
             <Parameter Name="UpdateTime" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_Delete">
-            <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_GetList" ReturnType="Collection(ESMonitorModel.T_TaskNotice_GetList_Result)" />
           <FunctionImport Name="T_TaskNotice_GetListByPage">
@@ -1761,7 +1816,7 @@
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_GetModel" ReturnType="Collection(ESMonitorModel.T_TaskNotice_GetModel_Result)">
-            <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_Update">
             <Parameter Name="TaskId" Mode="In" Type="Int64" />
@@ -1781,7 +1836,7 @@
             <Parameter Name="Length" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_Delete">
-            <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_GetList" ReturnType="Collection(ESMonitorModel.T_Tasks_GetList_Result)" />
           <FunctionImport Name="T_Tasks_GetListByPage">
@@ -1790,7 +1845,7 @@
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_GetModel" ReturnType="Collection(ESMonitorModel.T_Tasks_GetModel_Result)">
-            <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_Update">
             <Parameter Name="TaskId" Mode="In" Type="Int64" />
@@ -1817,10 +1872,10 @@
             <Parameter Name="AuthType" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="T_UserAuthority_DeleteByUserId">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserAuthority_GetAuths" ReturnType="Collection(ESMonitorModel.T_UserAuthority_GetAuths_Result)">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGrantedNodes_ADD">
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -1831,10 +1886,10 @@
             <Parameter Name="NodeId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGrantedNodes_DeleteByUserId">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGrantedNodes_GetGrantedNodes">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_ADD">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
@@ -1843,10 +1898,10 @@
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_Exists">
-            <Parameter Name="Name" Mode="In" Type="String" />
+          <Parameter Name="Name" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_GetList" ReturnType="Collection(ESMonitorModel.T_UserGroup_GetList_Result)" />
           <FunctionImport Name="T_UserGroup_GetListByPage">
@@ -1855,7 +1910,7 @@
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_GetModel" ReturnType="Collection(ESMonitorModel.T_UserGroup_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1895,10 +1950,10 @@
             <Parameter Name="Remark" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Users_Delete">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Users_Exists">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Users_GetList" ReturnType="Collection(ESMonitorModel.T_Users_GetList_Result)" />
           <FunctionImport Name="T_Users_GetListByPage">
@@ -1908,7 +1963,7 @@
           </FunctionImport>
           <FunctionImport Name="T_Users_GetMaxId" />
           <FunctionImport Name="T_Users_GetModel" ReturnType="Collection(ESMonitorModel.T_Users_GetModel_Result)">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Users_Update">
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -1921,6 +1976,36 @@
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
             <Parameter Name="LastTime" Mode="In" Type="DateTime" />
             <Parameter Name="NowTime" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM100List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100List_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM100OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100OrderList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM100StatList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM25List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25List_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM25OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25OrderList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM25StatList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESHour_GetAvgPM100StatList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetAvgPM100StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESHour_GetAvgPM25StatList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetAvgPM25StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
@@ -2276,6 +2361,50 @@
           <Property Type="DateTime" Name="NowTime" Nullable="true" Precision="23" />
           <Property Type="String" Name="Remark" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM100List_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="DateTime" Name="updateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM100OrderList_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="Double" Name="MaxPM100" Nullable="true" />
+          <Property Type="Double" Name="MinPM100" Nullable="true" />
+          <Property Type="Int32" Name="ValidDataNum" Nullable="true" />
+          <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DevCode" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM100StatList_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM25List_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="DateTime" Name="updateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM25OrderList_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="Double" Name="MaxPM25" Nullable="true" />
+          <Property Type="Double" Name="MinPM25" Nullable="true" />
+          <Property Type="Int32" Name="ValidDataNum" Nullable="true" />
+          <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DevCode" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM25StatList_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESHour_GetAvgPM100StatList_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="T_ESHour_GetAvgPM25StatList_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2339,6 +2468,9 @@
           <EntitySetMapping Name="T_ESDay">
             <EntityTypeMapping TypeName="ESMonitorModel.T_ESDay">
               <MappingFragment StoreEntitySet="T_ESDay">
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
@@ -2354,6 +2486,9 @@
           <EntitySetMapping Name="T_ESHour">
             <EntityTypeMapping TypeName="ESMonitorModel.T_ESHour">
               <MappingFragment StoreEntitySet="T_ESHour">
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
@@ -2369,6 +2504,9 @@
           <EntitySetMapping Name="T_ESMin">
             <EntityTypeMapping TypeName="ESMonitorModel.T_ESMin">
               <MappingFragment StoreEntitySet="T_ESMin">
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatCode" ColumnName="StatCode" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
@@ -2690,7 +2828,6 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="T_Devs_Update" FunctionName="ESMonitorModel.Store.T_Devs_Update" />
           <FunctionImportMapping FunctionImportName="T_ESDay_ADD" FunctionName="ESMonitorModel.Store.T_ESDay_ADD" />
-          <FunctionImportMapping FunctionImportName="T_ESDay_AVGFromESHour" FunctionName="ESMonitorModel.Store.T_ESDay_AVGFromESHour" />
           <FunctionImportMapping FunctionImportName="T_ESDay_Delete" FunctionName="ESMonitorModel.Store.T_ESDay_Delete" />
           <FunctionImportMapping FunctionImportName="T_ESDay_Exists" FunctionName="ESMonitorModel.Store.T_ESDay_Exists" />
           <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgCMPList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgCMPList">
@@ -2780,7 +2917,6 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="T_ESDay_Update" FunctionName="ESMonitorModel.Store.T_ESDay_Update" />
           <FunctionImportMapping FunctionImportName="T_ESHour_ADD" FunctionName="ESMonitorModel.Store.T_ESHour_ADD" />
-          <FunctionImportMapping FunctionImportName="T_ESHour_AVGFromESMin" FunctionName="ESMonitorModel.Store.T_ESHour_AVGFromESMin" />
           <FunctionImportMapping FunctionImportName="T_ESHour_Delete" FunctionName="ESMonitorModel.Store.T_ESHour_Delete" />
           <FunctionImportMapping FunctionImportName="T_ESHour_Exists" FunctionName="ESMonitorModel.Store.T_ESHour_Exists" />
           <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgCMPStatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgCMPStatList">
@@ -2921,8 +3057,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESDay" FunctionName="ESMonitorModel.Store.T_InsertTable_AutoForESDay" />
-          <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESHour" FunctionName="ESMonitorModel.Store.T_InsertTable_AutoForESHour" />
           <FunctionImportMapping FunctionImportName="T_Photos_ADD" FunctionName="ESMonitorModel.Store.T_Photos_ADD" />
           <FunctionImportMapping FunctionImportName="T_Photos_Delete" FunctionName="ESMonitorModel.Store.T_Photos_Delete" />
           <FunctionImportMapping FunctionImportName="T_Photos_GetListByPage" FunctionName="ESMonitorModel.Store.T_Photos_GetListByPage" />
@@ -3175,6 +3309,82 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="T_Users_Update" FunctionName="ESMonitorModel.Store.T_Users_Update" />
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100List" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM100List">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM100List_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="updateTime" ColumnName="updateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100OrderList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM100OrderList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM100OrderList_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="MaxPM100" ColumnName="MaxPM100" />
+                <ScalarProperty Name="MinPM100" ColumnName="MinPM100" />
+                <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
+                <ScalarProperty Name="StatName" ColumnName="StatName" />
+                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100StatList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM100StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM100StatList_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25List" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM25List">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM25List_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="updateTime" ColumnName="updateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25OrderList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM25OrderList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM25OrderList_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="MaxPM25" ColumnName="MaxPM25" />
+                <ScalarProperty Name="MinPM25" ColumnName="MinPM25" />
+                <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
+                <ScalarProperty Name="StatName" ColumnName="StatName" />
+                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25StatList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM25StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM25StatList_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgPM100StatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgPM100StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetAvgPM100StatList_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgPM25StatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgPM25StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetAvgPM25StatList_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -103,5 +103,12 @@ namespace SHEP_Platform.Controllers
 
             return DynamicView("ScheduleCompare", model);
         }
+
+        public ActionResult StatView()
+        {
+            WdContext.SiteMapMenu.ActionMenu.Name = "工程实时状况查看";
+
+            return DynamicView("StatView");
+        }
     }
 }

@@ -74,10 +74,16 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>颗粒物</td>
-                                <td class="pm">@(((info.TP) / 1000).ToString("f2"))</td>
-                                <td>噪音</td>
+                                <td>颗粒物(mg/m³)</td>
+                                <td class="pm">@(((info.TP)/1000).ToString("f2"))</td>
+                                <td>噪音(dB)</td>
                                 <td class="db">@info.DB.ToString("f2")</td>
+                            </tr>
+                            <tr>
+                                <td>PM2.5(mg/m³)</td>
+                                <td class="pm25">@((info.PM25.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                                <td>PM10(mg/m³)</td>
+                                <td class="pm100">@((info.PM100.GetValueOrDefault() / 1000).ToString("f2"))</td>
                             </tr>
                         }
                         else
@@ -91,10 +97,21 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>颗粒物</td>
+                                <td>颗粒物(mg/m³)</td>
                                 <td class="danger">暂无数据</td>
+                                <td>噪音(dB)</td>
+                                <td class="danger">暂无数据</td>
+                            </tr>
+                            <tr>
+                                <td>PM2.5(mg/m³)</td>
+                                <td class="danger">暂无数据</td>
+                                <td>PM10(mg/m³)</td>
+                                <td class="danger">暂无数据</td>
+<<<<<<< HEAD
                                 <td>噪音</td>
                                 <td class="danger">暂无数据</td>
+=======
+>>>>>>> V2.0
                             </tr>
                         }
                     }

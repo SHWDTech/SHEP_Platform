@@ -268,6 +268,24 @@
     <Compile Include="T_ESDay_GetAvgNoiseStatList_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
+    <Compile Include="T_ESDay_GetAvgPM100List_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM100OrderList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM100StatList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM25List_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM25OrderList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM25StatList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="T_ESDay_GetList_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
@@ -281,6 +299,12 @@
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_ESHour_GetAvgNoiseStatList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESHour_GetAvgPM100StatList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESHour_GetAvgPM25StatList_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_ESHour_GetList_Result.cs">
@@ -420,6 +444,9 @@
     <Content Include="Images\Site\WEB_LOGO.ico" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\Common\FABridge.js" />
+    <Content Include="Scripts\Common\swfobject.js" />
+    <Content Include="Scripts\Common\video.js" />
     <Content Include="Scripts\Utility\moment-with-locales.js" />
     <Content Include="Scripts\Utility\moment-with-locales.min.js" />
     <Content Include="Scripts\Utility\moment.js" />
@@ -600,6 +627,8 @@
     <Content Include="Views\Monitor\ScheduleCompare_m.cshtml" />
     <Content Include="Views\Analysis\AveragePolluteReport_m.cshtml" />
     <Content Include="Views\Analysis\AlarmChange_m.cshtml" />
+    <Content Include="Views\Monitor\StatView.cshtml" />
+    <Content Include="Views\Monitor\StatView_m.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

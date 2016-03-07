@@ -59,34 +59,42 @@ var setChart = function (list, name, id) {
     var option = Echart_Tools.getOption();
 
     option.series = [];
-    option.legend.data = ['颗粒物', '噪音值'];
+    option.legend.data = ['颗粒物', '噪音值', 'PM2.5', 'PM10'];
     option.yAxis = [
     {
          type: 'value', name: 'tp', axisLabel: { formatter: '{value}' }
     }, {
          type: 'value', name: 'db', axisLabel: { formatter: '{value}' }
     }];
-    var seriesTp = Echart_Tools.getSeries();
-    var seriesDb = Echart_Tools.getSeries();
-    seriesTp.name = '颗粒物';
+    var seriesTp = Echart_Tools.getSeries('颗粒物', 'line', PollutantColor.PM);
+    var seriesDb = Echart_Tools.getSeries('噪音值', 'line', PollutantColor.Noise);
+    var seriesPm25 = Echart_Tools.getSeries('PM2.5', 'line', PollutantColor.PM25);
+    var seriesPm100 = Echart_Tools.getSeries('PM10', 'line', PollutantColor.PM100);
     seriesTp.yAxisIndex = 1;
-    seriesTp.itemStyle.normal.color = '#5d4bc1';
-    seriesDb.name = '噪音值';
-    seriesDb.itemStyle.normal.color = '#de366d';
+    seriesPm25.yAxisIndex = 1;
+    seriesPm100.yAxisIndex = 1;
 
     var xAxisData = [];
     var seriesTpData = [];
     var seriesDbData = [];
+    var seriesPm25Data = [];
+    var seriesPm100Data = [];
     $.each(list, function () {
         xAxisData.push($(this)[0].UpdateTime);
         seriesTpData.push($(this)[0].TP);
         seriesDbData.push($(this)[0].DB);
+        seriesPm25Data.push($(this)[0].PM25);
+        seriesPm100Data.push($(this)[0].PM100);
         option.xAxis.data = xAxisData;
         seriesTp.data = seriesTpData;
         seriesDb.data = seriesDbData;
+        seriesPm25.data = seriesPm25Data;
+        seriesPm100.data = seriesPm100Data;
     });
     option.series.push(seriesTp);
     option.series.push(seriesDb);
+    option.series.push(seriesPm25);
+    option.series.push(seriesPm100);
 
     if (!BaseInfo.IsMobileDevice) {
         mainChart.setOption(option);

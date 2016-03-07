@@ -6,7 +6,9 @@
 
 var PollutantType = {
     'ParticulateMatter': 'PM',
-    'Noise': 'NOI'
+    'Noise': 'NOI',
+    'PM25': 'PM25',
+    'PM100': 'PM100'
 }
 
 var QueryDateRange = {
@@ -21,4 +23,11 @@ var QueryDateRange = {
 var WindowOrientation = {
     'Portrait': 'portrait',
     'Landscape': 'landscape'
+}
+
+var PollutantColor = {
+    'PM': '#5d4bc1',
+    'Noise': '#de366d',
+    'PM25': '#0ecba8',
+    'PM100': '#d7761f'
 }

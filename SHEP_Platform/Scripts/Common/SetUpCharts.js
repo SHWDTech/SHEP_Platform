@@ -1,7 +1,7 @@
 ﻿//Echart工具
 var Echart_Tools = {};
 
-Echart_Tools.getSeries = function () {
+Echart_Tools.getSeries = function (name, type, color, data, stack) {
     var series = {
         itemStyle: {
             normal: {
@@ -19,6 +19,23 @@ Echart_Tools.getSeries = function () {
             data: []
         }
     };
+
+    if (name) {
+        series.name = name;
+    }
+    if (type) {
+        series.type = type;
+    }
+    if (color) {
+        series.itemStyle.normal.color = color;
+    }
+    if (data) {
+        series.data = data;
+    }
+    if (stack) {
+        series.stack = stack;
+    }
+
     return series;
 };
 
