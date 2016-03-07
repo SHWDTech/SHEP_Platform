@@ -73,7 +73,26 @@
                     <input type="button" class="form-control" value="关闭视频" onclick="closevideo()"/>
                     <input type="button" class="form-control" value="远程调阅" onclick="remote()"/>
                 </div>
-                <div class="form-gruop" style="margin-top: 15px;"></div>
+                <div class="form-gruop" style="margin-top: 15px;">
+                    <Label>拍照质量：</Label>
+                    <select class="form-control">
+                        <option selected="selected" value="0">最好</option>
+                        <option value="1">很好</option>
+                        <option value="2">较好</option>
+                        <option value="3">一般</option>
+                        <option value="4">较差</option>
+                        <option value="5">最差</option>
+                    </select>
+                    <label>分辨率：</label>
+                    <select class="form-control" id="res">
+                        <option selected="selected" value="0">默认</option>
+                        <option value="1">D1</option>
+                        <option value="2">720P</option>
+                        <option value="3">1080P</option>
+                        <option value="4">CIF</option>
+                        <option value="5">QCIF</option>
+                    </select>
+                </div>
             </form>
         </div>
     </div>
