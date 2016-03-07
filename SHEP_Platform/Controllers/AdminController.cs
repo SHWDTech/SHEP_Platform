@@ -200,6 +200,7 @@ namespace SHEP_Platform.Controllers
                 model.DevStatus = dev.DevStatus;
                 model.StatId = int.Parse(dev.StatId);
                 model.VideoUrl = dev.VideoURL;
+                model.DevOuterCode = dev.OuterCode;
 
                 var devAddr = DbContext.T_DevAddr.First(obj => obj.DevId == dev.Id).NodeId;
 
@@ -245,6 +246,7 @@ namespace SHEP_Platform.Controllers
             dev.VideoURL = model.VideoUrl;
             dev.StatId = model.StatId.ToString();
             dev.DevStatus = model.DevStatus;
+            dev.OuterCode = model.DevOuterCode;
 
 
             if (model.Id == -1)
@@ -257,10 +259,6 @@ namespace SHEP_Platform.Controllers
                     NodeId = Global.StringToHexByte(model.Addr)
                 };
                 DbContext.T_DevAddr.Add(addr);
-            }
-            else
-            {
-                DbContext.T_Devs.Add(dev);
             }
 
 

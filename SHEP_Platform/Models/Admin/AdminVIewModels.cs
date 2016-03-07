@@ -167,6 +167,9 @@ namespace SHEP_Platform.Models.Admin
         [Display(Name = "视频地址")]
         public string VideoUrl { get; set; }
 
+        [Display(Name = "关联外部设备编号")]
+        public string DevOuterCode { get; set; }
+
         public bool IsNew { get; set; }
 
         public SelectList StatList { get; set; } 
