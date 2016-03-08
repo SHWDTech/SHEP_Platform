@@ -9,10 +9,7 @@ namespace SHEP_Platform.Controllers
 {
     public class AjaxController : AjaxControllerBase
     {
-        public JsonResult Access()
-        {
-            return ParseRequest();
-        }
+        public JsonResult Access() => ParseRequest();
 
         // GET: Ajax
         protected override JsonResult ExecuteFun(string functionName)
@@ -215,6 +212,7 @@ namespace SHEP_Platform.Controllers
             {
                 var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString()
                 && item.UpdateTime > startDate && item.DustType == 0).ToList()
+                    // ReSharper disable once PossibleInvalidOperationException
                     .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
 
                 var list = new List<object>();
@@ -229,6 +227,7 @@ namespace SHEP_Platform.Controllers
             {
                 var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString()
                 && item.UpdateTime > startDate && item.DustType == 1).ToList()
+                    // ReSharper disable once PossibleInvalidOperationException
                     .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
 
                 var list = new List<object>();
