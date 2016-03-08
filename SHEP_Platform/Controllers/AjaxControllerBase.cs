@@ -26,9 +26,6 @@ namespace SHEP_Platform.Controllers
             return null;
         }
 
-        protected virtual JsonResult ExecuteFun(string functionName)
-        {
-            return null;
-        }
+        protected virtual JsonResult ExecuteFun(string functionName) => null;
     }
 }

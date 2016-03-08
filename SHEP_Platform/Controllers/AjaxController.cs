@@ -9,10 +9,7 @@ namespace SHEP_Platform.Controllers
 {
     public class AjaxController : AjaxControllerBase
     {
-        public JsonResult Access()
-        {
-            return ParseRequest();
-        }
+        public JsonResult Access() => ParseRequest();
 
         // GET: Ajax
         protected override JsonResult ExecuteFun(string functionName)

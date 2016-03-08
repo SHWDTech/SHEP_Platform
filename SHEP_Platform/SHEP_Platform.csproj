@@ -198,6 +198,7 @@
     <Compile Include="Models\Home\HomeViewModels.cs" />
     <Compile Include="Models\Monitor\MonitorViewModels.cs" />
     <Compile Include="Process\AuthenticationProcess.cs" />
+    <Compile Include="Process\CameraProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="T_Alarms.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
@@ -627,6 +628,8 @@
     <Content Include="Views\Monitor\ScheduleCompare_m.cshtml" />
     <Content Include="Views\Analysis\AveragePolluteReport_m.cshtml" />
     <Content Include="Views\Analysis\AlarmChange_m.cshtml" />
+    <Content Include="Views\Monitor\StatViewTest.cshtml" />
+    <Content Include="Views\Monitor\StatViewTest_m.cshtml" />
     <Content Include="Views\Monitor\StatView.cshtml" />
     <Content Include="Views\Monitor\StatView_m.cshtml" />
   </ItemGroup>
