@@ -428,10 +428,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\base\SiteMobile.css" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap\bootstrap-ie6.css" />
@@ -452,10 +448,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -531,15 +523,9 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <Content Include="Content\_bootstrap-datetimepicker.less" />
-    <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <None Include="Scripts\Utility\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\Utility\jquery-1.12.0.js" />
     <Content Include="Scripts\Utility\jquery-1.12.0.min.js" />
-    <Content Include="Scripts\moment-with-locales.js" />
-    <Content Include="Scripts\moment-with-locales.min.js" />
-    <Content Include="Scripts\moment.js" />
-    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\Page\StatView.js" />
     <Content Include="Images\Site\login-bg.png" />
     <Content Include="Images\Site\Logo-256.ico" />

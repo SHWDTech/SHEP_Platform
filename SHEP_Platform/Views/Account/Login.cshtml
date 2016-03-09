@@ -16,6 +16,9 @@
             <div class="section-title">
                 <h3>@ViewBag.LoginTitle</h3>
             </div>
+            <div>
+                @Html.ValidationSummary(null, new {@class = "text-danger"})
+            </div>
             <div class="textbox-wrap">
                 <div class="input-group">
                     <span class="glyphicon glyphicon-user input-group-addon" aria-hidden="true"></span>

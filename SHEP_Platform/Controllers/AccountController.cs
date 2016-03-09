@@ -50,6 +50,7 @@ namespace SHEP_Platform.Controllers
                 return Redirect(returnUrl);
             }
 
+            ViewBag.LoginTitle = "欢迎登陆本系统";
             ModelState.AddModelError("", "登陆失败，请重新尝试");
             return View(model);
         }
