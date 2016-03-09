@@ -1,4 +1,6 @@
-﻿namespace SHEP_Platform.Models.Monitor
+﻿using System.Collections.Generic;
+
+namespace SHEP_Platform.Models.Monitor
 {
     public class ScheduleCompareViewModel
     {

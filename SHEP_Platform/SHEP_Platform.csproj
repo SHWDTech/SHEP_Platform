@@ -428,79 +428,34 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\base\SiteMobile.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\bootstrap\bootstrap-ie6.css" />
+    <Content Include="Content\bootstrap\bootstrap-ie6.min.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\ie.css" />
+    <Content Include="Content\bootstrap\img\glyphicons-halflings-8.png" />
+    <Content Include="Content\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Page\Home.css" />
     <Content Include="Content\Page\Login.css" />
-    <Content Include="Images\Site\login-bg.png" />
-    <Content Include="Images\Site\Logo-256.ico" />
-    <Content Include="Images\Site\marker_gray_sprite1.png" />
-    <Content Include="Images\Site\marker_red.png" />
-    <Content Include="Images\Site\marker_red_sprite2.png" />
-    <Content Include="Images\Site\WEB_LOGO.ico" />
-    <Content Include="Scripts\bootstrap-datetimepicker.js" />
-    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
-    <Content Include="Scripts\Common\FABridge.js" />
-    <Content Include="Scripts\Common\swfobject.js" />
-    <Content Include="Scripts\Common\video.js" />
-    <Content Include="Scripts\Utility\moment-with-locales.js" />
-    <Content Include="Scripts\Utility\moment-with-locales.min.js" />
-    <Content Include="Scripts\Utility\moment.js" />
-    <Content Include="Scripts\Utility\moment.min.js" />
-    <Content Include="Scripts\Monitor\ActualStatus.js" />
-    <Content Include="Scripts\Monitor\HistoryChange.js" />
-    <Content Include="Scripts\Utility\base.js" />
-    <Content Include="Scripts\Utility\bootstrap-datetimepicker.js" />
-    <Content Include="Scripts\Utility\bootstrap-datetimepicker.min.js" />
-    <Content Include="Scripts\Common\MapManipulation.js" />
-    <Content Include="Scripts\Common\SetUpCharts.js" />
-    <Content Include="Scripts\const.js" />
-    <Content Include="Scripts\Page\Analysis.js" />
-    <Content Include="Scripts\Utility\echarts.js" />
-    <Content Include="Scripts\Utility\echarts.min.js" />
-    <Content Include="Scripts\Utility\modernizr-2.8.3.js" />
-    <Content Include="Scripts\Page\Home.js" />
-    <Content Include="ESMonitor.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ESMonitor.edmx</DependentUpon>
-      <LastGenOutput>ESMonitor.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="ESMonitor.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ESMonitor.edmx</DependentUpon>
-      <LastGenOutput>ESMonitor.cs</LastGenOutput>
-    </Content>
-    <Content Include="Global.asax" />
-    <Content Include="Content\base\Site.css" />
-    <Content Include="Images\Site\107C10.png" />
-    <Content Include="Images\Site\5DC21E.png" />
-    <Content Include="Images\Site\navbg.png" />
-    <Content Include="Scripts\ai.0.15.0-build58334.js" />
-    <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\bootstrap\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap\bootstrap.css.map" />
-    <Content Include="Content\bootstrap\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap\bootstrap-theme.css.map" />
-    <Content Include="Scripts\Utility\bootstrap.js" />
-    <Content Include="Scripts\Utility\bootstrap.min.js" />
-    <Content Include="WEB_LOGO.ico" />
-    <EntityDeploy Include="ESMonitor.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ESMonitor.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="ESMonitor.edmx.diagram">
-      <DependentUpon>ESMonitor.edmx</DependentUpon>
-    </Content>
-    <Content Include="Content\_bootstrap-datetimepicker.less" />
-    <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -576,11 +531,79 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="Content\_bootstrap-datetimepicker.less" />
+    <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <None Include="Scripts\Utility\jquery-1.12.0.intellisense.js" />
+    <Content Include="Scripts\Utility\jquery-1.12.0.js" />
+    <Content Include="Scripts\Utility\jquery-1.12.0.min.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\Page\StatView.js" />
+    <Content Include="Images\Site\login-bg.png" />
+    <Content Include="Images\Site\Logo-256.ico" />
+    <Content Include="Images\Site\marker_gray_sprite1.png" />
+    <Content Include="Images\Site\marker_red.png" />
+    <Content Include="Images\Site\marker_red_sprite2.png" />
+    <Content Include="Images\Site\WEB_LOGO.ico" />
+    <Content Include="Scripts\Common\FABridge.js" />
+    <Content Include="Scripts\Common\swfobject.js" />
+    <Content Include="Scripts\Common\video.js" />
+    <Content Include="Scripts\Utility\bootstrap-ie.js" />
+    <Content Include="Scripts\Utility\moment-with-locales.js" />
+    <Content Include="Scripts\Utility\moment-with-locales.min.js" />
+    <Content Include="Scripts\Utility\moment.js" />
+    <Content Include="Scripts\Utility\moment.min.js" />
+    <Content Include="Scripts\Monitor\ActualStatus.js" />
+    <Content Include="Scripts\Monitor\HistoryChange.js" />
+    <Content Include="Scripts\Utility\base.js" />
+    <Content Include="Scripts\Utility\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\Utility\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\Common\MapManipulation.js" />
+    <Content Include="Scripts\Common\SetUpCharts.js" />
+    <Content Include="Scripts\const.js" />
+    <Content Include="Scripts\Page\Analysis.js" />
+    <Content Include="Scripts\Utility\echarts.js" />
+    <Content Include="Scripts\Utility\echarts.min.js" />
+    <Content Include="Scripts\Utility\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Page\Home.js" />
+    <Content Include="ESMonitor.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ESMonitor.edmx</DependentUpon>
+      <LastGenOutput>ESMonitor.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ESMonitor.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ESMonitor.edmx</DependentUpon>
+      <LastGenOutput>ESMonitor.cs</LastGenOutput>
+    </Content>
+    <Content Include="Global.asax" />
+    <Content Include="Content\base\Site.css" />
+    <Content Include="Images\Site\107C10.png" />
+    <Content Include="Images\Site\5DC21E.png" />
+    <Content Include="Images\Site\navbg.png" />
+    <Content Include="Scripts\ai.0.15.0-build58334.js" />
+    <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bootstrap\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap\bootstrap.css.map" />
+    <Content Include="Content\bootstrap\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap\bootstrap-theme.css.map" />
+    <Content Include="Scripts\Utility\bootstrap.js" />
+    <Content Include="Scripts\Utility\bootstrap.min.js" />
+    <Content Include="WEB_LOGO.ico" />
+    <EntityDeploy Include="ESMonitor.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ESMonitor.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="ESMonitor.edmx.diagram">
+      <DependentUpon>ESMonitor.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Default.pubxml" />
-    <None Include="Scripts\Utility\jquery-2.2.0.intellisense.js" />
-    <Content Include="Scripts\Utility\jquery-2.2.0.js" />
-    <Content Include="Scripts\Utility\jquery-2.2.0.min.js" />
-    <Content Include="Scripts\Utility\jquery-2.2.0.min.map" />
+    <Content Include="Scripts\Utility\jquery-1.12.0.min.map" />
     <None Include="Scripts\Utility\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\Utility\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\Utility\jquery.unobtrusive-ajax.min.js" />

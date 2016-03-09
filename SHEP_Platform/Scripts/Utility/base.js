@@ -2,11 +2,21 @@
 
 BaseInfo.IsMobileDevice = false;
 BaseInfo.Orient = WindowOrientation.Portrait;
+BaseInfo.IsIE = false;
+BaseInfo.IsIE6 = false;
+BaseInfo.IsIE7 = false;
+BaseInfo.IsIE8 = false;
 
 $(function() {
     $(window).on('onorientationchange', function() {
         orient();
     });
+
+    BaseInfo.IsIE = (!!window.ActiveXObject || "ActiveXObject" in window);
+    if (BaseInfo.IsIE) {
+        BaseInfo.IsIE6 = navigator.appVersion.match(/6./i) === "6.";
+        BaseInfo.IsIE7 = navigator.appVersion.match(/7./i) === "7.";
+    }
 });
 
 var trimStr = function (str) {

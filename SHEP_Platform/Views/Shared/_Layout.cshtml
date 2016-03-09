@@ -4,6 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--[if lte IE 6]>
+    <!-- bsie css 补丁文件 -->
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap/bootstrap-ie6.css">
+
+    <!-- bsie 额外的 css 补丁文件 -->
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap/ie.css">
+    <![endif]-->
     <title>
         @ViewBag.Title @{
             if (!string.IsNullOrWhiteSpace(ViewBag.SiteMapMenu.ActionMenu.Name))
@@ -55,7 +63,7 @@
                     <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
                     <span>查询导出</span>
                     <ul class="sub-menu">
-                        <li>@Html.ActionLink("各工程当前情况", "ActualStatus", "Monitor", new {id = ""}, null)</li>
+                        <li>@Html.ActionLink("各工程当前情况", "ActualStatus", "Monitor", new { id = "" }, null)</li>
                         <li>@Html.ActionLink("各工程历史污染物变化情况", "HistoryChange", "Monitor")</li>
                         <li>@Html.ActionLink("按工期进行综合对比", "ScheduleCompare", "Monitor")</li>
                         <li>@Html.ActionLink("查看工地当前状况", "StatView", "Monitor")</li>
@@ -84,9 +92,9 @@
                             <ul class="sub-menu">
                                 <li>@Html.ActionLink("新增监测点", "StatEdit", "Admin", new { id = "" }, null)</li>
                                 <li>@Html.ActionLink("监测点管理", "StatManage", "Admin")</li>
-                                <li>@Html.ActionLink("新增设备", "DevEdit", "Admin", new {id = ""}, null)</li>
+                                <li>@Html.ActionLink("新增设备", "DevEdit", "Admin", new { id = "" }, null)</li>
                                 <li>@Html.ActionLink("设备管理", "DevManage", "Admin")</li>
-                                <li>@Html.ActionLink("新增用户", "UserEdit", "Admin", new {id = ""}, null)</li>
+                                <li>@Html.ActionLink("新增用户", "UserEdit", "Admin", new { id = "" }, null)</li>
                                 <li>@Html.ActionLink("用户管理", "UserManage", "Admin")</li>
                             </ul>
                         </li>
@@ -166,5 +174,9 @@
             activedMenuItem = currentMenuItem;
         }
     </script>
+    <!--[if lte IE 6]>
+    <!-- bsie js 补丁只在IE6中才执行 -->
+    <script type="text/javascript" src="~/Scripts/Utility/bootstrap-ie.js"></script>
+    <![endif]-->
 </body>
 </html>

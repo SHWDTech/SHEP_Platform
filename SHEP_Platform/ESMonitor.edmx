@@ -26,21 +26,25 @@
           <Property Name="DustRange" Type="float" />
           <Property Name="DbRange" Type="float" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“ESMonitor2.dbo.T_Camera”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ESMonitor2.dbo.T_Camera' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_Camera">
           <Key>
             <PropertyRef Name="ID" />
+            <PropertyRef Name="CameraName" />
             <PropertyRef Name="DevId" />
             <PropertyRef Name="DnsAddr" />
+            <PropertyRef Name="Port" />
             <PropertyRef Name="UserName" />
             <PropertyRef Name="PassWord" />
             <PropertyRef Name="CameraId" />
             <PropertyRef Name="Type" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CameraName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="DnsAddr" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Port" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PassWord" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CameraId" Type="int" Nullable="false" />
@@ -92,8 +96,8 @@
           <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="Country" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“ESMonitor2.dbo.T_ESDaytemp1”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ESMonitor2.dbo.T_ESDaytemp1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_ESDaytemp1">
           <Key>
             <PropertyRef Name="Id" />
@@ -170,8 +174,8 @@
           <Property Name="GroupId" Type="int" Nullable="false" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“ESMonitor2.dbo.T_Offset”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_Offset">
           <Key>
             <PropertyRef Name="OffSetCpm" />
@@ -964,8 +968,10 @@
           <EntitySet Name="T_Camera" EntityType="Self.T_Camera" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [T_Camera].[ID] AS [ID], 
+    [T_Camera].[CameraName] AS [CameraName], 
     [T_Camera].[DevId] AS [DevId], 
     [T_Camera].[DnsAddr] AS [DnsAddr], 
+    [T_Camera].[Port] AS [Port], 
     [T_Camera].[UserName] AS [UserName], 
     [T_Camera].[PassWord] AS [PassWord], 
     [T_Camera].[CameraId] AS [CameraId], 
@@ -1276,6 +1282,8 @@
             <PropertyRef Name="PassWord" />
             <PropertyRef Name="CameraId" />
             <PropertyRef Name="Type" />
+            <PropertyRef Name="CameraName" />
+            <PropertyRef Name="Port" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DevId" Type="Int32" Nullable="false" />
@@ -1284,6 +1292,8 @@
           <Property Name="PassWord" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CameraId" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CameraName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Port" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="T_ESDaytemp1">
           <Key>
@@ -1978,7 +1988,7 @@
             <Parameter Name="NowTime" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM100List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100List_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM100OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100OrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1989,7 +1999,7 @@
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM25List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25List_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM25OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25OrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -2666,6 +2676,8 @@
           <EntitySetMapping Name="T_Camera">
             <EntityTypeMapping TypeName="ESMonitorModel.T_Camera">
               <MappingFragment StoreEntitySet="T_Camera">
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="CameraName" ColumnName="CameraName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="DnsAddr" ColumnName="DnsAddr" />

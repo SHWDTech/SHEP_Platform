@@ -296,7 +296,8 @@ li span.date {
     top: 240px;
     left: 600px;
     position: absolute;
-    width: 300px;
+    min-width: 300px;
+    width: auto;
     height: 50px;
     border-radius: 8px;
     border: 1px solid #c7c7c7;

@@ -36,7 +36,7 @@ namespace SHEP_Platform.Controllers
                 defaultId = int.Parse(id);
                 defaultName = WdContext.StatList.First(stat => stat.Id == defaultId).StatName;
             }
-            else if(WdContext.StatList.Count != 0)
+            else if (WdContext.StatList.Count != 0)
             {
                 defaultId = WdContext.StatList[0].Id;
                 defaultName = WdContext.StatList.First(stat => stat.Id == defaultId).StatName;
@@ -73,34 +73,37 @@ namespace SHEP_Platform.Controllers
         public ActionResult ScheduleCompare()
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "按工期进行综合对比";
-            var basic = WdContext.StatList.Where(stat => stat.Stage == (int) Stage.Basic).Select(obj => obj.Id).ToList();
-            var structure = WdContext.StatList.Where(stat => stat.Stage == (int) Stage.Structure).Select(obj =>  obj.Id ).ToList();
+            var basic = WdContext.StatList.Where(stat => stat.Stage == (int)Stage.Basic).Select(obj => obj.Id).ToList();
+            var structure = WdContext.StatList.Where(stat => stat.Stage == (int)Stage.Structure).Select(obj => obj.Id).ToList();
 
             var startDate = DateTime.Now.AddMonths(-1);
-            var basicSource = DbContext.T_ESDay.Where(obj => basic.Contains(obj.StatId) && obj.UpdateTime > startDate) .ToList()
-                .Select(item => new {
+            var basicSource = DbContext.T_ESDay.Where(obj => basic.Contains(obj.StatId) && obj.UpdateTime > startDate).ToList()
+                .Select(item => new
+                {
                     TP = double.Parse((item.TP / 1000).ToString("f2")),
                     DB = double.Parse(item.DB.ToString("f2")),
                     UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd")
                 });
             var structureSource = DbContext.T_ESDay.Where(obj => structure.Contains(obj.StatId) && obj.UpdateTime > startDate).ToList()
-                .Select(item => new {
+                .Select(item => new
+                {
                     TP = double.Parse((item.TP / 1000).ToString("f2")),
                     DB = double.Parse(item.DB.ToString("f2")),
-                    UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd") });
+                    UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd")
+                });
 
-            var dict = new Dictionary<string, object> {{"basic", basicSource}, {"structure", structureSource}};
+            var dict = new Dictionary<string, object> { { "basic", basicSource }, { "structure", structureSource } };
 
             var basicList = basicSource.ToList();
             var structureList = structureSource.ToList();
             var model = new ScheduleCompareViewModel
             {
                 BasicAvgTp = basicList.Any() ? basicList.Average(i => i.TP).ToString("f2") : "暂无数据",
-                BasicAvgDb = basicList.Any() ? basicList.Average(i => i.DB).ToString("f2"): "暂无数据",
+                BasicAvgDb = basicList.Any() ? basicList.Average(i => i.DB).ToString("f2") : "暂无数据",
                 StructureTp = structureList.Any() ? structureList.Average(i => i.TP).ToString("f2") : "暂无数据",
                 StructureDb = structureList.Any() ? structureList.Average(i => i.DB).ToString("f2") : "暂无数据"
             };
-            
+
             ViewBag.Dict = JsonConvert.SerializeObject(dict);
 
             return DynamicView("ScheduleCompare", model);
@@ -109,6 +112,21 @@ namespace SHEP_Platform.Controllers
         public ActionResult StatView()
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "工程实时状况查看";
+
+            var stats = WdContext.StatList;
+            var devs = new List<T_Devs>();
+            var cameras = new List<T_Camera>();
+            foreach (var stat in stats)
+            {
+                devs.AddRange(DbContext.T_Devs.Where(obj => obj.StatId == stat.Id.ToString()));
+            }
+
+            foreach (var dev in devs)
+            {
+                cameras.AddRange(DbContext.T_Camera.Where(item => item.DevId == dev.Id));
+            }
+
+            ViewBag.Cameras = JsonConvert.SerializeObject(cameras);
 
             return DynamicView("StatView");
         }
