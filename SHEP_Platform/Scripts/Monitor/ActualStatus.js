@@ -10,6 +10,10 @@ var ajaxUrl = '/Ajax/Access';
 var tbody = $('#divTable').find('tbody');
 //每分钟更新一次数据
 var timeoutId = null;
+//校零指令列表
+var tasks = [];
+//重复查询结果任务
+var requestId = null;
 
 $(function () {
     if (BaseInfo.IsMobileDevice) {
@@ -25,6 +29,55 @@ $(function () {
         mainChart = echarts.init(document.getElementById('divBar'));
     }
 });
+
+var setDeviceMin = function(id) {
+    var param = {
+        'fun': 'setDeviceMin',
+        'statid': id
+    }
+
+    $('#setMin').prop('disabled', 'disabled');
+    $('#setMin').val('校零（执行中）');
+    $.post(ajaxUrl, param, function(ret) {
+        if (ret.taskAdd === true) {
+            tasks = ret.tasks;
+            questTaskResult(tasks, id);
+        }
+    });
+}
+
+var questTaskResult = function(tasks, statId) {
+    var param = {
+        'fun': 'questTaskResult',
+        'tasks': JSON.stringify(tasks)
+    }
+
+    $('#setMin').val('校零（等待结果）');
+    $.post(ajaxUrl, param, function(ret) {
+        if (ret.success === false) {
+            requestId = setTimeout(function() { questTaskResult(tasks) }, 5000);
+        } else {
+            clearTimeout(requestId);
+            startProof(statId);
+        }
+    });
+}
+
+var startProof = function(statId) {
+    var param = {
+        'fun': 'startProof',
+        'statid': statId
+    }
+
+    $.post(ajaxUrl, param, function(ret) {
+        if (ret.success === true) {
+            $('#setMin').val('校零（完成）');
+            $('#setMin').prop('disabled', '');
+        } else {
+            setTimeout(function () { startProof(statId); }, 5000);
+        }
+    });
+}
 
 var load = function (id, name) {
     if (id === -1 || name === 'null') return;

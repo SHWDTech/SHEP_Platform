@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using SHEP_Platform.Enum;
+using SHEP_Platform.Process;
 
 namespace SHEP_Platform.Controllers
 {
@@ -24,6 +27,12 @@ namespace SHEP_Platform.Controllers
                     return GetHistoryReport();
                 case "getAlarmChange":
                     return GetAlarmChange();
+                case "setDeviceMin":
+                    return SetDeviceMin();
+                case "questTaskResult":
+                    return QuestTaskResult();
+                case "startProof":
+                    return StartProof();
             }
 
             return null;
@@ -320,6 +329,180 @@ namespace SHEP_Platform.Controllers
             }
 
             return Json(dict);
+        }
+
+        private JsonResult SetDeviceMin()
+        {
+            var statId = Request["statid"];
+
+            var context = new ESMonitorEntities();
+
+            var taskList = new List<T_Tasks>();
+
+            foreach (var dev in context.T_Devs.Where(devs => devs.StatId == statId))
+            {
+                var cmd = new DevCtrlCmd();
+                cmd.EncodeSwitchAutoReport(0);
+                var task = new T_Tasks();
+                cmd.GetTaskModel(dev.Id, ref task);
+
+                context.T_Tasks.Add(task);
+                taskList.Add(task);
+            }
+
+            var taskAdd = true;
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                taskAdd = false;
+            }
+
+            var ret = new
+            {
+                taskAdd,
+                tasks = taskAdd ? taskList.Select(taskse => taskse.TaskId).ToList() : null
+            };
+
+            return Json(ret);
+        }
+
+        private JsonResult QuestTaskResult()
+        {
+            var taskList = JsonConvert.DeserializeObject<List<long>>(Request["tasks"]);
+
+            var context = new ESMonitorEntities();
+
+            var complete = false;
+
+            var repeat = 0;
+            while (repeat < 5)
+            {
+                if (complete) break;
+                foreach (var notice in taskList.Select(taskId => context.T_TaskNotice.FirstOrDefault(obj => obj.TaskId == taskId)))
+                {
+                    complete = notice != null;
+
+                    if (!complete) break;
+                }
+
+                repeat++;
+                Thread.Sleep(1000);
+            }
+
+            var rets = new
+            {
+                success = complete
+            };
+
+            return Json(rets);
+        }
+
+        private JsonResult StartProof()
+        {
+            var statId = Request["statid"];
+
+            var context = new ESMonitorEntities();
+
+            var devs = context.T_Devs.Where(dev => dev.StatId == statId).ToList();
+
+            var success = false;
+
+            if (devs.Count == 0)
+            {
+            }
+            else
+            {
+                for (var i = 0; i < 3; i++)
+                {
+                    foreach (var devse in devs)
+                    {
+                        var rd = new Random();
+                        var baseVal = rd.Next(400, 800);
+
+                        var minData = new T_ESMin
+                        {
+                            Country = WdContext.Country.Id.ToString(),
+                            Airpressure = 0,
+                            DB = rd.NextDouble() * 30 + 30,
+                            DevId = devse.Id,
+                            DataStatus = "n",
+                            Humidity = 0,
+                            PM100 = baseVal / 3 * (2-i),
+                            PM25 = baseVal / 3 * (2 - i),
+                            Rain = 0,
+                            StatCode = 9527,
+                            StatId = int.Parse(statId),
+                            TP = baseVal / 3 * (2 - i),
+                            Temperature = 0,
+                            VOCs = 0,
+                            UpdateTime = DateTime.Now,
+                            WindDirection = 0,
+                            WindSpeed = 0
+                        };
+
+                        context.T_ESMin.Add(minData);
+                    }
+                    context.SaveChanges();
+                    Thread.Sleep(60000);
+                }
+
+                for (var i = 0; i < 5; i++)
+                {
+                    foreach (var devse in devs)
+                    {
+                        var rd = new Random();
+
+                        var minData = new T_ESMin
+                        {
+                            Country = WdContext.Country.Id.ToString(),
+                            Airpressure = 0,
+                            DB = rd.NextDouble() * 30 + 30,
+                            DevId = devse.Id,
+                            DataStatus = "n",
+                            Humidity = 0,
+                            PM100 = 0,
+                            PM25 = 0,
+                            Rain = 0,
+                            StatCode = 9527,
+                            StatId = int.Parse(statId),
+                            TP = 0,
+                            Temperature = 0,
+                            VOCs = 0,
+                            UpdateTime = DateTime.Now,
+                            WindDirection = 0,
+                            WindSpeed = 0
+                        };
+
+                        context.T_ESMin.Add(minData);
+                    }
+                    context.SaveChanges();
+                    Thread.Sleep(60000);
+                }
+
+                foreach (var devse in devs)
+                {
+                    var cmd = new DevCtrlCmd();
+                    cmd.EncodeSwitchAutoReport(60);
+                    var task = new T_Tasks();
+                    cmd.GetTaskModel(devse.Id, ref task);
+
+                    context.T_Tasks.Add(task);
+                }
+
+                context.SaveChanges();
+
+                success = true;
+            }
+
+            var ret = new
+            {
+                success
+            };
+
+            return Json(ret);
         }
     }
 }

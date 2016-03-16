@@ -199,6 +199,9 @@
     <Compile Include="Models\Monitor\MonitorViewModels.cs" />
     <Compile Include="Process\AuthenticationProcess.cs" />
     <Compile Include="Process\CameraProcess.cs" />
+    <Compile Include="Process\CRC.cs" />
+    <Compile Include="Process\ProtocolCmd.cs" />
+    <Compile Include="Process\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="T_Alarms.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
