@@ -278,6 +278,22 @@ select {
     color: #d7761f;
 }
 
+.temp {
+    color: #10721c;
+}
+
+.humi {
+    color: #55e7ca;
+}
+
+.windspeed {
+    color: burlywood;
+}
+
+.winddir {
+    color: steelblue;
+}
+
 li span.date {
     color: #b2b2b2;
 }
