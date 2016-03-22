@@ -1,4 +1,5 @@
-﻿@{
+﻿@using SHEP_Platform.Models.Monitor
+@{
     ViewBag.Title = "查询导出";
 }
 
@@ -32,10 +33,16 @@
             </thead>
             <tbody>
                 @{
-                    foreach (KeyValuePair<object, object> stat in ViewBag.StatDict)
+                    foreach (KeyValuePair<object, StatHourInfo> stat in ViewBag.StatDict)
                     {
                         var tStat = stat.Key as T_Stats;
-                        var info = stat.Value as T_ESHour;
+                        var hourInfo = stat.Value;
+                        if (hourInfo == null)
+                        {
+                            continue;
+                        }
+                        var info = hourInfo.Hour;
+                        var current = hourInfo.Current;
 
                         if (tStat == null)
                         {
@@ -58,9 +65,21 @@
                             </tr>
                             <tr>
                                 <td>PM2.5(mg/m³)</td>
-                                <td class="pm25">@((info.PM25.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                                <td class="pm25">@((info.PM25.GetValueOrDefault()/1000).ToString("f2"))</td>
                                 <td>PM10(mg/m³)</td>
-                                <td class="pm100">@((info.PM100.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                                <td class="pm100">@((info.PM100.GetValueOrDefault()/1000).ToString("f2"))</td>
+                            </tr>
+                            <tr>
+                                <td>温度(℃)</td>
+                                <td class="temp">@current.Temperature</td>
+                                <td>湿度(%)</td>
+                                <td class="humi">@current.Humidity</td>
+                            </tr>
+                            <tr>
+                                <td>风速(m/s)</td>
+                                <td class="windspeed">@current.WindSpeed</td>
+                                <td>风向(°)</td>
+                                <td class="winddir">@current.WindDirection</td>
                             </tr>
                         }
                         else
@@ -84,6 +103,18 @@
                                 <td>PM2.5(mg/m³)</td>
                                 <td class="danger">暂无数据</td>
                                 <td>PM10(mg/m³)</td>
+                                <td class="danger">暂无数据</td>
+                            </tr>
+                            <tr>
+                                <td>温度(℃)</td>
+                                <td class="danger">暂无数据</td>
+                                <td>湿度(%)</td>
+                                <td class="danger">暂无数据</td>
+                            </tr>
+                            <tr>
+                                <td>风速(m/s)</td>
+                                <td class="danger">暂无数据</td>
+                                <td>风向(°)</td>
                                 <td class="danger">暂无数据</td>
                             </tr>
                         }

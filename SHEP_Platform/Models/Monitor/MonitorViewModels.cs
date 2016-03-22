@@ -12,4 +12,11 @@ namespace SHEP_Platform.Models.Monitor
 
         public string StructureDb { get; set; }
     }
+
+    public class StatHourInfo
+    {
+        public T_ESHour Hour { get; set; }
+
+        public T_ESMin Current { get; set; }
+    }
 }
