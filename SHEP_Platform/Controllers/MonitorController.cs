@@ -20,12 +20,20 @@ namespace SHEP_Platform.Controllers
         public ActionResult ActualStatus(string id)
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "各工程当前情况";
-            var dict = new Dictionary<object, object>();
+            var dict = new Dictionary<object, StatHourInfo>();
             foreach (var stat in WdContext.StatList)
             {
                 var hour = DateTime.Now.AddHours(-1);
                 var value = DbContext.T_ESHour.FirstOrDefault(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
-                dict.Add(stat, value);
+                var current = DbContext.T_ESMin.LastOrDefault(obj => obj.StatId == stat.Id && obj.UpdateTime.Value.Hour > hour.Hour);
+
+                var info = new StatHourInfo
+                {
+                   Hour = value,
+                   Current = current
+                };
+
+                dict.Add(stat, info);
             }
 
             ViewBag.StatDict = dict;
@@ -50,12 +58,20 @@ namespace SHEP_Platform.Controllers
         public ActionResult HistoryChange()
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "各工程历史污染物变化情况";
-            var dict = new Dictionary<object, object>();
+            var dict = new Dictionary<object, StatHourInfo>();
             foreach (var stat in WdContext.StatList)
             {
                 var hour = DateTime.Now.AddHours(-1);
                 var value = DbContext.T_ESHour.FirstOrDefault(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
-                dict.Add(stat, value);
+                var current = DbContext.T_ESMin.LastOrDefault(obj => obj.StatId == stat.Id && obj.UpdateTime.Value.Hour > hour.Hour);
+
+                var info = new StatHourInfo
+                {
+                    Hour = value,
+                    Current = current
+                };
+
+                dict.Add(stat, info);
             }
 
             ViewBag.StatDict = dict;

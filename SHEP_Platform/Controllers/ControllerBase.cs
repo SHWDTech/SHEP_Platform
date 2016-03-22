@@ -61,14 +61,10 @@ namespace SHEP_Platform.Controllers
             }
         }
 
-        protected ViewResult DynamicView(string viewName)
-        {
-            return View(WdContext.IsMobileDevice ? $"{viewName}_m" : viewName);
-        }
+        protected ViewResult DynamicView(string viewName) 
+            => View(WdContext.IsMobileDevice ? $"{viewName}_m" : viewName);
 
-        protected ViewResult DynamicView(string viewName, object model)
-        {
-            return View(WdContext.IsMobileDevice ? $"{viewName}_m" : viewName, model);
-        }
+        protected ViewResult DynamicView(string viewName, object model) 
+            => View(WdContext.IsMobileDevice ? $"{viewName}_m" : viewName, model);
     }
 }

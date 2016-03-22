@@ -1,4 +1,5 @@
-﻿@{
+﻿@using SHEP_Platform.Models.Monitor
+@{
     ViewBag.Title = "查询导出";
 }
 
@@ -35,7 +36,13 @@
                     foreach (KeyValuePair<object, object> stat in ViewBag.StatDict)
                     {
                         var tStat = stat.Key as T_Stats;
-                        var info = stat.Value as T_ESHour;
+                        var hourInfo = stat.Value as StatHourInfo;
+                        if (hourInfo == null)
+                        {
+                            continue;
+                        }
+                        var info = hourInfo.Hour;
+                        var current = hourInfo.Current;
 
                         if (tStat == null)
                         {
@@ -45,26 +52,56 @@
                         if (info != null)
                         {
                             <tr class="statName">
-                                <td colspan="4">@Html.ActionLink(tStat.StatName, null, null, new {href = "javascript:load("+ @tStat.Id + ",'" + @tStat.StatName + "')" })</td>
+                                <td colspan="4">@Html.ActionLink(tStat.StatName, null, null, new { href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName + "')" })</td>
                             </tr>
                             <tr>
                                 <td>颗粒物</td>
-                                <td class="pm">@(((info.TP)/1000).ToString("f2"))</td>
+                                <td class="pm">@(((info.TP) / 1000).ToString("f2"))</td>
                                 <td>噪音</td>
                                 <td class="db">@info.DB.ToString("f2")</td>
                             </tr>
+                            <tr>
+                                <td>温度</td>
+                                <td class="temp">@current.Temperature</td>
+                                <td>湿度</td>
+                                <td class="humi">@current.Humidity</td>
+                            </tr>
+                            <tr>
+                                <td>风速</td>
+                                <td class="windspeed">@current.WindSpeed</td>
+                                <td>风向</td>
+                                <td class="winddir">@current.WindDirection</td>
+                            </tr>
+
                         }
                         else
                         {
                             <tr class="statName">
-                                <td colspan="4">@Html.ActionLink(tStat.StatName, null, null, new { href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName
-                                               + "')" })</td>
-                            </tr>
+                                <td colspan="4">
+                                    @Html.ActionLink(tStat.StatName, null, null, new
+                                           {
+                                               href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName
+                                                                                                          + "')"
+                                           })
+                            </td>
+                        </tr>
                             <tr>
                                 <td>颗粒物</td>
                                 <td class="danger">暂无数据</td>
                                 <td>噪音</td>
-                                <td></td>
+                                <td class="danger">暂无数据</td>
+                            </tr>
+                            <tr>
+                                <td>温度</td>
+                                <td class="danger">暂无数据</td>
+                                <td>湿度</td>
+                                <td class="danger">暂无数据</td>
+                            </tr>
+                            <tr>
+                                <td>风速</td>
+                                <td class="danger">暂无数据</td>
+                                <td>风向</td>
+                                <td class="danger">暂无数据</td>
                             </tr>
                         }
                     }
