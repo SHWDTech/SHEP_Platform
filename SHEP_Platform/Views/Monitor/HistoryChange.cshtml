@@ -54,10 +54,10 @@
             </thead>
             <tbody>
                 @{
-                    foreach (KeyValuePair<object, object> stat in ViewBag.StatDict)
+                    foreach (KeyValuePair<object, StatHourInfo> stat in ViewBag.StatDict)
                     {
                         var tStat = stat.Key as T_Stats;
-                        var hourInfo = stat.Value as StatHourInfo;
+                        var hourInfo = stat.Value;
                         if (hourInfo == null)
                         {
                             continue;
@@ -82,16 +82,16 @@
                                 <td class="db">@info.DB.ToString("f2")</td>
                             </tr>
                             <tr>
-                                <td>温度</td>
-                                <td class="temp">@current.Temperature</td>
-                                <td>湿度</td>
-                                <td class="humi">@current.Humidity</td>
+                                <td>温度(℃)</td>
+                                <td class="temp">@current.Temperature.ToString("f2")</td>
+                                <td>湿度(%)</td>
+                                <td class="humi">@current.Humidity.ToString("f2")</td>
                             </tr>
                             <tr>
-                                <td>风速</td>
-                                <td class="windspeed">@current.WindSpeed</td>
-                                <td>风向</td>
-                                <td class="winddir">@current.WindDirection</td>
+                                <td>风速(m/s)</td>
+                                <td class="windspeed">@current.WindSpeed.ToString("f2")</td>
+                                <td>风向(°)</td>
+                                <td class="winddir">@current.WindDirection.ToString("f2")</td>
                             </tr>
 
                         }
@@ -113,15 +113,15 @@
                                 <td class="danger">暂无数据</td>
                             </tr>
                             <tr>
-                                <td>温度</td>
+                                <td>温度(℃)</td>
                                 <td class="danger">暂无数据</td>
-                                <td>湿度</td>
+                                <td>湿度(%)</td>
                                 <td class="danger">暂无数据</td>
                             </tr>
                             <tr>
-                                <td>风速</td>
+                                <td>风速(m/s)</td>
                                 <td class="danger">暂无数据</td>
-                                <td>风向</td>
+                                <td>风向(°)</td>
                                 <td class="danger">暂无数据</td>
                             </tr>
                         }
