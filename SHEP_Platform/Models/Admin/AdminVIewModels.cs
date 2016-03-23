@@ -45,9 +45,11 @@ namespace SHEP_Platform.Models.Admin
         public string Telepone { get; set; }
         
         [Range(-180, 180)]
+        [Display(Name = "经度")]
         public decimal Longitude { get; set; }
 
         [Range(-180, 180)]
+        [Display(Name = "纬度")]
         public decimal Latitude { get; set; }
 
         [MaxLength(50)]
