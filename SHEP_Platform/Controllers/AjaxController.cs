@@ -24,6 +24,8 @@ namespace SHEP_Platform.Controllers
                     return GetHistoryReport();
                 case "getAlarmChange":
                     return GetAlarmChange();
+                case "getStatTotalAvgReport":
+                    return GetStatTotalAvgReport();
             }
 
             return null;
@@ -106,6 +108,66 @@ namespace SHEP_Platform.Controllers
                         MinVal = double.Parse(item.Value.OrderByDescending(k => k.AvgDB).First().AvgDB.ToString()).ToString("f2"),
                         ValidNum = item.Value.Count()
                     }).ToList();
+
+                return Json(dict);
+            }
+
+            return null;
+        }
+
+        private JsonResult GetStatTotalAvgReport()
+        {
+            var pollutantType = Request["pollutantType"];
+            var queryDateRange = Request["queryDateRange"];
+            var datePickerValue = Request["datePickerValue"]?.Split(',');
+
+            var startDate = DateTime.MinValue;
+            var endDate = DateTime.Now;
+            switch (queryDateRange)
+            {
+                case QueryDateRange.LastWeek:
+                    startDate = DateTime.Now.AddDays(-7);
+                    break;
+                case QueryDateRange.LastMonth:
+                    startDate = DateTime.Now.AddMonths(-1);
+                    break;
+                case QueryDateRange.LastYear:
+                    startDate = DateTime.Now.AddYears(-1);
+                    break;
+                case QueryDateRange.Customer:
+                    if (datePickerValue == null || datePickerValue.Length < 2)
+                    {
+                        throw new Exception("参数错误");
+                    }
+                    startDate = DateTime.Parse(datePickerValue[0]);
+                    endDate = DateTime.Parse(datePickerValue[1]);
+                    break;
+            }
+
+            var stringBuilder = new StringBuilder();
+
+            if (pollutantType == PollutantType.ParticulateMatter)
+            {
+                stringBuilder.AppendFormat("UpdateTime >='{0}' and UpdateTime <='{1}'",
+                    startDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                stringBuilder.AppendFormat("AND Country = {0}", WdContext.User.Remark);
+
+                var dict = DbContext.T_ESDay_GetAvgCMPList(stringBuilder.ToString())
+                    .Select(obj => new {AvgVal = (obj.AvgTP / 1000.0).Value.ToString("f2")});
+
+                return Json(dict);
+            }
+
+            if (pollutantType == PollutantType.Noise)
+            {
+                stringBuilder.AppendFormat("UpdateTime >='{0}' and UpdateTime <='{1}'",
+                    startDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    endDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                stringBuilder.AppendFormat("AND Country = {0}", WdContext.User.Remark);
+
+                var dict = DbContext.T_ESDay_GetAvgNoiseList(stringBuilder.ToString())
+                    .Select(obj => new { AvgVal = (obj.AvgDB * 1).Value.ToString("f2") });
 
                 return Json(dict);
             }

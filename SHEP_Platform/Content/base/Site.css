@@ -298,3 +298,11 @@ li span.date {
     text-align: center;
     font-size: 18px;
 }
+
+.white {
+    color: #fff;
+}
+
+.white :hover {
+    color: black;
+}

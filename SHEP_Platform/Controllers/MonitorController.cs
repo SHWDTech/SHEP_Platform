@@ -103,5 +103,12 @@ namespace SHEP_Platform.Controllers
 
             return DynamicView("ScheduleCompare", model);
         }
+
+        public ActionResult StatInfomation()
+        {
+            WdContext.SiteMapMenu.ActionMenu.Name = "本区县污染物整体平均浓度";
+
+            return DynamicView("StatInfomation");
+        }
     }
 }
