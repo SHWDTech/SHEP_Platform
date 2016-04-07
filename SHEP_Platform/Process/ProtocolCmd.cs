@@ -9,198 +9,158 @@ namespace SHEP_Platform.Process
 
         public ProtocolCmd()
         {
-            _nodeId = 0;
-            _cmdType = 0;
-            _cmdByte = 0;
-            _srcAddr= 0;
-            _dstAddr = 0;
-            _datalen = 0;
+            NodeId = 0;
+            CmdType = 0;
+            CmdByte = 0;
+            SrcAddr= 0;
+            DstAddr = 0;
+            DataLen = 0;
         }
 
         #region Model
-        private UInt32 _nodeId;
-        private Byte _cmdType;
-        private Byte _cmdByte;
-        private byte[] _pwd = new byte[8];
-        private byte[] _description = new byte [12];
-        private byte _srcAddr;
-        private byte _dstAddr;
-        private byte[] _data = new byte[512];
-        private UInt16 _datalen;
+
         /// <summary>
         /// 节点Id
         /// </summary>
-        public UInt32 NodeId
-        {
-            set { _nodeId = value; }
-            get { return _nodeId; }
-        }
+        public uint NodeId { set; get; }
+
         /// <summary>
         /// 命令码
         /// </summary>
-        public Byte CmdType
-        {
-            set { _cmdType = value; }
-            get { return _cmdType; }
-        }
+        public byte CmdType { set; get; }
+
         /// <summary>
         /// 命令码
         /// </summary>
-        public Byte CmdByte
-        {
-            set { _cmdByte = value; }
-            get { return _cmdByte; }
-        }
+        public byte CmdByte { set; get; }
+
         /// <summary>
         /// 密码
         /// </summary>
-        public byte[] Pwd
-        {
-            set { _pwd = value; }
-            get { return _pwd; }
-        }
+        public byte[] Pwd { set; get; } = new byte[8];
+
         /// <summary>
         /// 描述
         /// </summary>
-        public byte[] Description
-        {
-            set { _description = value; }
-            get { return _description; }
-        }
+        public byte[] Description { set; get; } = new byte [12];
+
         /// <summary>
         /// 源地址
         /// </summary>
-        public Byte SrcAddr
-        {
-            set { _srcAddr = value; }
-            get { return _srcAddr; }
-        }
+        public byte SrcAddr { set; get; }
+
         /// <summary>
         /// 目标地址
         /// </summary>
-        public Byte DstAddr
-        {
-            set { _dstAddr = value; }
-            get { return _dstAddr; }
-        }
+        public byte DstAddr { set; get; }
+
         /// <summary>
         /// 发送数据
         /// </summary>
-        public byte[] Data
-        {
-            set { _data = value; }
-            get { return _data; }
-        }
+        public byte[] Data { set; get; } = new byte[512];
+
         /// <summary>
         /// 发送数据长度
         /// </summary>
-        public UInt16 DataLen
-        {
-            set { _datalen = value; }
-            get { return _datalen; }
-        }
-        public UInt16 PacketLen
-        {
-            get { return (UInt16)(_datalen + 34); }
-        }
+        public ushort DataLen { set; get; }
+
+        public ushort PacketLen => (ushort)(DataLen + 34);
+
         #endregion
         
         #region 命令
         public void EncodeFrame(ref byte[] buffer, ref int bufferLen)
         {
-            UInt16 bufferIndex = 0;
-            UInt16 crc = 0;
-            
+            if (bufferLen <= 0) throw new ArgumentOutOfRangeException(nameof(bufferLen));
+
+            ushort bufferIndex = 0;
+
             buffer[bufferIndex] = 0xAA;
             bufferIndex += 1;
 
-            buffer[bufferIndex] = this.CmdType;
+            buffer[bufferIndex] = CmdType;
             bufferIndex += 1;
 
-            buffer[bufferIndex] = this.CmdByte;
+            buffer[bufferIndex] = CmdByte;
             bufferIndex += 1;
             
-            Array.Copy(this.Pwd, 0, buffer, bufferIndex, 8);
+            Array.Copy(Pwd, 0, buffer, bufferIndex, 8);
             bufferIndex += 8;
 
-            Utility.UINT32ToBytes(this.NodeId, buffer, bufferIndex, false);
+            Utility.Uint32ToBytes(NodeId, buffer, bufferIndex, false);
             bufferIndex += 4;
 
-            Array.Copy(this.Description, 0, buffer, bufferIndex, 12);
+            Array.Copy(Description, 0, buffer, bufferIndex, 12);
             bufferIndex += 12;
             
-            this.SrcAddr = 0x00;
+            SrcAddr = 0x00;
             
-            buffer[bufferIndex] = this.SrcAddr;
+            buffer[bufferIndex] = SrcAddr;
             bufferIndex += 1;
 
-            this.DstAddr = 0x01;
-            buffer[bufferIndex] = this.DstAddr;
+            DstAddr = 0x01;
+            buffer[bufferIndex] = DstAddr;
             bufferIndex += 1;
 
-            Utility.UINT16ToBytes(this.DataLen, buffer, bufferIndex, false);
+            Utility.Uint16ToBytes(DataLen, buffer, bufferIndex, false);
             bufferIndex += 2;
 
-            Array.Copy(this.Data, 0, buffer, bufferIndex, this.DataLen);
+            Array.Copy(Data, 0, buffer, bufferIndex, DataLen);
             bufferIndex += DataLen;
 
             //CRC 
-            crc = CRC.GetUSMBCRC16(buffer, (UInt16)bufferIndex);
+            var crc = CRC.GetUSMBCRC16(buffer, bufferIndex);
 
-            Utility.UINT16ToBytes(crc, buffer, bufferIndex, false);
-            //Array.Copy(buffer, bufferIndex, Utility.UINT16ToBytes(crc, false), 0, 2);
+            Utility.Uint16ToBytes(crc, buffer, bufferIndex, false);
+            //Array.Copy(buffer, bufferIndex, Utility.Uint16ToBytes(crc, false), 0, 2);
             bufferIndex += 2;
 
             buffer[bufferIndex] = 0xDD;
             bufferIndex += 1;
 
             bufferLen = bufferIndex;
-            
-            return;
         }
 
         public bool DecodeFrame(byte[] buffer, int bufferLen)
         {
-            UInt16 bufferIndex = 0;
-            UInt16 crc1 = 0;
-            UInt16 crc2 = 0;
-            
+            ushort bufferIndex = 0;
+
             if (buffer[bufferIndex] != 0xAA)
             {
                 return false;
             }
             bufferIndex += 1;
 
-            this.CmdType = buffer[bufferIndex];
+            CmdType = buffer[bufferIndex];
             bufferIndex += 1;
 
-            this.CmdByte = buffer[bufferIndex];
+            CmdByte = buffer[bufferIndex];
             bufferIndex += 1;
 
-            Array.Copy(buffer, bufferIndex, this.Pwd, 0, 8);
+            Array.Copy(buffer, bufferIndex, Pwd, 0, 8);
             bufferIndex += 8;
 
-            this.NodeId = Utility.BytesToUINT32(buffer, bufferIndex, false);
+            NodeId = Utility.BytesToUint32(buffer, bufferIndex, false);
             bufferIndex += 4;
 
-            Array.Copy(buffer, bufferIndex, this.Description, 0, 12);
+            Array.Copy(buffer, bufferIndex, Description, 0, 12);
             bufferIndex += 12;
 
-            this.SrcAddr = buffer[bufferIndex];
+            SrcAddr = buffer[bufferIndex];
             bufferIndex += 1;
 
-            this.DstAddr = buffer[bufferIndex];
+            DstAddr = buffer[bufferIndex];
             bufferIndex += 1;
 
-            this.DataLen = Utility.BytesToUINT16(buffer, bufferIndex, false);
+            DataLen = Utility.BytesToUint16(buffer, bufferIndex, false);
             bufferIndex += 2;
             
-            Array.Copy(buffer, bufferIndex, this.Data, 0, this.DataLen);
-            bufferIndex += this.DataLen;
+            Array.Copy(buffer, bufferIndex, Data, 0, DataLen);
+            bufferIndex += DataLen;
             
-            crc1 = CRC.GetUSMBCRC16(buffer, (UInt16)bufferIndex);
+            var crc1 = CRC.GetUSMBCRC16(buffer, bufferIndex);
             
-            crc2 = Utility.BytesToUINT16(buffer, bufferIndex, false);
+            var crc2 = Utility.BytesToUint16(buffer, bufferIndex, false);
             bufferIndex += 2;
 
             if (crc1 != crc2)
@@ -225,31 +185,27 @@ namespace SHEP_Platform.Process
 
         public void EncodeCmd()
         {
-            return;
         }
 
         public void DecodeCmd()
         {
-            return;
         }
 
         public void GetTaskModel(int devId, ref T_Tasks model)
         {
-            model.CmdType = this.CmdType;
-            model.CmdByte = this.CmdByte;
+            model.CmdType = CmdType;
+            model.CmdByte = CmdByte;
             model.DevId = devId;
 
             model.Status = 0;
             model.Length = (short)PacketLen;
-            byte[] buffer = new byte[PacketLen];
-            int bufferLen = 0;
+            var buffer = new byte[PacketLen];
+            var bufferLen = 0;
 
             EncodeFrame(ref buffer, ref bufferLen);
             model.Data = buffer;
 
             model.SendTime = DateTime.Now;
-
-            return;
         }
         #endregion
     }
@@ -259,8 +215,8 @@ namespace SHEP_Platform.Process
     {
         public HeartCmd()
         {
-            this.CmdType = 0xF9;
-            this.CmdByte = 0x1F;
+            CmdType = 0xF9;
+            CmdByte = 0x1F;
         }
     }
     #endregion
@@ -271,36 +227,9 @@ namespace SHEP_Platform.Process
     {
         public TimeSyncCmd()
         {
-            this.CmdType = 0xFB;
-            this.CmdByte = 0x1F;
+            CmdType = 0xFB;
+            CmdByte = 0x1F;
         }
-        
-        //public void EncodeCmd(RTCTime model)
-        //{
-        //    UInt16 bufferIndex = 0;
-
-        //    Array.Copy(Utility.UINT16ToBytes(model.Year, false), 0, Data, bufferIndex, 2);
-        //    bufferIndex += 2;
-
-        //    Data[bufferIndex] = model.Month;
-        //    bufferIndex += 1;
-
-        //    Data[bufferIndex] = model.Day;
-        //    bufferIndex += 1;
-
-        //    Data[bufferIndex] = model.Hour;
-        //    bufferIndex += 1;
-
-        //    Data[bufferIndex] = model.Min;
-        //    bufferIndex += 1;
-
-        //    Data[bufferIndex] = model.Sec;
-        //    bufferIndex += 1;
-
-        //    DataLen += bufferIndex;
-            
-        //    return;
-        //}
     }
     #endregion
 
@@ -309,229 +238,181 @@ namespace SHEP_Platform.Process
     {
         public DevCtrlCmd()
         {
-            this.CmdType = 0xFC;
+            CmdType = 0xFC;
         }
         
         //读取CMP
-        public void EncodeCMPReadCmd()
+        public void EncodeCmpReadCmd()
         {
-            this.CmdByte = 0x1F;
-            
-            return;
+            CmdByte = 0x1F;
         }
         
         //CMP周期设置
-        public void EncodeCMPCycleSetCmd(UInt16 cycleTime)
+        public void EncodeCmpCycleSetCmd(ushort cycleTime)
         {
-            this.CmdByte = 0x2F;
-            UInt16 bufferIndex = 0;
+            CmdByte = 0x2F;
+            ushort bufferIndex = 0;
 
-            Utility.UINT16ToBytes(cycleTime, this.Data, bufferIndex, false);
+            Utility.Uint16ToBytes(cycleTime, Data, bufferIndex, false);
             bufferIndex += 2;
             
             DataLen += bufferIndex;
-
-            return;
         }
 
         //CPM停止
-        public void EncodeCMStopCmd()
+        public void EncodeCmStopCmd()
         {
-            this.CmdByte = 0x3F;
-
-            return;
+            CmdByte = 0x3F;
         }
 
         //BG测试开始
-        public void EncodeBGTestStartCmd()
+        public void EncodeBgTestStartCmd()
         {
-            this.CmdByte = 0x4F;
-
-            return;
+            CmdByte = 0x4F;
         }
 
         //BG测试停止
-        public void EncodeBGTestStopCmd()
+        public void EncodeBgTestStopCmd()
         {
-            this.CmdByte = 0x5F;
-
-            return;
+            CmdByte = 0x5F;
         }
 
         //BG测试结果
-        public void EncodeBGTestResultCmd()
+        public void EncodeBgTestResultCmd()
         {
-            this.CmdByte = 0x6F;
-
-            return;
+            CmdByte = 0x6F;
         }
 
         //SPAN测试开始
-        public void EncodeSPANTestStartCmd()
+        public void EncodeSpanTestStartCmd()
         {
-            this.CmdByte = 0x7F;
-
-            return;
+            CmdByte = 0x7F;
         }
 
         //SPAN测试停止
-        public void EncodeSPANTestStopCmd()
+        public void EncodeSpanTestStopCmd()
         {
-            this.CmdByte = 0x8F;
-
-            return;
+            CmdByte = 0x8F;
         }
 
         //SPAN测试结果
-        public void EncodeSPANTestResultCmd()
+        public void EncodeSpanTestResultCmd()
         {
-            this.CmdByte = 0x9F;
-
-            return;
+            CmdByte = 0x9F;
         }
 
         //开关量 OUT1 输出控制
-        public void EncodeSetOUT1Cmd(byte state)
+        public void EncodeSetOut1Cmd(byte state)
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0xAF;
+            ushort bufferIndex = 0;
+            CmdByte = 0xAF;
 
             Data[bufferIndex] = state;
             bufferIndex += 1;
             
             DataLen += bufferIndex;
-            
-            return;
         }
 
         //开关量 OUT2 输出控制
-        public void EncodeSetOUT2Cmd(byte state)
+        public void EncodeSetOut2Cmd(byte state)
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0xBF;
+            ushort bufferIndex = 0;
+            CmdByte = 0xBF;
 
             Data[bufferIndex] = state;
             bufferIndex += 1;
 
             DataLen += bufferIndex;
-
-            return;
         }
 
         //主动上传瞬时值-开
         public void EncodeUpInstNoiseOpenCmd()
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0x1D;
+            ushort bufferIndex = 0;
+            CmdByte = 0x1D;
             
             DataLen += bufferIndex;
-
-            return;
         }
 
         //主动上传瞬时值-关
         public void EncodeUpInstNoiseCloseCmd()
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0x2D;
+            ushort bufferIndex = 0;
+            CmdByte = 0x2D;
             
             DataLen += bufferIndex;
-
-            return;
         }
 
         public void EncodeGpsInfoCmd()
         {
             CmdType = 0xFB;
             CmdByte = 0x2F;
-
-            return;
         }
         
         //上传瞬时值
         public void EncodeUpInstNoiseCmd()
         {
-            this.CmdByte = 0x3D;
-            
-            return;
+            CmdByte = 0x3D;
         }
 
         //主动上传1S值-开
         public void EncodeUpOneSecNoiseOpenCmd()
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0x4D;
+            ushort bufferIndex = 0;
+            CmdByte = 0x4D;
             
             DataLen += bufferIndex;
-
-            return;
         }
 
         //主动上传1s值-关
         public void EncodeUpOneSecNoiseCloseCmd()
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0x5D;
+            ushort bufferIndex = 0;
+            CmdByte = 0x5D;
             
             DataLen += bufferIndex;
-
-            return;
         }
 
         //上传1s值
         public void EncodeUpOneSecNoiseCmd()
         {
-            this.CmdByte = 0x6D;
-
-            return;
+            CmdByte = 0x6D;
         }
 
         //设为Z计权
-        public void EncodeSetZWCmd()
+        public void EncodeSetZwCmd()
         {
-            this.CmdByte = 0x7D;
-
-            return;
+            CmdByte = 0x7D;
         }
 
         //设为C计权
-        public void EncodeSetCWCmd()
+        public void EncodeSetCwCmd()
         {
-            this.CmdByte = 0x8D;
-
-            return;
+            CmdByte = 0x8D;
         }
 
         //设为A计权
-        public void EncodeSetAWCmd()
+        public void EncodeSetAwCmd()
         {
-            this.CmdByte = 0x9D;
-
-            return;
+            CmdByte = 0x9D;
         }
 
         //设为F计权
-        public void EncodeSetFGCmd()
+        public void EncodeSetFgCmd()
         {
-            this.CmdByte = 0xAD;
-
-            return;
+            CmdByte = 0xAD;
         }
 
         //设为S计权
-        public void EncodeSetSGCmd()
+        public void EncodeSetSgCmd()
         {
-            this.CmdByte = 0xBD;
-
-            return;
+            CmdByte = 0xBD;
         }
 
         //设为I计权
-        public void EncodeSetIGCmd()
+        public void EncodeSetIgCmd()
         {
-            this.CmdByte = 0xCD;
-
-            return;
+            CmdByte = 0xCD;
         }
         
         //写入新的灵敏度级
@@ -543,354 +424,327 @@ namespace SHEP_Platform.Process
         //风向写入设备地址
         public void EncodeWindDirWriteDevAddrCmd(byte addr)
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0x1B;
+            ushort bufferIndex = 0;
+            CmdByte = 0x1B;
 
             Data[bufferIndex] = addr;
             bufferIndex += 1;
             
             DataLen += bufferIndex;
-
-            return;
         }
 
         //风向读取实时数据
         public void EncodeReadWindDirCmd(byte addr)
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0x2B;
+            ushort bufferIndex = 0;
+            CmdByte = 0x2B;
 
             Data[bufferIndex] = addr;
             bufferIndex += 1;
 
-            Utility.UINT16ToBytes(0x0000, this.Data, bufferIndex, false);
+            Utility.Uint16ToBytes(0x0000, Data, bufferIndex, false);
             bufferIndex += 2;
 
             Data[bufferIndex] = 0x01;
             bufferIndex += 1;
 
             DataLen += bufferIndex;
-            
-            return;
         }
 
         //风速写入设备地址
         public void EncodeWindSpeedWriteDevAddrCmd(byte addr)
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0x1A;
+            ushort bufferIndex = 0;
+            CmdByte = 0x1A;
 
             Data[bufferIndex] = addr;
             bufferIndex += 1;
 
             DataLen += bufferIndex;
-
-            return;
         }
         
         //风向读取实时数据
         public void EncodeReadWindSpeedCmd(byte addr)
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0x2A;
+            ushort bufferIndex = 0;
+            CmdByte = 0x2A;
 
             Data[bufferIndex] = addr;
             bufferIndex += 1;
 
-            Utility.UINT16ToBytes(0x0000, this.Data, bufferIndex, false);
+            Utility.Uint16ToBytes(0x0000, Data, bufferIndex, false);
             bufferIndex += 2;
 
             Data[bufferIndex] = 0x01;
             bufferIndex += 1;
 
             DataLen += bufferIndex;
-
-            return;
         }
 
         //读取温湿度值
-        public void EncodeReadESDataCmd()
+        public void EncodeReadEsDataCmd()
         {
-            this.CmdByte = 0x19;
-
-            return;
+            CmdByte = 0x19;
         }
         
         public void EncodeReadAllDataCmd()
         {
-            UInt16 bufferIndex = 0;
-            this.CmdByte = 0x08;
+            ushort bufferIndex = 0;
+            CmdByte = 0x08;
 
             DataLen += bufferIndex;
-
-            return;
         }
 
-        public void EncodeSwitchAutoReport(UInt16 cycleTime)
+        public void EncodeSwitchAutoReport(ushort cycleTime)
         {
-            this.CmdByte = 0x17;
-            UInt16 bufferIndex = 0;
+            CmdByte = 0x17;
+            ushort bufferIndex = 0;
 
-            Utility.UINT16ToBytes(cycleTime, this.Data, bufferIndex, false);
+            Utility.Uint16ToBytes(cycleTime, Data, bufferIndex, false);
             bufferIndex += 2;
 
             DataLen += bufferIndex;
-
-            return;
         }
     }
     #endregion
 
     #region 仪器上报&应答信息
-    public struct ESData{
-        public Byte PmState;
+    public struct EsData{
+        public byte PmState;
         public double Pm25;
         public double Pm100;
-        public Byte CmpState;
+        public byte CmpState;
         public double Cmp;
-        public Byte NoiseState;
+        public byte NoiseState;
         public double Noise;
-        public Byte WindDirState;
-        public UInt16 WindDir;
-        public Byte WindSpeedState;
+        public byte WindDirState;
+        public ushort WindDir;
+        public byte WindSpeedState;
         public double WindSpeed;
-        public Byte ESState;
+        public byte EsState;
         public double Temperature;
         public double Humidity;
-    };
+    }
     
     public class DevCtrlResponseCmd : ProtocolCmd
     {
         public DevCtrlResponseCmd()
         {
-            this.CmdType = 0xFD;
+            CmdType = 0xFD;
         }
 
-        public bool DecodeCMPReadCmd(ref double cmp)
+        public bool DecodeCmpReadCmd(ref double cmp)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
             
-            if (this.CmdByte != 0x1F)
+            if (CmdByte != 0x1F)
             {
                 return false;
             }
          
-            if (this.DataLen != 2)
+            if (DataLen != 2)
             {
                 return false;
             }
 
-            cmp = (double)(Utility.BytesToUINT16(this.Data, bufferIndex, false) / 1000.0);
-            bufferIndex += 2;
-            
+            cmp = Utility.BytesToUint16(Data, bufferIndex, false) / 1000.0;
+
             return true;   
         }
 
-        public bool DecodeCMPCycleSetCmd(ref UInt16 cycleTime)
+        public bool DecodeCmpCycleSetCmd(ref ushort cycleTime)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x2F)
+            if (CmdByte != 0x2F)
             {
                 return false;
             }
 
-            if (this.DataLen != 2)
+            if (DataLen != 2)
             {
                 return false;
             }
 
-            cycleTime = Utility.BytesToUINT16(this.Data, bufferIndex, false);
-            bufferIndex += 2;
+            cycleTime = Utility.BytesToUint16(Data, bufferIndex, false);
 
             return true;
         }
 
         //CPM停止
-        public bool DecodeCMStopCmd(ref byte state)
+        public bool DecodeCmStopCmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x3F)
+            if (CmdByte != 0x3F)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
 
         //BG测试开始
-        public bool DecodeBGTestStartCmd(ref byte state)
+        public bool DecodeBgTestStartCmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x4F)
+            if (CmdByte != 0x4F)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
 
         //BG测试停止
-        public bool DecodeBGTestStopCmd(ref byte state)
+        public bool DecodeBgTestStopCmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x5F)
+            if (CmdByte != 0x5F)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
 
         //BG测试结果
-        public bool DecodeBGTestResultCmd(ref byte state)
+        public bool DecodeBgTestResultCmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x6F)
+            if (CmdByte != 0x6F)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
 
         //SPAN测试开始
-        public bool DecodeSPANTestStartCmd(ref byte state)
+        public bool DecodeSpanTestStartCmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x7F)
+            if (CmdByte != 0x7F)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
 
         //SPAN测试停止
-        public bool DecodeSPANTestStopCmd(ref byte state)
+        public bool DecodeSpanTestStopCmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x8F)
+            if (CmdByte != 0x8F)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
 
         //SPAN测试结果
-        public bool DecodeSPANTestResultCmd(ref byte state)
+        public bool DecodeSpanTestResultCmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x9F)
+            if (CmdByte != 0x9F)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
 
         //开关量 OUT1 输出控制
-        public bool DecodeSetOUT1Cmd(ref byte state)
+        public bool DecodeSetOut1Cmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0xAF)
+            if (CmdByte != 0xAF)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
 
         //开关量 OUT2 输出控制
-        public bool DecodeSetOUT2Cmd(ref byte state)
+        public bool DecodeSetOut2Cmd(ref byte state)
         {
-            int bufferIndex = 0;
-
-            if (this.CmdByte != 0xBF)
+            if (CmdByte != 0xBF)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
             state = 1;
-            bufferIndex += 1;
 
             return true;
         }
@@ -898,21 +752,19 @@ namespace SHEP_Platform.Process
         //主动上传瞬时值-开
         public bool DecodeUpInstNoiseOpenCmd(ref double noise)
         {
-            int bufferIndex = 0;
-            UInt16 value;
-            
-            if (this.CmdByte != 0x1D)
+            var bufferIndex = 0;
+
+            if (CmdByte != 0x1D)
             {
                 return false;
             }
 
-            if (this.DataLen != 2)
+            if (DataLen != 2)
             {
                 return false;
             }
             
-            noise = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 10.0);
-            bufferIndex += 2;
+            noise = Data[bufferIndex] + Data[bufferIndex + 1] / 10.0;
 
             return true;
         }
@@ -920,12 +772,12 @@ namespace SHEP_Platform.Process
         //主动上传瞬时值-关
         public bool DecodeUpInstNoiseCloseCmd()
         {
-            if (this.CmdByte != 0x2D)
+            if (CmdByte != 0x2D)
             {
                 return false;
             }
 
-            if (this.DataLen != 0)
+            if (DataLen != 0)
             {
                 return false;
             }
@@ -936,20 +788,19 @@ namespace SHEP_Platform.Process
         //上传瞬时值
         public bool DecodeUpInstNoiseCmd(ref double noise)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x3D)
+            if (CmdByte != 0x3D)
             {
                 return false;
             }
 
-            if (this.DataLen != 2)
+            if (DataLen != 2)
             {
                 return false;
             }
 
-            noise = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 10.0);
-            bufferIndex += 2;
+            noise = Data[bufferIndex] + Data[bufferIndex + 1] / 10.0;
 
             return true;
         }
@@ -957,20 +808,19 @@ namespace SHEP_Platform.Process
         //主动上传1S值-开
         public bool DecodeUpOneSecNoiseOpenCmd(ref double noise)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x4D)
+            if (CmdByte != 0x4D)
             {
                 return false;
             }
 
-            if (this.DataLen != 2)
+            if (DataLen != 2)
             {
                 return false;
             }
 
-            noise = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 10.0);
-            bufferIndex += 2;
+            noise = Data[bufferIndex] + Data[bufferIndex + 1] / 10.0;
 
             return true;
         }
@@ -978,12 +828,12 @@ namespace SHEP_Platform.Process
         //主动上传1s值-关
         public bool DecodeUpOneSecNoiseCloseCmd()
         {
-            if (this.CmdByte != 0x5D)
+            if (CmdByte != 0x5D)
             {
                 return false;
             }
 
-            if (this.DataLen != 0)
+            if (DataLen != 0)
             {
                 return false;
             }
@@ -994,33 +844,32 @@ namespace SHEP_Platform.Process
         //上传1s值
         public bool DecodeUpOneSecNoiseCmd(ref double noise)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
             
-            if (this.CmdByte != 0x6D)
+            if (CmdByte != 0x6D)
             {
                 return false;
             }
 
-            if (this.DataLen != 2)
+            if (DataLen != 2)
             {
                 return false;
             }
 
-            noise = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 10.0);
-            bufferIndex += 2;
+            noise = Data[bufferIndex] + Data[bufferIndex + 1] / 10.0;
 
             return true;
         }
 
         //设为Z计权
-        public bool DecodeSetZWCmd()
+        public bool DecodeSetZwCmd()
         {
-            if (this.CmdByte != 0x7D)
+            if (CmdByte != 0x7D)
             {
                 return false;
             }
 
-            if (this.DataLen != 0)
+            if (DataLen != 0)
             {
                 return false;
             }
@@ -1029,14 +878,14 @@ namespace SHEP_Platform.Process
         }
 
         //设为C计权
-        public bool DecodeSetCWCmd()
+        public bool DecodeSetCwCmd()
         {
-            if (this.CmdByte != 0x8D)
+            if (CmdByte != 0x8D)
             {
                 return false;
             }
 
-            if (this.DataLen != 0)
+            if (DataLen != 0)
             {
                 return false;
             }
@@ -1045,14 +894,14 @@ namespace SHEP_Platform.Process
         }
 
         //设为A计权
-        public bool DecodeSetAWCmd()
+        public bool DecodeSetAwCmd()
         {
-            if (this.CmdByte != 0x9D)
+            if (CmdByte != 0x9D)
             {
                 return false;
             }
 
-            if (this.DataLen != 0)
+            if (DataLen != 0)
             {
                 return false;
             }
@@ -1061,14 +910,14 @@ namespace SHEP_Platform.Process
         }
 
         //设为F计权
-        public bool DecodeSetFGCmd()
+        public bool DecodeSetFgCmd()
         {
-            if (this.CmdByte != 0xAD)
+            if (CmdByte != 0xAD)
             {
                 return false;
             }
 
-            if (this.DataLen != 0)
+            if (DataLen != 0)
             {
                 return false;
             }
@@ -1077,14 +926,14 @@ namespace SHEP_Platform.Process
         }
 
         //设为S计权
-        public bool DecodeSetSGCmd()
+        public bool DecodeSetSgCmd()
         {
-            if (this.CmdByte != 0xBD)
+            if (CmdByte != 0xBD)
             {
                 return false;
             }
 
-            if (this.DataLen != 0)
+            if (DataLen != 0)
             {
                 return false;
             }
@@ -1093,14 +942,14 @@ namespace SHEP_Platform.Process
         }
 
         //设为I计权
-        public bool DecodeSetIGCmd()
+        public bool DecodeSetIgCmd()
         {
-            if (this.CmdByte != 0xCD)
+            if (CmdByte != 0xCD)
             {
                 return false;
             }
 
-            if (this.DataLen != 0)
+            if (DataLen != 0)
             {
                 return false;
             }
@@ -1117,44 +966,42 @@ namespace SHEP_Platform.Process
         //风向写入设备地址
         public bool DecodeWindDirWriteDevAddrCmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x1B)
+            if (CmdByte != 0x1B)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
 
         //风向读取实时数据
-        public bool DecodeReadWindDirCmd(ref byte addr, ref UInt16 windDir)
+        public bool DecodeReadWindDirCmd(ref byte addr, ref ushort windDir)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x2B)
+            if (CmdByte != 0x2B)
             {
                 return false;
             }
 
-            if (this.DataLen != 3)
+            if (DataLen != 3)
             {
                 return false;
             }
 
-            addr = this.Data[bufferIndex];
+            addr = Data[bufferIndex];
             bufferIndex += 1;
             
-            windDir = Utility.BytesToUINT16(this.Data, bufferIndex, false);
-            bufferIndex += 2;
+            windDir = Utility.BytesToUint16(Data, bufferIndex, false);
 
             return true;
         }
@@ -1162,20 +1009,19 @@ namespace SHEP_Platform.Process
         //风速写入设备地址
         public bool DecodeWindSpeedWriteDevAddrCmd(ref byte state)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x1A)
+            if (CmdByte != 0x1A)
             {
                 return false;
             }
 
-            if (this.DataLen != 1)
+            if (DataLen != 1)
             {
                 return false;
             }
 
-            state = this.Data[bufferIndex];
-            bufferIndex += 1;
+            state = Data[bufferIndex];
 
             return true;
         }
@@ -1183,54 +1029,52 @@ namespace SHEP_Platform.Process
         //风向读取实时数据
         public bool DecodeReadWindSpeedCmd(ref byte addr, ref double windSpeed)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x2A)
+            if (CmdByte != 0x2A)
             {
                 return false;
             }
 
-            if (this.DataLen != 3)
+            if (DataLen != 3)
             {
                 return false;
             }
 
-            addr = this.Data[bufferIndex];
+            addr = Data[bufferIndex];
             bufferIndex += 1;
 
-            windSpeed = (double)(Utility.BytesToUINT16(this.Data, bufferIndex, false) / 10.0);
-            bufferIndex += 2;
+            windSpeed = Utility.BytesToUint16(Data, bufferIndex, false) / 10.0;
 
             return true;
         }
 
         //读取温湿度值
-        public bool DecodeReadESDataCmd(ref double temperature, ref double humidity)
+        public bool DecodeReadEsDataCmd(ref double temperature, ref double humidity)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
-            if (this.CmdByte != 0x19)
+            if (CmdByte != 0x19)
             {
                 return false;
             }
 
-            if (this.DataLen != 4)
+            if (DataLen != 4)
             {
                 return false;
             }
 
-            temperature = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 100.0);
+            temperature = Data[bufferIndex] + Data[bufferIndex + 1] / 100.0;
             bufferIndex += 2;
 
-            humidity = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 100.0);
-            bufferIndex += 2;
+            humidity = Data[bufferIndex] + Data[bufferIndex + 1] / 100.0;
 
             return true;
         }
 
-        public bool DecodeReadAllDataCmd(ref ESData model)
+        public bool DecodeReadAllDataCmd(ref EsData model)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
             CmdByte = 0x27;
 
@@ -1239,52 +1083,51 @@ namespace SHEP_Platform.Process
                 return false;
             }
 
-            UInt16 flag = Utility.BytesToUINT16(Data, bufferIndex, false);
+            var flag = Utility.BytesToUint16(Data, bufferIndex, false);
             bufferIndex += 2;
 
-            model.PmState = (Byte)((flag >> 5) & 0x01);
-            model.CmpState = (Byte)((flag >> 4) & 0x01);
-            model.NoiseState = (Byte)((flag >> 3) & 0x01);
-            model.WindDirState = (Byte)((flag >> 2) & 0x01);
-            model.WindSpeedState = (Byte)((flag >> 1) & 0x01);
-            model.ESState = (Byte)(flag & 0x01);
+            model.PmState = (byte)((flag >> 5) & 0x01);
+            model.CmpState = (byte)((flag >> 4) & 0x01);
+            model.NoiseState = (byte)((flag >> 3) & 0x01);
+            model.WindDirState = (byte)((flag >> 2) & 0x01);
+            model.WindSpeedState = (byte)((flag >> 1) & 0x01);
+            model.EsState = (byte)(flag & 0x01);
 
-            model.Pm25 = Utility.BytesToINT32(Data, bufferIndex, false);
+            model.Pm25 = Utility.BytesToInt32(Data, bufferIndex, false);
             bufferIndex += 4;
 
-            model.Pm100 = Utility.BytesToINT32(Data, bufferIndex, false);
+            model.Pm100 = Utility.BytesToInt32(Data, bufferIndex, false);
             bufferIndex += 4;
 
-            model.Cmp = Utility.BytesToINT32(Data, bufferIndex, false);
+            model.Cmp = Utility.BytesToInt32(Data, bufferIndex, false);
             bufferIndex += 4;
 
-            model.Noise = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 10.0);
+            model.Noise = Data[bufferIndex] + Data[bufferIndex + 1] / 10.0;
             bufferIndex += 2;
 
             //addr
             bufferIndex += 1;
 
-            model.WindDir = Utility.BytesToUINT16(Data, bufferIndex, false);
+            model.WindDir = Utility.BytesToUint16(Data, bufferIndex, false);
             bufferIndex += 2;
 
             //addr
             bufferIndex += 1;
 
-            model.WindSpeed = Utility.BytesToUINT16(Data, bufferIndex, false) / 10.0;
+            model.WindSpeed = Utility.BytesToUint16(Data, bufferIndex, false) / 10.0;
             bufferIndex += 2;
 
-            model.Temperature = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 100.0);
+            model.Temperature = Data[bufferIndex] + Data[bufferIndex + 1] / 100.0;
             bufferIndex += 2;
 
-            model.Humidity = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 100.0);
-            bufferIndex += 2;
+            model.Humidity = Data[bufferIndex] + Data[bufferIndex + 1] / 100.0;
 
             return true;
         }
 
-        public bool DecodeUpdateAllCmd(ref ESData model)
+        public bool DecodeUpdateAllCmd(ref EsData model)
         {
-            int bufferIndex = 0;
+            var bufferIndex = 0;
 
             CmdByte = 0x27;
 
@@ -1293,64 +1136,59 @@ namespace SHEP_Platform.Process
                 return false;
             }
 
-            UInt16 flag = Utility.BytesToUINT16(Data, bufferIndex, false);
+            var flag = Utility.BytesToUint16(Data, bufferIndex, false);
             bufferIndex += 2;
 
-            model.PmState = (Byte)((flag >> 5) & 0x01);
-            model.CmpState = (Byte)((flag >> 4) & 0x01);
-            model.NoiseState = (Byte)((flag >> 3) & 0x01);
-            model.WindDirState = (Byte)((flag >> 2) & 0x01);
-            model.WindSpeedState = (Byte)((flag >> 1) & 0x01);
-            model.ESState = (Byte)(flag & 0x01);
+            model.PmState = (byte)((flag >> 5) & 0x01);
+            model.CmpState = (byte)((flag >> 4) & 0x01);
+            model.NoiseState = (byte)((flag >> 3) & 0x01);
+            model.WindDirState = (byte)((flag >> 2) & 0x01);
+            model.WindSpeedState = (byte)((flag >> 1) & 0x01);
+            model.EsState = (byte)(flag & 0x01);
 
-            model.Pm25 = Utility.BytesToINT32(Data, bufferIndex, false);
+            model.Pm25 = Utility.BytesToInt32(Data, bufferIndex, false);
             bufferIndex += 4;
 
-            model.Pm100 = Utility.BytesToINT32(Data, bufferIndex, false);
+            model.Pm100 = Utility.BytesToInt32(Data, bufferIndex, false);
             bufferIndex += 4;
 
-            model.Cmp = Utility.BytesToINT32(Data, bufferIndex, false);
+            model.Cmp = Utility.BytesToInt32(Data, bufferIndex, false);
             bufferIndex += 4;
 
-            model.Noise = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 10.0);
+            model.Noise = Data[bufferIndex] + Data[bufferIndex + 1] / 10.0;
             bufferIndex += 2;
 
             //addr
             bufferIndex += 1;
 
-            model.WindDir = Utility.BytesToUINT16(Data, bufferIndex, false);
+            model.WindDir = Utility.BytesToUint16(Data, bufferIndex, false);
             bufferIndex += 2;
 
             //addr
             bufferIndex += 1;
 
-            model.WindSpeed = Utility.BytesToUINT16(Data, bufferIndex, false) / 10.0;
+            model.WindSpeed = Utility.BytesToUint16(Data, bufferIndex, false) / 10.0;
             bufferIndex += 2;
 
-            model.Temperature = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 100.0);
+            model.Temperature = Data[bufferIndex] + Data[bufferIndex + 1] / 100.0;
             bufferIndex += 2;
 
-            model.Humidity = (double)(this.Data[bufferIndex] + this.Data[bufferIndex + 1] / 100.0);
-            bufferIndex += 2;
+            model.Humidity = Data[bufferIndex] + Data[bufferIndex + 1] / 100.0;
 
             return true;
         }
         public bool DecodeSwitchAutoReport(ref byte state)
         {
-            int bufferIndex = 0;
-
-            if (this.CmdByte != 0x17)
+            if (CmdByte != 0x17)
             {
                 return false;
             }
 
-            if (this.DataLen != 2)
+            if (DataLen != 2)
             {
                 return false;
             }
             state = 1;
-
-            bufferIndex += 1;
 
             return true;
         }

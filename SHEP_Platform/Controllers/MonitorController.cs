@@ -153,5 +153,8 @@ namespace SHEP_Platform.Controllers
 
             return DynamicView("StatViewTest");
         }
+
+
+        public ActionResult StatViewHik() => View();
     }
 }

@@ -33,6 +33,12 @@ namespace SHEP_Platform.Controllers
                     return QuestTaskResult();
                 case "startProof":
                     return StartProof();
+                case "cameraMoveControl":
+                    return CameraMoveControl();
+                case "cameraMoveStop":
+                    return CameraMoveStop();
+                case "capturePicture":
+                    return CapturePicture();
             }
 
             return null;
@@ -430,7 +436,7 @@ namespace SHEP_Platform.Controllers
                             DevId = devse.Id,
                             DataStatus = "n",
                             Humidity = 0,
-                            PM100 = baseVal / 3 * (2-i),
+                            PM100 = baseVal / 3 * (2 - i),
                             PM25 = baseVal / 3 * (2 - i),
                             Rain = 0,
                             StatCode = 9527,
@@ -502,6 +508,54 @@ namespace SHEP_Platform.Controllers
                 success
             };
 
+            return Json(ret);
+        }
+
+        private JsonResult CameraMoveControl()
+        {
+            var dir = Request["dir"];
+
+            var controlResult = HikCameraControl.ControlPlatform(dir);
+
+            var ret = new
+            {
+                success = controlResult
+            };
+
+            return Json(ret);
+        }
+
+        private JsonResult CameraMoveStop()
+        {
+            var controlResult = HikCameraControl.StopControlPlatform();
+
+            var ret = new
+            {
+                success = controlResult
+            };
+
+            return Json(ret);
+        }
+
+        private JsonResult CapturePicture()
+        {
+            var success = false;
+            var started = HkAction.Start();
+            if (started)
+            {
+                HkAction.GetAccessToken();
+                HkAction.AllocSession();
+                HkAction.GetCameraList();
+                HkAction.StartPlay();
+
+                success = HkAction.CapturePicture($"D:\\CameraPicture\\{DateTime.Now.ToString("yyyyMMddHHmmssffff")}.jpg");
+            }
+
+
+            var ret = new
+            {
+                success
+            };
             return Json(ret);
         }
     }

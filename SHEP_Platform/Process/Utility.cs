@@ -1,43 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web;
+using System.Security.Cryptography;
+using System.Text;
 
-namespace Web.Common
+namespace SHEP_Platform.Process
 {
     public class Utility
     {
-        #region MD5加密
-        /// <summary>
-        /// MD5加密算法
-        /// </summary>
-        /// <param name="str">字符串</param>
-        /// <param name="code">加密方式,16或32</param>
-        /// <returns></returns>
-        public static string MD5(string str, int code)
-        {
-            if (code == 16) //16位MD5加密（取32位加密的9~25字符） 
-            {
-                return System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(str, "MD5").ToLower().Substring(8, 16);
-            }
-            else//32位加密 
-            {
-                return System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(str, "MD5").ToLower();
-            }
-        }
-        #endregion
-        
         #region 大小端转换
+
         /// <summary>
         /// UINT64 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="offset"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static void UINT64ToBytes(UInt64 value, byte[] buffer, int offset, bool IsLittleEndian)
+        public static void Uint64ToBytes(ulong value, byte[] buffer, int offset, bool isLittleEndian)
         {
-            int bufferIndex = offset;
+            var bufferIndex = offset;
             
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[bufferIndex] = (byte)(value & 0xFF);
                 bufferIndex++;
@@ -61,7 +44,6 @@ namespace Web.Common
                 bufferIndex++;
 
                 buffer[bufferIndex] = (byte)((value >> 56) & 0xFF);
-                bufferIndex++;
             }
             else
             {
@@ -87,23 +69,22 @@ namespace Web.Common
                 bufferIndex++;
 
                 buffer[bufferIndex] = (byte)(value & 0xFF);
-                bufferIndex++;
             }
-
-            return;
         }
 
         /// <summary>
         /// INT64 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="offset"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static void INT64ToBytes(Int64 value, byte[] buffer, int offset, bool IsLittleEndian)
+        public static void Int64ToBytes(long value, byte[] buffer, int offset, bool isLittleEndian)
         {
-            int bufferIndex = offset;
+            var bufferIndex = offset;
             
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {            
                 buffer[bufferIndex] = (byte)(value & 0xFF);
                 bufferIndex++;
@@ -127,7 +108,6 @@ namespace Web.Common
                 bufferIndex++;
 
                 buffer[bufferIndex] = (byte)((value >> 56) & 0xFF);
-                bufferIndex++;
             }
             else
             {
@@ -153,23 +133,22 @@ namespace Web.Common
                 bufferIndex++;
                 
                 buffer[bufferIndex] = (byte)(value & 0xFF);
-                bufferIndex++;
             }
-
-            return;
         }
 
         /// <summary>
         /// UINT32 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="offset"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static void UINT32ToBytes(UInt32 value, byte[] buffer, int offset, bool IsLittleEndian)
+        public static void Uint32ToBytes(uint value, byte[] buffer, int offset, bool isLittleEndian)
         {
-            int bufferIndex = offset;
+            var bufferIndex = offset;
             
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[bufferIndex] = (byte)(value & 0xFF);
                 bufferIndex++;
@@ -181,7 +160,6 @@ namespace Web.Common
                 bufferIndex++;
 
                 buffer[bufferIndex] = (byte)((value >> 24) & 0xFF);
-                bufferIndex++;
             }
             else
             {
@@ -195,23 +173,22 @@ namespace Web.Common
                 bufferIndex++;
 
                 buffer[bufferIndex] = (byte)(value & 0xFF);
-                bufferIndex++;
             }
-
-            return;
         }
 
         /// <summary>
         /// INT32 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="offset"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static void INT32ToBytes(Int32 value, byte[] buffer, int offset, bool IsLittleEndian)
+        public static void Int32ToBytes(int value, byte[] buffer, int offset, bool isLittleEndian)
         {
-            int bufferIndex = offset;
+            var bufferIndex = offset;
             
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[bufferIndex] = (byte)(value & 0xFF);
                 bufferIndex++;
@@ -223,7 +200,6 @@ namespace Web.Common
                 bufferIndex++;
 
                 buffer[bufferIndex] = (byte)((value >> 24) & 0xFF);
-                bufferIndex++;
             }
             else
             {
@@ -237,10 +213,7 @@ namespace Web.Common
                 bufferIndex++;
                 
                 buffer[bufferIndex] = (byte)(value & 0xFF);
-                bufferIndex++;
             }
-
-            return;
         }
 
 
@@ -248,19 +221,20 @@ namespace Web.Common
         /// UINT16 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="offset"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static void UINT16ToBytes(UInt16 value, byte[] buffer, int offset, bool IsLittleEndian)
+        public static void Uint16ToBytes(ushort value, byte[] buffer, int offset, bool isLittleEndian)
         {
-            int bufferIndex = offset;
+            var bufferIndex = offset;
             
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[bufferIndex] = (byte)(value & 0xFF);
                 bufferIndex++;
 
                 buffer[bufferIndex] = (byte)((value >> 8) & 0xFF);
-                bufferIndex++;
             }
             else
             {
@@ -268,23 +242,22 @@ namespace Web.Common
                 bufferIndex++;
                 
                 buffer[bufferIndex] = (byte)(value & 0xFF);
-                bufferIndex++;
             }
-
-            return;
         }
 
         /// <summary>
         /// INT32 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="offset"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static void INT16ToBytes(Int16 value, byte[] buffer, int offset, bool IsLittleEndian)
+        public static void Int16ToBytes(short value, byte[] buffer, int offset, bool isLittleEndian)
         {
-            int bufferIndex = offset;
+            var bufferIndex = offset;
             
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[bufferIndex] = (byte)(value & 0xFF);
                 bufferIndex++;
@@ -297,21 +270,19 @@ namespace Web.Common
                 bufferIndex++;
                 buffer[bufferIndex] = (byte)(value & 0xFF);
             }
-
-            return;
         }
         
         /// <summary>
         /// UINT64 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="isLittleEndian"></param>
         /// <returns></returns>
-        public static byte[] UINT64ToBytes(UInt64 value, bool IsLittleEndian)
+        public static byte[] Uint64ToBytes(ulong value, bool isLittleEndian)
         {
-            byte[] buffer = new byte[8];
+            var buffer = new byte[8];
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[7] = (byte)((value >> 56) & 0xFF);
                 buffer[6] = (byte)((value >> 48) & 0xFF);
@@ -343,13 +314,13 @@ namespace Web.Common
         /// INT64 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="isLittleEndian"></param>
         /// <returns></returns>
-        public static byte[] INT64ToBytes(Int64 value, bool IsLittleEndian)
+        public static byte[] Int64ToBytes(long value, bool isLittleEndian)
         {
-            byte[] buffer = new byte[8];
+            var buffer = new byte[8];
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[7] = (byte)((value >> 56) & 0xFF);
                 buffer[6] = (byte)((value >> 48) & 0xFF);
@@ -381,13 +352,13 @@ namespace Web.Common
         /// UINT32 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="isLittleEndian"></param>
         /// <returns></returns>
-        public static byte[] UINT32ToBytes(UInt32 value, bool IsLittleEndian)
+        public static byte[] Uint32ToBytes(uint value, bool isLittleEndian)
         {
-            byte[] buffer = new byte[4];
+            var buffer = new byte[4];
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[3] = (byte)((value >> 24) & 0xFF);
                 buffer[2] = (byte)((value >> 16) & 0xFF);
@@ -409,13 +380,13 @@ namespace Web.Common
         /// INT32 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="isLittleEndian"></param>
         /// <returns></returns>
-        public static byte[] INT32ToBytes(Int32 value, bool IsLittleEndian)
+        public static byte[] Int32ToBytes(int value, bool isLittleEndian)
         {
-            byte[] buffer = new byte[4];
+            var buffer = new byte[4];
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[3] = (byte)((value >> 24) & 0xFF);
                 buffer[2] = (byte)((value >> 16) & 0xFF);
@@ -438,13 +409,13 @@ namespace Web.Common
         /// UINT16 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="isLittleEndian"></param>
         /// <returns></returns>
-        public static byte[] UINT16ToBytes(UInt16 value, bool IsLittleEndian)
+        public static byte[] Uint16ToBytes(ushort value, bool isLittleEndian)
         {
-            byte[] buffer = new byte[2];
+            var buffer = new byte[2];
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[1] = (byte)((value >> 8) & 0xFF);
                 buffer[0] = (byte)(value & 0xFF);
@@ -462,13 +433,13 @@ namespace Web.Common
         /// INT32 转 bytes
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="isLittleEndian"></param>
         /// <returns></returns>
-        public static byte[] INT16ToBytes(Int32 value, bool IsLittleEndian)
+        public static byte[] Int16ToBytes(int value, bool isLittleEndian)
         {
-            byte[] buffer = new byte[2];
+            var buffer = new byte[2];
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
                 buffer[1] = (byte)((value >> 8) & 0xFF);
                 buffer[0] = (byte)(value & 0xFF);
@@ -483,27 +454,27 @@ namespace Web.Common
         }
 
 
-        
         /// <summary>
         ///  bytes转UINT64
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="bufferIndex"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static UInt64 BytesToUINT64(byte[] buffer, int bufferIndex, bool IsLittleEndian)
+        public static ulong BytesToUint64(byte[] buffer, int bufferIndex, bool isLittleEndian)
         {
-            UInt64 val;
+            ulong val;
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
-                val = ((UInt64)((buffer[bufferIndex + 7] << 56) + (buffer[bufferIndex + 6] << 48)
+                val = ((ulong)((buffer[bufferIndex + 7] << 56) + (buffer[bufferIndex + 6] << 48)
                     + (buffer[bufferIndex + 5] << 40) + (buffer[bufferIndex + 4] << 32)
                     + (buffer[bufferIndex + 3] << 24) + (buffer[bufferIndex + 2] << 16)
                     + (buffer[bufferIndex + 1] << 8) + buffer[bufferIndex])) & 0xFFFFFFFFFFFFFFFF;
             }
             else
             {
-                val = ((UInt64)((buffer[bufferIndex] << 56) + (buffer[bufferIndex + 1] << 48)
+                val = ((ulong)((buffer[bufferIndex] << 56) + (buffer[bufferIndex + 1] << 48)
                     + (buffer[bufferIndex + 2] << 40) + (buffer[bufferIndex + 3] << 32)
                     + (buffer[bufferIndex + 4] << 24) + (buffer[bufferIndex + 5] << 16)
                     + (buffer[bufferIndex + 6] << 8) + buffer[bufferIndex + 7])) & 0xFFFFFFFFFFFFFFFF;
@@ -515,26 +486,27 @@ namespace Web.Common
         /// <summary>
         ///  bytes转INT64
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="bufferIndex"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static Int64 BytesToINT64(byte[] buffer, int bufferIndex, bool IsLittleEndian)
+        public static long BytesToInt64(byte[] buffer, int bufferIndex, bool isLittleEndian)
         {
-            Int64 val;
+            long val;
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
-                val = ((Int64)((buffer[bufferIndex + 7] << 56) + (buffer[bufferIndex + 6] << 48)
-                    + (buffer[bufferIndex + 5] << 40) + (buffer[bufferIndex + 4] << 32)
-                    + (buffer[bufferIndex + 3] << 24) + (buffer[bufferIndex + 2] << 16)
-                    + (buffer[bufferIndex + 1] << 8) + buffer[bufferIndex])) & 0x7FFFFFFFFFFFFFFF;
+                val = (buffer[bufferIndex + 7] << 56) + (buffer[bufferIndex + 6] << 48)
+                      + (buffer[bufferIndex + 5] << 40) + (buffer[bufferIndex + 4] << 32)
+                      + (buffer[bufferIndex + 3] << 24) + (buffer[bufferIndex + 2] << 16)
+                      + (buffer[bufferIndex + 1] << 8) + buffer[bufferIndex] & 0x7FFFFFFFFFFFFFFF;
             }
             else
             {
-                val = ((Int64)((buffer[bufferIndex] << 56) + (buffer[bufferIndex + 1] << 48)
-                    + (buffer[bufferIndex + 2] << 40) + (buffer[bufferIndex + 3] << 32)
-                    + (buffer[bufferIndex + 4] << 24) + (buffer[bufferIndex + 5] << 16)
-                    + (buffer[bufferIndex + 6] << 8) + buffer[bufferIndex + 7])) & 0x7FFFFFFFFFFFFFFF;
+                val = (buffer[bufferIndex] << 56) + (buffer[bufferIndex + 1] << 48)
+                      + (buffer[bufferIndex + 2] << 40) + (buffer[bufferIndex + 3] << 32)
+                      + (buffer[bufferIndex + 4] << 24) + (buffer[bufferIndex + 5] << 16)
+                      + (buffer[bufferIndex + 6] << 8) + buffer[bufferIndex + 7] & 0x7FFFFFFFFFFFFFFF;
             }
 
             return val;
@@ -543,21 +515,22 @@ namespace Web.Common
         /// <summary>
         ///  bytes转UINT32
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="bufferIndex"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static UInt32 BytesToUINT32(byte[] buffer, int bufferIndex, bool IsLittleEndian)
+        public static uint BytesToUint32(byte[] buffer, int bufferIndex, bool isLittleEndian)
         {
-            UInt32 val;
+            uint val;
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
-                val = ((UInt32)((buffer[bufferIndex + 3] << 24) + (buffer[bufferIndex + 2] << 16)
+                val = ((uint)((buffer[bufferIndex + 3] << 24) + (buffer[bufferIndex + 2] << 16)
                     + (buffer[bufferIndex + 1] << 8) + buffer[bufferIndex])) & 0xFFFFFFFF;
             }
             else
             {
-                val = ((UInt32)((buffer[bufferIndex] << 24) + (buffer[bufferIndex + 1] << 16)
+                val = ((uint)((buffer[bufferIndex] << 24) + (buffer[bufferIndex + 1] << 16)
                     + (buffer[bufferIndex + 2] << 8) + buffer[bufferIndex + 3])) & 0xFFFFFFFF;
             }
 
@@ -567,22 +540,23 @@ namespace Web.Common
         /// <summary>
         ///  bytes转INT32
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="bufferIndex"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static Int32 BytesToINT32(byte[] buffer, int bufferIndex, bool IsLittleEndian)
+        public static int BytesToInt32(byte[] buffer, int bufferIndex, bool isLittleEndian)
         {
-            Int32 val;
+            int val;
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
-                val = ((Int32)((buffer[bufferIndex + 3] << 24) + (buffer[bufferIndex + 2] << 16)
-                    + (buffer[bufferIndex + 1] << 8) + buffer[bufferIndex])) & 0x7FFFFFFF;
+                val = (buffer[bufferIndex + 3] << 24) + (buffer[bufferIndex + 2] << 16)
+                      + (buffer[bufferIndex + 1] << 8) + buffer[bufferIndex] & 0x7FFFFFFF;
             }
             else
             {
-                val = ((Int32)((buffer[bufferIndex] << 24) + (buffer[bufferIndex + 1] << 16)
-                    + (buffer[bufferIndex + 2] << 8) + buffer[bufferIndex + 3])) & 0x7FFFFFFF;
+                val = (buffer[bufferIndex] << 24) + (buffer[bufferIndex + 1] << 16)
+                      + (buffer[bufferIndex + 2] << 8) + buffer[bufferIndex + 3] & 0x7FFFFFFF;
             }
 
             return val;
@@ -591,20 +565,21 @@ namespace Web.Common
         /// <summary>
         ///  bytes转UINT16
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="bufferIndex"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static UInt16 BytesToUINT16(byte[] buffer, int bufferIndex, bool IsLittleEndian)
+        public static ushort BytesToUint16(byte[] buffer, int bufferIndex, bool isLittleEndian)
         {
-            UInt16 val;
+            ushort val;
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
-                val = (UInt16)(((buffer[bufferIndex + 1] << 8) + buffer[bufferIndex]) & 0xFFFF);
+                val = (ushort)(((buffer[bufferIndex + 1] << 8) + buffer[bufferIndex]) & 0xFFFF);
             }
             else
             {
-                val = (UInt16)(((buffer[bufferIndex] << 8) + buffer[bufferIndex + 1]) & 0xFFFF);
+                val = (ushort)(((buffer[bufferIndex] << 8) + buffer[bufferIndex + 1]) & 0xFFFF);
             }
 
             return val;
@@ -613,20 +588,21 @@ namespace Web.Common
         /// <summary>
         ///  bytes转INT16
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="IsLittleEndian"></param>
+        /// <param name="bufferIndex"></param>
+        /// <param name="isLittleEndian"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static Int16 BytesToINT16(byte[] buffer, int bufferIndex, bool IsLittleEndian)
+        public static short BytesToInt16(byte[] buffer, int bufferIndex, bool isLittleEndian)
         {
-            Int16 val;
+            short val;
 
-            if (IsLittleEndian)
+            if (isLittleEndian)
             {
-                val = (Int16)(((buffer[bufferIndex + 1] << 8) + buffer[bufferIndex]) & 0x7FFF);
+                val = (short)(((buffer[bufferIndex + 1] << 8) + buffer[bufferIndex]) & 0x7FFF);
             }
             else
             {
-                val = (Int16)(((buffer[bufferIndex] << 8) + buffer[bufferIndex + 1]) & 0x7FFF);
+                val = (short)(((buffer[bufferIndex] << 8) + buffer[bufferIndex + 1]) & 0x7FFF);
             }
 
             return val;
@@ -644,11 +620,37 @@ namespace Web.Common
             hexString = hexString.Replace(" ", "");
             if ((hexString.Length % 2) != 0)
                 hexString += " ";
-            byte[] returnBytes = new byte[hexString.Length / 2];
-            for (int i = 0; i < returnBytes.Length; i++)
+            var returnBytes = new byte[hexString.Length / 2];
+            for (var i = 0; i < returnBytes.Length; i++)
                 returnBytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
             
             return returnBytes;
+        }
+
+        /// <summary>
+        /// Gets the unix time stamp.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetUnixTimeStamp()
+        {
+            var start = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return $"{Convert.ToInt64((DateTime.Now.AddHours(-8) - start).TotalMilliseconds) / 1000}";
+        }
+
+        /// <summary>
+        /// Gets the MD5.
+        /// </summary>
+        /// <param name="str">The string.</param>
+        /// <returns></returns>
+        public static string GetMd5(string str)
+        {
+            if (string.IsNullOrWhiteSpace(str))
+            {
+                return string.Empty;
+            }
+
+            var md5 = new MD5CryptoServiceProvider();
+            return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(str))).ToLower().Replace("-", "");
         }
         #endregion
     }
