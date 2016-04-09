@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -652,6 +654,22 @@ namespace SHEP_Platform.Process
             var md5 = new MD5CryptoServiceProvider();
             return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(str))).ToLower().Replace("-", "");
         }
+
+        /// <summary>
+        /// 计算噪音值均值
+        /// </summary>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
+        public static double GetNoiseAverage(List<double> values)
+        {
+            var mathCount = values.Sum(value => GetPow(value));
+
+            return 10*Math.Log10(mathCount/values.Count);
+        }
+
+        public static double GetPow(double value)
+            => Math.Pow(10, value/10.0);
+
         #endregion
     }
 }

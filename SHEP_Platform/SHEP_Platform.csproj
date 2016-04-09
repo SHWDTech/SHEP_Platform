@@ -527,6 +527,7 @@
     <Content Include="bdPlayer\js\cyberplayer.html5.min.js" />
     <Content Include="bdPlayer\js\cyberplayer.min.js" />
     <Content Include="bdPlayer\player\cyberplayer.flash.swf" />
+    <Content Include="Content\base\Animation.css" />
     <Content Include="Content\base\SiteMobile.css" />
     <Content Include="Content\bootstrap\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap\bootstrap-datetimepicker.min.css" />

@@ -32,7 +32,8 @@ namespace SHEP_Platform
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap/bootstrap.css",
-                      "~/Content/base/site.css"));
+                      "~/Content/base/site.css",
+                      "~/Content/base/Animation.css"));
 
             bundles.Add(new StyleBundle("~/Content/mobilecss").Include(
                       "~/Content/bootstrap/bootstrap.css",

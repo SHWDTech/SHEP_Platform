@@ -323,3 +323,25 @@ li span.date {
     text-align: center;
     font-size: 18px;
 }
+
+.stretchBox {
+    -webkit-animation: strectch 1s;
+    -moz-animation: strectch 1s;
+    -o-animation: strectch 1s;
+    animation: strectch 1s;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    -o-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+
+.collapseBox {
+    -webkit-animation: collapse 1s;
+    -moz-animation: collapse 1s;
+    -o-animation: collapse 1s;
+    animation: collapse 1s;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    -o-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
