@@ -1,20 +1,47 @@
-﻿@{
+﻿@using SHEP_Platform.Models.Home
+@model HomeStatList
+@{
     ViewBag.Title = "系统首页";
 }
 
-<div id="projectList">
-    
-</div>
-<div id="basicInfo">
-    <div style="height: 150px;">
-        <div class="panel panel-default">
-            <div class="panel-body infoWrap">
-                <div id="infobroad">
-                </div>
-            </div>
+<div style="display: flex;">
+    <div id="projectList">
+        <div style="width: 185px; height: 630px; margin-right: 15px;">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <td style="text-align: center;">工地列表</td>
+                    </tr>
+                    <tr>
+                        <td>名称</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var statList in Model.StatLists)
+                        {
+                            <tr>
+                                <td>@Html.ActionLink(statList.Name, "ActualStatus", "Monitor", new {statList.Id}, null )</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
-    <div id="mapContainer"></div>
+    <div id="basicInfo" style="width: 100%;">
+        <div>
+            <div style="height: 150px;">
+                <div class="panel panel-default">
+                    <div class="panel-body infoWrap">
+                        <div id="infobroad">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mapContainer"></div>
+        </div>
+    </div>
 </div>
 
 @section Css{

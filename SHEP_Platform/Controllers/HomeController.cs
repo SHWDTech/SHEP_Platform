@@ -19,8 +19,17 @@ namespace SHEP_Platform.Controllers
 
             var list = new List<StatStatus>();
 
+            var homestatList = new HomeStatList();
+
             foreach (var stat in stats)
             {
+                var statmodel = new StatList
+                {
+                    Id = stat.Id,
+                    Name = stat.StatName,
+                    Address = stat.Address
+                };
+
                 var statId = stat.Id.ToString();
                 var devIds = DbContext.T_Devs.Where(dev => dev.StatId == statId).Select(devId => devId.Id).ToArray();
 
@@ -60,11 +69,15 @@ namespace SHEP_Platform.Controllers
                     Latitude = stat.Latitude,
                     PolluteType = PolluteType.NotOverRange
                 });
+
+                statmodel.AvgTp = (tpTotal/validDev/1000.0).ToString("f2");
+                statmodel.AvgDb = (dbTotal/validDev).ToString("f2");
+                homestatList.StatLists.Add(statmodel);
             }
 
             ViewBag.Status = JsonConvert.SerializeObject(list);
 
-            return DynamicView("Index");
+            return DynamicView("Index", homestatList);
         }
     }
 }
