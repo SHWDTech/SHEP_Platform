@@ -7,6 +7,20 @@ BaseInfo.IsIE6 = false;
 BaseInfo.IsIE7 = false;
 BaseInfo.IsIE8 = false;
 
+var customerModal = {};
+
+customerModal.Show = function(option) {
+    if (!$('#customerModal')) return;
+
+    var instance = $('#customerModal');
+
+    instance.find('.modal-header').html(option.header);
+
+    instance.find('.modal-body').html(option.body);
+
+    instance.modal({keyboard: true, show: true});
+}
+
 $(function() {
     $(window).on('onorientationchange', function() {
         orient();

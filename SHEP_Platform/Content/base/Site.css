@@ -345,3 +345,7 @@ li span.date {
     -o-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
 }
+
+#customerModal {
+    display: none;
+}

@@ -30,6 +30,8 @@ namespace SHEP_Platform.Models.Home
     public class HomeStatList
     {
         public List<StatList> StatLists { get; set; } = new List<StatList>();
+
+        public AlarmInfo AlarmInfo { get; set; } = new AlarmInfo();
     }
 
     public class StatList
@@ -43,5 +45,16 @@ namespace SHEP_Platform.Models.Home
         public string AvgDb { get; set; }
 
         public string Address { get; set; }
+    }
+
+    public class AlarmInfo
+    {
+        public int PmAlarm { get; set; }
+
+        public int DbAlarm { get; set; }
+
+        public int WeekTotalPmAlarm { get; set; }
+
+        public int WeekTotalDbAlarm { get; set; }
     }
 }

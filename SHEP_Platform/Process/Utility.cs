@@ -670,6 +670,15 @@ namespace SHEP_Platform.Process
         public static double GetPow(double value)
             => Math.Pow(10, value/10.0);
 
+        public static DateTime GetLastWeekdayOfMonth(DateTime date, DayOfWeek day)
+        {
+            var lastDayOfMonth = new DateTime(date.Year, date.Month, 1)
+                .AddMonths(1).AddDays(-1);
+            var wantedDay = (int)day;
+            var lastDay = (int)lastDayOfMonth.DayOfWeek;
+            return lastDayOfMonth.AddDays(
+                lastDay >= wantedDay ? wantedDay - lastDay : wantedDay - lastDay - 7);
+        }
         #endregion
     }
 }

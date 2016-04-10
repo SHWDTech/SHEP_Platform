@@ -39,6 +39,8 @@ namespace SHEP_Platform.Controllers
                     return CameraMoveStop();
                 case "capturePicture":
                     return CapturePicture();
+                case "getAlarmInfo":
+                    return GetAlarmInfo();
             }
 
             return null;
@@ -556,6 +558,29 @@ namespace SHEP_Platform.Controllers
             {
                 success
             };
+            return Json(ret);
+        }
+
+        private JsonResult GetAlarmInfo()
+        {
+            var todayPmAlarm = DbContext.T_Alarms.Count(obj => obj.UpdateTime > DateTime.Today && obj.DustType == 0);
+
+            var todayDbAlarm = DbContext.T_Alarms.Count(obj => obj.UpdateTime > DateTime.Today && obj.DustType == 1);
+
+            var sunday = Utility.GetLastWeekdayOfMonth(DateTime.Now, DayOfWeek.Sunday);
+
+            var totalPmAlarm = DbContext.T_Alarms.Count(obj => obj.UpdateTime > sunday && obj.DustType == 0);
+
+            var totalDbAlarm = DbContext.T_Alarms.Count(obj => obj.UpdateTime > sunday && obj.DustType == 1);
+
+            var ret = new
+            {
+                todayPmAlarm,
+                todayDbAlarm,
+                totalPmAlarm,
+                totalDbAlarm
+            };
+
             return Json(ret);
         }
     }

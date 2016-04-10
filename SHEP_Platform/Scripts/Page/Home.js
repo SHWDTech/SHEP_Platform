@@ -21,6 +21,7 @@ $(function () {
     var load = document.createElement("script");
     load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init(updateStats)";
     document.body.appendChild(load);
+    showAlarmInfo();
 });
 
 var updateStats = function() {
@@ -48,4 +49,10 @@ var switchMap = function () {
     } else {
         $('#' + containerName).fadeOut();
     }
+}
+
+var showAlarmInfo = function() {
+    $.post("/Ajax/Access", null, function (ret) {
+
+    });
 }
