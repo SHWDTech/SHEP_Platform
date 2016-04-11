@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SHEP_Platform.Models.Monitor
 {
@@ -18,5 +19,18 @@ namespace SHEP_Platform.Models.Monitor
         public T_ESHour Hour { get; set; }
 
         public T_ESMin Current { get; set; }
+    }
+
+    public class AlarmDetail
+    {
+        public string StatName { get; set; }
+
+        public int Id { get; set; } 
+
+        public string AlarmType { get; set; }
+
+        public string AlarmDateTime { get; set; }
+
+        public string AlarmValue { get; set; }
     }
 }

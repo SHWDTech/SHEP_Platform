@@ -200,12 +200,23 @@ li .glyphicon {
     color: #fff !important;
 }
 
+.navbar-right > li > span {
+    color: #fff;
+    padding: 15px;
+    display: block;
+    cursor: pointer;
+}
+
 .navbar-top-links li a:hover {
     background-color: transparent;
 }
 
 .navbar-top-links li:last-child {
     margin-right: 20px;
+}
+
+.badge-danger {
+    background-color: red !important;
 }
 
 .slogn {

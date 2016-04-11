@@ -6,6 +6,7 @@ using System.Threading;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using SHEP_Platform.Enum;
+using SHEP_Platform.Models.Monitor;
 using SHEP_Platform.Process;
 
 namespace SHEP_Platform.Controllers
@@ -302,13 +303,12 @@ namespace SHEP_Platform.Controllers
         private JsonResult GetAlarmChange()
         {
             var pollutantType = Request["pollutantType"];
-            var startDate = DateTime.Now.AddMonths(-1);
             var dict = new List<object>();
 
             if (pollutantType == PollutantType.ParticulateMatter)
             {
                 var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString()
-                && item.UpdateTime > startDate && item.DustType == 0).ToList()
+                /*&& item.UpdateTime > startDate*/ && item.DustType == 0).ToList()
                     // ReSharper disable once PossibleInvalidOperationException
                     .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
 
@@ -323,7 +323,7 @@ namespace SHEP_Platform.Controllers
             else
             {
                 var alarms = DbContext.T_Alarms.Where(item => item.Country == WdContext.Country.Id.ToString()
-                && item.UpdateTime > startDate && item.DustType == 1).ToList()
+                /*&& item.UpdateTime > startDate*/ && item.DustType == 1).ToList()
                     // ReSharper disable once PossibleInvalidOperationException
                     .GroupBy(obj => obj.UpdateTime.Value.ToString("yyyy-MM-dd")).ToList();
 
@@ -563,22 +563,45 @@ namespace SHEP_Platform.Controllers
 
         private JsonResult GetAlarmInfo()
         {
-            var todayPmAlarm = DbContext.T_Alarms.Count(obj => obj.UpdateTime > DateTime.Today && obj.DustType == 0);
+            var start = DateTime.Now.AddMinutes(-5);
 
-            var todayDbAlarm = DbContext.T_Alarms.Count(obj => obj.UpdateTime > DateTime.Today && obj.DustType == 1);
+            var todayPmAlarm = DbContext.T_Alarms.Where(obj => obj.UpdateTime > start && obj.DustType == 0);
 
-            var sunday = Utility.GetLastWeekdayOfMonth(DateTime.Now, DayOfWeek.Sunday);
+            var todayDbAlarm = DbContext.T_Alarms.Where(obj => obj.UpdateTime > start && obj.DustType == 1);
 
-            var totalPmAlarm = DbContext.T_Alarms.Count(obj => obj.UpdateTime > sunday && obj.DustType == 0);
+            var details = new List<AlarmDetail>();
+            foreach (var pmAlarm in todayPmAlarm)
+            {
+                var stat = DbContext.T_Stats.First(obj => obj.Id == pmAlarm.StatId);
+                if (pmAlarm.StatId != null)
+                {
+                    var detail = new AlarmDetail {StatName = stat.StatName, Id = pmAlarm.StatId.Value };
+                    if (pmAlarm.UpdateTime != null) detail.AlarmDateTime = pmAlarm.UpdateTime.Value.ToString("hh:mm:ss");
+                    detail.AlarmType = "扬尘值";
+                    if (pmAlarm.FaultVal != null) detail.AlarmValue = ((pmAlarm.FaultVal.Value) / 1000.0).ToString("f2");
 
-            var totalDbAlarm = DbContext.T_Alarms.Count(obj => obj.UpdateTime > sunday && obj.DustType == 1);
+                    details.Add(detail);
+                }
+            }
+
+            foreach (var dbAlarm in todayDbAlarm)
+            {
+                var stat = DbContext.T_Stats.First(obj => obj.Id == dbAlarm.StatId);
+                if (dbAlarm.StatId != null)
+                {
+                    var detail = new AlarmDetail { StatName = stat.StatName, Id = dbAlarm.StatId.Value };
+                    if (dbAlarm.UpdateTime != null) detail.AlarmDateTime = dbAlarm.UpdateTime.Value.ToString("hh:mm:ss");
+                    detail.AlarmType = "扬尘值";
+                    if (dbAlarm.FaultVal != null) detail.AlarmValue = dbAlarm.FaultVal.Value.ToString("f2");
+
+                    details.Add(detail);
+                }
+            }
 
             var ret = new
             {
-                todayPmAlarm,
-                todayDbAlarm,
-                totalPmAlarm,
-                totalDbAlarm
+                total = todayDbAlarm.Count() + todayPmAlarm.Count(),
+                details
             };
 
             return Json(ret);
