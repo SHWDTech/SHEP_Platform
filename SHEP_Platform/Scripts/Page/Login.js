@@ -7,3 +7,11 @@
         $(this).parents('.textbox-wrap').removeClass("focuesd");
     });
 })
+
+
+var EncrypSubmit = function () {
+    var hashObj = new jsSHA('SHA-256', 'TEXT', 1);
+    hashObj.update($('#Password').val());
+    $('#Password').val(hashObj.getHash('HEX'));
+    document.getElementById('loginform').submit();
+}
