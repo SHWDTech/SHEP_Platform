@@ -6,51 +6,51 @@
 }
 
 <div>
-    @using (Html.BeginForm("UserEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;" }))
+    @using (Html.BeginForm("UserEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;", @Id = "usereditform" }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.UserId)
         <div class="form-group">
             @Html.LabelFor(m => m.UserName)
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control"})
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Mobile)
-            @Html.TextBoxFor(m => m.Mobile, new {@class = "form-control"})
+            @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.EmailAddress)
-            @Html.TextBoxFor(m => m.EmailAddress, new {@class = "form-control"})
+            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Remark)
-            @Html.DropDownListFor(m => m.Remark, Model.CountryList, new {@class = "form-control"})
+            @Html.DropDownListFor(m => m.Remark, Model.CountryList, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.Remark, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.RoleId)
-            @Html.DropDownListFor(m => m.RoleId, Model.RoleList, new {@class = "form-control"})
+            @Html.DropDownListFor(m => m.RoleId, Model.RoleList, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.PassWord)
-            @Html.PasswordFor(m => m.PassWord, new {@class = "form-control"})
+            @Html.PasswordFor(m => m.PassWord, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.PassWord, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-success">
+            <button type="button" class="btn btn-success" onclick="EnvrypSubmit()">
                 提交
             </button>
         </div>
@@ -75,4 +75,17 @@
             min-width: 310px !important;
         }
     </style>
+}
+
+@section scripts{
+    <script src="~/Scripts/Utility/sha.js"></script>
+    <script type="text/javascript">
+        var EnvrypSubmit = function () {
+            // ReSharper disable once InconsistentNaming
+            var hashObj = new jsSHA('SHA-256', 'TEXT', 1);
+            hashObj.update($('#PassWord').val());
+            $('#PassWord').val(hashObj.getHash('HEX'));
+            document.getElementById('usereditform').submit();
+        }
+    </script>
 }

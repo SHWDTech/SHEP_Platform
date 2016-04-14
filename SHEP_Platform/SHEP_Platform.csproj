@@ -463,6 +463,7 @@
     <Content Include="Content\bootstrap\bootstrap-theme.css.map" />
     <Content Include="Scripts\Utility\bootstrap.js" />
     <Content Include="Scripts\Utility\bootstrap.min.js" />
+    <Content Include="Scripts\Utility\sha.js" />
     <Content Include="WEB_LOGO.ico" />
     <EntityDeploy Include="ESMonitor.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
