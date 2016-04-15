@@ -24,8 +24,10 @@ namespace SHEP_Platform.Controllers
             foreach (var stat in WdContext.StatList)
             {
                 var hour = DateTime.Now.AddHours(-1);
-                var value = DbContext.T_ESHour.FirstOrDefault(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
-                var current = DbContext.T_ESMin.Where(obj => obj.StatId == stat.Id).ToList().LastOrDefault();
+                var value = DbContext.T_ESHour.OrderByDescending(obj => obj.UpdateTime)
+                    .FirstOrDefault(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
+                var current = DbContext.T_ESMin.OrderByDescending(obj => obj.UpdateTime)
+                    .FirstOrDefault(obj => obj.StatId == stat.Id);
 
                 var info = new StatHourInfo
                 {
