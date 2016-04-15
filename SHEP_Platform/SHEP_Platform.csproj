@@ -173,6 +173,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
     <Compile Include="Enum\HikMethod.cs" />
+    <Compile Include="Enum\LoginResultType.cs" />
     <Compile Include="Enum\PollutantType.cs" />
     <Compile Include="Enum\PolluteType.cs" />
     <Compile Include="Enum\QueryDateRange.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Process\HikCameraControl.cs" />
     <Compile Include="Process\HkAction.cs" />
     <Compile Include="Process\HkSdk.cs" />
+    <Compile Include="Process\LoginResult.cs" />
     <Compile Include="Process\ProtocolCmd.cs" />
     <Compile Include="Process\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

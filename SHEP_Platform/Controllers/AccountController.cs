@@ -34,25 +34,28 @@ namespace SHEP_Platform.Controllers
             {
                 return View(model);
             }
-            
-            var user = AccountProcess.Login(model.UserName, model.Password);
-            if (user != null)
+
+
+
+            var result = AccountProcess.Login(model.UserName, model.Password);
+
+            if (result.User == null)
             {
-                FormsAuthentication.SetAuthCookie(model.UserName, true);
-                var usrIdCookie = Request.Cookies?.Get("UserId") ?? new HttpCookie("UserId");
-                usrIdCookie.Value = user.UserId.ToString();
-                usrIdCookie.Expires = DateTime.Now.AddMonths(1);
-                Response.AppendCookie(usrIdCookie);
-                if (string.IsNullOrWhiteSpace(returnUrl))
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                return Redirect(returnUrl);
+                ViewBag.LoginTitle = "欢迎登陆本系统";
+                ModelState.AddModelError(result.ErrorElement, result.ErrorMessage);
+                return View(model);
             }
 
-            ViewBag.LoginTitle = "欢迎登陆本系统";
-            ModelState.AddModelError("", "登陆失败，请重新尝试");
-            return View(model);
+            FormsAuthentication.SetAuthCookie(model.UserName, true);
+            var usrIdCookie = Request.Cookies?.Get("UserId") ?? new HttpCookie("UserId");
+            usrIdCookie.Value = result.User.UserId.ToString();
+            usrIdCookie.Expires = DateTime.Now.AddMonths(1);
+            Response.AppendCookie(usrIdCookie);
+            if (string.IsNullOrWhiteSpace(returnUrl))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return Redirect(returnUrl);
         }
 
         // POST: /Account/LogOff

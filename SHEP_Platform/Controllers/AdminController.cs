@@ -425,6 +425,12 @@ namespace SHEP_Platform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            if (DbContext.T_Users.FirstOrDefault(obj => obj.UserName == model.UserName) != null)
+            {
+                ModelState.AddModelError("UserName", "系统已存在同名用户");
+                return View(model);
+            }
+
             if (string.IsNullOrWhiteSpace(model.PassWord))
             {
                 ModelState.AddModelError("PassWord", "密码不能为空！");
