@@ -519,6 +519,8 @@
     <Content Include="Images\Site\WEB_LOGO.ico" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\Page\StatView.js" />
+    <Content Include="Scripts\Page\StatViewHik.js" />
     <Content Include="Scripts\Utility\moment-with-locales.js" />
     <Content Include="Scripts\Utility\moment-with-locales.min.js" />
     <Content Include="Scripts\Utility\moment.js" />
