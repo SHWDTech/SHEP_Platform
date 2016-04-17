@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "工程实时状况查看";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" src="/bdPlayer/js/cyberplayer.min.js"></script>
+
+<div style="display: flex;">
+    <div style="width: 500px; padding-left: 30px;" class="form-inline">
+        <div class="form-group" style="margin-bottom: 30px;">
+            <input type="button" class="form-control camerabtn" value="近景" onclick="Near()" />
+            <input type="button" class="form-control camerabtn" value="上" onmousedown="Up()" onmouseup="Stop()"/>
+            <input type="button" class="form-control camerabtn" value="远景" onclick="Far()" />
+        </div>
+        <div style="margin-bottom: 30px;">
+            <input type="button" class="form-control camerabtn" value="左" onmousedown="Left()" onmouseup="Stop()"/>
+            <input type="button" class="form-control camerabtn" value="拍照" onclick="CapturePicture()"/>
+            <input type="button" class="form-control camerabtn" value="右" onmousedown="Right()" onmouseup="Stop()"/>
+        </div>
+        <div>
+            <input type="button" class="form-control camerabtn" value="焦点调远" onclick="FocusFar()" />
+            <input type="button" class="form-control camerabtn" value="下" onmousedown="Down()" onmouseup="Stop()"/>
+            <input type="button" class="form-control camerabtn" value="焦点调近" onclick="FocusNear()" />
+        </div>
+    </div>
+    <div style="width: 100%;">
+        <div id="playerContainer"></div>
+    </div>
+</div>
+
+@section Css{
+    <style type="text/css">
+        .camerabtn {
+            width: 80px !important;
+            margin-right: 25px;
+            height: 45px;
+        }
+    </style>
+}
+
+@section scripts{
+    <script src="~/Scripts/Page/StatViewHik.js"></script>
+    <script>
+    var player = cyberplayer("playerContainer").setup({
+        flashplayer: "/bdPlayer/player/cyberplayer.flash.swf",
+        width: 720,
+        height: 500,
+        backcolor: "#FFFFFF",
+        stretching: "uniform",
+        file: "http://vshare.ys7.com:80/openlive/577070480_1_1.m3u8?ticket=dlQ1WVdQSllkQnV1QWVwY0lrb0N2ZlFKc1JHTlZ2cWM3SmMvYUNobHJOVT0kMSQyMDE3MDQwMTEzMzQ1MCQxNDU5NDg4ODMxMDAwJDE0OTEwMjQ4MzEwMDAkMSQkJA==",
+        autoStart: true,
+        repeat: "always",
+        volume: 100,
+        controlbar: "over"
+    });
+</script>
+}
