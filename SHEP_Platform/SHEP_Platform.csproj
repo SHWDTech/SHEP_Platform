@@ -172,6 +172,7 @@
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
+    <Compile Include="Enum\HikMethod.cs" />
     <Compile Include="Enum\PollutantType.cs" />
     <Compile Include="Enum\PolluteType.cs" />
     <Compile Include="Enum\QueryDateRange.cs" />
