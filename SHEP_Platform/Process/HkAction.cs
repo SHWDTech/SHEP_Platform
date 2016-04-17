@@ -71,7 +71,8 @@ namespace SHEP_Platform.Process
         {
             if (!string.IsNullOrWhiteSpace(fileName))
             {
-                return HkSdk.OpenSDK_CapturePicture(_sessionId, fileName) == 0;
+                var result = HkSdk.OpenSDK_CapturePicture(_sessionId, fileName);
+                return result == 0;
             }
 
             return false;

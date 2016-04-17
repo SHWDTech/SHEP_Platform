@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using SHEP_Platform.Enum;
+using SHEP_Platform.Process;
 
 namespace SHEP_Platform.Controllers
 {
@@ -24,6 +25,12 @@ namespace SHEP_Platform.Controllers
                     return GetHistoryReport();
                 case "getAlarmChange":
                     return GetAlarmChange();
+                case "cameraMoveControl":
+                    return CameraMoveControl();
+                case "cameraMoveStop":
+                    return CameraMoveStop();
+                case "capturePicture":
+                    return CapturePicture();
             }
 
             return null;
@@ -238,6 +245,54 @@ namespace SHEP_Platform.Controllers
             }
 
             return Json(dict);
+        }
+
+        private JsonResult CameraMoveControl()
+        {
+            var dir = Request["dir"];
+
+            var controlResult = HikCameraControl.ControlPlatform(dir);
+
+            var ret = new
+            {
+                success = controlResult
+            };
+
+            return Json(ret);
+        }
+
+        private JsonResult CameraMoveStop()
+        {
+            var controlResult = HikCameraControl.StopControlPlatform();
+
+            var ret = new
+            {
+                success = controlResult
+            };
+
+            return Json(ret);
+        }
+
+        private JsonResult CapturePicture()
+        {
+            var success = false;
+            var started = HkAction.Start();
+            if (started)
+            {
+                HkAction.GetAccessToken();
+                HkAction.AllocSession();
+                HkAction.GetCameraList();
+                HkAction.StartPlay();
+
+                success = HkAction.CapturePicture($"D:\\CameraPicture\\{DateTime.Now.ToString("yyyyMMddHHmmssffff")}.jpg");
+            }
+
+
+            var ret = new
+            {
+                success
+            };
+            return Json(ret);
         }
     }
 }

@@ -29,7 +29,13 @@ StatViewer.CapturePicture = function() {
         'fun': 'capturePicture'
     }
 
-    $.post(ajaxUrl, param);
+    $.post(ajaxUrl, param, function(ret) {
+        if (!ret.success) {
+            msg.warning('拍摄照片失败！');
+        } else {
+            msg.info('拍摄照片成功！');
+        }
+    });
 }
 
 function Up() {

@@ -20,7 +20,7 @@ namespace SHEP_Platform.Controllers
             catch (Exception e)
             {
                 LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType).Error("AjaxRequestException", e);
-                Response.Write("请求失败！");
+                Response.Write($"请求失败！\r\n错误信息：{e}");
             }
 
             return null;
