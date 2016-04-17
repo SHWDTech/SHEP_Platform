@@ -121,5 +121,7 @@ namespace SHEP_Platform.Controllers
 
             return DynamicView("ScheduleCompare", model);
         }
+
+        public ActionResult StatViewHik() => View();
     }
 }

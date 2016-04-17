@@ -700,7 +700,7 @@
     <Content Include="Views\Monitor\ScheduleCompare_m.cshtml" />
     <Content Include="Views\Analysis\AveragePolluteReport_m.cshtml" />
     <Content Include="Views\Analysis\AlarmChange_m.cshtml" />
-    <Content Include="Views\Monitor\StatView.cshtml" />
+    <Content Include="Views\Monitor\StatViewHik.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
