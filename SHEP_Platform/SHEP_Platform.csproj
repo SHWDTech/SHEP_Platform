@@ -201,6 +201,7 @@
     <Compile Include="Process\AuthenticationProcess.cs" />
     <Compile Include="Process\CameraProcess.cs" />
     <Compile Include="Process\HikCameraControl.cs" />
+    <Compile Include="Process\HkAction.cs" />
     <Compile Include="Process\HkSdk.cs" />
     <Compile Include="Process\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
