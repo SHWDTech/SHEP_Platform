@@ -17,9 +17,9 @@ namespace SHEP_Platform.Process
         /// </summary>
         public LoginResultType ResultType { get; set; }
 
-        public string ErrorElement { get; set; }
+        public string ErrorElement { get; set; } = string.Empty;
 
 
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
     }
 }

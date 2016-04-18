@@ -44,6 +44,13 @@ namespace SHEP_Platform.Process
                 return result;
             }
 
+            if (loginUser.Status == 0)
+            {
+                result.ResultType = LoginResultType.AccountLocked;
+                result.ErrorMessage = "用户未审核";
+                return result;
+            }
+
             loginUser.LastTime = DateTime.Now;
 
             try

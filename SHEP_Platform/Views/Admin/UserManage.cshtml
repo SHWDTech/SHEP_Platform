@@ -59,7 +59,7 @@
     <script type="text/javascript">
         var delConfirm = function (id) {
             if (confirm('确定删除该用户吗？')) {
-                $.get('/Admin/DevDelete/' + id, null, function (ret) {
+                $.get('/Admin/UserDelete/' + id, null, function (ret) {
                     if (ret.msg === 'success') {
                         $('#' + id).remove();
                         msg.info('删除成功');

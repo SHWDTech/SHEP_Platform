@@ -425,9 +425,26 @@ namespace SHEP_Platform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            if (DbContext.T_Users.FirstOrDefault(obj => obj.UserName == model.UserName) != null)
+            if (DbContext.T_Users.FirstOrDefault(obj => obj.UserName == model.UserName) != null && model.UserId == -1)
             {
                 ModelState.AddModelError("UserName", "系统已存在同名用户");
+
+                model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
+                var statusList = new List<SelectListItem>
+            {
+                new SelectListItem()
+                {
+                    Text = "超级管理员",
+                    Value = "1"
+                },
+                new SelectListItem()
+                {
+                    Text = "管理员",
+                    Value = "2"
+                }
+            };
+                model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
+
                 return View(model);
             }
 
