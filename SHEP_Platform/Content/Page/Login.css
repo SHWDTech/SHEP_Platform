@@ -3,7 +3,7 @@
 }
 
 .section-title h3{
-    color: #1abc9c;
+    color: #FF9933;
     font-size: 20px;
     text-align: center;
 }
@@ -63,7 +63,7 @@ button[type="submit"] {
 }
 
 .login-form-action .green-btn {
-    background-color: #2ecc71;
+    background-color: #FF9933;
     border: none;
     color: #fff;
 }

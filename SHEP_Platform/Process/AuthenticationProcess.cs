@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using SHEP_Platform.Common;
 using SHEP_Platform.Enum;
 
@@ -41,6 +42,17 @@ namespace SHEP_Platform.Process
                 result.ResultType = LoginResultType.AccountLocked;
                 result.ErrorMessage = "账户已锁定";
                 return result;
+            }
+
+            loginUser.LastTime = DateTime.Now;
+
+            try
+            {
+                DbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
 
             result.User = loginUser;

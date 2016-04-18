@@ -21,11 +21,11 @@ ul {
 }
 
 a {
-    color: #1abc9c;
+    color: #FF6633;
 }
 
     a:hover {
-        color: #10721C;
+        color: #FF3366;
     }
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -45,13 +45,13 @@ textarea {
     border: 0;
     height: 60px;
     background-color: #1abc9c;
-    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
+    background-image: radial-gradient(circle farthest-side at center top, #FF9933 0, #FF6633 100%);
 }
 
 .topheadnavmobile {
     border: 0;
     background-color: #1abc9c;
-    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
+    background-image: radial-gradient(circle farthest-side at center top, #FF9933 0, #FF6633 100%);
 }
 
 .navbar {
@@ -60,7 +60,7 @@ textarea {
 }
 
 .dropdown-menu .divider {
-    background-color: rgb(255, 255, 17);
+    background-color: #99CCFF;
 }
 
 .navbar-bottom {
@@ -68,7 +68,7 @@ textarea {
     height: 40px;
     width: 100%;
     border-bottom: 1px solid #c8c8c8;
-    border-top: 3px solid rgb(255, 175,0);
+    border-top: 3px solid #99CCFF;
 }
 
     .navbar-bottom .glyphicon {
@@ -115,7 +115,7 @@ textarea {
         }
 
             .sidebar .main-menu li:hover {
-                color: #1abc9c;
+                color: #FF6633;
                 background-color: #f1f1f1;
             }
 
@@ -141,13 +141,13 @@ textarea {
             height: 40px;
             width: 270px;
             padding: 10px;
-            color: #1abc9c;
+            color: #FF6633;
             display: block;
             cursor: pointer;
         }
 
             .sidebar .sub-menu a:hover {
-                color: #1abc9c;
+                color: #FF6633;
                 text-decoration: none;
             }
 
@@ -323,6 +323,10 @@ li span.date {
     top: 240px;
     left: 600px;
     position: absolute;
+    -moz-min-width: 300px;
+    -ms-min-width: 300px;
+    -o-min-width: 300px;
+    -webkit-min-width: 300px;
     min-width: 300px;
     width: auto;
     height: 50px;
