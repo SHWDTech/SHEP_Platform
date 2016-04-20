@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web.Mvc;
 using SHEP_Platform.Enum;
 using SHEP_Platform.Process;
@@ -252,6 +253,10 @@ namespace SHEP_Platform.Controllers
             var dir = Request["dir"];
 
             var controlResult = HikCameraControl.ControlPlatform(dir);
+
+            Thread.Sleep(1000);
+
+            HikCameraControl.StopControlPlatform();
 
             var ret = new
             {
