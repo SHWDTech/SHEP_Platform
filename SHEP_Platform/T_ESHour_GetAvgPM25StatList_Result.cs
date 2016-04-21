@@ -11,14 +11,10 @@ namespace SHEP_Platform
 {
     using System;
     
-    public partial class T_Alarms_GetList_Result
+    public partial class T_ESHour_GetAvgPM25StatList_Result
     {
-        public int Id { get; set; }
-        public Nullable<int> StatId { get; set; }
-        public Nullable<int> DevId { get; set; }
-        public Nullable<short> DustType { get; set; }
-        public Nullable<double> FaultVal { get; set; }
-        public Nullable<System.DateTime> UpdateTime { get; set; }
-        public string Country { get; set; }
+        public Nullable<double> AvgPM25 { get; set; }
+        public int StatId { get; set; }
+        public System.DateTime UpdateTime { get; set; }
     }
 }

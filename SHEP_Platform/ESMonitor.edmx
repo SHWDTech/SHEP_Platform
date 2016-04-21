@@ -26,21 +26,25 @@
           <Property Name="DustRange" Type="float" />
           <Property Name="DbRange" Type="float" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ESMonitor.dbo.T_Camera' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“ESMonitor2.dbo.T_Camera”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="T_Camera">
           <Key>
             <PropertyRef Name="ID" />
+            <PropertyRef Name="CameraName" />
             <PropertyRef Name="DevId" />
             <PropertyRef Name="DnsAddr" />
+            <PropertyRef Name="Port" />
             <PropertyRef Name="UserName" />
             <PropertyRef Name="PassWord" />
             <PropertyRef Name="CameraId" />
             <PropertyRef Name="Type" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CameraName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="DnsAddr" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Port" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PassWord" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CameraId" Type="int" Nullable="false" />
@@ -84,14 +88,17 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Camera' does not have a primary ke
           <Property Name="StatId" Type="int" Nullable="false" />
           <Property Name="TP" Type="float" Nullable="false" />
           <Property Name="DB" Type="float" Nullable="false" />
+          <Property Name="PM25" Type="float" />
+          <Property Name="PM100" Type="float" />
+          <Property Name="VOCs" Type="float" />
           <Property Name="UpdateTime" Type="date" Nullable="false" />
           <Property Name="DataStatus" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="ValidDataNum" Type="int" Nullable="false" />
           <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="Country" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ESMonitor.dbo.T_ESDaytemp1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“ESMonitor2.dbo.T_ESDaytemp1”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="T_ESDaytemp1">
           <Key>
             <PropertyRef Name="Id" />
@@ -117,6 +124,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_ESDaytemp1' does not have a primar
           <Property Name="StatId" Type="int" Nullable="false" />
           <Property Name="TP" Type="float" Nullable="false" />
           <Property Name="DB" Type="float" Nullable="false" />
+          <Property Name="PM25" Type="float" />
+          <Property Name="PM100" Type="float" />
+          <Property Name="VOCs" Type="float" />
           <Property Name="UpdateTime" Type="datetime" Nullable="false" />
           <Property Name="DataStatus" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="ValidDataNum" Type="int" Nullable="false" />
@@ -132,6 +142,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_ESDaytemp1' does not have a primar
           <Property Name="StatId" Type="int" Nullable="false" />
           <Property Name="TP" Type="float" Nullable="false" />
           <Property Name="DB" Type="float" Nullable="false" />
+          <Property Name="PM25" Type="float" />
+          <Property Name="PM100" Type="float" />
+          <Property Name="VOCs" Type="float" />
           <Property Name="UpdateTime" Type="datetime" />
           <Property Name="WindSpeed" Type="float" Nullable="false" />
           <Property Name="Rain" Type="float" />
@@ -162,8 +175,8 @@ warning 6002: The table/view 'ESMonitor.dbo.T_ESDaytemp1' does not have a primar
           <Property Name="GroupId" Type="int" Nullable="false" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“ESMonitor2.dbo.T_Offset”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="T_Offset">
           <Key>
             <PropertyRef Name="OffSetCpm" />
@@ -287,6 +300,11 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Property Name="NowTime" Type="datetime" />
           <Property Name="Remark" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“ESMonitor2.dbo.Table_1”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="Table_1">
+          <Property Name="Guid" Type="nchar" MaxLength="10" />
+        </EntityType>-->
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
           <End Role="T_Country" Type="Self.T_Country" Multiplicity="*" />
@@ -483,8 +501,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Parameter Name="ValidDataNum" Type="int" Mode="In" />
           <Parameter Name="DevId" Type="int" Mode="In" />
           <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="Pm25" Type="float" Mode="In" />
+          <Parameter Name="Pm100" Type="float" Mode="In" />
         </Function>
-        <Function Name="T_ESDay_AVGFromESHour" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_ESDay_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="bigint" Mode="In" />
         </Function>
@@ -510,6 +529,28 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Parameter Name="strWhere" Type="varchar" Mode="In" />
         </Function>
         <Function Name="T_ESDay_GetAvgNoiseStatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM100List" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM100OrderList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM100StatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM25List" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM25OrderList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESDay_GetAvgPM25StatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Country" Type="varchar" Mode="In" />
           <Parameter Name="strWhere" Type="varchar" Mode="In" />
         </Function>
@@ -539,8 +580,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Parameter Name="Country" Type="float" Mode="In" />
           <Parameter Name="DataStatus" Type="char" Mode="In" />
           <Parameter Name="ValidDataNum" Type="int" Mode="In" />
+          <Parameter Name="Pm25" Type="float" Mode="In" />
+          <Parameter Name="Pm100" Type="float" Mode="In" />
         </Function>
-        <Function Name="T_ESHour_AVGFromESMin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_ESHour_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
         </Function>
@@ -552,6 +594,14 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Parameter Name="strWhere" Type="varchar" Mode="In" />
         </Function>
         <Function Name="T_ESHour_GetAvgNoiseStatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESHour_GetAvgPM100StatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="strWhere" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_ESHour_GetAvgPM25StatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Country" Type="varchar" Mode="In" />
           <Parameter Name="strWhere" Type="varchar" Mode="In" />
         </Function>
@@ -586,6 +636,8 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Parameter Name="DataStatus" Type="char" Mode="In" />
           <Parameter Name="DevId" Type="int" Mode="In" />
           <Parameter Name="Country" Type="varchar" Mode="In" />
+          <Parameter Name="Pm25" Type="float" Mode="In" />
+          <Parameter Name="Pm100" Type="float" Mode="In" />
         </Function>
         <Function Name="T_ESMin_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="bigint" Mode="In" />
@@ -924,8 +976,10 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <EntitySet Name="T_Camera" EntityType="Self.T_Camera" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [T_Camera].[ID] AS [ID], 
+    [T_Camera].[CameraName] AS [CameraName], 
     [T_Camera].[DevId] AS [DevId], 
     [T_Camera].[DnsAddr] AS [DnsAddr], 
+    [T_Camera].[Port] AS [Port], 
     [T_Camera].[UserName] AS [UserName], 
     [T_Camera].[PassWord] AS [PassWord], 
     [T_Camera].[CameraId] AS [CameraId], 
@@ -1047,6 +1101,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Property Name="ValidDataNum" Type="Int32" Nullable="false" />
           <Property Name="DevId" Type="Int32" Nullable="false" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="VOCs" Type="Double" />
         </EntityType>
         <EntityType Name="T_ESHour">
           <Key>
@@ -1061,6 +1118,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Property Name="ValidDataNum" Type="Int32" Nullable="false" />
           <Property Name="DevId" Type="Int32" Nullable="false" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="VOCs" Type="Double" />
         </EntityType>
         <EntityType Name="T_ESMin">
           <Key>
@@ -1081,6 +1141,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Property Name="DataStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="DevId" Type="Int32" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="VOCs" Type="Double" />
         </EntityType>
         <EntityType Name="T_Files">
           <Key>
@@ -1228,6 +1291,8 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
             <PropertyRef Name="PassWord" />
             <PropertyRef Name="CameraId" />
             <PropertyRef Name="Type" />
+            <PropertyRef Name="CameraName" />
+            <PropertyRef Name="Port" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DevId" Type="Int32" Nullable="false" />
@@ -1236,6 +1301,8 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Property Name="PassWord" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CameraId" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CameraName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Port" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="T_ESDaytemp1">
           <Key>
@@ -1506,6 +1573,8 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
             <Parameter Name="ValidDataNum" Mode="In" Type="Int32" />
             <Parameter Name="DevId" Mode="In" Type="Int32" />
             <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="Pm25" Mode="In" Type="Double" />
+            <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_AVGFromESHour" />
           <FunctionImport Name="T_ESDay_Delete">
@@ -1562,6 +1631,8 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
             <Parameter Name="Country" Mode="In" Type="Double" />
             <Parameter Name="DataStatus" Mode="In" Type="String" />
             <Parameter Name="ValidDataNum" Mode="In" Type="Int32" />
+            <Parameter Name="Pm25" Mode="In" Type="Double" />
+            <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_AVGFromESMin" />
           <FunctionImport Name="T_ESHour_Delete">
@@ -1609,6 +1680,8 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
             <Parameter Name="DataStatus" Mode="In" Type="String" />
             <Parameter Name="DevId" Mode="In" Type="Int32" />
             <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="Pm25" Mode="In" Type="Double" />
+            <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Delete">
           <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1922,6 +1995,36 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
             <Parameter Name="RoleId" Mode="In" Type="Int32" />
             <Parameter Name="LastTime" Mode="In" Type="DateTime" />
             <Parameter Name="NowTime" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM100List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100List_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM100OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100OrderList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM100StatList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM25List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25List_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM25OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25OrderList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM25StatList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESHour_GetAvgPM100StatList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetAvgPM100StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESHour_GetAvgPM25StatList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetAvgPM25StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
@@ -2277,6 +2380,50 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Property Type="DateTime" Name="NowTime" Nullable="true" Precision="23" />
           <Property Type="String" Name="Remark" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM100List_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="DateTime" Name="updateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM100OrderList_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="Double" Name="MaxPM100" Nullable="true" />
+          <Property Type="Double" Name="MinPM100" Nullable="true" />
+          <Property Type="Int32" Name="ValidDataNum" Nullable="true" />
+          <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DevCode" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM100StatList_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM25List_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="DateTime" Name="updateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM25OrderList_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="Double" Name="MaxPM25" Nullable="true" />
+          <Property Type="Double" Name="MinPM25" Nullable="true" />
+          <Property Type="Int32" Name="ValidDataNum" Nullable="true" />
+          <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DevCode" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM25StatList_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESHour_GetAvgPM100StatList_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="T_ESHour_GetAvgPM25StatList_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2341,6 +2488,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <EntitySetMapping Name="T_ESDay">
             <EntityTypeMapping TypeName="ESMonitorModel.T_ESDay">
               <MappingFragment StoreEntitySet="T_ESDay">
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
@@ -2356,6 +2506,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <EntitySetMapping Name="T_ESHour">
             <EntityTypeMapping TypeName="ESMonitorModel.T_ESHour">
               <MappingFragment StoreEntitySet="T_ESHour">
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
@@ -2371,6 +2524,9 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <EntitySetMapping Name="T_ESMin">
             <EntityTypeMapping TypeName="ESMonitorModel.T_ESMin">
               <MappingFragment StoreEntitySet="T_ESMin">
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatCode" ColumnName="StatCode" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
@@ -2530,6 +2686,8 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <EntitySetMapping Name="T_Camera">
             <EntityTypeMapping TypeName="ESMonitorModel.T_Camera">
               <MappingFragment StoreEntitySet="T_Camera">
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="CameraName" ColumnName="CameraName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="DnsAddr" ColumnName="DnsAddr" />
@@ -2692,7 +2850,6 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="T_Devs_Update" FunctionName="ESMonitorModel.Store.T_Devs_Update" />
           <FunctionImportMapping FunctionImportName="T_ESDay_ADD" FunctionName="ESMonitorModel.Store.T_ESDay_ADD" />
-          <FunctionImportMapping FunctionImportName="T_ESDay_AVGFromESHour" FunctionName="ESMonitorModel.Store.T_ESDay_AVGFromESHour" />
           <FunctionImportMapping FunctionImportName="T_ESDay_Delete" FunctionName="ESMonitorModel.Store.T_ESDay_Delete" />
           <FunctionImportMapping FunctionImportName="T_ESDay_Exists" FunctionName="ESMonitorModel.Store.T_ESDay_Exists" />
           <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgCMPList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgCMPList">
@@ -2782,7 +2939,6 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="T_ESDay_Update" FunctionName="ESMonitorModel.Store.T_ESDay_Update" />
           <FunctionImportMapping FunctionImportName="T_ESHour_ADD" FunctionName="ESMonitorModel.Store.T_ESHour_ADD" />
-          <FunctionImportMapping FunctionImportName="T_ESHour_AVGFromESMin" FunctionName="ESMonitorModel.Store.T_ESHour_AVGFromESMin" />
           <FunctionImportMapping FunctionImportName="T_ESHour_Delete" FunctionName="ESMonitorModel.Store.T_ESHour_Delete" />
           <FunctionImportMapping FunctionImportName="T_ESHour_Exists" FunctionName="ESMonitorModel.Store.T_ESHour_Exists" />
           <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgCMPStatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgCMPStatList">
@@ -3177,6 +3333,82 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="T_Users_Update" FunctionName="ESMonitorModel.Store.T_Users_Update" />
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100List" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM100List">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM100List_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="updateTime" ColumnName="updateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100OrderList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM100OrderList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM100OrderList_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="MaxPM100" ColumnName="MaxPM100" />
+                <ScalarProperty Name="MinPM100" ColumnName="MinPM100" />
+                <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
+                <ScalarProperty Name="StatName" ColumnName="StatName" />
+                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100StatList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM100StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM100StatList_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25List" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM25List">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM25List_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="updateTime" ColumnName="updateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25OrderList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM25OrderList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM25OrderList_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="MaxPM25" ColumnName="MaxPM25" />
+                <ScalarProperty Name="MinPM25" ColumnName="MinPM25" />
+                <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
+                <ScalarProperty Name="StatName" ColumnName="StatName" />
+                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25StatList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM25StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM25StatList_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgPM100StatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgPM100StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetAvgPM100StatList_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgPM25StatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgPM25StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetAvgPM25StatList_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

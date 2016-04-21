@@ -11,14 +11,13 @@ namespace SHEP_Platform
 {
     using System;
     
-    public partial class T_Alarms_GetList_Result
+    public partial class T_ESDay_GetAvgPM100OrderList_Result
     {
-        public int Id { get; set; }
-        public Nullable<int> StatId { get; set; }
-        public Nullable<int> DevId { get; set; }
-        public Nullable<short> DustType { get; set; }
-        public Nullable<double> FaultVal { get; set; }
-        public Nullable<System.DateTime> UpdateTime { get; set; }
-        public string Country { get; set; }
+        public Nullable<double> AvgPM100 { get; set; }
+        public Nullable<double> MaxPM100 { get; set; }
+        public Nullable<double> MinPM100 { get; set; }
+        public Nullable<int> ValidDataNum { get; set; }
+        public string StatName { get; set; }
+        public string DevCode { get; set; }
     }
 }

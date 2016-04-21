@@ -275,6 +275,24 @@
     <Compile Include="T_ESDay_GetAvgNoiseStatList_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
+    <Compile Include="T_ESDay_GetAvgPM100List_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM100OrderList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM100StatList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM25List_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM25OrderList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESDay_GetAvgPM25StatList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="T_ESDay_GetList_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
@@ -288,6 +306,12 @@
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_ESHour_GetAvgNoiseStatList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESHour_GetAvgPM100StatList_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_ESHour_GetAvgPM25StatList_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_ESHour_GetList_Result.cs">

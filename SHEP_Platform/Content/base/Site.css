@@ -266,6 +266,14 @@ select {
     color: #5d4bc1;
 }
 
+.pm25 {
+    color: #0ecba8;
+}
+
+.pm100 {
+    color: #d7761f;
+}
+
 .db {
     color: #de366d;
 }

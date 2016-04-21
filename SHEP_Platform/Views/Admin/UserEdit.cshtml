@@ -12,11 +12,14 @@
         @Html.HiddenFor(m => m.UserId)
         <div class="form-group">
             @Html.LabelFor(m => m.UserName)
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.UserName, new {@class = "form-control"})
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Mobile)
-            @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Mobile, new {@class = "form-control"})
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })

@@ -29,7 +29,7 @@
                 <col style="width: 75px;" />
             </colgroup>
             <thead>
-                <tr><td colspan="4" style="text-align: center;">近一小时均值</td></tr>
+                <tr><td colspan="4" style="text-align: center;">实时值显示</td></tr>
             </thead>
             <tbody>
                 @{
@@ -41,7 +41,7 @@
                         {
                             continue;
                         }
-                        var info = hourInfo.Hour;
+                        //var info = hourInfo.Hour;
                         var current = hourInfo.Current;
 
                         if (tStat == null)
@@ -49,20 +49,59 @@
                             continue;
                         }
 
-                        if (info != null)
+                        if (current != null)
                         {
                             <tr class="statName">
                                 <td colspan="4">@Html.ActionLink(tStat.StatName, null, null, new { href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName + "')" })</td>
                             </tr>
                             <tr>
                                 <td>颗粒物</td>
-                                <td class="pm">@(((info.TP) / 1000).ToString("f2"))</td>
+                                @{
+                                    var pm = ((current.TP)/1000);
+                                    //if (tStat.Id == 8)
+                                    //{
+                                    //    pm = pm > 0.15 ? (pm - 0.15) : pm;
+                                    //}
+                                }
+                                <td class="pm">@(pm.ToString("f2"))</td>
                                 <td>噪音</td>
-                                <td class="db">@info.DB.ToString("f2")</td>
+                                <td class="db">@current.DB.ToString("f2")</td>
+                            </tr>
+                            <tr>
+                                <td>PM2.5(mg/m³)</td>
+                                <td class="pm25">
+                                    @{
+                                        var pm25 = current.PM25 / 1000 ?? 0;
+                                    }
+
+                                    @pm25.ToString("f2")
+                                </td>
+                                <td>PM10(mg/m³)</td>
+                                <td class="pm100">
+                                    @{
+                                        var pm100 = current.PM100 / 1000 ?? 0;
+                                        //if (tStat.Id == 8)
+                                        //{
+                                        //    pm100 = pm100 > 0.15 ? (pm100 - 0.15) : pm100;
+                                        //}
+                                    }
+
+                                    @pm100.ToString("f2")
+                                </td>
                             </tr>
                             <tr>
                                 <td>温度(℃)</td>
-                                <td class="temp">@current.Temperature.ToString("f2")</td>
+                                <td class="temp">
+                                    @{
+                                        var temp = current.Temperature;
+                                        //if (tStat.Id == 8)
+                                        //{
+                                        //    temp = temp > 5 ? (temp - 5) : temp;
+                                        //}
+                                    }
+
+                                    @temp.ToString("f2")
+                                </td>
                                 <td>湿度(%)</td>
                                 <td class="humi">@current.Humidity.ToString("f2")</td>
                             </tr>
@@ -73,51 +112,57 @@
                                 <td class="winddir">@current.WindDirection.ToString("f2")</td>
                             </tr>
 
-                        }
-                        else
-                        {
-                            <tr class="statName">
-                                <td colspan="4">
-                                    @Html.ActionLink(tStat.StatName, null, null, new
-                                           {
-                                               href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName
+                                        }
+                                        else
+                                        {
+                                            <tr class="statName">
+                                                <td colspan="4">
+                                                    @Html.ActionLink(tStat.StatName, null, null, new
+                               {
+                                   href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName
                                                                                                           + "')"
-                                           })
-                            </td>
-                        </tr>
-                            <tr>
-                                <td>颗粒物</td>
-                                <td class="danger">暂无数据</td>
-                                <td>噪音</td>
-                                <td class="danger">暂无数据</td>
-                            </tr>
-                            <tr>
-                                <td>温度(℃)</td>
-                                <td class="danger">暂无数据</td>
-                                <td>湿度(%)</td>
-                                <td class="danger">暂无数据</td>
-                            </tr>
-                            <tr>
-                                <td>风速(m/s)</td>
-                                <td class="danger">暂无数据</td>
-                                <td>风向(°)</td>
-                                <td class="danger">暂无数据</td>
-                            </tr>
-                        }
-                    }
+                               })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>颗粒物</td>
+                                                <td class="danger">暂无数据</td>
+                                                <td>噪音</td>
+                                                <td class="danger">暂无数据</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PM2.5(mg/m³)</td>
+                                                <td class="danger">暂无数据</td>
+                                                <td>PM10(mg/m³)</td>
+                                                <td class="danger">暂无数据</td>
+                                            </tr>
+                                            <tr>
+                                                <td>温度(℃)</td>
+                                                <td class="danger">暂无数据</td>
+                                                <td>湿度(%)</td>
+                                                <td class="danger">暂无数据</td>
+                                            </tr>
+                                            <tr>
+                                                <td>风速(m/s)</td>
+                                                <td class="danger">暂无数据</td>
+                                                <td>风向(°)</td>
+                                                <td class="danger">暂无数据</td>
+                                            </tr>
+                                            }
+                                        }
                 }
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
+</div>
 
-    @section scripts{
-        <script type="text/javascript" src="/Scripts/Utility/echarts.js"></script>
-        <script type="text/javascript" src="/Scripts/Common/SetUpCharts.js"></script>
-        <script type="text/javascript" src="/Scripts/Monitor/ActualStatus.js"></script>
-        <script type="text/javascript">
-            $(function() {
-                load(@ViewBag.defaultId, '@ViewBag.defaultName');
-            })
-        </script>
-    }
+@section scripts{
+    <script type="text/javascript" src="/Scripts/Utility/echarts.js"></script>
+    <script type="text/javascript" src="/Scripts/Common/SetUpCharts.js"></script>
+    <script type="text/javascript" src="/Scripts/Monitor/ActualStatus.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            load(@ViewBag.defaultId, '@ViewBag.defaultName');
+        })
+    </script>
+}
