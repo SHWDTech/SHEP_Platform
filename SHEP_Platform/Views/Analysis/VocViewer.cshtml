@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Voc统计信息报表";
+}
+
+<table id="vocTable">
+    <thead>
+        <tr>
+            <th data-field="UpdateTime">更新时间</th>
+            <th data-field="Value">监测值</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table");
+    @Styles.Render("~/Content/bootstrap-table")
+    <script type="text/javascript">
+        $(function () {
+            var ajaxUrl = '/Ajax/Access';
+
+            var param = {
+                'fun': 'getVocValues'
+            }
+
+            var $table = $("#vocTable");
+
+            $.post(ajaxUrl, param, function (ret) {
+                if (ret.success) {
+                    $table.bootstrapTable({ data: ret.vocValues });
+                }
+            });
+        });
+    </script>
+}

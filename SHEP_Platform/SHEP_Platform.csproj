@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -65,28 +65,28 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.DependencyCollector, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.1.2.3\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.1.2.3\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.1.2.3\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.Web, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.1.2.3\lib\net45\Microsoft.AI.Web.dll</HintPath>
+    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.WindowsServer, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.1.2.3\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ApplicationInsights, Version=1.2.3.490, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.1.2.3\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -95,7 +95,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -198,6 +198,7 @@
     </Compile>
     <Compile Include="Models\Account\AccountViewModels.cs" />
     <Compile Include="Models\Admin\AdminVIewModels.cs" />
+    <Compile Include="Models\Analysis\VocViewModel.cs" />
     <Compile Include="Models\Home\HomeViewModels.cs" />
     <Compile Include="Models\Monitor\MonitorViewModels.cs" />
     <Compile Include="Process\AuthenticationProcess.cs" />
@@ -530,6 +531,145 @@
     <Content Include="bdPlayer\js\cyberplayer.min.js" />
     <Content Include="bdPlayer\player\cyberplayer.flash.swf" />
     <Content Include="Content\base\Animation.css" />
+    <Content Include="Content\bootstrap-table\bootstrap-table.css" />
+    <Content Include="Content\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="Content\favicon.ico" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\bootstrap-table-locale-all.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\bootstrap-table-locale-all.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\bootstrap-table.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\accent-neutralise\bootstrap-table-accent-neutralise.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\accent-neutralise\bootstrap-table-accent-neutralise.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\angular\bootstrap-table-angular.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\angular\bootstrap-table-angular.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\cookie\bootstrap-table-cookie.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\cookie\bootstrap-table-cookie.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\editable\bootstrap-table-editable.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\editable\bootstrap-table-editable.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\export\bootstrap-table-export.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\export\bootstrap-table-export.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\filter\bootstrap-table-filter.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\filter\bootstrap-table-filter.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\flat-json\bootstrap-table-flat-json.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\flat-json\bootstrap-table-flat-json.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.css" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\group-by\bootstrap-table-group-by.css" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\group-by\bootstrap-table-group-by.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\group-by\bootstrap-table-group-by.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\key-events\bootstrap-table-key-events.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\key-events\bootstrap-table-key-events.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\mobile\bootstrap-table-mobile.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\mobile\bootstrap-table-mobile.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\multiple-search\bootstrap-table-multiple-search.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\multiple-search\bootstrap-table-multiple-search.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\multiple-sort\bootstrap-table-multiple-sort.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\multiple-sort\bootstrap-table-multiple-sort.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\natural-sorting\bootstrap-table-natural-sorting.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\natural-sorting\bootstrap-table-natural-sorting.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\reorder-columns\bootstrap-table-reorder-columns.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\reorder-columns\bootstrap-table-reorder-columns.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.css" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\resizable\bootstrap-table-resizable.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\resizable\bootstrap-table-resizable.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.css" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\toolbar\bootstrap-table-toolbar.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\extensions\toolbar\bootstrap-table-toolbar.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-af-ZA.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-af-ZA.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ar-SA.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ar-SA.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ca-ES.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ca-ES.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-cs-CZ.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-cs-CZ.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-da-DK.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-da-DK.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-de-DE.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-de-DE.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-el-GR.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-el-GR.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-en-US.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-en-US.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-AR.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-AR.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-CR.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-CR.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-ES.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-ES.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-MX.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-MX.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-NI.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-NI.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-SP.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-es-SP.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-et-EE.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-et-EE.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-fa-IR.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-fa-IR.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-fr-BE.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-fr-BE.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-fr-FR.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-fr-FR.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-he-IL.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-he-IL.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-hr-HR.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-hr-HR.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-hu-HU.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-hu-HU.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-it-IT.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-it-IT.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ja-JP.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ja-JP.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ka-GE.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ka-GE.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ko-KR.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ko-KR.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ms-MY.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ms-MY.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-nb-NO.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-nb-NO.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-nl-NL.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-nl-NL.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-pl-PL.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-pl-PL.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-pt-BR.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-pt-BR.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-pt-PT.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-pt-PT.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ro-RO.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ro-RO.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ru-RU.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ru-RU.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-sk-SK.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-sk-SK.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-sv-SE.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-sv-SE.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-th-TH.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-th-TH.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-tr-TR.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-tr-TR.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-uk-UA.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-uk-UA.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ur-PK.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-ur-PK.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-vi-VN.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-vi-VN.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-zh-CN.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-zh-CN.min.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-zh-TW.js" />
+    <Content Include="Scripts\Utility\bootstrap-table\locale\bootstrap-table-zh-TW.min.js" />
     <Content Include="Scripts\Utility\Layout.js" />
     <Content Include="Content\base\SiteMobile.css" />
     <Content Include="Content\bootstrap\bootstrap-datetimepicker.css" />
@@ -686,7 +826,6 @@
     <Content Include="Scripts\Utility\bootstrap.js" />
     <Content Include="Scripts\Utility\bootstrap.min.js" />
     <Content Include="Scripts\Utility\sha.js" />
-    <Content Include="WEB_LOGO.ico" />
     <EntityDeploy Include="ESMonitor.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ESMonitor.Designer.cs</LastGenOutput>
@@ -748,10 +887,12 @@
     <Content Include="Views\Monitor\StatView.cshtml" />
     <Content Include="Views\Monitor\StatView_m.cshtml" />
     <Content Include="Views\Monitor\StatViewHik.cshtml" />
+    <Content Include="Views\Analysis\VocViewer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Common\" />
+    <Folder Include="Modules\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -767,7 +908,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>WEB_LOGO.ico</ApplicationIcon>
+    <ApplicationIcon>Content\favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -797,8 +938,8 @@
     <PropertyGroup>
       <ErrorText>此项目引用这台计算机上缺少的 NuGet 程序包。使用 NuGet 程序包还原可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.1.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.2.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using SHEP_Platform.Enum;
+using SHEP_Platform.Models.Analysis;
 using SHEP_Platform.Models.Monitor;
 using SHEP_Platform.Process;
 
@@ -42,6 +43,8 @@ namespace SHEP_Platform.Controllers
                     return CapturePicture();
                 case "getAlarmInfo":
                     return GetAlarmInfo();
+                case "getVocValues":
+                    return GetVocValues();
             }
 
             return null;
@@ -602,6 +605,33 @@ namespace SHEP_Platform.Controllers
             {
                 total = todayDbAlarm.Count() + todayPmAlarm.Count(),
                 details
+            };
+
+            return Json(ret);
+        }
+
+        private JsonResult GetVocValues()
+        {
+            var model = new VocViewModel();
+
+            foreach (var stat in WdContext.StatList)
+            {
+                var vocs =
+                    DbContext.T_ESMin.Where(obj => obj.StatId == stat.Id && obj.VOCs != null)
+                        .Select(item => new { UpdateTime = item.UpdateTime.Value, item.VOCs.Value })
+                        .ToList();
+
+
+                foreach (var voc in vocs)
+                {
+                    model.VocValueList.Add(new VocValue() { UpdateTime = voc.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss"), Value = voc.Value });
+                }
+            }
+
+            var ret = new
+            {
+                success = true,
+                vocValues = model.VocValueList
             };
 
             return Json(ret);

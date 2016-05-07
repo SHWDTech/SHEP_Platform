@@ -30,6 +30,10 @@ namespace SHEP_Platform
                 "~/Scripts/Utility/moment-with-locales.js",
                 "~/Scripts/Utility/bootstrap-datetimepicker.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-table").Include(
+                "~/Scripts/Utility/bootstrap-table/bootstrap-table.js",
+                "~/Scripts/Utility/bootstrap-table/bootstrap-table-locale-all.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap/bootstrap.css",
                       "~/Content/base/site.css",
@@ -42,6 +46,9 @@ namespace SHEP_Platform
 
             bundles.Add(new StyleBundle("~/Content/datetimepickercss").Include(
                 "~/Content/bootstrap/bootstrap-datetimepicker.css"));
+
+            bundles.Add(new StyleBundle("~/Content/bootstrap-table").Include(
+                "~/Content/bootstrap-table/bootstrap-table.css"));
         }
     }
 }

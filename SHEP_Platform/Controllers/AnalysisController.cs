@@ -25,5 +25,13 @@ namespace SHEP_Platform.Controllers
 
             return DynamicView("AlarmChange");
         }
+
+        public ActionResult VocViewer()
+        {
+            WdContext.SiteMapMenu.ControllerMenu.Name = "统计分析";
+            WdContext.SiteMapMenu.ActionMenu.Name = "可挥发性有机物监测数值列表";
+
+            return View();
+        }
     }
 }
