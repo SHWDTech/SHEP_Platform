@@ -538,6 +538,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\Page\StatViewCircle.js" />
     <Content Include="Scripts\Utility\bootstrap-table\bootstrap-table-locale-all.js" />
     <Content Include="Scripts\Utility\bootstrap-table\bootstrap-table-locale-all.min.js" />
     <Content Include="Scripts\Utility\bootstrap-table\bootstrap-table.js" />
@@ -888,6 +889,7 @@
     <Content Include="Views\Monitor\StatView_m.cshtml" />
     <Content Include="Views\Monitor\StatViewHik.cshtml" />
     <Content Include="Views\Analysis\VocViewer.cshtml" />
+    <Content Include="Views\Monitor\StatViewCircle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

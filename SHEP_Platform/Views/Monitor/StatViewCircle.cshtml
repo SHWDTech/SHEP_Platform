@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "工程实时状况查看";
+}
+
+<div style="display: flex;">
+    <div style="width: 500px; padding-left: 30px;" class="form-inline">
+        <div class="form-group" style="margin-bottom: 30px;">
+            <input type="button" class="form-control camerabtn" value="近景" onmousedown="Near()" onmouseup="PTZCtrlStop(2)"/>
+            <input type="button" class="form-control camerabtn" value="上" onmousedown="Up()" onmouseup="PTZCtrlStop(6)" onmouseout="PTZCtrlStop(6)"/>
+            <input type="button" class="form-control camerabtn" value="远景" onmousedown="Far()" onmouseup="PTZCtrlStop(3)"/>
+        </div>
+        <div style="margin-bottom: 30px;">
+            <input type="button" class="form-control camerabtn" value="左" onmousedown="Left()" onmouseup="PTZCtrlStop(12)" onmouseout="PTZCtrlStop(12)"/>
+            <input type="button" class="form-control camerabtn" value="" onmousedown="" disabled="disabled" />
+            <input type="button" class="form-control camerabtn" value="右" onmousedown="Right()" onmouseup="PTZCtrlStop(8)" onmouseout="PTZCtrlStop(8)"/>
+        </div>
+        <div>
+            <input type="button" class="form-control camerabtn" value="" />
+            <input type="button" class="form-control camerabtn" value="下" onmousedown="Down()" onmouseup="PTZCtrlStop(10)" onmouseout="PTZCtrlStop(10)"/>
+            <input type="button" class="form-control camerabtn" value="" />
+        </div>
+    </div>
+    <div style="width: 100%;">
+        <div>
+            @*<OBJECT codebase=".\TLMDVRAx.CAB#version=1,0,4,8" ID="StatViewer" name="StatViewer" CLASSID="CLSID:15AB9520-D6EF-499B-AB7F-906AB0BA04AD" events="true" style="width: 100%; height: 500px;"></OBJECT>*@
+            <object classid='clsid:260AFF04-6C9E-4047-AD26-76C81E44875A' style="width: 100%; height: 500px" id='StatViewer' name='StatViewer'></object>
+        </div>
+    </div>
+</div>
+
+@section Css{
+    <style type="text/css">
+        .camerabtn {
+            width: 80px !important;
+            margin-right: 25px;
+            height: 45px;
+        }
+    </style>
+}
+
+@section scripts{
+    <script src="~/Scripts/Page/StatViewCircle.js"></script>
+}
