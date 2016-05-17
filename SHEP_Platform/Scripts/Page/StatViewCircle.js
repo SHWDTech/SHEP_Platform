@@ -1,10 +1,11 @@
 ﻿var StatViewer = {};
 var Cameras = [];
 var OrgList = [];
+var started = false;
 
 StatViewer.ViewObject = document.getElementById('StatViewer');
 
-$(function() {
+$(function () {
     StatViewer.Login();
 });
 
@@ -14,20 +15,33 @@ StatViewer.Login = function () {
         return;
     }
 
-    var logResult = this.ViewObject.ServiceLogin("121.42.34.0", 5160, "admin", "12345");
+    try {
+        var obj = new ActiveXObject('WEBOCX.WebOCXCtrl.1');
+    }
+    catch (e) {
+        $('#ocxAlarm').show();
+        return;
+    }
+
+    logResult = this.ViewObject.ServiceLogin("121.42.34.0", 5160, "admin", "12345");
     if (logResult !== 1) {
         msg.warning("连接视频服务器错误，请稍候，正在尝试重新连接");
-        setTimeout(function() { this.Login(); }, 30000);
+        setTimeout(function () { this.Login(); }, 30000);
     } else {
         QueryOrgList();
         if (OrgList.length !== 0) {
             QueryCamList(OrgList[0].Code);
         }
-        if (Cameras.length !== 0) {
-            this.StartMonitor(Cameras[1].Code);
-        }
     }
 }
+function Start() {
+    if (Cameras.length !== 0) {
+        this.StartMonitor(Cameras[1].Code);
+        $('#btnStart').val('结束预览');
+    } else {
+        alert("摄像机尚未注册，请先注册后再尝试！");
+    }
+};
 
 StatViewer.LoadDeviceInfo = function () {
     var devCount = this.ViewObject.StartGetDeviceList();
@@ -371,5 +385,5 @@ function PTZCtrlStop(cmd) {
 }
 
 function GetSpeed() {
-    
+
 }

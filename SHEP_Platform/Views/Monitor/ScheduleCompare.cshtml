@@ -4,14 +4,15 @@
     ViewBag.Title = "查询导出";
 }
 
-<div style="display: flex;">
-    <div id="divCharts" style="height: 600px; border: 1px solid #e7e7e7; margin-right: 20px;">
+<div style="position: relative;">
+    <div id="divCharts" style="height: 600px; border: 1px solid #e7e7e7; margin-right: 20px; width: 800px;">
         <div id="divBasic" style="height: 300px; width: 800px">
         </div>
         <div id="divStructure" style="height: 300px; width: 800px">
         </div>
     </div>
-    <div id="divTable" style="-moz-min-width: 300px; -ms-min-width: 300px; -o-min-width: 300px; -webkit-min-width: 300px; min-width: 300px; float: left;">
+    <div id="divTable" style="-moz-min-width: 300px; -ms-min-width: 300px; -o-min-width: 300px; -webkit-min-width: 300px; min-width: 300px; position: absolute;
+top: 0; left: 820px;">
         <table class="table table-striped table-bordered table-hover">
             <colgroup>
                 <col style="width: 75px;" />

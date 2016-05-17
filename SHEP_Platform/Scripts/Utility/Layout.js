@@ -1,7 +1,10 @@
 ﻿var currentMenuItem = null;
 var activedMenuItem = null;
 var delayActive = null;
-var lastPoint = null;
+var lastPoint = {
+    x: 0,
+    y: 0
+};
 var IsDelay = false;
 $(function () {
     $('.sidebar > ul > li').on('mouseenter mouseleave', function (e) {
@@ -24,7 +27,7 @@ $(function () {
             lastPoint = {
                 x: e.clientX,
                 y: e.clientY
-            }
+            };
         } else {
             if ((e.clientY - lastPoint.y) < 0) {
                 IsDelay = false;

@@ -4,7 +4,7 @@
 /* Set padding to keep content from hitting the edges */
 .body-content {
     min-height: 660px;
-    margin-left: 210px;
+    margin-left: 180px;
     border-left: 1px solid #e8e8e8;
     padding: 15px;
     overflow: auto;
@@ -21,11 +21,11 @@ ul {
 }
 
 a {
-    color: #FF6633;
+    color: #1abc9c;
 }
 
     a:hover {
-        color: #FF3366;
+        color: #10721C;
     }
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -45,13 +45,13 @@ textarea {
     border: 0;
     height: 60px;
     background-color: #1abc9c;
-    background-image: radial-gradient(circle farthest-side at center top, #FF9933 0, #FF6633 100%);
+    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
 }
 
 .topheadnavmobile {
     border: 0;
     background-color: #1abc9c;
-    background-image: radial-gradient(circle farthest-side at center top, #FF9933 0, #FF6633 100%);
+    background-image: radial-gradient(circle farthest-side at center top, #55e7ca 0, #1abc9c 100%);
 }
 
 .navbar {
@@ -60,7 +60,7 @@ textarea {
 }
 
 .dropdown-menu .divider {
-    background-color: #99CCFF;
+    background-color: rgb(255, 255, 17);
 }
 
 .navbar-bottom {
@@ -68,7 +68,7 @@ textarea {
     height: 40px;
     width: 100%;
     border-bottom: 1px solid #c8c8c8;
-    border-top: 3px solid #99CCFF;
+    border-top: 3px solid rgb(255, 175,0);
 }
 
     .navbar-bottom .glyphicon {
@@ -90,7 +90,7 @@ textarea {
 
 .sidebar {
     height: 100%;
-    width: 210px;
+    width: 180px;
     float: left;
 }
 
@@ -115,7 +115,7 @@ textarea {
         }
 
             .sidebar .main-menu li:hover {
-                color: #FF6633;
+                color: #1abc9c;
                 background-color: #f1f1f1;
             }
 
@@ -124,7 +124,7 @@ textarea {
         width: 270px;
         position: absolute;
         top: 1px;
-        left: 202px;
+        left: 172px;
         z-index: 9999;
         background-color: #fff;
         border: 1px solid #c8c8c8;
@@ -141,13 +141,13 @@ textarea {
             height: 40px;
             width: 270px;
             padding: 10px;
-            color: #FF6633;
+            color: #1abc9c;
             display: block;
             cursor: pointer;
         }
 
             .sidebar .sub-menu a:hover {
-                color: #FF6633;
+                color: #1abc9c;
                 text-decoration: none;
             }
 
@@ -200,23 +200,12 @@ li .glyphicon {
     color: #fff !important;
 }
 
-.navbar-right > li > span {
-    color: #fff;
-    padding: 15px;
-    display: block;
-    cursor: pointer;
-}
-
 .navbar-top-links li a:hover {
     background-color: transparent;
 }
 
 .navbar-top-links li:last-child {
     margin-right: 20px;
-}
-
-.badge-danger {
-    background-color: red !important;
 }
 
 .slogn {
@@ -337,30 +326,4 @@ li span.date {
     padding: 15px 15px;
     text-align: center;
     font-size: 18px;
-}
-
-.stretchBox {
-    -webkit-animation: strectch 1s;
-    -moz-animation: strectch 1s;
-    -o-animation: strectch 1s;
-    animation: strectch 1s;
-    -webkit-animation-fill-mode: forwards;
-    -moz-animation-fill-mode: forwards;
-    -o-animation-fill-mode: forwards;
-    animation-fill-mode: forwards;
-}
-
-.collapseBox {
-    -webkit-animation: collapse 1s;
-    -moz-animation: collapse 1s;
-    -o-animation: collapse 1s;
-    animation: collapse 1s;
-    -webkit-animation-fill-mode: forwards;
-    -moz-animation-fill-mode: forwards;
-    -o-animation-fill-mode: forwards;
-    animation-fill-mode: forwards;
-}
-
-#customerModal {
-    display: none;
 }

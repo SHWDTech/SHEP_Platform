@@ -35,9 +35,9 @@
             @Html.AntiForgeryToken()
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <div class="btn-group btn-default" style="background-color: inherit; -webkit-box-shadow: none; box-shadow: none;">
+                    <div class="btn-group btn-default" style="background-color: transparent; -webkit-box-shadow: none; box-shadow: none;">
                         <button class="btn btn-default dropdown-toggle" type="button" id="viewalrmdetails"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="border-radius: 0; background-color: inherit; color: #fff0f5; border: none; -webkit-box-shadow: none; box-shadow: none;">
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="border-radius: 0; background-color: transparent; color: #fff0f5; border: none; -webkit-box-shadow: none; box-shadow: none;">
                             超标报警  <span id="alarmCount" class="badge">0</span>
                         </button>
                         <ul id="alarmDetails" class="dropdown-menu" aria-labelledby="viewalrmdetails" style="left: 0; display: none;">
@@ -75,7 +75,7 @@
                         <li>@Html.ActionLink("各工程当前情况", "ActualStatus", "Monitor", new { id = "" }, null)</li>
                         <li>@Html.ActionLink("各工程历史污染物变化情况", "HistoryChange", "Monitor")</li>
                         <li>@Html.ActionLink("按工期进行综合对比", "ScheduleCompare", "Monitor")</li>
-                        <li>@Html.ActionLink("查看工地当前状况", "StatView", "Monitor")</li>
+                        <li>@Html.ActionLink("查看工地当前状况", "StatViewCircle", "Monitor")</li>
                         <li>@Html.ActionLink("查看VOC历史数据", "VocViewer", "Analysis")</li>
                     </ul>
                 </li>

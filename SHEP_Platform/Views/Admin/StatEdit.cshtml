@@ -5,7 +5,7 @@
     ViewBag.Title = "系统管理";
 }
 
-<div style="display: flex;">
+<div style="position: relative;">
     <div style="width: 360px;">
         @using (Html.BeginForm("StatEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form" }))
         {
@@ -83,7 +83,7 @@
             </div>
         }
     </div>
-    <div id="mapContainer" style="width: 900px; height: 640px;">
+    <div id="mapContainer" style="position: absolute; top: 0; left: 360px; width: 900px; height: 640px;">
 
     </div>
 </div>
