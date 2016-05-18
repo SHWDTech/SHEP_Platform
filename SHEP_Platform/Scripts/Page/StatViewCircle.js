@@ -34,6 +34,7 @@ StatViewer.Login = function () {
         }
     }
 }
+
 function Start() {
     if (Cameras.length !== 0) {
         this.StartMonitor(Cameras[1].Code);
