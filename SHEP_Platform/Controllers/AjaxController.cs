@@ -189,7 +189,7 @@ namespace SHEP_Platform.Controllers
         {
             var statId = int.Parse(Request["statId"]);
             var startDate = DateTime.Now.AddHours(-1);
-            var ret = DbContext.T_ESMin.Where(item => item.StatId == statId && item.UpdateTime > startDate)
+            var dataResult = DbContext.T_ESMin.Where(item => item.StatId == statId && item.UpdateTime > startDate)
                 .OrderBy(obj => obj.UpdateTime).ToList()
                 // ReSharper disable once PossibleInvalidOperationException
                 .Select(i => new
@@ -201,6 +201,19 @@ namespace SHEP_Platform.Controllers
                     // ReSharper disable once PossibleInvalidOperationException
                     UpdateTime = ((DateTime)i.UpdateTime).ToString("HH:mm:ss")
                 });
+
+            var cameraurl = string.Empty;
+            var devs = DbContext.T_Devs.Where(dev => dev.StatId == statId.ToString()).ToList();
+            if (devs.Count > 0)
+            {
+                cameraurl = devs[0].VideoURL;
+            }
+
+            var ret = new
+            {
+                dataResult,
+                cameraurl
+            };
 
             return Json(ret);
         }

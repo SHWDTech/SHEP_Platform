@@ -103,7 +103,8 @@ var load = function (id, name) {
     });
 };
 
-var setChart = function (list, name, id) {
+var setChart = function (ret, name, id) {
+    var list = ret.dataResult;
     if (list.length === 0) {
         msg.warning('暂无最新数据！');
         return;
@@ -165,6 +166,7 @@ var setChart = function (list, name, id) {
     tpGauge.setOption(tpGaugeOption);
     dbGauge.setOption(dbGaugeOption);
     $('#itemTitle').find('#chartTitle').html(name + '实时数据');
+    $('#itemTitle').find('#cameraUrl').attr('href', ret.cameraurl);
 
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function () { load(id, name); }, 60000);

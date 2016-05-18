@@ -21,6 +21,7 @@ namespace SHEP_Platform.Controllers
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "各工程当前情况";
             var dict = new Dictionary<object, StatHourInfo>();
+            var cameraurl = string.Empty;
             foreach (var stat in WdContext.StatList)
             {
                 var hour = DateTime.Now.AddHours(-1);
@@ -50,8 +51,16 @@ namespace SHEP_Platform.Controllers
                 defaultId = WdContext.StatList[0].Id;
                 defaultName = WdContext.StatList.First(stat => stat.Id == defaultId).StatName;
             }
+
+            var devs = DbContext.T_Devs.Where(dev => dev.StatId == defaultId.ToString()).ToList();
+            if (devs.Count > 0)
+            {
+                cameraurl = devs[0].VideoURL;
+            }
+
             ViewBag.defaultId = defaultId;
             ViewBag.defaultName = defaultName;
+            ViewBag.StatViewUrl = cameraurl;
 
             return DynamicView("ActualStatus");
         }
@@ -91,16 +100,16 @@ namespace SHEP_Platform.Controllers
         public ActionResult ScheduleCompare()
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "按工期进行综合对比";
-            var basic = WdContext.StatList.Where(stat => stat.Stage == (int) Stage.Basic).Select(obj => obj.Id).ToList();
+            var basic = WdContext.StatList.Where(stat => stat.Stage == (int)Stage.Basic).Select(obj => obj.Id).ToList();
             var structure =
-                WdContext.StatList.Where(stat => stat.Stage == (int) Stage.Structure).Select(obj => obj.Id).ToList();
+                WdContext.StatList.Where(stat => stat.Stage == (int)Stage.Structure).Select(obj => obj.Id).ToList();
 
             var startDate = DateTime.Now.AddMonths(-1);
             var basicSource = DbContext.T_ESDay.Where(obj => basic.Contains(obj.StatId) && obj.UpdateTime > startDate)
                 .ToList()
                 .Select(item => new
                 {
-                    TP = double.Parse((item.TP/1000).ToString("f2")),
+                    TP = double.Parse((item.TP / 1000).ToString("f2")),
                     DB = double.Parse(item.DB.ToString("f2")),
                     UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd")
                 });
@@ -108,12 +117,12 @@ namespace SHEP_Platform.Controllers
                 obj => structure.Contains(obj.StatId) && obj.UpdateTime > startDate).ToList()
                 .Select(item => new
                 {
-                    TP = double.Parse((item.TP/1000).ToString("f2")),
+                    TP = double.Parse((item.TP / 1000).ToString("f2")),
                     DB = double.Parse(item.DB.ToString("f2")),
                     UpdateTime = item.UpdateTime.ToString("yyyy-MM-dd")
                 });
 
-            var dict = new Dictionary<string, object> {{"basic", basicSource}, {"structure", structureSource}};
+            var dict = new Dictionary<string, object> { { "basic", basicSource }, { "structure", structureSource } };
 
             var basicList = basicSource.ToList();
             var structureList = structureSource.ToList();

@@ -36,12 +36,20 @@ StatViewer.Login = function () {
 }
 
 function Start() {
-    if (Cameras.length !== 0) {
-        this.StartMonitor(Cameras[1].Code);
-        $('#btnStart').val('结束预览');
+    if (!started) {
+        if (Cameras.length !== 0) {
+            StatViewer.StartMonitor(Cameras[1].Code);
+            $('#btnStart').val('结束预览');
+            started = true;
+        } else {
+            alert("摄像机尚未注册，请先注册后再尝试！");
+        }
     } else {
-        alert("摄像机尚未注册，请先注册后再尝试！");
+        StatViewer.StopMonitor();
+        $('#btnStart').val('开始预览');
+        started = false;
     }
+    
 };
 
 StatViewer.LoadDeviceInfo = function () {
@@ -61,6 +69,10 @@ StatViewer.InitDev = function (devInfo) {
 
 StatViewer.StartMonitor = function (cameraId) {
     this.ViewObject.StartMonitor(cameraId.toString());
+}
+
+StatViewer.StopMonitor = function() {
+    this.ViewObject.StopMonitor(0);
 }
 
 

@@ -6,7 +6,8 @@
 <div style="position: relative;">
     <div id="divCharts" style="height: 600px; border: 1px solid #e7e7e7; margin-right: 20px; max-width: 840px;">
         <div id="itemTitle" style="height: 50px;">
-            <h1 style="text-align: center;"></h1>
+            <h1 id="chartTitle" style="display: inline-block; margin: 0; margin-left: 200px; margin-top: 10px;">@(ViewBag.defaultName + "实时数据")</h1>
+            <h5 style="display: inline-block; margin: 0; margin-left: 20px;"><a id="cameraUrl" href="@ViewBag.StatViewUrl">查看实时工地状况</a></h5>
         </div>
         <div id="divGauge" style="height: 240px; position: relative;">
             <div id="tpGauge" style="width: 240px; height: 240px; margin-left: 120px;">
@@ -41,7 +42,6 @@
                         {
                             continue;
                         }
-                        var info = hourInfo.Hour;
                         var current = hourInfo.Current;
 
                         if (tStat == null)
