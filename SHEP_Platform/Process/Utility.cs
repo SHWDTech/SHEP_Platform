@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using SHEP_Platform.Enum;
 
 namespace SHEP_Platform.Process
 {
@@ -678,6 +679,34 @@ namespace SHEP_Platform.Process
             var lastDay = (int)lastDayOfMonth.DayOfWeek;
             return lastDayOfMonth.AddDays(
                 lastDay >= wantedDay ? wantedDay - lastDay : wantedDay - lastDay - 7);
+        }
+
+        /// <summary>
+        /// 判断风向
+        /// </summary>
+        /// <param name="angle"></param>
+        /// <returns></returns>
+        public static WindDirection DetectiveWindDirection(double angle)
+        {
+            if (angle < 0 || angle > 360) return WindDirectionEnum.OutOfRange;
+            if (angle <= 11.25 || angle > 348.75) return WindDirectionEnum.North;
+            if (angle > 11.25 && angle <= 33.75) return WindDirectionEnum.NorthNorthEast;
+            if (angle > 33.75 && angle <= 56.25) return WindDirectionEnum.NorthEast;
+            if (angle > 56.25 && angle <= 78.75) return WindDirectionEnum.EastNorthEast;
+            if (angle > 78.75 && angle <= 101.25) return WindDirectionEnum.East;
+            if (angle > 101.25 && angle <= 123.75) return WindDirectionEnum.EastSouthEast;
+            if (angle > 123.75 && angle <= 146.25) return WindDirectionEnum.SouthEast;
+            if (angle > 146.25 && angle <= 168.75) return WindDirectionEnum.SouthSouthEast;
+            if (angle > 168.75 && angle <= 191.25) return WindDirectionEnum.South;
+            if (angle > 191.25 && angle <= 213.75) return WindDirectionEnum.SouthSouthWest;
+            if (angle > 213.75 && angle <= 236.25) return WindDirectionEnum.SouthWest;
+            if (angle > 236.25 && angle <= 258.75) return WindDirectionEnum.WestSouthWest;
+            if (angle > 258.75 && angle <= 281.25) return WindDirectionEnum.West;
+            if (angle > 281.25 && angle <= 303.75) return WindDirectionEnum.WestNorthWest;
+            if (angle > 303.75 && angle <= 326.25) return WindDirectionEnum.NorthWest;
+            if (angle > 326.25 && angle <= 348.75) return WindDirectionEnum.NorthNorthWest;
+
+            return WindDirectionEnum.UnKnow;
         }
         #endregion
     }

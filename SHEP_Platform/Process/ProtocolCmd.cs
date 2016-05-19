@@ -71,7 +71,7 @@ namespace SHEP_Platform.Process
         #region 命令
         public void EncodeFrame(ref byte[] buffer, ref int bufferLen)
         {
-            if (bufferLen <= 0) throw new ArgumentOutOfRangeException(nameof(bufferLen));
+            if (bufferLen < 0) throw new ArgumentOutOfRangeException(nameof(bufferLen));
 
             ushort bufferIndex = 0;
 

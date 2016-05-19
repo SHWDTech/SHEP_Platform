@@ -1,4 +1,5 @@
 ﻿@using SHEP_Platform.Models.Monitor
+@using SHEP_Platform.Process
 @{
     ViewBag.Title = "查询导出";
 }
@@ -53,7 +54,7 @@
                         {
                             <tr class="statName">
                                 <td colspan="4">
-                                    @Html.ActionLink(tStat.StatName, null, null, new { href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName + "')" })
+                                    @Html.ActionLink(tStat.StatName, null, null, new { href = "javascript:load(" + tStat.Id + ",'" + tStat.StatName + "')" })
                                     <input type="button" id="setMin" class="form-control btn btn-default" onclick="setDeviceMin(@tStat.Id)" value="校零" style="width: auto;" />
                                 </td>
                             </tr>
@@ -86,7 +87,7 @@
                                 <td>风速(m/s)</td>
                                 <td class="windspeed">@current.WindSpeed</td>
                                 <td>风向(°)</td>
-                                <td class="winddir">@current.WindDirection</td>
+                                <td class="winddir">@(current.WindDirection + $"({Utility.DetectiveWindDirection(current.WindDirection).Chinese})")</td>
                             </tr>
                         }
                         else

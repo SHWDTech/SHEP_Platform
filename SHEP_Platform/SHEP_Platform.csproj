@@ -169,6 +169,7 @@
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\AjaxControllerBase.cs" />
     <Compile Include="Controllers\AnalysisController.cs" />
+    <Compile Include="Controllers\CommandAjaxController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Enum\PolluteType.cs" />
     <Compile Include="Enum\QueryDateRange.cs" />
     <Compile Include="Enum\Stage.cs" />
+    <Compile Include="Enum\WindDirectionEnum.cs" />
     <Compile Include="ESMonitor.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

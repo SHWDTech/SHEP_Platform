@@ -38,7 +38,7 @@ StatViewer.Login = function () {
 function Start() {
     if (!started) {
         if (Cameras.length !== 0) {
-            StatViewer.StartMonitor(Cameras[1].Code);
+            StatViewer.StartMonitor(Cameras[0].Code);
             $('#btnStart').val('结束预览');
             started = true;
         } else {
