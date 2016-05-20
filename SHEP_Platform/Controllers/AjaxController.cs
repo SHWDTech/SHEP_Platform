@@ -227,27 +227,33 @@ namespace SHEP_Platform.Controllers
             var startDate = DateTime.MinValue;
             var endDate = DateTime.Now;
             var dtType = string.Empty;
+            var dtTypeName = string.Empty;
             switch (queryDateRange)
             {
                 case QueryDateRange.LastHour:
                     startDate = DateTime.Now.AddHours(-1);
                     dtType = "Min";
+                    dtTypeName = "小时均值";
                     break;
                 case QueryDateRange.LastDay:
                     startDate = DateTime.Now.AddDays(-1);
                     dtType = "Hour";
+                    dtTypeName = "日均值";
                     break;
                 case QueryDateRange.LastWeek:
                     startDate = DateTime.Now.AddDays(-7);
                     dtType = "Day";
+                    dtTypeName = "周均值";
                     break;
                 case QueryDateRange.LastMonth:
                     startDate = DateTime.Now.AddMonths(-1);
                     dtType = "Day";
+                    dtTypeName = "月均值";
                     break;
                 case QueryDateRange.LastYear:
                     startDate = DateTime.Now.AddYears(-1);
                     dtType = "Day";
+                    dtTypeName = "年均值";
                     break;
                 case QueryDateRange.Customer:
                     if (datePickerValue == null || datePickerValue.Length < 2)
@@ -257,10 +263,11 @@ namespace SHEP_Platform.Controllers
                     startDate = DateTime.Parse(datePickerValue[0]);
                     endDate = DateTime.Parse(datePickerValue[1]);
                     dtType = "Day";
+                    dtTypeName = "指定范围均值";
                     break;
             }
 
-            var dict = new Dictionary<string, object>();
+            var dict = new Dictionary<string, object> {{"statId", statId}};
             if (dtType == "Min")
             {
                 var ret =
@@ -275,8 +282,15 @@ namespace SHEP_Platform.Controllers
                             PM100 = (obj.PM100.GetValueOrDefault() / 1000).ToString("f2"),
                             // ReSharper disable once PossibleInvalidOperationException
                             UpdateTime = ((DateTime)obj.UpdateTime).ToString("HH:mm:ss")
-                        });
+                        }).ToList();
                 dict.Add("data", ret);
+                dict.Add("average", new
+                {
+                    TP = ret.Average(obj => double.Parse(obj.TP)).ToString("f2"),
+                    DB = ret.Average(obj => double.Parse(obj.DB)).ToString("f2"),
+                    PM25 = ret.Average(obj => double.Parse(obj.PM25)).ToString("f2"),
+                    PM100 = ret.Average(obj => double.Parse(obj.PM100)).ToString("f2")
+                });
             }
             else if (dtType == "Hour")
             {
@@ -292,8 +306,15 @@ namespace SHEP_Platform.Controllers
                             PM100 = (obj.PM100.GetValueOrDefault() / 1000).ToString("f2"),
                             // ReSharper disable once PossibleInvalidOperationException
                             UpdateTime = obj.UpdateTime.ToString("HH:mm:ss")
-                        });
+                        }).ToList();
                 dict.Add("data", ret);
+                dict.Add("average", new
+                {
+                    TP = ret.Average(obj => double.Parse(obj.TP)).ToString("f2"),
+                    DB = ret.Average(obj => double.Parse(obj.DB)).ToString("f2"),
+                    PM25 = ret.Average(obj => double.Parse(obj.PM25)).ToString("f2"),
+                    PM100 = ret.Average(obj => double.Parse(obj.PM100)).ToString("f2")
+                });
             }
             else
             {
@@ -309,9 +330,24 @@ namespace SHEP_Platform.Controllers
                             PM100 = (obj.PM100.GetValueOrDefault() / 1000).ToString("f2"),
                             // ReSharper disable once PossibleInvalidOperationException
                             UpdateTime = obj.UpdateTime.ToString("yyyy-MM-dd")
-                        });
+                        }).ToList();
                 dict.Add("data", ret);
+                dict.Add("average", new
+                {
+                    TP = ret.Average(obj => double.Parse(obj.TP)).ToString("f2"),
+                    DB = ret.Average(obj => double.Parse(obj.DB)).ToString("f2"),
+                    PM25 = ret.Average(obj => double.Parse(obj.PM25)).ToString("f2"),
+                    PM100 = ret.Average(obj => double.Parse(obj.PM100)).ToString("f2")
+                });
             }
+
+            var stat = WdContext.StatList.FirstOrDefault(obj => obj.Id == statId);
+            if (stat != null)
+            {
+                dict.Add("statName", stat.StatName);
+            }
+
+            dict.Add("dttypename", dtTypeName);
 
             return Json(dict);
         }
@@ -591,7 +627,7 @@ namespace SHEP_Platform.Controllers
                 var stat = DbContext.T_Stats.First(obj => obj.Id == pmAlarm.StatId);
                 if (pmAlarm.StatId != null)
                 {
-                    var detail = new AlarmDetail {StatName = stat.StatName, Id = pmAlarm.StatId.Value };
+                    var detail = new AlarmDetail { StatName = stat.StatName, Id = pmAlarm.StatId.Value };
                     if (pmAlarm.UpdateTime != null) detail.AlarmDateTime = pmAlarm.UpdateTime.Value.ToString("hh:mm:ss");
                     detail.AlarmType = "扬尘值";
                     if (pmAlarm.FaultVal != null) detail.AlarmValue = ((pmAlarm.FaultVal.Value) / 1000.0).ToString("f2");
