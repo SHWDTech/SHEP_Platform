@@ -105,7 +105,7 @@ namespace SHEP_Platform.Controllers
             var latitude = double.Parse(result["y"].ToString());
             var coordinate = new {longitude = longitude.ToString("F6"), latitude = latitude.ToString("F6"), result = "success"};
 
-            return Json(new {success = true, Coordinate = coordinate }, JsonRequestBehavior.AllowGet);
+            return Json(new {success = true, coordinate }, JsonRequestBehavior.AllowGet);
         }
     }
 }

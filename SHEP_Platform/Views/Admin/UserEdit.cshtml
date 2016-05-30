@@ -84,9 +84,13 @@
     <script type="text/javascript" src="~/Scripts/Utility/sha.js"></script>
     <script type="text/javascript">
         var EncrypSubmit = function () {
-            var hashObj = new jsSHA('SHA-256', 'TEXT', 1);
-            hashObj.update($('#PassWord').val());
-            $('#PassWord').val(hashObj.getHash('HEX'));
+            if ($('#PassWord').val() === '') {
+            } else {
+                var hashObj = new jsSHA('SHA-256', 'TEXT', 1);
+                hashObj.update($('#PassWord').val());
+                $('#PassWord').val(hashObj.getHash('HEX'));
+            }
+            
             document.getElementById('usereditform').submit();
         }
     </script>

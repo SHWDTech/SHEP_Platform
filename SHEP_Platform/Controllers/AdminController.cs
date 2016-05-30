@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using SHEP_Platform.Common;
 using SHEP_Platform.Models.Admin;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 
 namespace SHEP_Platform.Controllers
 {
@@ -112,7 +113,26 @@ namespace SHEP_Platform.Controllers
                 DbContext.T_Stats.Add(stat);
             }
 
-            DbContext.SaveChanges();
+            try
+            {
+                DbContext.SaveChanges();
+
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var error in ex.EntityValidationErrors)
+                {
+                    foreach (var dbValidationError in error.ValidationErrors)
+                    {
+                        ModelState.AddModelError(dbValidationError.PropertyName, dbValidationError.ErrorMessage);
+                    }
+                }
+
+                model.StageList = new SelectList(DbContext.T_Stage, "Id", "StageName", model.Stage);
+
+                model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Country);
+                return View(model);
+            }
 
             return RedirectToAction("StatManage", "Admin");
         }
@@ -250,7 +270,42 @@ namespace SHEP_Platform.Controllers
             if (model.Id == -1)
             {
                 DbContext.T_Devs.Add(dev);
-                DbContext.SaveChanges();
+
+                try
+                {
+                    DbContext.SaveChanges();
+
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var error in ex.EntityValidationErrors)
+                    {
+                        foreach (var dbValidationError in error.ValidationErrors)
+                        {
+                            ModelState.AddModelError(dbValidationError.PropertyName, dbValidationError.ErrorMessage);
+                        }
+                    }
+
+                    var statusList = new List<SelectListItem>
+                    {
+                        new SelectListItem()
+                        {
+                            Text = "是",
+                            Value = "1"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "否",
+                            Value = "0"
+                        }
+                    };
+                    model.StatusLIst = new SelectList(statusList, "Value", "Text", model.DevStatus);
+                    model.StatList = new SelectList(DbContext.T_Stats, "Id", "StatName", model.StatId);
+                    model.IsNew = true;
+
+                    return View(model);
+                }
+
                 var addr = new T_DevAddr
                 {
                     DevId = DbContext.T_Devs.First(obj => obj.DevCode == model.DevCode).Id,
@@ -258,8 +313,43 @@ namespace SHEP_Platform.Controllers
                 };
                 DbContext.T_DevAddr.Add(addr);
             }
+            else
+            {
+                try
+                {
+                    DbContext.SaveChanges();
 
-            DbContext.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var error in ex.EntityValidationErrors)
+                    {
+                        foreach (var dbValidationError in error.ValidationErrors)
+                        {
+                            ModelState.AddModelError(dbValidationError.PropertyName, dbValidationError.ErrorMessage);
+                        }
+                    }
+
+                    var statusList = new List<SelectListItem>
+                    {
+                        new SelectListItem()
+                        {
+                            Text = "是",
+                            Value = "1"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "否",
+                            Value = "0"
+                        }
+                    };
+                    model.StatusLIst = new SelectList(statusList, "Value", "Text", model.DevStatus);
+                    model.StatList = new SelectList(DbContext.T_Stats, "Id", "StatName", model.StatId);
+
+                    return View(model);
+                }
+            }
+
 
             return RedirectToAction("DevManage", "Admin");
         }
@@ -431,18 +521,18 @@ namespace SHEP_Platform.Controllers
 
                 model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
                 var statusList = new List<SelectListItem>
-            {
-                new SelectListItem()
                 {
-                    Text = "超级管理员",
-                    Value = "1"
-                },
-                new SelectListItem()
-                {
-                    Text = "管理员",
-                    Value = "2"
-                }
-            };
+                    new SelectListItem()
+                    {
+                        Text = "超级管理员",
+                        Value = "1"
+                    },
+                    new SelectListItem()
+                    {
+                        Text = "管理员",
+                        Value = "2"
+                    }
+                };
                 model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
 
                 return View(model);
@@ -453,18 +543,18 @@ namespace SHEP_Platform.Controllers
                 ModelState.AddModelError("PassWord", "密码不能为空！");
                 model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
                 var statusList = new List<SelectListItem>
-            {
-                new SelectListItem()
                 {
-                    Text = "超级管理员",
-                    Value = "1"
-                },
-                new SelectListItem()
-                {
-                    Text = "管理员",
-                    Value = "2"
-                }
-            };
+                    new SelectListItem()
+                    {
+                        Text = "超级管理员",
+                        Value = "1"
+                    },
+                    new SelectListItem()
+                    {
+                        Text = "管理员",
+                        Value = "2"
+                    }
+                };
                 model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
                 return View(model);
             }
@@ -486,7 +576,40 @@ namespace SHEP_Platform.Controllers
                 DbContext.T_Users.Add(user);
             }
 
-            DbContext.SaveChanges();
+            try
+            {
+                DbContext.SaveChanges();
+
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var error in ex.EntityValidationErrors)
+                {
+                    foreach (var dbValidationError in error.ValidationErrors)
+                    {
+                        ModelState.AddModelError(dbValidationError.PropertyName, dbValidationError.ErrorMessage);
+                    }
+                }
+
+                var statusList = new List<SelectListItem>
+                {
+                    new SelectListItem()
+                    {
+                        Text = "超级管理员",
+                        Value = "1"
+                    },
+                    new SelectListItem()
+                    {
+                        Text = "管理员",
+                        Value = "2"
+                    }
+                };
+
+                model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
+                model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
+
+                return View(model);
+            }
 
             return RedirectToAction("UserManage", "Admin");
         }

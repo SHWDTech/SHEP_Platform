@@ -2,6 +2,8 @@
 var tpGauge = null;
 //噪音仪表板
 var dbGauge = null;
+//PM2.5仪表板
+var pm25Gauge = null;
 //一小时数值变化表
 var mainChart = null;
 //Ajax请求地址
@@ -24,6 +26,8 @@ $(function () {
     tpGauge = echarts.init(document.getElementById('tpGauge'));
 
     dbGauge = echarts.init(document.getElementById('dbGauge'));
+
+    pm25Gauge = echarts.init(document.getElementById('pm25Gauge'));
 
     if (!BaseInfo.IsMobileDevice) {
         mainChart = echarts.init(document.getElementById('divBar'));
@@ -86,6 +90,7 @@ var load = function (id, name) {
     }
     tpGauge.showLoading();
     dbGauge.showLoading();
+    pm25Gauge.showLoading();
     var param = {
         'fun': 'getStatsActualData',
         'statId': id
@@ -99,6 +104,7 @@ var load = function (id, name) {
             }
             tpGauge.hideLoading();
             dbGauge.hideLoading();
+            pm25Gauge.hideLoading();
         }
     });
 };
@@ -156,15 +162,19 @@ var setChart = function (ret, name, id) {
 
     var tpGaugeOption = Echart_Tools.getGaugeOption();
     var dbGaugeOption = Echart_Tools.getGaugeOption();
+    var pm25GaugeOption = Echart_Tools.getGaugeOption();
 
     tpGaugeOption.title.text = '颗粒物';
     tpGaugeOption.series[0].data = { name: '颗粒物', value: $(list).last()[0].TP };
+    pm25GaugeOption.title.text = 'PM2.5';
+    pm25GaugeOption.series[0].data = { name: 'PM2.5', value: $(list).last()[0].PM25 };
     dbGaugeOption.title.text = '噪音值';
     dbGaugeOption.series[0].min = 30;
     dbGaugeOption.series[0].max = 90;
     dbGaugeOption.series[0].data = { name: '噪音值', value: $(list).last()[0].DB };
     tpGauge.setOption(tpGaugeOption);
     dbGauge.setOption(dbGaugeOption);
+    pm25Gauge.setOption(pm25GaugeOption);
     $('#itemTitle').find('#chartTitle').html(name + '实时数据');
     $('#itemTitle').find('#cameraUrl').attr('href', ret.cameraurl);
 
