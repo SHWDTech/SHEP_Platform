@@ -892,6 +892,7 @@
     <Content Include="Views\Monitor\StatViewHik.cshtml" />
     <Content Include="Views\Analysis\VocViewer.cshtml" />
     <Content Include="Views\Monitor\StatViewCircle.cshtml" />
+    <Content Include="Views\Monitor\StatViewHikSecond.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

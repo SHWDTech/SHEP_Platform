@@ -183,5 +183,12 @@ namespace SHEP_Platform.Controllers
 
             return View();
         }
+
+        public ActionResult StatViewHikSecond()
+        {
+            WdContext.SiteMapMenu.ActionMenu.Name = "工程实时状况查看";
+
+            return View();
+        }
     }
 }
