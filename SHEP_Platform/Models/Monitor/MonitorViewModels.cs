@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SHEP_Platform.Models.Monitor
+﻿namespace SHEP_Platform.Models.Monitor
 {
     public class ScheduleCompareViewModel
     {
@@ -32,5 +29,10 @@ namespace SHEP_Platform.Models.Monitor
         public string AlarmDateTime { get; set; }
 
         public string AlarmValue { get; set; }
+    }
+
+    public class DataExport
+    {
+        
     }
 }

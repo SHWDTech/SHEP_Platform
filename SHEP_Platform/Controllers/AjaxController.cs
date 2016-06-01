@@ -591,6 +591,10 @@ namespace SHEP_Platform.Controllers
             return Json(ret);
         }
 
+        /// <summary>
+        /// 拍照
+        /// </summary>
+        /// <returns></returns>
         private JsonResult CapturePicture()
         {
             var success = false;

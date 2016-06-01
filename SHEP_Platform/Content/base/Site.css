@@ -327,3 +327,11 @@ li span.date {
     text-align: center;
     font-size: 18px;
 }
+
+html > /**/ body #dateQuery {
+    display: none;
+}
+
+html > /**/ body #date-selecter {
+    margin-right: 20px;
+}

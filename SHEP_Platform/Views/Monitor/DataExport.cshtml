@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "历史数据表格导出";
+}
+
+<div>
+    <div>
+        <form class="form-inline">
+            <div class="form-group">
+                <label>工地</label>
+                <label>选择统计范围：</label>
+                <select class="form-control daterange">
+                    <option value="LH">最近一小时</option>
+                    <option value="LD">最近一天</option>
+                    <option value="LW">最近一周</option>
+                    <option value="LM">最近一月</option>
+                    <option value="LY">最近一年</option>
+                    <option value="CUS">指定时间</option>
+                </select>
+                <div id="dateQuery" style="display: none;">
+                    <div id="date-selecter" class="input-group">
+                        <div class='input-group date' id='startDate'>
+                            <input type='text' class="form-control"/>
+                            <span class="glyphicon glyphicon-calendar input-group-addon"></span>
+                        </div>
+                        <span> - </span>
+                        <div class='input-group date' id='endDate'>
+                            <input type='text' class="form-control"/>
+                            <span class="glyphicon glyphicon-calendar input-group-addon"></span>
+                        </div>
+                    </div>
+                </div>
+                <input type="button" class="btn btn-success" value="查询" id="customQuery" style="display: inline-block;"/>
+            </div>
+        </form>
+    </div>
+    <hr />
+</div>
+
+@section css{
+    @Styles.Render("~/Content/datetimepickercss")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/datetimepicker")
+    <script type="text/javascript" src="/Scripts/Monitor/DataExport.js"></script>
+}

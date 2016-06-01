@@ -139,6 +139,26 @@ namespace SHEP_Platform.Controllers
             return DynamicView("ScheduleCompare", model);
         }
 
+        /// <summary>
+        /// 数据导出
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DataExport()
+        {
+            WdContext.SiteMapMenu.ActionMenu.Name = "历史数据表格导出";
+
+            return DynamicView("DataExport");
+        }
+
+        [HttpPost]
+        public ActionResult DataExport(DataExport model)
+        {
+            WdContext.SiteMapMenu.ActionMenu.Name = "历史数据表格导出";
+
+            return View(model);
+        }
+
         public ActionResult StatView()
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "工程实时状况查看";
