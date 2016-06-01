@@ -1,4 +1,6 @@
-﻿namespace SHEP_Platform.Models.Monitor
+﻿using System.Collections.Generic;
+
+namespace SHEP_Platform.Models.Monitor
 {
     public class ScheduleCompareViewModel
     {
@@ -33,6 +35,8 @@
 
     public class DataExport
     {
-        
+        public List<T_Stats> StatList { get; set; } = new List<T_Stats>();
+
+        public List<T_Devs> DevList { get; set; } = new List<T_Devs>();
     }
 }

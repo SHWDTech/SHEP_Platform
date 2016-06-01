@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿//Ajax请求地址
+var ajaxUrl = '/Ajax/Access';
+$(function () {
     $('#startDate').datetimepicker({
         locale: 'zh-cn',
         format: 'L'
@@ -9,16 +11,36 @@
         format: 'L'
     });
 
-    $('.daterange').on('change', function () {
-        if ($(this).val() === QueryDateRange.Customer) {
-            $('#dateQuery').css('display', 'inline-table');
-        } else {
-            $('#dateQuery').hide();
-        }
-    });
-
     $('#customQuery').on('click', function () {
         if (IsNullOrEmpty($('.daterange').val())) return;
-        load(curId);
+        LoadExportData();
+    });
+
+    $('#stat').select2({
+        placeholder: "---选择工地---"
+    });
+
+    $('#devs').select2({
+        placeholder: "---选择设备---"
     });
 });
+
+function LoadExportData() {
+    var param = {
+        'fun': "loadExportData",
+        'queryDateRange': $('.daterange').val(),
+        'datePickerValue': getDatePickerString(),
+        'statList': $('#stat').val(),
+        'deviceList': $('#devs').val()
+    }
+
+    $.post(ajaxUrl, param, function (ret) {
+        if (ret.success) {
+            
+        }
+    });
+};
+
+var getDatePickerString = function () {
+    return $('#startDate').find('input').val() + ',' + $('#endDate').find('input').val();
+};

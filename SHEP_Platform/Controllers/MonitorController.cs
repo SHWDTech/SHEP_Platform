@@ -148,7 +148,14 @@ namespace SHEP_Platform.Controllers
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "历史数据表格导出";
 
-            return DynamicView("DataExport");
+            var model = new DataExport();
+            foreach (var statse in WdContext.StatList)
+            {
+                model.StatList.Add(statse);
+                model.DevList.AddRange(DbContext.T_Devs.Where(obj => obj.StatId == statse.Id.ToString()).ToList());
+            }
+
+            return DynamicView("DataExport", model);
         }
 
         [HttpPost]

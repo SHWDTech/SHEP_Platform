@@ -45,6 +45,10 @@ namespace SHEP_Platform.Controllers
                     return GetAlarmInfo();
                 case "getVocValues":
                     return GetVocValues();
+                case "getStatWithDevice":
+                    return GetStatWithDevice();
+                case "loadExportData":
+                    return LoadExportData();
             }
 
             return null;
@@ -688,6 +692,31 @@ namespace SHEP_Platform.Controllers
             };
 
             return Json(ret);
+        }
+
+        private JsonResult GetStatWithDevice()
+        {
+            var stats = WdContext.StatList.Select(obj => new  { obj.Id, Name = obj.StatName}).ToList();
+            var devs = new List<T_Devs>();
+            foreach (var stat in stats)
+            {
+                devs.AddRange(DbContext.T_Devs.Where(obj => obj.StatId == stat.Id.ToString()).ToList());
+            }
+
+            var devJson = devs.Select(obj => new {obj.Id, Name = obj.DevCode}).ToList();
+            var ret = new
+            {
+                stats,
+                devs=  devJson
+            };
+
+            return Json(ret);
+        }
+
+        private JsonResult LoadExportData()
+        {
+
+            return null;
         }
     }
 }

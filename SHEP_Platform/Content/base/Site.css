@@ -251,7 +251,7 @@ li .glyphicon {
 }
 
 .daterange {
-    width: 100px;
+    width: auto;
 }
 
 select {
@@ -334,4 +334,17 @@ html > /**/ body #dateQuery {
 
 html > /**/ body #date-selecter {
     margin-right: 20px;
+}
+
+label.label120 {
+    -moz-min-width: 120px;
+    -ms-min-width: 120px;
+    -o-min-width: 120px;
+    -webkit-min-width: 120px;
+    min-width: 120px;
+    width: 120px;
+}
+
+* {
+    border-radius: 0 !important;
 }
