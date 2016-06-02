@@ -348,3 +348,7 @@ label.label120 {
 * {
     border-radius: 0 !important;
 }
+
+.dataTable-hidden {
+    display: none;
+}

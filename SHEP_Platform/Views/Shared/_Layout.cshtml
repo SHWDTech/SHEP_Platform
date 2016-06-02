@@ -7,10 +7,10 @@
     <link rel="shortcut icon" type="image/x-icon" href="~/Content/favicon.ico" />
     <!--[if lte IE 6]>
     <!-- bsie css 补丁文件 -->
-    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap/bootstrap-ie6.css">
+    @*<link rel="stylesheet" type="text/css" href="~/Content/bootstrap/bootstrap-ie6.css">*@
 
     <!-- bsie 额外的 css 补丁文件 -->
-    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap/ie.css">
+    @*<link rel="stylesheet" type="text/css" href="~/Content/bootstrap/ie.css">*@
     <![endif]-->
     <title>
         @ViewBag.Title @{
@@ -136,7 +136,7 @@
     @RenderSection("scripts", required: false)
     <!--[if lte IE 6]>
     <!-- bsie js 补丁只在IE6中才执行 -->
-    <script type="text/javascript" src="~/Scripts/Utility/bootstrap-ie.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/Utility/bootstrap-ie.js"></script>*@
     <![endif]-->
 </body>
 </html>

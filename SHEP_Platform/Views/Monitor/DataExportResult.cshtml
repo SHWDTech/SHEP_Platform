@@ -1,0 +1,60 @@
+﻿@using SHEP_Platform.Models.Monitor
+@model DataExport
+<div>
+    <ul class="nav nav-tabs">
+        @{
+            var marked = false;
+            foreach (var statse in Model.StatList)
+            {
+                if (!marked)
+                {
+                    <li role="presentation" class="active"><a href="#">@statse.StatName</a></li>
+                    marked = true;
+                }
+                else
+                {
+                    <li role="presentation"><a href="#">@statse.StatName</a></li>
+                }
+
+            }
+            foreach (var devse in Model.DevList)
+            {
+                if (!marked)
+                {
+                    <li role="presentation" class="active"><a href="#">@devse.DevCode</a></li>
+                    marked = true;
+                }
+                else
+                {
+                    <li role="presentation"><a href="#">@devse.DevCode</a></li>
+                }
+            }
+        }
+    </ul>
+</div>
+<div style="padding: 10px 0 0 0;">
+    @{
+        foreach (var statse in Model.StatList)
+        {
+            <table data-toggle="table" class="table table-bordered "
+                   data-url="/Monitor/StatTable/@statse.Id?range=@Model.DateRange&start=@Model.StartDate&end=@Model.EndDate"
+                   data-pagination="true"
+                   data-side-pagination="server"
+                   data-page-list="[5, 10, 20, 50, 100, 200]"
+                   data-page-size="10"
+                   data-height="500">
+                <thead>
+                    <tr>
+                        <th data-field="UpdateTime" data-align="left">更新时间</th>
+                        <th data-field="TP" data-align="center">总体颗粒物(mg/m³)</th>
+                        <th data-field="PM25" data-align="center">PM2.5(mg/m³)</th>
+                        <th data-field="PM100" data-align="center">PM10(mg/m³)</th>
+                        <th data-field="DB" data-align="center">噪音值(dB)</th>
+                    </tr>
+                </thead>
+            </table>
+        }
+    }
+</div>
+<script type="text/javascript" src="/Scripts/Utility/bootstrap-table/bootstrap-table.js"></script>
+<script type="text/javascript" src="/Scripts/Utility/bootstrap-table/bootstrap-table-locale-all.min.js"></script>

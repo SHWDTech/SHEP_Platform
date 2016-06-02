@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using SHEP_Platform.Enum;
 using SHEP_Platform.Models.Monitor;
+// ReSharper disable PossibleInvalidOperationException
 
 namespace SHEP_Platform.Controllers
 {
@@ -159,11 +160,34 @@ namespace SHEP_Platform.Controllers
         }
 
         [HttpPost]
-        public ActionResult DataExport(DataExport model)
+        public ActionResult DataExportResult()
         {
-            WdContext.SiteMapMenu.ActionMenu.Name = "历史数据表格导出";
+            var stats = Request["stat"]?.Split(',');
+            var devs = Request["devs"]?.Split(',');
 
-            return View(model);
+            var model = new DataExport
+            {
+                DateRange = Request["daterange"],
+                StartDate = Request["startDate"],
+                EndDate = Request["endDate"]
+            };
+            if (stats != null)
+            {
+                foreach (var stat in stats)
+                {
+                    model.StatList.Add(WdContext.StatList.FirstOrDefault(obj => obj.Id.ToString() == stat));
+                }
+            }
+
+            if (devs != null)
+            {
+                foreach (var dev in devs)
+                {
+                    model.DevList.Add(DbContext.T_Devs.FirstOrDefault(obj => obj.Id.ToString() == dev));
+                }
+            }
+
+            return PartialView(model);
         }
 
         public ActionResult StatView()
@@ -193,6 +217,21 @@ namespace SHEP_Platform.Controllers
             WdContext.SiteMapMenu.ActionMenu.Name = "工程实时状况查看";
 
             return DynamicView("StatViewTest");
+        }
+
+        public ActionResult StatTable(int id)
+        {
+            var stat = WdContext.StatList.FirstOrDefault(obj => obj.Id == id);
+
+            var esmin = DbContext.T_ESMin.Take(10).ToList()
+                .Select(obj => new {UpdateTime = obj.UpdateTime.Value.ToString("yyyy-MM-dd hhhh:mm:ss"), obj.TP, obj.PM25, obj.PM100, obj.DB});
+            var ret = new
+            {
+                total = 500,
+                rows = esmin
+            };
+
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
 

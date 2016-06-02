@@ -551,7 +551,7 @@
     <Content Include="Content\select2-bootstrap.less" />
     <Content Include="Content\select2-bootstrap-build.scss" />
     <Content Include="Content\select2-bootstrap-build.less" />
-    <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <None Include="Scripts\Utility\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />
     <Content Include="Scripts\i18n\az.js" />
     <Content Include="Scripts\i18n\bg.js" />
@@ -599,12 +599,12 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
-    <Content Include="Scripts\jquery-2.2.3.js" />
-    <Content Include="Scripts\jquery-2.2.3.min.js" />
-    <Content Include="Scripts\jquery-2.2.3.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\Utility\jquery-2.2.3.js" />
+    <Content Include="Scripts\Utility\jquery-2.2.3.min.js" />
+    <Content Include="Scripts\Utility\jquery-2.2.3.min.map" />
+    <None Include="Scripts\Utility\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\Utility\jquery.validate.js" />
+    <Content Include="Scripts\Utility\jquery.validate.min.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
@@ -841,10 +841,7 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <None Include="Scripts\Utility\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\Page\StatViewHik.js" />
-    <Content Include="Scripts\Utility\jquery-1.12.0.js" />
-    <Content Include="Scripts\Utility\jquery-1.12.0.min.js" />
     <Content Include="Scripts\Page\StatView.js" />
     <Content Include="Images\Site\login-bg.png" />
     <Content Include="Images\Site\Logo-256.ico" />
@@ -908,12 +905,8 @@
       <DependentUpon>ESMonitor.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Default.pubxml" />
-    <Content Include="Scripts\Utility\jquery-1.12.0.min.map" />
-    <None Include="Scripts\Utility\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\Utility\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\Utility\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\Utility\jquery.validate.js" />
-    <Content Include="Scripts\Utility\jquery.validate.min.js" />
     <Content Include="Scripts\Utility\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\Utility\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Page\Login.js" />
@@ -965,6 +958,7 @@
     <Content Include="Views\Monitor\StatViewCircle.cshtml" />
     <Content Include="Views\Monitor\StatViewHikSecond.cshtml" />
     <Content Include="Views\Monitor\DataExport.cshtml" />
+    <Content Include="Views\Monitor\DataExportResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
