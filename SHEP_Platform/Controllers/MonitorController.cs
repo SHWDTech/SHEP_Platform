@@ -167,7 +167,6 @@ namespace SHEP_Platform.Controllers
 
             var model = new DataExport
             {
-                DateRange = Request["daterange"],
                 StartDate = Request["startDate"],
                 EndDate = Request["endDate"]
             };
@@ -221,19 +220,96 @@ namespace SHEP_Platform.Controllers
 
         public ActionResult StatTable(int id)
         {
-            var stat = WdContext.StatList.FirstOrDefault(obj => obj.Id == id);
-
-            var esmin = DbContext.T_ESMin.Take(10).ToList()
-                .Select(obj => new {UpdateTime = obj.UpdateTime.Value.ToString("yyyy-MM-dd hhhh:mm:ss"), obj.TP, obj.PM25, obj.PM100, obj.DB});
+            int totalCount;
+            var dataList = GetDevDataList(id, out totalCount);
             var ret = new
             {
-                total = 500,
-                rows = esmin
+                total = totalCount,
+                rows = dataList
             };
 
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult DevTable(int id)
+        {
+            int totalCount;
+            var dataList = GetDevDataList(id, out totalCount);
+            var ret = new
+            {
+                total = totalCount,
+                rows = dataList
+            };
+
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
+
+        public dynamic GetStatDataList(int id, out int totalCount)
+        {
+            var stat = WdContext.StatList.FirstOrDefault(obj => obj.Id == id);
+            var limit = int.Parse(Request["limit"]);
+            var offset = int.Parse(Request["offset"]);
+            var startDate = DateTime.Parse(Request["start"]);
+            var endDate = DateTime.Parse(Request["end"]);
+
+            if (stat == null)
+            {
+                totalCount = 0;
+                return null;
+            }
+
+            var total = DbContext.T_ESMin.Where(obj => obj.StatId == stat.Id && obj.UpdateTime < endDate && obj.UpdateTime > startDate)
+                .OrderBy(item => item.UpdateTime);
+            var esmin = total.Skip(offset)
+                .Take(limit).ToList()
+                .Select(obj => new {
+                    UpdateTime = obj.UpdateTime.Value.ToString("yyyy-MM-dd hhhh:mm:ss"),
+                    TP = (obj.TP / 1000).ToString("F2"),
+                    PM25 = (obj.PM25.Value / 1000).ToString("F2"),
+                    PM100 = (obj.PM100.Value / 1000).ToString("F2"),
+                    DB = (obj.DB / 1000).ToString("F2")
+                })
+                .ToList();
+
+            totalCount = total.Count();
+            return esmin;
+        }
+
+        public dynamic GetDevDataList(int id, out int totalCount)
+        {
+            var dev = DbContext.T_Devs.FirstOrDefault(obj => obj.Id == id);
+            var limit = int.Parse(Request["limit"]);
+            var offset = int.Parse(Request["offset"]);
+            var startDate = DateTime.Parse(Request["start"]);
+            var endDate = DateTime.Parse(Request["end"]);
+
+            if (dev == null)
+            {
+                totalCount = 0;
+                return null;
+            }
+
+            var total = DbContext.T_ESMin.Where(obj => obj.DevId == dev.Id && obj.UpdateTime < endDate && obj.UpdateTime > startDate)
+                .OrderBy(item => item.UpdateTime);
+            var esmin = total.Skip(offset)
+                .Take(limit).ToList()
+                .Select(obj => new {
+                    UpdateTime = obj.UpdateTime.Value.ToString("yyyy-MM-dd hhhh:mm:ss"),
+                    TP = (obj.TP / 1000).ToString("F2"),
+                    PM25 = (obj.PM25.Value / 1000).ToString("F2"),
+                    PM100 = (obj.PM100.Value / 1000).ToString("F2"),
+                    DB = (obj.DB / 1000).ToString("F2")
+                })
+                .ToList();
+
+            totalCount = total.Count();
+            return esmin;
+        }
+
+        public void ExportHistoryData()
+        {
+            
+        }
 
         public ActionResult StatViewHik()
         {

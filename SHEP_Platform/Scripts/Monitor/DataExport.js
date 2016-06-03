@@ -11,9 +11,34 @@ $(function () {
         format: 'L'
     });
 
-    $('#customQuery').on('click', function () {
+    disableDatePicker();
+
+    $('#daterange').on('change', function () {
         if (IsNullOrEmpty($('.daterange').val())) return;
-        LoadExportData();
+        var startDateCtrl = $('#startDate').find('input');
+        var endDateCtrl = $('#endDate').find('input');
+        var startDate = new Date();
+        var endDate = new Date();
+        disableDatePicker();
+        if ($('.daterange').val() === QueryDateRange.LastDay) {
+            startDate.setDate(endDate.getDate() - 1);
+            startDateCtrl.val(startDate.Format('yyyy-MM-dd'));
+            endDateCtrl.val(endDate.Format('yyyy-MM-dd'));
+        } else if ($('.daterange').val() === QueryDateRange.LastWeek) {
+            startDate.setDate(endDate.getDate() - 7);
+            startDateCtrl.val(startDate.Format('yyyy-MM-dd'));
+            endDateCtrl.val(endDate.Format('yyyy-MM-dd'));
+        } else if ($('.daterange').val() === QueryDateRange.LastMonth) {
+            startDate.setMonth(endDate.getMonth() - 1);
+            startDateCtrl.val(startDate.Format('yyyy-MM-dd'));
+            endDateCtrl.val(endDate.Format('yyyy-MM-dd'));
+        } else if ($('.daterange').val() === QueryDateRange.LastYear) {
+            startDate.setYear(endDate.getFullYear() - 1);
+            startDateCtrl.val(startDate.Format('yyyy-MM-dd'));
+            endDateCtrl.val(endDate.Format('yyyy-MM-dd'));
+        } else if ($('.daterange').val() === QueryDateRange.Customer) {
+            enableDatePicker();
+        }
     });
 
     $('#stat').select2({
@@ -25,22 +50,24 @@ $(function () {
     });
 });
 
-function LoadExportData() {
-    var param = {
-        'fun': "loadExportData",
-        'queryDateRange': $('.daterange').val(),
-        'datePickerValue': getDatePickerString(),
-        'statList': $('#stat').val(),
-        'deviceList': $('#devs').val()
+function checkDate() {
+    if (IsNullOrEmpty($('#startDate').find('input').val()) || IsNullOrEmpty($('#endDate').find('input').val())) {
+        alert("请指定明确的查询时间范围！");
+        return false;
     }
+    if (IsNullOrEmpty($('#stat').val()) && IsNullOrEmpty($('#devs').val())) {
+        alert("请至少选择一个工地或设备！");
+        return false;
+    }
+    return true;
+}
 
-    $.post(ajaxUrl, param, function (ret) {
-        if (ret.success) {
-            
-        }
-    });
+function disableDatePicker() {
+    $('#startDate').find('input').attr('readonly', true);
+    $('#endDate').find('input').attr('readonly', true);
 };
 
-var getDatePickerString = function () {
-    return $('#startDate').find('input').val() + ',' + $('#endDate').find('input').val();
-};
+function enableDatePicker() {
+    $('#startDate').find('input').attr('readonly', false);
+    $('#endDate').find('input').attr('readonly', false);
+}

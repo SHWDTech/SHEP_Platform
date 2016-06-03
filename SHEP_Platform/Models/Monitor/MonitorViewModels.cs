@@ -39,8 +39,6 @@ namespace SHEP_Platform.Models.Monitor
 
         public List<T_Devs> DevList { get; set; } = new List<T_Devs>();
 
-        public string DateRange { get; set; }
-
         public string StartDate { get; set; }
 
         public string EndDate { get; set; }

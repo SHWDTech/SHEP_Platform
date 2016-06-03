@@ -4,21 +4,23 @@
     ViewBag.Title = "历史数据表格导出";
 }
 
-<div>
-    <div>
-        @using (Ajax.BeginForm("DataExportResult", null, new AjaxOptions()
-        {
-            AllowCache = false,
-            Confirm = "确定开始查询吗？",
-            HttpMethod = "POST",
-            InsertionMode = InsertionMode.Replace,
-            LoadingElementDuration = 1000,
-            UpdateTargetId = "exportTable"
-        }, new { @class = "form-horizontal", role = "form" }))
-        {
+@using (Ajax.BeginForm("DataExportResult", null, new AjaxOptions()
+{
+    AllowCache = false,
+    HttpMethod = "POST",
+    InsertionMode = InsertionMode.Replace,
+    LoadingElementDuration = 1000,
+    UpdateTargetId = "exportTable",
+    OnBegin = "checkDate"
+}, new { @class = "form-horizontal", role = "form", id = "QueryForm" }))
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
             <div class="form-group">
                 <label class="label120">选择统计范围：</label>
-                <select class="form-control daterange" id="daterange" name="daterange" style="width: 270px;">
+                @* ReSharper disable once CssBrowserCompatibility *@
+                <select class="form-control daterange" id="daterange" name="daterange" style="width: 270px; min-width: 270px;">
+                    <option value="HOLD">选择时间范围</option>
                     <option value="LD">最近一天</option>
                     <option value="LW">最近一周</option>
                     <option value="LM">最近一月</option>
@@ -42,7 +44,8 @@
             </div>
             <div class="form-group">
                 <label class="label120" style="margin-top: 6.4px;">工地：</label>
-                <select id="stat" name="stat" style="width: 270px;" multiple="multiple">
+                @* ReSharper disable once CssBrowserCompatibility *@
+                <select id="stat" name="stat" style="width: 270px; min-width: 270px;" multiple="multiple">
                     <optgroup label="工地">
                         @{
                             foreach (var stat in Model.StatList)
@@ -63,13 +66,19 @@
                         }
                     </optgroup>
                 </select>
-                <input type="submit" class="btn btn-success" value="查询" style="margin-left: 20px; height: 32px; width: 120px; margin-top: auto;" />
             </div>
-                            }
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label class="label120">操作：</label>
+                <input type="submit" class="btn btn-success" value="查询" style="width: 80px;"/>
+                <input type="button" class="btn btn-primary" value="导出" style="width: 80px; margin-left: 20px;"/>
+            </li>
+        </ul>
     </div>
-    <hr />
-    <div id="exportTable"></div>
-</div>
+}
+
+<div id="exportTable"></div>
 
 @section css{
     @Styles.Render("~/Content/datetimepickercss")
