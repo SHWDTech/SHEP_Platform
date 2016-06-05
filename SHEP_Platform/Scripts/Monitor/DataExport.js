@@ -20,7 +20,11 @@ $(function () {
         var startDate = new Date();
         var endDate = new Date();
         disableDatePicker();
-        if ($('.daterange').val() === QueryDateRange.LastDay) {
+        if ($('.daterange').val() === QueryDateRange.Today) {
+            endDate.setDate(startDate.getDate() + 1);
+            startDateCtrl.val(startDate.Format('yyyy-MM-dd'));
+            endDateCtrl.val(endDate.Format('yyyy-MM-dd'));
+        }else if ($('.daterange').val() === QueryDateRange.LastDay) {
             startDate.setDate(endDate.getDate() - 1);
             startDateCtrl.val(startDate.Format('yyyy-MM-dd'));
             endDateCtrl.val(endDate.Format('yyyy-MM-dd'));
@@ -62,6 +66,26 @@ function checkDate() {
     return true;
 }
 
+function getSuccess() {
+    $('#export').show();
+    var stats = $('#stat').val();
+    var devs = $('#devs').val();
+
+    var target = '/Monitor/ExportHistoryDataSheet?stat=';
+    if (stats != null) {
+        target += stats;
+    }
+
+    target += '&devs=';
+    if (devs != null) {
+        target += devs;
+    }
+
+    target += '&startDate=' + $('#startDate').find('input').val()
+        + '&endDate=' + $('#endDate').find('input').val();
+    $('#export').attr('href', target);
+}
+
 function disableDatePicker() {
     $('#startDate').find('input').attr('readonly', true);
     $('#endDate').find('input').attr('readonly', true);
@@ -71,3 +95,8 @@ function enableDatePicker() {
     $('#startDate').find('input').attr('readonly', false);
     $('#endDate').find('input').attr('readonly', false);
 }
+
+function dateFormatter(value) {
+    var date = new Date(parseInt(value.slice(6, -2)));
+    return date.Format("yyyy-MM-dd hh:mm:ss");
+};

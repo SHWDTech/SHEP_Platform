@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using SHEP_Platform.Enum;
 using SHEP_Platform.Models.Monitor;
+using SHEP_Platform.ShwdResult;
+
 // ReSharper disable PossibleInvalidOperationException
 
 namespace SHEP_Platform.Controllers
@@ -159,6 +164,120 @@ namespace SHEP_Platform.Controllers
             return DynamicView("DataExport", model);
         }
 
+        public ActionResult ExportHistoryDataSheet()
+        {
+            string[] stats = null;
+            if (!string.IsNullOrWhiteSpace(Request["stat"]))
+            {
+                stats = Request["stat"]?.Split(',');
+            }
+
+            string[] devs = null;
+            if (!string.IsNullOrWhiteSpace(Request["devs"]))
+            {
+                devs = Request["devs"]?.Split(',');
+            }
+            var startDate = DateTime.Parse(Request["startDate"]);
+            var endDate = DateTime.Parse(Request["endDate"]);
+
+            var dataSource = new List<WorkSheet>();
+            if (stats != null)
+            {
+                foreach (var stat in stats)
+                {
+                    var original = DbContext.T_ESMin.Where(obj => obj.StatId.ToString() == stat && obj.UpdateTime < endDate && obj.UpdateTime > startDate)
+                        .OrderBy(item => item.UpdateTime).ToList();
+
+                    var sheet = new WorkSheet();
+                    foreach (var esMin in original)
+                    {
+                        var row = sheet.WorkSheetDatas.NewRow();
+                        row["更新时间"] = esMin.UpdateTime.Value;
+                        row["总体扬尘值(mg/m³)"] = (esMin.TP / 1000).ToString("F2");
+                        row["PM2.5(mg/m³)"] = (esMin.PM25.Value / 1000).ToString("F2");
+                        row["PM10(mg/m³)"] = (esMin.PM100.Value / 1000).ToString("F2");
+                        row["噪音值(dB)"] = esMin.DB.ToString("F2");
+                        sheet.WorkSheetDatas.Rows.Add(row);
+                    }
+
+                    var currentStat = DbContext.T_Stats.First(obj => obj.Id.ToString() == stat);
+                    sheet.Title = currentStat.StatName;
+                    dataSource.Add(sheet);
+                }
+            }
+
+            if (devs != null)
+            {
+                foreach (var dev in devs)
+                {
+                    var original = DbContext.T_ESMin.Where(obj => obj.DevId.ToString() == dev && obj.UpdateTime < endDate && obj.UpdateTime > startDate)
+                        .OrderBy(item => item.UpdateTime).ToList();
+
+                    var sheet = new WorkSheet();
+                    foreach (var esMin in original)
+                    {
+                        var row = sheet.WorkSheetDatas.NewRow();
+                        row["更新时间"] = esMin.UpdateTime.Value;
+                        row["总体扬尘值(mg/m³)"] = (esMin.TP / 1000).ToString("F2");
+                        row["PM2.5(mg/m³)"] = (esMin.PM25.Value / 1000).ToString("F2");
+                        row["PM10(mg/m³)"] = (esMin.PM100.Value / 1000).ToString("F2");
+                        row["噪音值(dB)"] = esMin.DB.ToString("F2");
+                        sheet.WorkSheetDatas.Rows.Add(row);
+                    }
+
+                    var currentStat = DbContext.T_Devs.First(obj => obj.Id.ToString() == dev);
+                    sheet.Title = currentStat.DevCode;
+                    dataSource.Add(sheet);
+                }
+            }
+
+            if (dataSource.Count <= 0) return null;
+
+            var package = new ExcelPackage();
+            foreach (var workSheet in dataSource)
+            {
+                var currentSheet = package.Workbook.Worksheets.Add(workSheet.Title);
+                currentSheet.Column(1).Width = 35.0;
+                currentSheet.Column(1).Style.Numberformat.Format = "yyyy-MM-dd hh:mm:ss";
+                currentSheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                currentSheet.Column(1).Style.Font.Size = 14;
+                currentSheet.Column(1).Style.Numberformat.Format = "0.00";
+                currentSheet.Column(2).Width = 30.0;
+                currentSheet.Column(2).Style.Font.Size = 14;
+                currentSheet.Column(2).Style.Numberformat.Format = "0.00";
+                currentSheet.Column(3).Width = 24.0;
+                currentSheet.Column(3).Style.Font.Size = 14;
+                currentSheet.Column(3).Style.Numberformat.Format = "0.00";
+                currentSheet.Column(4).Width = 24.0;
+                currentSheet.Column(4).Style.Font.Size = 14;
+                currentSheet.Column(4).Style.Numberformat.Format = "0.00";
+                currentSheet.Column(5).Width = 24.0;
+                currentSheet.Column(5).Style.Font.Size = 14;
+                currentSheet.Column(5).Style.Numberformat.Format = "0.00";
+
+                using (var range = currentSheet.Cells["A1:E1"])
+                {
+                    range.Merge = true;
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    range.Value = workSheet.Title;
+                    range.Style.Font.Size = 24;
+                }
+
+                using (var range = currentSheet.Cells["A2:E2"])
+                {
+                    range.Style.Font.Bold = true;
+                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(26, 188, 156));
+                    range.Style.Font.Color.SetColor(Color.White);
+                }
+
+                currentSheet.View.FreezePanes(3, 6);
+                currentSheet.Cells["A2"].LoadFromDataTable(workSheet.WorkSheetDatas, true);
+            }
+
+            return new ExcelResult(package, "环境监控历史数据.xlsx");
+        }
+
         [HttpPost]
         public ActionResult DataExportResult()
         {
@@ -222,6 +341,7 @@ namespace SHEP_Platform.Controllers
         {
             int totalCount;
             var dataList = GetDevDataList(id, out totalCount);
+
             var ret = new
             {
                 total = totalCount,
@@ -235,6 +355,7 @@ namespace SHEP_Platform.Controllers
         {
             int totalCount;
             var dataList = GetDevDataList(id, out totalCount);
+
             var ret = new
             {
                 total = totalCount,
@@ -262,8 +383,9 @@ namespace SHEP_Platform.Controllers
                 .OrderBy(item => item.UpdateTime);
             var esmin = total.Skip(offset)
                 .Take(limit).ToList()
-                .Select(obj => new {
-                    UpdateTime = obj.UpdateTime.Value.ToString("yyyy-MM-dd hhhh:mm:ss"),
+                .Select(obj => new
+                {
+                    UpdateTime = obj.UpdateTime.Value,
                     TP = (obj.TP / 1000).ToString("F2"),
                     PM25 = (obj.PM25.Value / 1000).ToString("F2"),
                     PM100 = (obj.PM100.Value / 1000).ToString("F2"),
@@ -293,8 +415,9 @@ namespace SHEP_Platform.Controllers
                 .OrderBy(item => item.UpdateTime);
             var esmin = total.Skip(offset)
                 .Take(limit).ToList()
-                .Select(obj => new {
-                    UpdateTime = obj.UpdateTime.Value.ToString("yyyy-MM-dd hhhh:mm:ss"),
+                .Select(obj => new
+                {
+                    UpdateTime = obj.UpdateTime.Value,
                     TP = (obj.TP / 1000).ToString("F2"),
                     PM25 = (obj.PM25.Value / 1000).ToString("F2"),
                     PM100 = (obj.PM100.Value / 1000).ToString("F2"),
@@ -308,7 +431,7 @@ namespace SHEP_Platform.Controllers
 
         public void ExportHistoryData()
         {
-            
+
         }
 
         public ActionResult StatViewHik()

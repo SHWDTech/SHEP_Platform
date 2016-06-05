@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace SHEP_Platform.Models.Monitor
 {
@@ -42,5 +44,27 @@ namespace SHEP_Platform.Models.Monitor
         public string StartDate { get; set; }
 
         public string EndDate { get; set; }
+    }
+
+    public class WorkSheet
+    {
+        public WorkSheet()
+        {
+            WorkSheetDatas.Columns.Add("更新时间", typeof(DateTime));
+            WorkSheetDatas.Columns.Add("总体扬尘值(mg/m³)", typeof(string));
+            WorkSheetDatas.Columns.Add("PM2.5(mg/m³)", typeof(string));
+            WorkSheetDatas.Columns.Add("PM10(mg/m³)", typeof(string));
+            WorkSheetDatas.Columns.Add("噪音值(dB)", typeof(string));
+        }
+
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// 工作表数据
+        /// </summary>
+        public DataTable WorkSheetDatas { get; set; } = new DataTable();
     }
 }

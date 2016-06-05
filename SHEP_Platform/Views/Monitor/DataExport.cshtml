@@ -11,7 +11,8 @@
     InsertionMode = InsertionMode.Replace,
     LoadingElementDuration = 1000,
     UpdateTargetId = "exportTable",
-    OnBegin = "checkDate"
+    OnBegin = "checkDate",
+    OnSuccess = "getSuccess"
 }, new { @class = "form-horizontal", role = "form", id = "QueryForm" }))
 {
     <div class="panel panel-default">
@@ -21,7 +22,8 @@
                 @* ReSharper disable once CssBrowserCompatibility *@
                 <select class="form-control daterange" id="daterange" name="daterange" style="width: 270px; min-width: 270px;">
                     <option value="HOLD">选择时间范围</option>
-                    <option value="LD">最近一天</option>
+                    <option value="TD">今天</option>
+                    <option value="LD">昨天</option>
                     <option value="LW">最近一周</option>
                     <option value="LM">最近一月</option>
                     <option value="LY">最近一年</option>
@@ -72,7 +74,7 @@
             <li class="list-group-item">
                 <label class="label120">操作：</label>
                 <input type="submit" class="btn btn-success" value="查询" style="width: 80px;"/>
-                <input type="button" class="btn btn-primary" value="导出" style="width: 80px; margin-left: 20px;"/>
+                <a class="btn btn-primary" style="width: 80px; margin-left: 20px; display: none;" id="export" download>导出</a>
             </li>
         </ul>
     </div>

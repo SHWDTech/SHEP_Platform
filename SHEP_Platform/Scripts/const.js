@@ -12,6 +12,7 @@ var PollutantType = {
 }
 
 var QueryDateRange = {
+    'Today': 'TD',
     'LastHour': 'LH',
     'LastDay': 'LD',
     'LastWeek': 'LW',
