@@ -66,7 +66,13 @@ function checkDate() {
     return true;
 }
 
-function getSuccess() {
+function getSuccess(data) {
+    if (data.result === "failed") {
+        if (data.message === "unAuthorized") {
+            alert("登录超时，请重新登陆！");
+        }
+        return false;
+    }
     $('#export').show();
     var stats = $('#stat').val();
     var devs = $('#devs').val();
@@ -84,6 +90,7 @@ function getSuccess() {
     target += '&startDate=' + $('#startDate').find('input').val()
         + '&endDate=' + $('#endDate').find('input').val();
     $('#export').attr('href', target);
+    return true;
 }
 
 function disableDatePicker() {

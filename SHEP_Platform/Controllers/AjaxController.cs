@@ -47,8 +47,8 @@ namespace SHEP_Platform.Controllers
                     return GetVocValues();
                 case "getStatWithDevice":
                     return GetStatWithDevice();
-                case "loadExportData":
-                    return LoadExportData();
+                case "getCameraServerInfo":
+                    return GetCameraServerInfo();
             }
 
             return null;
@@ -713,7 +713,7 @@ namespace SHEP_Platform.Controllers
             return Json(ret);
         }
 
-        private JsonResult LoadExportData()
+        private JsonResult GetCameraServerInfo()
         {
 
             return null;

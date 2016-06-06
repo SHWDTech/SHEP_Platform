@@ -241,7 +241,6 @@ namespace SHEP_Platform.Controllers
                 currentSheet.Column(1).Style.Numberformat.Format = "yyyy-MM-dd hh:mm:ss";
                 currentSheet.Column(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 currentSheet.Column(1).Style.Font.Size = 14;
-                currentSheet.Column(1).Style.Numberformat.Format = "0.00";
                 currentSheet.Column(2).Width = 30.0;
                 currentSheet.Column(2).Style.Font.Size = 14;
                 currentSheet.Column(2).Style.Numberformat.Format = "0.00";
@@ -275,7 +274,7 @@ namespace SHEP_Platform.Controllers
                 currentSheet.Cells["A2"].LoadFromDataTable(workSheet.WorkSheetDatas, true);
             }
 
-            return new ExcelResult(package, "环境监控历史数据.xlsx");
+            return new ExcelResult(package, $"环境监控历史数据-{DateTime.Now.ToLongDateString()}.xlsx");
         }
 
         [HttpPost]
@@ -340,7 +339,7 @@ namespace SHEP_Platform.Controllers
         public ActionResult StatTable(int id)
         {
             int totalCount;
-            var dataList = GetDevDataList(id, out totalCount);
+            var dataList = GetStatDataList(id, out totalCount);
 
             var ret = new
             {

@@ -54,7 +54,7 @@ namespace SHEP_Platform
                 "~/Content/bootstrap-table/bootstrap-table.css"));
 
             bundles.Add(new StyleBundle("~/Content/select2-bootstrap").Include(
-                "~/Content/css/select2.css",
+                "~/Content/select2.css",
                 "~/Content/select2-bootstrap.css"));
         }
     }
