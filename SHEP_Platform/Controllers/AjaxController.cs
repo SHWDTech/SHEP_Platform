@@ -47,8 +47,6 @@ namespace SHEP_Platform.Controllers
                     return GetVocValues();
                 case "getStatWithDevice":
                     return GetStatWithDevice();
-                case "getCameraServerInfo":
-                    return GetCameraServerInfo();
             }
 
             return null;
@@ -271,7 +269,7 @@ namespace SHEP_Platform.Controllers
                     break;
             }
 
-            var dict = new Dictionary<string, object> {{"statId", statId}};
+            var dict = new Dictionary<string, object> { { "statId", statId } };
             if (dtType == "Min")
             {
                 var ret =
@@ -696,27 +694,41 @@ namespace SHEP_Platform.Controllers
 
         private JsonResult GetStatWithDevice()
         {
-            var stats = WdContext.StatList.Select(obj => new  { obj.Id, Name = obj.StatName}).ToList();
+            var stats = WdContext.StatList.Select(obj => new { obj.Id, Name = obj.StatName }).ToList();
             var devs = new List<T_Devs>();
             foreach (var stat in stats)
             {
                 devs.AddRange(DbContext.T_Devs.Where(obj => obj.StatId == stat.Id.ToString()).ToList());
             }
 
-            var devJson = devs.Select(obj => new {obj.Id, Name = obj.DevCode}).ToList();
+            var devJson = devs.Select(obj => new { obj.Id, Name = obj.DevCode }).ToList();
             var ret = new
             {
                 stats,
-                devs=  devJson
+                devs = devJson
             };
 
             return Json(ret);
         }
 
-        private JsonResult GetCameraServerInfo()
+        [AllowAnonymous]
+        public JsonResult GetCameraServerInfo()
         {
+            var hikCameraInfo = new Dictionary<string, string>();
+            foreach (var config in DbContext.T_SysConfig.Where(obj => obj.ConfigType == "HikCamera").ToList())
+            {
+                hikCameraInfo.Add(config.ConfigName.Trim(), config.ConfigValue.Trim());
+            }
 
-            return null;
+            return Json(hikCameraInfo, JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowAnonymous]
+        public JsonResult GetCameraSafeKey(string id)
+        {
+            var safekey = DbContext.T_Camera.FirstOrDefault(obj => obj.UserName == id)?.PassWord.Trim();
+
+            return Json(string.IsNullOrWhiteSpace(safekey) ? "" : safekey, JsonRequestBehavior.AllowGet);
         }
     }
 }

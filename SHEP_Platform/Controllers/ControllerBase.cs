@@ -21,7 +21,8 @@ namespace SHEP_Platform.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext ctx)
         {
-            if (ctx.ActionDescriptor.ActionName == "Login")
+            if (ctx.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) 
+                || ctx.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true))
             {
                 base.OnActionExecuting(ctx);
                 return;
@@ -35,10 +36,10 @@ namespace SHEP_Platform.Controllers
                     DbContext.T_Country.FirstOrDefault(prov => prov.Id.ToString() == WdContext.User.Remark);
                 WdContext.StatList = DbContext.T_Stats.Where(stat => stat.Country == WdContext.Country.Id).ToList();
                 if (WdContext.Country != null) ViewBag.CityName = WdContext.Country.Country;
-               var groups = DbContext.T_UserInGroups.Where(user => user.UserId.ToString() == WdContext.UserId)
-                    .Select(group => new { GroupId = group.GroupId.ToString() }).ToList();
+                var groups = DbContext.T_UserInGroups.Where(user => user.UserId.ToString() == WdContext.UserId)
+                     .Select(group => new { GroupId = group.GroupId.ToString() }).ToList();
 
-                if (groups.Count > 0)                                                                     
+                if (groups.Count > 0)
                 {
                     foreach (var item in groups)
                     {
