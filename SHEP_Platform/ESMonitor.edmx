@@ -195,7 +195,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DevId" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="char" MaxLength="50" Nullable="false" />
           <Property Name="AddTime" Type="datetime" Nullable="false" />
           <Property Name="FileName" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
@@ -1188,9 +1188,9 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DevId" Type="Int32" Nullable="false" />
           <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="false" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="T_Province">
           <Key>
@@ -2597,10 +2597,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <EntitySetMapping Name="T_Photos">
             <EntityTypeMapping TypeName="ESMonitorModel.T_Photos">
               <MappingFragment StoreEntitySet="T_Photos">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="DevId" ColumnName="DevId" />
-                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

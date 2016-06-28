@@ -730,5 +730,32 @@ namespace SHEP_Platform.Controllers
 
             return Json(string.IsNullOrWhiteSpace(safekey) ? "" : safekey, JsonRequestBehavior.AllowGet);
         }
+
+        [AllowAnonymous]
+        public JsonResult UploadPicture()
+        {
+            var picture = Request["base64Pic"];
+
+            var userName = Request["userName"];
+            
+            try
+            {
+                var fileName = $"{GlobalConfig.HikPictureUrl}{DateTime.Now.ToString("yyyyMMddhhmmssfff")}.jpg";
+                var stream = System.IO.File.Create(fileName);
+                var picBytes = Convert.FromBase64String(picture.Replace(" ","+"));
+                stream.Write(picBytes, 0, picBytes.Length);
+                DbContext.T_Photos.Add(new T_Photos() {AddTime = DateTime.Now, FileName = fileName, UserName = userName});
+                DbContext.SaveChanges();
+                stream.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
+            
+
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
     }
 }

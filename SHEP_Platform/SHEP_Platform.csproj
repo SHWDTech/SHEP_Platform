@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\WdAuthorizeAttribute.cs" />
+    <Compile Include="Process\GlobalConfig.cs" />
     <Compile Include="ShwdResult\ExcelResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
