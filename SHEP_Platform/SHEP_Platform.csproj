@@ -611,6 +611,7 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
+    <Content Include="Scripts\Page\StatViewHikSecond.js" />
     <Content Include="Scripts\Utility\jquery-2.2.3.js" />
     <Content Include="Scripts\Utility\jquery-2.2.3.min.js" />
     <Content Include="Scripts\Utility\jquery-2.2.3.min.map" />

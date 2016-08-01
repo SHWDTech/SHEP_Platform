@@ -23,7 +23,7 @@ StatViewer.Login = function () {
         return;
     }
 
-    logResult = this.ViewObject.ServiceLogin("121.42.34.0", 5160, "admin", "12345");
+    var logResult = this.ViewObject.ServiceLogin("121.42.34.0", 5160, "admin", "12345");
     if (logResult !== 1) {
         msg.warning("连接视频服务器错误，请稍候，正在尝试重新连接");
         setTimeout(function () { this.Login(); }, 30000);
@@ -81,7 +81,7 @@ StatViewer.PTZCtrl = function (cmd, delay) {
     console.log(ret);
 
     var stop = false;
-    if (delay == null) delay = 200;
+    if (delay === null) delay = 200;
     setTimeout(function () { stop = StatViewer.ViewObject.PTZCtrl(StatViewer.DeviceInfos[1].deviceId, 0, 0) === 0; }, delay);
     console.log("stoped" + stop);
 }

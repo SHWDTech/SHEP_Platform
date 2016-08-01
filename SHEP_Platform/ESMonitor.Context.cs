@@ -37,7 +37,6 @@ namespace SHEP_Platform
         public virtual DbSet<T_ESMin> T_ESMin { get; set; }
         public virtual DbSet<T_Files> T_Files { get; set; }
         public virtual DbSet<T_GroupModules> T_GroupModules { get; set; }
-        public virtual DbSet<T_Photos> T_Photos { get; set; }
         public virtual DbSet<T_Province> T_Province { get; set; }
         public virtual DbSet<T_Stage> T_Stage { get; set; }
         public virtual DbSet<T_Stats> T_Stats { get; set; }
@@ -51,6 +50,7 @@ namespace SHEP_Platform
         public virtual DbSet<T_ESDaytemp1> T_ESDaytemp1 { get; set; }
         public virtual DbSet<T_Offset> T_Offset { get; set; }
         public virtual DbSet<T_SysConfig> T_SysConfig { get; set; }
+        public virtual DbSet<T_Photos> T_Photos { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {
@@ -805,7 +805,7 @@ namespace SHEP_Platform
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESHour_Update", idParameter, statIdParameter, tPParameter, dBParameter, updateTimeParameter, dataStatusParameter, validDataNumParameter, devIdParameter, countryParameter);
         }
     
-        public virtual int T_ESMin_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> statCode, Nullable<double> tP, Nullable<double> dB, Nullable<System.DateTime> updateTime, Nullable<double> windSpeed, Nullable<double> rain, Nullable<double> windDirection, Nullable<double> temperature, Nullable<double> humidity, Nullable<double> airpressure, string dataStatus, Nullable<int> devId, string country, Nullable<double> pm25, Nullable<double> pm100, Nullable<double> vocs)
+        public virtual int T_ESMin_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> statCode, Nullable<double> tP, Nullable<double> dB, Nullable<System.DateTime> updateTime, Nullable<double> windSpeed, Nullable<double> rain, Nullable<double> windDirection, Nullable<double> temperature, Nullable<double> humidity, Nullable<double> airpressure, string dataStatus, Nullable<int> devId, string country, Nullable<double> pm25, Nullable<double> pm100)
         {
             var statIdParameter = statId.HasValue ?
                 new ObjectParameter("StatId", statId) :
@@ -871,11 +871,7 @@ namespace SHEP_Platform
                 new ObjectParameter("Pm100", pm100) :
                 new ObjectParameter("Pm100", typeof(double));
     
-            var vocsParameter = vocs.HasValue ?
-                new ObjectParameter("vocs", vocs) :
-                new ObjectParameter("vocs", typeof(double));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESMin_ADD", id, statIdParameter, statCodeParameter, tPParameter, dBParameter, updateTimeParameter, windSpeedParameter, rainParameter, windDirectionParameter, temperatureParameter, humidityParameter, airpressureParameter, dataStatusParameter, devIdParameter, countryParameter, pm25Parameter, pm100Parameter, vocsParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESMin_ADD", id, statIdParameter, statCodeParameter, tPParameter, dBParameter, updateTimeParameter, windSpeedParameter, rainParameter, windDirectionParameter, temperatureParameter, humidityParameter, airpressureParameter, dataStatusParameter, devIdParameter, countryParameter, pm25Parameter, pm100Parameter);
         }
     
         public virtual int T_ESMin_Delete(Nullable<long> id)
@@ -2043,6 +2039,16 @@ namespace SHEP_Platform
                 new ObjectParameter("strWhere", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESHour_GetAvgPM25StatList_Result>("T_ESHour_GetAvgPM25StatList", countryParameter, strWhereParameter);
+        }
+    
+        public virtual int T_InsertTable_AutoForESDay1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_InsertTable_AutoForESDay1");
+        }
+    
+        public virtual int T_InsertTable_AutoForESHour1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_InsertTable_AutoForESHour1");
         }
     }
 }

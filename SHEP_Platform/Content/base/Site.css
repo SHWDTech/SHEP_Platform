@@ -352,3 +352,9 @@ label.label120 {
 .dataTable-hidden {
     display: none;
 }
+
+.camerabtn {
+    width: 80px !important;
+    margin-right: 25px;
+    height: 45px;
+}

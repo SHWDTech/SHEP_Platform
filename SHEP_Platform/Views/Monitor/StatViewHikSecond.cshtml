@@ -1,42 +1,33 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "工程实时状况查看";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>StatViewHikSecond</title>
-</head>
-<body>
-    <script type="text/javascript">
-       var StatMonitor = document.getElementById('StatMonitor');
-
-	   function SetUp(){
-		   StatMonitor.SetupCamera('c5db51b504294b648353650c299a055a', '0ZDXAF', '588101720');
-	   }
-
-	   function Move(cmd){
-	       StatMonitor.ControlPlatform(cmd);
-	   }
-
-	   function Stop(){
-	       StatMonitor.StopControlPlatform();
-	   }
-    </script>
-<div>
+<div style="float: right;">
     <object classid="clsid:41353907-A6CF-4BDF-9AE0-EB06F8C48414"
-            width="800" height="600" id="StatMonitor"></object>
-    <form id="form1" runat="server">
-        <input type="button" onmousedown="StatMonitor.ControlPlatform('UP')" onmouseup="Stop()" value="上">
-        <input type="button" onmousedown="StatMonitor.ControlPlatform('DOWN')" onmouseup="Stop()" value="下">
-        <input type="button" onmousedown="StatMonitor.ControlPlatform('LEFT')" onmouseup="Stop()" value="左">
-        <input type="button" onmousedown="StatMonitor.ControlPlatform('RIGHT')" onmouseup="Stop()" value="右">
-        <input type="button" onmousedown="StatMonitor.ControlPlatform('ZOOMIN')" onmouseup="Stop()" value="近景">
-        <input type="button" onmousedown="StatMonitor.ControlPlatform('ZOOMOUT')" onmouseup="Stop()" value="远景">
-    </form>
+            width="800" height="600" id="StatMonitor" style="z-index: -1;"></object>
 </div>
-</body>
-</html>
+<div style="margin-right: 25px;">
+    <div class="form-inline">
+        <div style="margin-bottom: 30px;">
+            <input type="button" class="form-control camerabtn"/>
+            <input type="button" onmousedown="Up()" onmouseup="Stop()" value="上" class="form-control camerabtn">
+            <input type="button" class="form-control camerabtn" />
+        </div>
+        <div style="margin-bottom: 30px;">
+            <input type="button" onmousedown="Left()" onmouseup="Stop()" value="左" class="form-control camerabtn">
+            <input type="button" onmousedown="StartMonitor()" value="开始" class="form-control camerabtn">
+            <input type="button" onmousedown="Right()" onmouseup="Stop()" value="右" class="form-control camerabtn">
+        </div>
+        <div style="margin-bottom: 30px;">
+            <input type="button" onmousedown="ZoomIn()" onmouseup="Stop()" value="近景" class="form-control camerabtn">
+            <input type="button" onmousedown="Down()" onmouseup="Stop()" value="下" class="form-control camerabtn">
+            <input type="button" onmousedown="ZoomOut" onmouseup="Stop()" value="远景" class="form-control camerabtn">
+        </div>
+</div>
+</div>
+
+@section scripts {
+    <script src="/Scripts/Page/StatViewHikSecond.js"></script>
+}

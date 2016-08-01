@@ -15,7 +15,6 @@
         <EntityTypeShape EntityType="ESMonitorModel.T_ESMin" Width="1.5" PointX="2.75" PointY="10.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Files" Width="1.5" PointX="9.75" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_GroupModules" Width="1.5" PointX="9.75" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ESMonitorModel.T_Photos" Width="1.5" PointX="9.75" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Province" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Stage" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Stats" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
@@ -34,6 +33,7 @@
         <AssociationConnector Association="ESMonitorModel.FK_T_Stage_T_Stage" ManuallyRouted="false" />
         <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_Stage" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ESMonitorModel.T_SysConfig" Width="1.5" PointX="14.375" PointY="5.75" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Photos" Width="1.5" PointX="14.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
