@@ -744,7 +744,7 @@ namespace SHEP_Platform.Controllers
                 var stream = System.IO.File.Create(fileName);
                 var picBytes = Convert.FromBase64String(picture.Replace(" ","+"));
                 stream.Write(picBytes, 0, picBytes.Length);
-                DbContext.T_Photos.Add(new T_Photos() {AddTime = DateTime.Now, FileName = fileName, UserName = userName});
+                DbContext.T_Photos.Add(new T_Photos() {AddTime = DateTime.Now, FileName = fileName, UsereName = userName});
                 DbContext.SaveChanges();
                 stream.Close();
             }

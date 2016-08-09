@@ -32,8 +32,8 @@
         <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_Country" ManuallyRouted="false" />
         <AssociationConnector Association="ESMonitorModel.FK_T_Stage_T_Stage" ManuallyRouted="false" />
         <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_Stage" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="ESMonitorModel.T_SysConfig" Width="1.5" PointX="14.375" PointY="5.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Photos" Width="1.5" PointX="14.375" PointY="8.75" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_SysConfig" Width="1.5" PointX="14.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,8 +15,9 @@ namespace SHEP_Platform
     public partial class T_Photos
     {
         public long ID { get; set; }
-        public string UserName { get; set; }
         public System.DateTime AddTime { get; set; }
         public string FileName { get; set; }
+        public string UsereName { get; set; }
+        public int DevId { get; set; }
     }
 }
