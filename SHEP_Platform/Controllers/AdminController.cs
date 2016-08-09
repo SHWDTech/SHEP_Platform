@@ -350,7 +350,6 @@ namespace SHEP_Platform.Controllers
                 }
             }
 
-
             return RedirectToAction("DevManage", "Admin");
         }
 
