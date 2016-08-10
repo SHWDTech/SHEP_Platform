@@ -448,10 +448,10 @@ namespace SHEP_Platform.Controllers
             return View();
         }
 
-        public ActionResult StatViewHikSecond()
+        public ActionResult StatViewHikSecond(string id)
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "工程实时状况查看";
-
+            ViewBag.CameraId = id;
             return View();
         }
     }

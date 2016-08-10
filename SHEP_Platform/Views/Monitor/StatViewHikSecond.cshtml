@@ -5,6 +5,10 @@
 }
 
 <div style="float: right;">
+    <input type="hidden" value="@ViewBag.CameraId" id="cameraId"/>
+    <div id="ocxAlarm" style="display: none;">
+        <p>查看视频请先安装视频插件，<span><a href="/Resources/WdMonitorView.msi">点击此处下载安装</a></span>。<span style="color: red;">并以管理员权限运行安装。</span></p>
+    </div>
     <object classid="clsid:41353907-A6CF-4BDF-9AE0-EB06F8C48414"
             width="800" height="600" id="StatMonitor" style="z-index: -1;"></object>
 </div>

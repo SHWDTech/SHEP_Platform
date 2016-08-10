@@ -563,6 +563,7 @@
     <Content Include="Content\select2-bootstrap.less" />
     <Content Include="Content\select2-bootstrap-build.scss" />
     <Content Include="Content\select2-bootstrap-build.less" />
+    <Content Include="Resources\WdMonitorView.msi" />
     <None Include="Scripts\Utility\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />
     <Content Include="Scripts\i18n\az.js" />

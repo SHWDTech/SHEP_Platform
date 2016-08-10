@@ -6,9 +6,17 @@ $(function () {
         return;
     }
 
+    try {
+        var obj = new ActiveXObject('MonitorViewer.MonitorViewer');
+    }
+    catch (e) {
+        $('#ocxAlarm').show();
+        return;
+    }
+
     StatMonitor = document.getElementById('StatMonitor');
-    StatMonitor.SetConnectServer("localhost:6330");
-    StatMonitor.SetupCamera("626519921");
+    StatMonitor.SetConnectServer("139.196.194.156");
+    StatMonitor.SetupCamera($('#cameraId').val());
 });
 
 var StartMonitor = function() {
