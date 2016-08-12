@@ -441,9 +441,10 @@ namespace SHEP_Platform.Controllers
         }
 
 
-        public ActionResult StatViewCircle()
+        public ActionResult StatViewCircle(string id)
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "工程实时状况查看";
+            ViewBag.CameraId = id;
 
             return View();
         }
