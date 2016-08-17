@@ -15,7 +15,7 @@ namespace SHEP_Platform.Controllers
         /// </summary>
         public ActionResult Index()
         {
-            var stats = DbContext.T_Stats.Where(stat => stat.Country == WdContext.Country.Id).ToList();
+            var stats = WdContext.StatList;
 
             var list = new List<StatStatus>();
 

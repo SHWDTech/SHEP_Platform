@@ -51,6 +51,7 @@ namespace SHEP_Platform
         public virtual DbSet<T_Offset> T_Offset { get; set; }
         public virtual DbSet<T_Photos> T_Photos { get; set; }
         public virtual DbSet<T_SysConfig> T_SysConfig { get; set; }
+        public virtual DbSet<T_UserStats> T_UserStats { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {

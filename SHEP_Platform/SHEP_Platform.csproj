@@ -448,6 +448,9 @@
     <Compile Include="T_Users.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
+    <Compile Include="T_UserStats.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="T_Users_GetList_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>

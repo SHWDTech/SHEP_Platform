@@ -21,7 +21,7 @@ namespace SHEP_Platform.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext ctx)
         {
-            if (ctx.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) 
+            if (ctx.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
                 || ctx.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true))
             {
                 base.OnActionExecuting(ctx);
@@ -34,7 +34,17 @@ namespace SHEP_Platform.Controllers
                 WdContext.User = DbContext.T_Users.FirstOrDefault(user => user.UserId.ToString() == WdContext.UserId);
                 WdContext.Country =
                     DbContext.T_Country.FirstOrDefault(prov => prov.Id.ToString() == WdContext.User.Remark);
-                WdContext.StatList = DbContext.T_Stats.Where(stat => stat.Country == WdContext.Country.Id).ToList();
+                if (WdContext.User != null && WdContext.User.RoleId == 3)
+                {
+                    foreach (var source in DbContext.T_UserStats.Where(obj => obj.UserId.ToString() == WdContext.UserId))
+                    {
+                        WdContext.StatList.Add(DbContext.T_Stats.FirstOrDefault(obj => obj.Id == source.StatId));
+                    }
+                }
+                else
+                {
+                    WdContext.StatList = DbContext.T_Stats.Where(stat => stat.Country == WdContext.Country.Id).ToList();
+                }
                 if (WdContext.Country != null) ViewBag.CityName = WdContext.Country.Country;
                 var groups = DbContext.T_UserInGroups.Where(user => user.UserId.ToString() == WdContext.UserId)
                      .Select(group => new { GroupId = group.GroupId.ToString() }).ToList();

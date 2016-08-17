@@ -311,6 +311,14 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Property Name="NowTime" Type="datetime" />
           <Property Name="Remark" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="T_UserStats">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="StatId" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
           <End Role="T_Country" Type="Self.T_Country" Multiplicity="*" />
@@ -980,6 +988,7 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <EntitySet Name="T_UserGroup" EntityType="Self.T_UserGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserInGroups" EntityType="Self.T_UserInGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Users" EntityType="Self.T_Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_UserStats" EntityType="Self.T_UserStats" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Alarms" EntityType="Self.T_Alarms" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [T_Alarms].[Id] AS [Id], 
@@ -2038,6 +2047,7 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <FunctionImport Name="T_InsertTable_AutoForESHour1" />
           <EntitySet Name="T_PhotosSet" EntityType="ESMonitorModel.T_Photos" />
           <EntitySet Name="T_SysConfig" EntityType="ESMonitorModel.T_SysConfig" />
+          <EntitySet Name="T_UserStats" EntityType="ESMonitorModel.T_UserStats" />
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
@@ -2454,6 +2464,14 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Property Name="ConfigType" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="T_UserStats">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="StatId" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3447,6 +3465,15 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
                 <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
                 <ScalarProperty Name="ConfigType" ColumnName="ConfigType" />
                 <ScalarProperty Name="ConfigId" ColumnName="ConfigId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_UserStats">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_UserStats">
+              <MappingFragment StoreEntitySet="T_UserStats">
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

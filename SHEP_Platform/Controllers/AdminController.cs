@@ -499,6 +499,11 @@ namespace SHEP_Platform.Controllers
                 {
                     Text = "管理员",
                     Value = "2"
+                },
+                new SelectListItem()
+                {
+                    Text = "工地负责人",
+                    Value = "3"
                 }
             };
             model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
@@ -530,6 +535,11 @@ namespace SHEP_Platform.Controllers
                     {
                         Text = "管理员",
                         Value = "2"
+                    },
+                    new SelectListItem()
+                    {
+                        Text = "工地负责人",
+                        Value = "3"
                     }
                 };
                 model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
@@ -552,6 +562,11 @@ namespace SHEP_Platform.Controllers
                     {
                         Text = "管理员",
                         Value = "2"
+                    },
+                    new SelectListItem()
+                    {
+                        Text = "工地负责人",
+                        Value = "3"
                     }
                 };
                 model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
@@ -601,6 +616,11 @@ namespace SHEP_Platform.Controllers
                     {
                         Text = "管理员",
                         Value = "2"
+                    },
+                    new SelectListItem()
+                    {
+                        Text = "工地负责人",
+                        Value = "3"
                     }
                 };
 
