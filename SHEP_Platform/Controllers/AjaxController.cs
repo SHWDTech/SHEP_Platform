@@ -196,7 +196,7 @@ namespace SHEP_Platform.Controllers
                 // ReSharper disable once PossibleInvalidOperationException
                 .Select(i => new
                 {
-                    TP = (i.TP / 1000).ToString("f2"),
+                    TP = statId == 14 ? (i.TP / 100).ToString("f2") :(i.TP / 1000).ToString("f2"),
                     DB = i.DB.ToString("f2"),
                     PM25 = (i.PM25 / 1000).GetValueOrDefault().ToString("f2"),
                     PM100 = (i.PM100 / 1000).GetValueOrDefault().ToString("f2"),

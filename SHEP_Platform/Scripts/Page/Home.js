@@ -30,7 +30,9 @@ var updateStats = function() {
 
     $(statusInfo).each(function () {
         var ul = $('<ul></ul>');
-
+        if ($(this)[0].Id === 14) {
+            $(this)[0].AvgTp = $(this)[0].AvgTp * 10;
+        }
         $(ul).append('<li class="title"><a href="/Monitor/ActualStatus/' + $(this)[0].Id + '">' + $(this)[0].Name + '</a></li>');
         $(ul).append('<li><span class="text pm">颗粒物</span><span class="num safe">' + $(this)[0].AvgTp + '(mg/m³)</span></li>');
         $(ul).append('<li><span class="text db">噪音</span><span class="num safe">' + $(this)[0].AvgDb + '(dB)</span></li>');

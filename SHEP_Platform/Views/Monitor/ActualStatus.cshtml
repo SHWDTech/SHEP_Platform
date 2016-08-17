@@ -67,6 +67,10 @@
                                 {
                                     <td class="pm">@(((current.TP) / 1000 - 0.15).ToString("f2"))</td>
                                 }
+                                else if (tStat.Id == 14)
+                                {
+                                    <td class="pm">@(((current.TP) / 100).ToString("f2"))</td>
+                                }
                                 else
                                 {
                                     <td class="pm">@(((current.TP) / 1000).ToString("f2"))</td>

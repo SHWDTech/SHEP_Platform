@@ -1,5 +1,7 @@
 ﻿var StatMonitor = null;
 
+var started = false;
+
 $(function () {
     if (!BaseInfo.IsIE) {
         msg.warning("请使用IE内核的浏览器打开本页面！");
@@ -15,12 +17,23 @@ $(function () {
     }
 
     StatMonitor = document.getElementById('StatMonitor');
-    StatMonitor.SetConnectServer("139.196.194.156");
+    StatMonitor.SetConnectServer("localhost:6330");
     StatMonitor.SetupCamera($('#cameraId').val());
 });
 
-var StartMonitor = function() {
-    StatMonitor.StartMonitor();
+var SwitchMonitorStatus = function () {
+    if (!started) {
+        if (StatMonitor.StartMonitor() === 0) {
+            started = true;
+            $('#monitorSwitch').val('结束');
+        }
+    } else {
+        if (StatMonitor.StopMonitor() === 0) {
+            started = false;
+            $('#monitorSwitch').val('开始');
+        }
+    }
+    
 };
 
 var Up = function () {
