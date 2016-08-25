@@ -388,7 +388,7 @@ namespace SHEP_Platform.Controllers
                     TP = (obj.TP / 1000).ToString("F2"),
                     PM25 = (obj.PM25.Value / 1000).ToString("F2"),
                     PM100 = (obj.PM100.Value / 1000).ToString("F2"),
-                    DB = (obj.DB / 1000).ToString("F2")
+                    DB = (obj.DB).ToString("F2")
                 })
                 .ToList();
 
@@ -420,7 +420,7 @@ namespace SHEP_Platform.Controllers
                     TP = (obj.TP / 1000).ToString("F2"),
                     PM25 = (obj.PM25.Value / 1000).ToString("F2"),
                     PM100 = (obj.PM100.Value / 1000).ToString("F2"),
-                    DB = (obj.DB / 1000).ToString("F2")
+                    DB = (obj.DB).ToString("F2")
                 })
                 .ToList();
 
