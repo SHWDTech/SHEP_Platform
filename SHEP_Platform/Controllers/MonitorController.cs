@@ -33,7 +33,7 @@ namespace SHEP_Platform.Controllers
                 var hour = DateTime.Now.AddHours(-1);
                 var value =
                     DbContext.T_ESHour.FirstOrDefault(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
-                var current = DbContext.T_ESMin.Where(obj => obj.StatId == stat.Id).ToList().LastOrDefault();
+                var current = DbContext.T_ESMin.OrderByDescending(item => item.UpdateTime).FirstOrDefault(obj => obj.StatId == stat.Id);
 
                 var info = new StatHourInfo
                 {
@@ -80,7 +80,7 @@ namespace SHEP_Platform.Controllers
                 var hour = DateTime.Now.AddHours(-1);
                 var value =
                     DbContext.T_ESHour.FirstOrDefault(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
-                var current = DbContext.T_ESMin.Where(obj => obj.StatId == stat.Id).ToList().LastOrDefault();
+                var current = DbContext.T_ESMin.OrderByDescending(item => item.UpdateTime).FirstOrDefault(obj => obj.StatId == stat.Id);
 
                 var info = new StatHourInfo
                 {

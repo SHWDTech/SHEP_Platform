@@ -122,9 +122,9 @@ var setChart = function (ret, name, id) {
     option.legend.data = ['颗粒物', '噪音值', 'PM2.5', 'PM10'];
     option.yAxis = [
     {
-         type: 'value', name: 'tp', axisLabel: { formatter: '{value}' }
-    }, {
          type: 'value', name: 'db', axisLabel: { formatter: '{value}' }
+    }, {
+         type: 'value', name: 'tp', axisLabel: { formatter: '{value}' }
     }];
     var seriesTp = Echart_Tools.getSeries('颗粒物', 'line', PollutantColor.PM);
     var seriesDb = Echart_Tools.getSeries('噪音值', 'line', PollutantColor.Noise);
@@ -165,13 +165,17 @@ var setChart = function (ret, name, id) {
     var pm25GaugeOption = Echart_Tools.getGaugeOption();
 
     tpGaugeOption.title.text = '颗粒物';
-    tpGaugeOption.series[0].data = { name: '颗粒物', value: $(list).last()[0].TP };
+    var currentTp = $(list).last()[0].TP;
+    tpGaugeOption.series[0].data = { name: '颗粒物', value: currentTp };
+    tpGaugeOption.series[0].max = currentTp > 2 ? Math.ceil(currentTp) : 2;
     pm25GaugeOption.title.text = 'PM2.5';
-    pm25GaugeOption.series[0].data = { name: 'PM2.5', value: $(list).last()[0].PM25 };
+    var currentPm25 = $(list).last()[0].PM25;
+    pm25GaugeOption.series[0].data = { name: 'PM2.5', value: currentPm25 };
+    pm25GaugeOption.series[0].max = currentPm25 > 2 ? Math.ceil($(list).last()[0].PM25) : 2;
     dbGaugeOption.title.text = '噪音值';
-    dbGaugeOption.series[0].min = 30;
-    dbGaugeOption.series[0].max = 90;
-    dbGaugeOption.series[0].data = { name: '噪音值', value: $(list).last()[0].DB };
+    var currentDb = $(list).last()[0].DB;
+    dbGaugeOption.series[0].max = currentDb > 90 ? Math.ceil($(list).last()[0].DB / 10) * 10 : 90;
+    dbGaugeOption.series[0].data = { name: '噪音值', value: currentDb };
     tpGauge.setOption(tpGaugeOption);
     dbGauge.setOption(dbGaugeOption);
     pm25Gauge.setOption(pm25GaugeOption);

@@ -128,22 +128,23 @@ Echart_Tools.getOption = function () {
             }
         },
         series: [
-            {
-                itemStyle: {
-                    normal: {
-                        color: '#1abc9c'
-                    }
-                },
-                name: '',
-                type: 'bar',
-                data: [],
-                markPoint: {
-                    data: []
-                },
-                markLine: {
-                    data: []
+        {
+            itemStyle: {
+                normal: {
+                    color: '#1abc9c'
                 }
+            },
+            name: '',
+            min: 0,
+            type: 'bar',
+            data: [],
+            markPoint: {
+                data: []
+            },
+            markLine: {
+                data: []
             }
+        }
         ]
     };
 
