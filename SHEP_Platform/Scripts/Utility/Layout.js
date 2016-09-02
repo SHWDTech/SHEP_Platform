@@ -64,7 +64,7 @@ function getAlarmInformation() {
     $.post("/Ajax/Access", { 'fun': 'getAlarmInfo' }, function (result) {
         if (result.total > 0) {
             $('#alarmCount').addClass('badge-danger');
-            $('#alarmCount').html(result.total);
+            $('#alarmCount').html(result.notRead);
             $('#alarmDetails')[0].style.display = '';
             for (var i = 0; i < result.details.length; i++) {
                 var item = result.details[i];

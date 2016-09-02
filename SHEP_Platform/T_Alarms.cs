@@ -21,5 +21,6 @@ namespace SHEP_Platform
         public Nullable<double> FaultVal { get; set; }
         public Nullable<System.DateTime> UpdateTime { get; set; }
         public string Country { get; set; }
+        public bool IsReaded { get; set; }
     }
 }

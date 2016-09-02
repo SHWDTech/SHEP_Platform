@@ -85,9 +85,7 @@ namespace SHEP_Platform.Controllers
 
             if (pollutantType == PollutantType.ParticulateMatter)
             {
-                stringBuilder.AppendFormat("UpdateTime >='{0}' and UpdateTime <='{1}'",
-                    startDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                stringBuilder.AppendFormat("UpdateTime >='{0:yyyy-MM-dd HH:mm:ss}' and UpdateTime <='{1:yyyy-MM-dd HH:mm:ss}'", startDate, endDate);
                 var ret =
                     from item in DbContext.T_ESDay_GetAvgCMPStatList(WdContext.User.Remark, stringBuilder.ToString())
                     group item by item.StatId
@@ -110,9 +108,7 @@ namespace SHEP_Platform.Controllers
 
             if (pollutantType == PollutantType.Noise)
             {
-                stringBuilder.AppendFormat("UpdateTime >='{0}' and UpdateTime <='{1}'",
-                    startDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                stringBuilder.AppendFormat("UpdateTime >='{0:yyyy-MM-dd HH:mm:ss}' and UpdateTime <='{1:yyyy-MM-dd HH:mm:ss}'", startDate, endDate);
                 var ret =
                     from item in DbContext.T_ESDay_GetAvgNoiseStatList(WdContext.User.Remark, stringBuilder.ToString())
                     group item by item.StatId
@@ -136,9 +132,7 @@ namespace SHEP_Platform.Controllers
 
             if (pollutantType == PollutantType.Pm25)
             {
-                stringBuilder.AppendFormat("UpdateTime >='{0}' and UpdateTime <='{1}'",
-                    startDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                stringBuilder.AppendFormat("UpdateTime >='{0:yyyy-MM-dd HH:mm:ss}' and UpdateTime <='{1:yyyy-MM-dd HH:mm:ss}'", startDate, endDate);
                 var ret =
                     from item in DbContext.T_ESDay_GetAvgPM25StatList(WdContext.User.Remark, stringBuilder.ToString())
                     group item by item.StatId
@@ -161,9 +155,7 @@ namespace SHEP_Platform.Controllers
 
             if (pollutantType == PollutantType.Pm100)
             {
-                stringBuilder.AppendFormat("UpdateTime >='{0}' and UpdateTime <='{1}'",
-                    startDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    endDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                stringBuilder.AppendFormat("UpdateTime >='{0:yyyy-MM-dd HH:mm:ss}' and UpdateTime <='{1:yyyy-MM-dd HH:mm:ss}'", startDate, endDate);
                 var ret =
                     from item in DbContext.T_ESDay_GetAvgPM100StatList(WdContext.User.Remark, stringBuilder.ToString())
                     group item by item.StatId
@@ -608,7 +600,7 @@ namespace SHEP_Platform.Controllers
                 HkAction.GetCameraList();
                 HkAction.StartPlay();
 
-                success = HkAction.CapturePicture($"D:\\CameraPicture\\{DateTime.Now.ToString("yyyyMMddHHmmssffff")}.jpg");
+                success = HkAction.CapturePicture($"D:\\CameraPicture\\{DateTime.Now:yyyyMMddHHmmssffff}.jpg");
             }
 
 
@@ -621,19 +613,17 @@ namespace SHEP_Platform.Controllers
 
         private JsonResult GetAlarmInfo()
         {
-            var start = DateTime.Now.AddMinutes(-5);
-
-            var todayPmAlarm = DbContext.T_Alarms.Where(obj => obj.UpdateTime > start && obj.DustType == 0);
-
-            var todayDbAlarm = DbContext.T_Alarms.Where(obj => obj.UpdateTime > start && obj.DustType == 1);
+            var currentStatIds = WdContext.StatList.Select(obj => obj.Id).ToList();
+            var topAlarms = DbContext.T_Alarms.Where(obj => obj.DustType == 0 && currentStatIds.Contains(obj.StatId.Value))
+                .OrderByDescending(item => item.UpdateTime).Take(10);
 
             var details = new List<AlarmDetail>();
-            foreach (var pmAlarm in todayPmAlarm)
+            foreach (var pmAlarm in topAlarms)
             {
-                var stat = DbContext.T_Stats.First(obj => obj.Id == pmAlarm.StatId);
+                var stat = WdContext.StatList.First(obj => obj.Id == pmAlarm.StatId);
                 if (pmAlarm.StatId != null)
                 {
-                    var detail = new AlarmDetail { StatName = stat.StatName, Id = pmAlarm.StatId.Value };
+                    var detail = new AlarmDetail { StatName = stat.StatName, Id = stat.Id, IsReaded = pmAlarm.IsReaded};
                     if (pmAlarm.UpdateTime != null) detail.AlarmDateTime = pmAlarm.UpdateTime.Value.ToString("hh:mm:ss");
                     detail.AlarmType = "扬尘值";
                     if (pmAlarm.FaultVal != null) detail.AlarmValue = ((pmAlarm.FaultVal.Value) / 1000.0).ToString("f2");
@@ -642,23 +632,10 @@ namespace SHEP_Platform.Controllers
                 }
             }
 
-            foreach (var dbAlarm in todayDbAlarm)
-            {
-                var stat = DbContext.T_Stats.First(obj => obj.Id == dbAlarm.StatId);
-                if (dbAlarm.StatId != null)
-                {
-                    var detail = new AlarmDetail { StatName = stat.StatName, Id = dbAlarm.StatId.Value };
-                    if (dbAlarm.UpdateTime != null) detail.AlarmDateTime = dbAlarm.UpdateTime.Value.ToString("hh:mm:ss");
-                    detail.AlarmType = "扬尘值";
-                    if (dbAlarm.FaultVal != null) detail.AlarmValue = dbAlarm.FaultVal.Value.ToString("f2");
-
-                    details.Add(detail);
-                }
-            }
-
             var ret = new
             {
-                total = todayDbAlarm.Count() + todayPmAlarm.Count(),
+                total = topAlarms.Count(),
+                notRead = topAlarms.Count(obj => !obj.IsReaded),
                 details
             };
 
@@ -740,7 +717,7 @@ namespace SHEP_Platform.Controllers
             
             try
             {
-                var fileName = $"{GlobalConfig.HikPictureUrl}{DateTime.Now.ToString("yyyyMMddhhmmssfff")}.jpg";
+                var fileName = $"{GlobalConfig.HikPictureUrl}{DateTime.Now:yyyyMMddhhmmssfff}.jpg";
                 var stream = System.IO.File.Create(fileName);
                 var picBytes = Convert.FromBase64String(picture.Replace(" ","+"));
                 stream.Write(picBytes, 0, picBytes.Length);

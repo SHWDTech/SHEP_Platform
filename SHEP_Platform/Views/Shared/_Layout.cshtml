@@ -34,14 +34,14 @@
         {
             @Html.AntiForgeryToken()
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                <li class="alarmBtn">
                     <div class="btn-group btn-default" style="background-color: transparent; -webkit-box-shadow: none; box-shadow: none;">
                         <button class="btn btn-default dropdown-toggle" type="button" id="viewalrmdetails"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="border-radius: 0; background-color: transparent; color: #fff0f5; border: none; -webkit-box-shadow: none; box-shadow: none; height: 50px;">
-                            超标报警  <span id="alarmCount" class="badge">0</span>
+                            <span id="alarmMark">超标报警</span>
+                            <span id="alarmCount" class="badge">0</span>
                         </button>
-                        <ul id="alarmDetails" class="dropdown-menu" aria-labelledby="viewalrmdetails" style="left: 0; display: none;">
-                        </ul>
+                        <ul id="alarmDetails" class="dropdown-menu" aria-labelledby="viewalrmdetails" style="left: 0; display: none;"></ul>
                     </div>
                 </li>
                 <li>

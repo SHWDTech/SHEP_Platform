@@ -358,3 +358,9 @@ label.label120 {
     margin-right: 25px;
     height: 45px;
 }
+
+.btn .badge.badge-danger {
+    background: #f2dede;
+    color: #a94442;
+    border-color: #ebccd1;
+}

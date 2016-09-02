@@ -33,6 +33,8 @@ namespace SHEP_Platform.Models.Monitor
         public string AlarmDateTime { get; set; }
 
         public string AlarmValue { get; set; }
+
+        public bool IsReaded { get; set; }
     }
 
     public class DataExport

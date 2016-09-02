@@ -18,6 +18,7 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Alarms' does not have a primary ke
           <Property Name="FaultVal" Type="float" />
           <Property Name="UpdateTime" Type="datetime" />
           <Property Name="Country" Type="varchar" MaxLength="20" />
+          <Property Name="IsReaded" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="T_AlarmType">
           <Key>
@@ -997,7 +998,8 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
     [T_Alarms].[DustType] AS [DustType], 
     [T_Alarms].[FaultVal] AS [FaultVal], 
     [T_Alarms].[UpdateTime] AS [UpdateTime], 
-    [T_Alarms].[Country] AS [Country]
+    [T_Alarms].[Country] AS [Country], 
+    [T_Alarms].[IsReaded] AS [IsReaded]
     FROM [dbo].[T_Alarms] AS [T_Alarms]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="T_Camera" EntityType="Self.T_Camera" store:Type="Tables" store:Schema="dbo">
@@ -1072,6 +1074,7 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Property Name="FaultVal" Type="Double" />
           <Property Name="UpdateTime" Type="DateTime" Precision="3" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsReaded" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="T_AlarmType">
           <Key>
@@ -2045,7 +2048,7 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           </FunctionImport>
           <FunctionImport Name="T_InsertTable_AutoForESDay1" />
           <FunctionImport Name="T_InsertTable_AutoForESHour1" />
-          <EntitySet Name="T_PhotosSet" EntityType="ESMonitorModel.T_Photos" />
+          <EntitySet Name="T_Photos" EntityType="ESMonitorModel.T_Photos" />
           <EntitySet Name="T_SysConfig" EntityType="ESMonitorModel.T_SysConfig" />
           <EntitySet Name="T_UserStats" EntityType="ESMonitorModel.T_UserStats" />
         </EntityContainer>
@@ -2482,6 +2485,7 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <EntitySetMapping Name="T_Alarms">
             <EntityTypeMapping TypeName="ESMonitorModel.T_Alarms">
               <MappingFragment StoreEntitySet="T_Alarms">
+                <ScalarProperty Name="IsReaded" ColumnName="IsReaded" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
@@ -3447,7 +3451,7 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESDay1" FunctionName="ESMonitorModel.Store.T_InsertTable_AutoForESDay" />
           <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESHour1" FunctionName="ESMonitorModel.Store.T_InsertTable_AutoForESHour" />
-          <EntitySetMapping Name="T_PhotosSet">
+          <EntitySetMapping Name="T_Photos">
             <EntityTypeMapping TypeName="ESMonitorModel.T_Photos">
               <MappingFragment StoreEntitySet="T_Photos">
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
