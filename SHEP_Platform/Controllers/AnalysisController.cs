@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
+using SHEP_Platform.Models.Analysis;
 
 namespace SHEP_Platform.Controllers
 {
@@ -32,6 +34,32 @@ namespace SHEP_Platform.Controllers
             WdContext.SiteMapMenu.ActionMenu.Name = "可挥发性有机物监测数值列表";
 
             return View();
+        }
+
+        public ActionResult AlarmDetails()
+        {
+            var statList = WdContext.StatList.Select(obj => obj.Id).ToList();
+            var model = new AlarmDetailsViewModel();
+            var alarms = DbContext.T_Alarms.Where(obj => statList.Contains(obj.StatId.Value)).OrderByDescending(item => item.UpdateTime);
+            foreach (var alarm in alarms)
+            {
+                var stat = WdContext.StatList.First(obj => alarm.StatId != null && obj.Id == alarm.StatId.Value);
+                var dev = DbContext.T_Devs.First(obj => obj.Id == alarm.DevId.Value);
+               model.Details.Add(new AlarmFullDetail
+               {
+                   AlarmId = alarm.Id,
+                   StatName = stat.StatName,
+                   ChargeMan = stat.ChargeMan,
+                   Telephone = stat.Telepone,
+                   DevCode = dev.DevCode,
+                   // ReSharper disable once PossibleInvalidOperationException
+                   AlarmDateTime = alarm.UpdateTime.Value,
+                   FaultValue = (alarm.FaultVal.Value / 1000.0).ToString("f2"),
+                   IsReaded = alarm.IsReaded
+               });
+            }
+
+            return View(model);
         }
     }
 }

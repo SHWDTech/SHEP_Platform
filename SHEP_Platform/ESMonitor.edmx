@@ -5,8 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ESMonitorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ESMonitor.dbo.T_Alarms' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_Alarms">
           <Key>
             <PropertyRef Name="Id" />
@@ -969,6 +967,7 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <Parameter Name="NowTime" Type="datetime" Mode="In" />
         </Function>
         <EntityContainer Name="ESMonitorModelStoreContainer">
+          <EntitySet Name="T_Alarms" EntityType="Self.T_Alarms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_AlarmType" EntityType="Self.T_AlarmType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Country" EntityType="Self.T_Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_DevAddr" EntityType="Self.T_DevAddr" Schema="dbo" store:Type="Tables" />
@@ -990,18 +989,6 @@ warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary ke
           <EntitySet Name="T_UserInGroups" EntityType="Self.T_UserInGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Users" EntityType="Self.T_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserStats" EntityType="Self.T_UserStats" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_Alarms" EntityType="Self.T_Alarms" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [T_Alarms].[Id] AS [Id], 
-    [T_Alarms].[StatId] AS [StatId], 
-    [T_Alarms].[DevId] AS [DevId], 
-    [T_Alarms].[DustType] AS [DustType], 
-    [T_Alarms].[FaultVal] AS [FaultVal], 
-    [T_Alarms].[UpdateTime] AS [UpdateTime], 
-    [T_Alarms].[Country] AS [Country], 
-    [T_Alarms].[IsReaded] AS [IsReaded]
-    FROM [dbo].[T_Alarms] AS [T_Alarms]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="T_Camera" EntityType="Self.T_Camera" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [T_Camera].[ID] AS [ID], 

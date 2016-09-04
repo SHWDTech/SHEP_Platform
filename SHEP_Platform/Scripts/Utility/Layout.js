@@ -68,20 +68,18 @@ function getAlarmInformation() {
             $('#alarmDetails')[0].style.display = '';
             for (var i = 0; i < result.details.length; i++) {
                 var item = result.details[i];
-                $('#alarmDetails').append('<div style="padding: 10px; font-size: 12px;"><a href="/Monitor/ActualStatus/' 
+                $('#alarmDetails').append('<li><div style="padding: 2px; font-size: 12px;"><a href="/Monitor/ActualStatus/' 
                     + item.Id + '">' 
                     + item.StatName 
                     + '</a>'
-                    + '</br>' 
-                    + '类型:'
-                    + item.AlarmType
                     + '</br>'
                     + '报警值：'
                     + item.AlarmValue
+                    + 'mg/m³'
                     + '</br>'
                     + '时间:'
                     + item.AlarmDateTime
-                    + '</div></hr>');
+                    + '</div></hr></li>');
             }
             
         }

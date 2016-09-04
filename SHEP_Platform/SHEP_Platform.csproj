@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\WdAuthorizeAttribute.cs" />
+    <Compile Include="Models\Analysis\AlarmDetailsViewModel.cs" />
     <Compile Include="Process\GlobalConfig.cs" />
     <Compile Include="ShwdResult\ExcelResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -615,6 +616,7 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
+    <Content Include="Scripts\Page\AlarmDetails.js" />
     <Content Include="Scripts\Page\StatViewHikSecond.js" />
     <Content Include="Scripts\Utility\jquery-2.2.3.js" />
     <Content Include="Scripts\Utility\jquery-2.2.3.min.js" />
@@ -976,6 +978,7 @@
     <Content Include="Views\Monitor\StatViewHikSecond.cshtml" />
     <Content Include="Views\Monitor\DataExport.cshtml" />
     <Content Include="Views\Monitor\DataExportResult.cshtml" />
+    <Content Include="Views\Analysis\AlarmDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

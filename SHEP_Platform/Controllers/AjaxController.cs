@@ -47,6 +47,8 @@ namespace SHEP_Platform.Controllers
                     return GetVocValues();
                 case "getStatWithDevice":
                     return GetStatWithDevice();
+                case "alarmReaded":
+                    return AlarmReaded();
             }
 
             return null;
@@ -614,7 +616,7 @@ namespace SHEP_Platform.Controllers
         private JsonResult GetAlarmInfo()
         {
             var currentStatIds = WdContext.StatList.Select(obj => obj.Id).ToList();
-            var topAlarms = DbContext.T_Alarms.Where(obj => obj.DustType == 0 && currentStatIds.Contains(obj.StatId.Value))
+            var topAlarms = DbContext.T_Alarms.Where(obj => obj.DustType == 0 && currentStatIds.Contains(obj.StatId.Value) && !obj.IsReaded)
                 .OrderByDescending(item => item.UpdateTime).Take(10);
 
             var details = new List<AlarmDetail>();
@@ -733,6 +735,19 @@ namespace SHEP_Platform.Controllers
             
 
             return Json("true", JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult AlarmReaded()
+        {
+            var alarmId = int.Parse(Request["id"]);
+
+            var alarm = DbContext.T_Alarms.First(obj => obj.Id == alarmId);
+
+            alarm.IsReaded = true;
+
+            DbContext.SaveChanges();
+
+            return Json("success", JsonRequestBehavior.AllowGet);
         }
     }
 }

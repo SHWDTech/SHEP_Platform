@@ -364,3 +364,45 @@ label.label120 {
     color: #a94442;
     border-color: #ebccd1;
 }
+
+.alarmPanel {
+    border: solid 1px #c1c1c1;
+    padding: 4px 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.alarmDate {
+    color: blue;
+}
+
+.alarmTitle input {
+    margin-right: 15px;
+}
+
+.alarmDetail {
+    display: none;
+    padding-top: 10px;
+    border-top: solid 1px #c1c1c1;
+}
+
+.alarmDetail.view {
+    display: block;
+}
+
+.alarmStat {
+    margin-right: 15px;
+}
+
+.alarmValue {
+    color: #a94442;
+    margin-right: 40px;
+}
+
+.alarmDetail span {
+    margin-right: 40px;
+}
+
+.notreaded {
+    font-weight: bold;
+}
