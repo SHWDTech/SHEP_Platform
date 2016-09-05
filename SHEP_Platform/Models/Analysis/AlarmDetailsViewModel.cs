@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using PagedList;
 
 namespace SHEP_Platform.Models.Analysis
 {
     public class AlarmDetailsViewModel
     {
-        public List<AlarmFullDetail> Details { get; set; } = new List<AlarmFullDetail>();
+        public IPagedList<AlarmFullDetail> Details { get; set; }
+
+        public int page { get; set; } = 1;
     }
 
     public class AlarmFullDetail
