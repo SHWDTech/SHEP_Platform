@@ -169,6 +169,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\WdAuthorizeAttribute.cs" />
+    <Compile Include="Common\HikAction.cs" />
+    <Compile Include="Common\HikMethod.cs" />
+    <Compile Include="Common\HkSdk.cs" />
+    <Compile Include="Common\ILogService.cs" />
+    <Compile Include="Common\LogService.cs" />
     <Compile Include="Models\Analysis\AlarmDetailsViewModel.cs" />
     <Compile Include="Process\GlobalConfig.cs" />
     <Compile Include="ShwdResult\ExcelResult.cs" />

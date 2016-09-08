@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web.Mvc;
+using System.Windows.Forms;
 using Newtonsoft.Json;
+using SHEP_Platform.Common;
 using SHEP_Platform.Enum;
 using SHEP_Platform.Models.Analysis;
 using SHEP_Platform.Models.Monitor;
@@ -49,6 +51,8 @@ namespace SHEP_Platform.Controllers
                     return GetStatWithDevice();
                 case "alarmReaded":
                     return AlarmReaded();
+                case "alarmPicture":
+                    return AlarmPicture();
             }
 
             return null;
@@ -748,6 +752,30 @@ namespace SHEP_Platform.Controllers
             DbContext.SaveChanges();
 
             return Json("success", JsonRequestBehavior.AllowGet);
+        }
+
+        private JsonResult AlarmPicture()
+        {
+            var devsJson = Request["devs"];
+            if (string.IsNullOrWhiteSpace(devsJson)) return null;
+
+            if (HikAction.InitLib() != 0)
+            {
+                return null;
+            }
+
+            var box = new PictureBox();
+            var devs = JsonConvert.DeserializeObject<int[]>(devsJson);
+
+            foreach (var dev in devs)
+            {
+                var camera = DbContext.T_Camera.First(obj => obj.DevId == dev);
+                var cameraProductId = camera.UserName;
+                var cameraId = HikAction.GetCameraId(cameraProductId);
+                HikAction.StartPlay(box.Handle, cameraId, camera.PassWord);
+                HikAction.TakePicture($"{camera.UserName}\\AlarmPic", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+            }
+            return null;
         }
     }
 }
