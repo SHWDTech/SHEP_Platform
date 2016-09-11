@@ -3,7 +3,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using SHEP_Platform.Common;
 
-[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
 namespace SHEP_Platform.Controllers
 {
 
