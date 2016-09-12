@@ -47,5 +47,6 @@ li span.num {
 }
 
 .go-arrow:hover {
-    border: solid 1px #1abc9c;
+    background-color: #e7e7e7;
+    cursor: pointer;
 }

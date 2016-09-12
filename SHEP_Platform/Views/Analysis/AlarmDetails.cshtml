@@ -14,7 +14,7 @@
             <div class="alarmTitle @readed" id="@alarmDetail.AlarmId">
                 <input type="checkbox" />
                 <span class="alarmStat">@alarmDetail.StatName</span>
-                <span class="alarmValue">报警值：@alarmDetail.FaultValue mg/m³</span>
+                <span class="alarmValue">报警值：@alarmDetail.FaultValue.ToString("F2") mg/m³</span>
                 <span class="alarmDate">@alarmDetail.AlarmDateTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
             </div>
             <div class="alarmDetail">

@@ -17,7 +17,7 @@ namespace SHEP_Platform.Controllers
         public ActionResult AveragePolluteReport()
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "本区县污染物平均浓度报表";
-            
+
             return DynamicView("AveragePolluteReport");
         }
 
@@ -45,15 +45,21 @@ namespace SHEP_Platform.Controllers
                 .OrderByDescending(item => item.UpdateTime);
 
             var details = (from alarm in alarms
-                let stat = WdContext.StatList.First(obj => alarm.StatId != null && obj.Id == alarm.StatId.Value)
-                let dev = DbContext.T_Devs.First(obj => obj.Id == alarm.DevId.Value)
-                where alarm.FaultVal != null
-                select new AlarmFullDetail
-                {
-                    AlarmId = alarm.Id, StatName = stat.StatName, ChargeMan = stat.ChargeMan, Telephone = stat.Telepone, DevCode = dev.DevCode,
-                    // ReSharper disable once PossibleInvalidOperationException
-                    AlarmDateTime = alarm.UpdateTime.Value, FaultValue = (alarm.FaultVal.Value/1000.0).ToString("f2"), IsReaded = alarm.IsReaded
-                });
+                           where alarm.FaultVal != null
+                           let stat = DbContext.T_Stats.FirstOrDefault(obj => obj.Id == alarm.StatId)
+                           let dev = DbContext.T_Devs.FirstOrDefault(obj => obj.Id == alarm.DevId.Value)
+                           select new AlarmFullDetail
+                           {
+                               AlarmId = alarm.Id,
+                               StatName = stat.StatName,
+                               ChargeMan = stat.ChargeMan,
+                               Telephone = stat.Telepone,
+                               DevCode = dev.DevCode,
+                               // ReSharper disable once PossibleInvalidOperationException
+                               AlarmDateTime = alarm.UpdateTime.Value,
+                               FaultValue = (alarm.FaultVal.Value / 1000.0),
+                               IsReaded = alarm.IsReaded
+                           });
 
             model.Details = details.ToPagedList(model.page, 10);
 

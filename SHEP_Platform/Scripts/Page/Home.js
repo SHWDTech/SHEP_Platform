@@ -1,7 +1,9 @@
 ﻿//信息面板
 var broad = null;
 
-var moveInteval;
+var requestLeft;
+
+var requestRight;
 
 $(function () {
     //先加载地图控件
@@ -15,7 +17,7 @@ $(function () {
         $('#' + containerName).css('position', 'absolute');
         $('#' + containerName).css('top', 60);
         $('#' + containerName).hide();
-        $('#mapSwitcher').on('click', function() { switchMap() });
+        $('#mapSwitcher').on('click', function () { switchMap() });
     }
     centerPosition = '上海';
     zoom = 12;
@@ -24,23 +26,38 @@ $(function () {
     document.body.appendChild(load);
     showAlarmInfo();
 
-    var move = function(value) {
-        var left = $('#infobroad').offset().left;
-        left += value;
-        $('#infobroad').css({ 'left': left });
-        moveInteval = setInterval(move, 100);
+    var moveLeft = function () {
+        var left = $('#infobroad').position().left;
+        left += -2;
+        $('#infobroad').css('left', left + 'px');
+        requestLeft = window.requestAnimationFrame(moveLeft);
     };
 
-    $('#left').on('mousedown', function() {
-        move(-5);
+    var moveRight = function () {
+        var left = $('#infobroad').position().left;
+        left += 2;
+        $('#infobroad').css('left', left + 'px');
+        requestRight = window.requestAnimationFrame(moveRight);
+    };
+
+    $('#left').on('mousedown', function () {
+        moveLeft();
     });
 
     $('#left').on('mouseup', function () {
-        clearInterval(moveInteval);
+        window.cancelAnimationFrame(requestLeft);
+    });
+
+    $('#right').on('mousedown', function () {
+        moveRight();
+    });
+
+    $('#right').on('mouseup', function () {
+        window.cancelAnimationFrame(requestRight);
     });
 });
 
-var updateStats = function() {
+var updateStats = function () {
     //加载实时信息
     broad = $('#infobroad');
 
@@ -67,7 +84,7 @@ var switchMap = function () {
     }
 }
 
-var showAlarmInfo = function() {
+var showAlarmInfo = function () {
     $.post("/Ajax/Access", null, function (ret) {
 
     });

@@ -25,7 +25,7 @@ namespace SHEP_Platform.Models.Analysis
 
         public DateTime AlarmDateTime { get; set; }
 
-        public string FaultValue { get; set; }
+        public double FaultValue { get; set; }
 
         public bool IsReaded { get; set; }
     }
