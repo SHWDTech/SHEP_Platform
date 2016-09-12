@@ -70,6 +70,13 @@ namespace SHEP_Platform.Common
 
         }
 
+        [DllImport(@"OpenNetStream.dll")]
+        public static extern int OpenSDK_GetLastErrorCode();
+
+        [DllImport(@"OpenNetStream.dll")]
+        public static extern string OpenSDK_GetLastErrorDesc();
+
+
         //数据回调设置
         public enum CallBackDateType
         {

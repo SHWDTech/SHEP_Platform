@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using PagedList;
 using SHEP_Platform.Models.Analysis;
@@ -45,25 +44,16 @@ namespace SHEP_Platform.Controllers
                 .Where(obj => statList.Contains(obj.StatId.Value))
                 .OrderByDescending(item => item.UpdateTime);
 
-            var details = new List<AlarmFullDetail>();
-            foreach (var alarm in alarms)
-            {
-                var stat = WdContext.StatList.First(obj => alarm.StatId != null && obj.Id == alarm.StatId.Value);
-                var dev = DbContext.T_Devs.First(obj => obj.Id == alarm.DevId.Value);
-                if (alarm.FaultVal != null)
-                    details.Add(new AlarmFullDetail
-                    {
-                        AlarmId = alarm.Id,
-                        StatName = stat.StatName,
-                        ChargeMan = stat.ChargeMan,
-                        Telephone = stat.Telepone,
-                        DevCode = dev.DevCode,
-                        // ReSharper disable once PossibleInvalidOperationException
-                        AlarmDateTime = alarm.UpdateTime.Value,
-                        FaultValue = (alarm.FaultVal.Value / 1000.0).ToString("f2"),
-                        IsReaded = alarm.IsReaded
-                    });
-            }
+            var details = (from alarm in alarms
+                let stat = WdContext.StatList.First(obj => alarm.StatId != null && obj.Id == alarm.StatId.Value)
+                let dev = DbContext.T_Devs.First(obj => obj.Id == alarm.DevId.Value)
+                where alarm.FaultVal != null
+                select new AlarmFullDetail
+                {
+                    AlarmId = alarm.Id, StatName = stat.StatName, ChargeMan = stat.ChargeMan, Telephone = stat.Telepone, DevCode = dev.DevCode,
+                    // ReSharper disable once PossibleInvalidOperationException
+                    AlarmDateTime = alarm.UpdateTime.Value, FaultValue = (alarm.FaultVal.Value/1000.0).ToString("f2"), IsReaded = alarm.IsReaded
+                });
 
             model.Details = details.ToPagedList(model.page, 10);
 

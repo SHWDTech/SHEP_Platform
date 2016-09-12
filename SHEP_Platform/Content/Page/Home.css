@@ -1,5 +1,13 @@
 ﻿.infoWrap {
-    overflow: hidden;
+    position: relative;
+    height: 150px;
+    overflow-x: hidden;
+    margin:15px 40px 15px 40px
+}
+
+#infobroad {
+    position: absolute;
+    display: flex;
 }
 
 #infobroad > ul {
@@ -30,4 +38,14 @@ li span.num {
     float: right;
     text-align: right;
     display: inline-block;
+}
+
+.go-arrow {
+    width: 30px;
+    height: 120px;
+    margin: 0 5px 0 5px;
+}
+
+.go-arrow:hover {
+    border: solid 1px #1abc9c;
 }

@@ -21,7 +21,7 @@
                         foreach (var statList in Model.StatLists)
                         {
                             <tr>
-                                <td>@Html.ActionLink(statList.Name, "ActualStatus", "Monitor", new {statList.Id}, null )</td>
+                                <td>@Html.ActionLink(statList.Name, "ActualStatus", "Monitor", new { statList.Id }, null)</td>
                             </tr>
                         }
                     }
@@ -33,8 +33,12 @@
         <div>
             <div style="height: 150px;">
                 <div class="panel panel-default">
-                    <div class="panel-body infoWrap">
-                        <div id="infobroad">
+                    <div>
+                        <div class="go-arrow" style="float: left;" id="left"></div>
+                        <div class="go-arrow" style="float: right" id="right"></div>
+                        <div class="infoWrap">
+                            <div id="infobroad">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -45,7 +49,7 @@
 </div>
 
 @section Css{
-    <link type="text/css" href="/Content/Page/Home.css" rel="stylesheet"/>
+    <link type="text/css" href="/Content/Page/Home.css" rel="stylesheet" />
 }
 
 @section scripts{

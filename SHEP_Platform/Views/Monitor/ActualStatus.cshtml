@@ -63,14 +63,7 @@
                             </tr>
                             <tr>
                                 <td>颗粒物(mg/m³)</td>
-                                @if (tStat.Id == 8)
-                                {
-                                    <td class="pm">@(((current.TP) / 1000 - 0.15).ToString("f2"))</td>
-                                }
-                                else
-                                {
-                                    <td class="pm">@(((current.TP) / 1000).ToString("f2"))</td>
-                                }
+                                <td class="pm">@(((current.TP) / 1000).ToString("f2"))</td>
                                 <td>噪音(dB)</td>
                                 <td class="db">@current.DB.ToString("f2")</td>
                             </tr>

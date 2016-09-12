@@ -1,6 +1,7 @@
 ﻿//信息面板
 var broad = null;
 
+var moveInteval;
 
 $(function () {
     //先加载地图控件
@@ -22,6 +23,21 @@ $(function () {
     load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init(updateStats)";
     document.body.appendChild(load);
     showAlarmInfo();
+
+    var move = function(value) {
+        var left = $('#infobroad').offset().left;
+        left += value;
+        $('#infobroad').css({ 'left': left });
+        moveInteval = setInterval(move, 100);
+    };
+
+    $('#left').on('mousedown', function() {
+        move(-5);
+    });
+
+    $('#left').on('mouseup', function () {
+        clearInterval(moveInteval);
+    });
 });
 
 var updateStats = function() {

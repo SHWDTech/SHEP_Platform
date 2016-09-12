@@ -11,6 +11,7 @@ using SHEP_Platform.Enum;
 using SHEP_Platform.Models.Analysis;
 using SHEP_Platform.Models.Monitor;
 using SHEP_Platform.Process;
+using SHWDTech.Platform.Utility;
 
 namespace SHEP_Platform.Controllers
 {
@@ -51,8 +52,6 @@ namespace SHEP_Platform.Controllers
                     return GetStatWithDevice();
                 case "alarmReaded":
                     return AlarmReaded();
-                case "alarmPicture":
-                    return AlarmPicture();
             }
 
             return null;
@@ -629,7 +628,7 @@ namespace SHEP_Platform.Controllers
                 var stat = WdContext.StatList.First(obj => obj.Id == pmAlarm.StatId);
                 if (pmAlarm.StatId != null)
                 {
-                    var detail = new AlarmDetail { StatName = stat.StatName, Id = stat.Id, IsReaded = pmAlarm.IsReaded};
+                    var detail = new AlarmDetail { StatName = stat.StatName, Id = stat.Id, IsReaded = pmAlarm.IsReaded };
                     if (pmAlarm.UpdateTime != null) detail.AlarmDateTime = pmAlarm.UpdateTime.Value.ToString("hh:mm:ss");
                     detail.AlarmType = "扬尘值";
                     if (pmAlarm.FaultVal != null) detail.AlarmValue = ((pmAlarm.FaultVal.Value) / 1000.0).ToString("f2");
@@ -720,14 +719,14 @@ namespace SHEP_Platform.Controllers
             var picture = Request["base64Pic"];
 
             var userName = Request["userName"];
-            
+
             try
             {
                 var fileName = $"{GlobalConfig.HikPictureUrl}{DateTime.Now:yyyyMMddhhmmssfff}.jpg";
                 var stream = System.IO.File.Create(fileName);
-                var picBytes = Convert.FromBase64String(picture.Replace(" ","+"));
+                var picBytes = Convert.FromBase64String(picture.Replace(" ", "+"));
                 stream.Write(picBytes, 0, picBytes.Length);
-                DbContext.T_Photos.Add(new T_Photos() {AddTime = DateTime.Now, FileName = fileName, UsereName = userName});
+                DbContext.T_Photos.Add(new T_Photos() { AddTime = DateTime.Now, FileName = fileName, UsereName = userName });
                 DbContext.SaveChanges();
                 stream.Close();
             }
@@ -736,7 +735,7 @@ namespace SHEP_Platform.Controllers
                 Console.WriteLine(ex);
                 return Json("false", JsonRequestBehavior.AllowGet);
             }
-            
+
 
             return Json("true", JsonRequestBehavior.AllowGet);
         }
@@ -754,26 +753,44 @@ namespace SHEP_Platform.Controllers
             return Json("success", JsonRequestBehavior.AllowGet);
         }
 
-        private JsonResult AlarmPicture()
+        [AllowAnonymous]
+        public JsonResult AlarmPicture()
         {
             var devsJson = Request["devs"];
             if (string.IsNullOrWhiteSpace(devsJson)) return null;
 
-            if (HikAction.InitLib() != 0)
+            try
             {
-                return null;
+                var init = HikAction.InitLib();
+                if (init != 0)
+                {
+                    LogService.Instance.Info($"初始化视频模块失败，错误码：{init}");
+                    return Json(init, JsonRequestBehavior.AllowGet);
+                }
+
+                var box = new PictureBox();
+                var devs = JsonConvert.DeserializeObject<int[]>(devsJson);
+
+                foreach (var dev in devs)
+                {
+                    var camera = DbContext.T_Camera.First(obj => obj.DevId == dev);
+                    var cameraProductId = camera.UserName;
+                    var cameraId = HikAction.GetCameraId(cameraProductId);
+                    if (HikAction.StartPlay(box.Handle, cameraId, camera.PassWord) != 0)
+                    {
+                        LogService.Instance.Error($"启动摄像头预览失败：摄像头ID{camera.UserName}。");
+                    }
+                    if (HikAction.TakePicture($"c:\\HikPicture\\{camera.UserName}\\AlarmPic",$"{DateTime.Now:yyyy-MM-dd HH:mm:ss}") != 0)
+                    {
+                        var errorCode = HkSdk.OpenSDK_GetLastErrorCode();
+                        var desc = HkSdk.OpenSDK_GetLastErrorDesc();
+                        return Json($"ErrorCode:{errorCode}, ErrorDescription:{desc}", JsonRequestBehavior.AllowGet);
+                    }
+                }
             }
-
-            var box = new PictureBox();
-            var devs = JsonConvert.DeserializeObject<int[]>(devsJson);
-
-            foreach (var dev in devs)
+            catch (Exception ex)
             {
-                var camera = DbContext.T_Camera.First(obj => obj.DevId == dev);
-                var cameraProductId = camera.UserName;
-                var cameraId = HikAction.GetCameraId(cameraProductId);
-                HikAction.StartPlay(box.Handle, cameraId, camera.PassWord);
-                HikAction.TakePicture($"{camera.UserName}\\AlarmPic", $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                LogService.Instance.Error("拍照失败", ex);
             }
             return null;
         }
