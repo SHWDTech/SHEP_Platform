@@ -781,9 +781,12 @@ namespace SHEP_Platform.Controllers
                         LogService.Instance.Error($"启动摄像头预览失败：摄像头ID{camera.UserName}。");
                         return null;
                     }
-                    if (HikAction.TakePicture($"c:\\HikPicture\\{camera.UserName}\\AlarmPic",$"{DateTime.Now:yyyyMMddHHmmss}.jpg") != 0)
+                    var start = DateTime.Now;
+                    while (HikAction.TakePicture($"c:\\HikPicture\\{camera.UserName}\\AlarmPic", $"{DateTime.Now:yyyyMMddHHmmss}.jpg") != 0)
                     {
+                        if ((DateTime.Now - start).TotalSeconds < 300) continue;
                         LogService.Instance.Error($"拍摄报警照片失败：摄像头ID{camera.UserName}");
+                        break;
                     }
                     HikAction.StopPlay();
                 }
