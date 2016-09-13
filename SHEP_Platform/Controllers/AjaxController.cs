@@ -779,11 +779,13 @@ namespace SHEP_Platform.Controllers
                     if (HikAction.StartPlay(box.Handle, cameraId, camera.PassWord) != 0)
                     {
                         LogService.Instance.Error($"启动摄像头预览失败：摄像头ID{camera.UserName}。");
+                        return null;
                     }
                     if (HikAction.TakePicture($"c:\\HikPicture\\{camera.UserName}\\AlarmPic",$"{DateTime.Now:yyyyMMddHHmmss}.jpg") != 0)
                     {
                         LogService.Instance.Error($"拍摄报警照片失败：摄像头ID{camera.UserName}");
                     }
+                    HikAction.StopPlay();
                 }
             }
             catch (Exception ex)

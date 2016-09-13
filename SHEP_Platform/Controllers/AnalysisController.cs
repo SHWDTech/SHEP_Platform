@@ -65,5 +65,11 @@ namespace SHEP_Platform.Controllers
 
             return View(model);
         }
+
+        public ActionResult StatPictures()
+        {
+
+            return null;
+        }
     }
 }
