@@ -28,14 +28,14 @@ $(function () {
 
     var moveLeft = function () {
         var left = $('#infobroad').position().left;
-        left += -2;
+        left += 2;
         $('#infobroad').css('left', left + 'px');
         requestLeft = window.requestAnimationFrame(moveLeft);
     };
 
     var moveRight = function () {
         var left = $('#infobroad').position().left;
-        left += 2;
+        left += -2;
         $('#infobroad').css('left', left + 'px');
         requestRight = window.requestAnimationFrame(moveRight);
     };

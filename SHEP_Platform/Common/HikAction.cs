@@ -281,7 +281,7 @@ namespace SHEP_Platform.Common
                     Directory.CreateDirectory(path);
                 }
 
-                return HkSdk.OpenSDK_CapturePicture(_sessionId, path + fileName);
+                return HkSdk.OpenSDK_CapturePicture(_sessionId, $"{path}//{fileName}");
             }
             catch (Exception ex)
             {

@@ -780,11 +780,9 @@ namespace SHEP_Platform.Controllers
                     {
                         LogService.Instance.Error($"启动摄像头预览失败：摄像头ID{camera.UserName}。");
                     }
-                    if (HikAction.TakePicture($"c:\\HikPicture\\{camera.UserName}\\AlarmPic",$"{DateTime.Now:yyyy-MM-dd HH:mm:ss}") != 0)
+                    if (HikAction.TakePicture($"c:\\HikPicture\\{camera.UserName}\\AlarmPic",$"{DateTime.Now:yyyyMMddHHmmss}.jpg") != 0)
                     {
-                        var errorCode = HkSdk.OpenSDK_GetLastErrorCode();
-                        var desc = HkSdk.OpenSDK_GetLastErrorDesc();
-                        return Json($"ErrorCode:{errorCode}, ErrorDescription:{desc}", JsonRequestBehavior.AllowGet);
+                        LogService.Instance.Error($"拍摄报警照片失败：摄像头ID{camera.UserName}");
                     }
                 }
             }
