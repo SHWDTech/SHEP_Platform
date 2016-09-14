@@ -782,12 +782,29 @@ namespace SHEP_Platform.Controllers
                         return null;
                     }
                     var start = DateTime.Now;
-                    while (HikAction.TakePicture($"c:\\HikPicture\\{camera.UserName}\\AlarmPic", $"{DateTime.Now:yyyyMMddHHmmss}.jpg") != 0)
+                    var ret = -1;
+                    var fileName = string.Empty;
+                    do
                     {
-                        if ((DateTime.Now - start).TotalSeconds < 300) continue;
-                        LogService.Instance.Error($"拍摄报警照片失败：摄像头ID{camera.UserName}");
-                        break;
+                        if ((DateTime.Now - start).TotalSeconds > 300) break;
+                        var now = $"{DateTime.Now:yyyyMMddHHmmss}";
+                        fileName = $"c:\\HikPicture\\{camera.UserName}\\AlarmPic\\{now}.jpg";
+                        ret = HikAction.TakePicture($"c:\\HikPicture\\{camera.UserName}\\AlarmPic", $"{now}.jpg");
                     }
+                    while (ret != 0);
+
+                    if (ret == 0)
+                    {
+                        DbContext.T_Photos.Add(new T_Photos
+                        {
+                            AddTime = DateTime.Now,
+                            FileName = fileName,
+                            DevId = camera.DevId,
+                            UsereName = "System"
+                        });
+                        DbContext.SaveChanges();
+                    }
+
                     HikAction.StopPlay();
                 }
             }

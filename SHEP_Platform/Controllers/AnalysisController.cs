@@ -69,7 +69,7 @@ namespace SHEP_Platform.Controllers
         public ActionResult StatPictures()
         {
 
-            return null;
+            return View();
         }
     }
 }

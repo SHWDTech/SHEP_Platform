@@ -988,6 +988,7 @@
     <Content Include="Views\Monitor\DataExport.cshtml" />
     <Content Include="Views\Monitor\DataExportResult.cshtml" />
     <Content Include="Views\Analysis\AlarmDetails.cshtml" />
+    <Content Include="Views\Analysis\StatPictures.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
