@@ -32,8 +32,8 @@ namespace SHEP_Platform.Controllers
             {
                 var hour = DateTime.Now.AddHours(-1);
                 var value =
-                    DbContext.T_ESHour.First(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
-                var current = DbContext.T_ESMin.OrderByDescending(item => item.UpdateTime).First(obj => obj.StatId == stat.Id);
+                    DbContext.T_ESHour.FirstOrDefault(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
+                var current = DbContext.T_ESMin.OrderByDescending(item => item.UpdateTime).FirstOrDefault(obj => obj.StatId == stat.Id);
 
                 var info = new StatHourInfo
                 {
@@ -50,12 +50,12 @@ namespace SHEP_Platform.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 defaultId = int.Parse(id);
-                defaultName = WdContext.StatList.First(stat => stat.Id == defaultId).StatName;
+                defaultName = WdContext.StatList.FirstOrDefault(stat => stat.Id == defaultId).StatName;
             }
             else if (WdContext.StatList.Count != 0)
             {
                 defaultId = WdContext.StatList[0].Id;
-                defaultName = WdContext.StatList.First(stat => stat.Id == defaultId).StatName;
+                defaultName = WdContext.StatList.FirstOrDefault(stat => stat.Id == defaultId).StatName;
             }
 
             var devs = DbContext.T_Devs.Where(dev => dev.StatId == defaultId.ToString()).ToList();
