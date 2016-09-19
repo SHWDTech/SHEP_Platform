@@ -190,6 +190,7 @@
     <Compile Include="Common\LogService.cs" />
     <Compile Include="Controllers\AppServerController.cs" />
     <Compile Include="Models\Analysis\AlarmDetailsViewModel.cs" />
+    <Compile Include="Models\Analysis\StatPicViewModel.cs" />
     <Compile Include="Models\Api\AppServer.cs" />
     <Compile Include="Process\GlobalConfig.cs" />
     <Compile Include="ShwdResult\ExcelResult.cs" />

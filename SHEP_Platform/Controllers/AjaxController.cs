@@ -788,8 +788,8 @@ namespace SHEP_Platform.Controllers
                     {
                         if ((DateTime.Now - start).TotalSeconds > 300) break;
                         var now = $"{DateTime.Now:yyyyMMddHHmmss}";
-                        fileName = $"c:\\HikPicture\\{camera.UserName}\\AlarmPic\\{now}.jpg";
-                        ret = HikAction.TakePicture($"c:\\HikPicture\\{camera.UserName}\\AlarmPic", $"{now}.jpg");
+                        fileName = $"\\HikPicture\\{camera.UserName}\\AlarmPic\\{now}.jpg";
+                        ret = HikAction.TakePicture($"\\HikPicture\\{camera.UserName}\\AlarmPic", $"{now}.jpg");
                     }
                     while (ret != 0);
 

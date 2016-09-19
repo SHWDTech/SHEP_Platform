@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 using PagedList;
 using SHEP_Platform.Models.Analysis;
@@ -66,10 +67,31 @@ namespace SHEP_Platform.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public ActionResult StatPictures()
         {
+            ViewBag.Stats = WdContext.StatList.Select(obj => new SelectListItem {Text = obj.StatName, Value = obj.Id.ToString()}).ToList();
 
-            return View();
+            return View(new StatPicViewModel());
+        }
+
+        [HttpPost]
+        public ActionResult StatPictures(StatPicViewModel model)
+        {
+            ViewBag.Stats = WdContext.StatList.Select(obj => new SelectListItem { Text = obj.StatName, Value = obj.Id.ToString() }).ToList();
+            var stat = WdContext.StatList.First(obj => obj.Id == model.StatId);
+            var devs = DbContext.T_Devs.Where(obj => obj.StatId == stat.Id.ToString());
+            foreach (var dev in devs)
+            {
+                var camera = DbContext.T_Camera.FirstOrDefault(obj => obj.DevId == dev.Id);
+                if (camera != null && Directory.Exists($"\\HikPicture\\{camera.UserName}\\AlarmPic"))
+                {
+                    var pics = Directory.GetFiles($"\\HikPicture\\{camera.UserName}\\AlarmPic");
+                    model.PicUrls.AddRange(pics);
+                }
+            }
+
+            return View(model);
         }
     }
 }

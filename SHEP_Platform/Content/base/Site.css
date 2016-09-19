@@ -406,3 +406,8 @@ label.label120 {
 .notreaded {
     font-weight: bold;
 }
+
+img.alarmPic {
+    height: 80px;
+    margin: 5px;
+}
