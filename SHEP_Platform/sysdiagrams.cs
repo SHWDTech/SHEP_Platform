@@ -12,16 +12,12 @@ namespace SHEP_Platform
     using System;
     using System.Collections.Generic;
     
-    public partial class T_Devs
+    public partial class sysdiagrams
     {
-        public int Id { get; set; }
-        public string DevCode { get; set; }
-        public string StatId { get; set; }
-        public System.DateTime StartTime { get; set; }
-        public System.DateTime PreEndTime { get; set; }
-        public System.DateTime EndTime { get; set; }
-        public byte DevStatus { get; set; }
-        public string VideoURL { get; set; }
-        public string OuterCode { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

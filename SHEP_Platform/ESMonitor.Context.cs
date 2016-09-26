@@ -27,7 +27,6 @@ namespace SHEP_Platform
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<T_Alarms> T_Alarms { get; set; }
         public virtual DbSet<T_AlarmType> T_AlarmType { get; set; }
         public virtual DbSet<T_Country> T_Country { get; set; }
         public virtual DbSet<T_DevAddr> T_DevAddr { get; set; }
@@ -46,12 +45,14 @@ namespace SHEP_Platform
         public virtual DbSet<T_UserGroup> T_UserGroup { get; set; }
         public virtual DbSet<T_UserInGroups> T_UserInGroups { get; set; }
         public virtual DbSet<T_Users> T_Users { get; set; }
-        public virtual DbSet<T_Camera> T_Camera { get; set; }
         public virtual DbSet<T_ESDaytemp1> T_ESDaytemp1 { get; set; }
         public virtual DbSet<T_Offset> T_Offset { get; set; }
-        public virtual DbSet<T_Photos> T_Photos { get; set; }
         public virtual DbSet<T_SysConfig> T_SysConfig { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<T_UserStats> T_UserStats { get; set; }
+        public virtual DbSet<T_Alarms> T_Alarms { get; set; }
+        public virtual DbSet<T_Photos> T_Photos { get; set; }
+        public virtual DbSet<T_Camera> T_Camera { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {
@@ -806,7 +807,7 @@ namespace SHEP_Platform
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESHour_Update", idParameter, statIdParameter, tPParameter, dBParameter, updateTimeParameter, dataStatusParameter, validDataNumParameter, devIdParameter, countryParameter);
         }
     
-        public virtual int T_ESMin_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> statCode, Nullable<double> tP, Nullable<double> dB, Nullable<System.DateTime> updateTime, Nullable<double> windSpeed, Nullable<double> rain, Nullable<double> windDirection, Nullable<double> temperature, Nullable<double> humidity, Nullable<double> airpressure, string dataStatus, Nullable<int> devId, string country, Nullable<double> pm25, Nullable<double> pm100, Nullable<double> vocs)
+        public virtual int T_ESMin_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> statCode, Nullable<double> tP, Nullable<double> dB, Nullable<System.DateTime> updateTime, Nullable<double> windSpeed, Nullable<double> rain, Nullable<double> windDirection, Nullable<double> temperature, Nullable<double> humidity, Nullable<double> airpressure, string dataStatus, Nullable<int> devId, string country, Nullable<double> pm25, Nullable<double> pm100)
         {
             var statIdParameter = statId.HasValue ?
                 new ObjectParameter("StatId", statId) :
@@ -872,11 +873,7 @@ namespace SHEP_Platform
                 new ObjectParameter("Pm100", pm100) :
                 new ObjectParameter("Pm100", typeof(double));
     
-            var vocsParameter = vocs.HasValue ?
-                new ObjectParameter("vocs", vocs) :
-                new ObjectParameter("vocs", typeof(double));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESMin_ADD", id, statIdParameter, statCodeParameter, tPParameter, dBParameter, updateTimeParameter, windSpeedParameter, rainParameter, windDirectionParameter, temperatureParameter, humidityParameter, airpressureParameter, dataStatusParameter, devIdParameter, countryParameter, pm25Parameter, pm100Parameter, vocsParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESMin_ADD", id, statIdParameter, statCodeParameter, tPParameter, dBParameter, updateTimeParameter, windSpeedParameter, rainParameter, windDirectionParameter, temperatureParameter, humidityParameter, airpressureParameter, dataStatusParameter, devIdParameter, countryParameter, pm25Parameter, pm100Parameter);
         }
     
         public virtual int T_ESMin_Delete(Nullable<long> id)
@@ -2054,6 +2051,109 @@ namespace SHEP_Platform
         public virtual int T_InsertTable_AutoForESHour1()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_InsertTable_AutoForESHour1");
+        }
+    
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
         }
     }
 }

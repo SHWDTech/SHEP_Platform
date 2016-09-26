@@ -5,6 +5,7 @@ using SHEP_Platform.Common;
 using SHEP_Platform.Models.Admin;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using SHWDTech.Platform.Utility;
 
 namespace SHEP_Platform.Controllers
 {
@@ -107,6 +108,7 @@ namespace SHEP_Platform.Controllers
             stat.StatName = model.StatName;
             stat.Street = model.Street;
             stat.Telepone = model.Telepone;
+            stat.StatCodeUp = (new Random()).Next(2000000, 2100000);
 
             if (model.Id == -1)
             {
@@ -274,7 +276,6 @@ namespace SHEP_Platform.Controllers
                 try
                 {
                     DbContext.SaveChanges();
-
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -312,6 +313,7 @@ namespace SHEP_Platform.Controllers
                     NodeId = Global.StringToHexByte(model.Addr)
                 };
                 DbContext.T_DevAddr.Add(addr);
+                DbContext.SaveChanges();
             }
             else
             {
@@ -634,11 +636,101 @@ namespace SHEP_Platform.Controllers
         }
 
         [HttpGet]
-        public ActionResult Camera(int id)
+        public ActionResult Camera(string id)
         {
-            var model = DbContext.T_Camera.FirstOrDefault(obj => obj.ID == id);
+            var statIds = WdContext.StatList.Select(obj => obj.Id.ToString()).ToList();
+            ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId)).Select(item => new SelectListItem() { Text = item.DevCode, Value = item.Id.ToString() }).ToList();
+
+            T_Camera model;
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                WdContext.SiteMapMenu.ActionMenu.Name = "新增摄像头";
+                model = new T_Camera { ID = -1 };
+            }
+            else
+            {
+                WdContext.SiteMapMenu.ActionMenu.Name = "编辑摄像头";
+                model = DbContext.T_Camera.FirstOrDefault(obj => obj.ID.ToString() == id);
+            }
 
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Camera(T_Camera model)
+        {
+            if (model.ID == -1)
+            {
+                model.Type = "Static";
+                model.DnsAddr = "dust.shweidong.com";
+                model.Port = "80";
+                DbContext.T_Camera.Add(model);
+            }
+            else
+            {
+                var dbModel = DbContext.T_Camera.First(obj => obj.ID == model.ID);
+                dbModel.CameraName = model.CameraName;
+                dbModel.DevId = model.DevId;
+                dbModel.UserName = model.UserName;
+                dbModel.PassWord = model.PassWord;
+            }
+
+            try
+            {
+                DbContext.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                LogService.Instance.Error("保存摄像头信息失败！", ex);
+                var statIds = WdContext.StatList.Select(obj => obj.Id.ToString()).ToList();
+                ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId)).Select(item => new SelectListItem() { Text = item.DevCode, Value = item.Id.ToString() }).ToList();
+
+                foreach (var error in ex.EntityValidationErrors)
+                {
+                    foreach (var dbValidationError in error.ValidationErrors)
+                    {
+                        ModelState.AddModelError(dbValidationError.PropertyName, dbValidationError.ErrorMessage);
+                    }
+                }
+                return View(model);
+            }
+
+            return RedirectToAction("CameraManage");
+        }
+
+        [HttpGet]
+        public ActionResult CameraManage()
+        {
+            var model = new CameraManageViewModel
+            {
+                Cameras = DbContext.T_Camera
+                .Select(obj => new Camera { Id = obj.ID, CameraName = obj.CameraName, UserName = obj.UserName })
+                .ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult CameraDelete(int id)
+        {
+            if (!ViewBag.IsAdmin)
+            {
+                RedirectToAction("Index", "Home");
+
+                return null;
+            }
+
+            var dev = DbContext.T_Camera.First(item => item.ID == id);
+            DbContext.T_Camera.Remove(dev);
+            DbContext.SaveChanges();
+
+            var ret = new
+            {
+                msg = "success"
+            };
+
+            return Json(ret, JsonRequestBehavior.AllowGet);
         }
     }
 }

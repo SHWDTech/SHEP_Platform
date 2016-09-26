@@ -259,4 +259,20 @@ namespace SHEP_Platform.Models.Admin
 
         public bool IsNew { get; set; }
     }
+
+    public class CameraManageViewModel
+    {
+        public List<Camera> Cameras { get; set; }
+    }
+
+    public class Camera
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "摄像头名称")]
+        public string CameraName { get; set; }
+
+        [Display(Name = "序列号")]
+        public string UserName { get; set; }
+    }
 }

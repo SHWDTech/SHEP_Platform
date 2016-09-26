@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3bb2a8e5041e4fcb9ab152fa4fb25fc0" Name="Diagram1">
-        <EntityTypeShape EntityType="ESMonitorModel.T_Alarms" Width="1.5" PointX="5.75" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_AlarmType" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Country" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_DevAddr" Width="1.5" PointX="7.75" PointY="2.375" IsExpanded="true" />
@@ -24,7 +23,6 @@
         <EntityTypeShape EntityType="ESMonitorModel.T_UserGroup" Width="1.5" PointX="11.75" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_UserInGroups" Width="1.5" PointX="11.75" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Users" Width="1.5" PointX="6.75" PointY="13.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ESMonitorModel.T_Camera" Width="1.5" PointX="11.75" PointY="11.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_ESDaytemp1" Width="1.5" PointX="8.75" PointY="14.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Offset" Width="1.5" PointX="13.75" PointY="2.375" IsExpanded="true" />
         <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_AlarmType1" ManuallyRouted="false" />
@@ -32,9 +30,12 @@
         <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_Country" ManuallyRouted="false" />
         <AssociationConnector Association="ESMonitorModel.FK_T_Stage_T_Stage" ManuallyRouted="false" />
         <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_Stage" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="ESMonitorModel.T_Photos" Width="1.5" PointX="14.375" PointY="8.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_SysConfig" Width="1.5" PointX="14.375" PointY="5.75" />
+        <EntityTypeShape EntityType="ESMonitorModel.sysdiagrams" Width="1.5" PointX="14.375" PointY="14.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_UserStats" Width="1.5" PointX="14.375" PointY="11.75" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Alarms" Width="1.5" PointX="5.125" PointY="9.25" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Photos" Width="1.5" PointX="14.375" PointY="8.75" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Camera" Width="1.5" PointX="11.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

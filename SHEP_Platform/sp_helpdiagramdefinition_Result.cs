@@ -10,14 +10,10 @@
 namespace SHEP_Platform
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class T_Photos
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public long ID { get; set; }
-        public string UserName { get; set; }
-        public System.DateTime AddTime { get; set; }
-        public string FileName { get; set; }
-        public int DevId { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }
