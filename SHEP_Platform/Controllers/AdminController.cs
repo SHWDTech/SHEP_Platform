@@ -632,5 +632,13 @@ namespace SHEP_Platform.Controllers
 
             return RedirectToAction("UserManage", "Admin");
         }
+
+        [HttpGet]
+        public ActionResult Camera(int id)
+        {
+            var model = DbContext.T_Camera.FirstOrDefault(obj => obj.ID == id);
+
+            return View(model);
+        }
     }
 }

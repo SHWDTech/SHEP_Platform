@@ -1,0 +1,59 @@
+﻿@model T_Camera
+@{
+    ViewBag.Title = "摄像头管理";
+}
+
+<div>
+    @using (Html.BeginForm("Camera", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;", Id = "cameraForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ID)
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CameraName)
+            @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.EmailAddress)
+            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Remark)
+            @Html.DropDownListFor(m => m.Remark, Model.CountryList, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.Remark, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.RoleId)
+            @Html.DropDownListFor(m => m.RoleId, Model.RoleList, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PassWord)
+            @Html.PasswordFor(m => m.PassWord, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.PassWord, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-success" onclick="EncrypSubmit()">
+                提交
+            </button>
+        </div>
+    }
+</div>

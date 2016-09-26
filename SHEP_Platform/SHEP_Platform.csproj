@@ -1005,6 +1005,7 @@
     <Content Include="Views\Monitor\DataExportResult.cshtml" />
     <Content Include="Views\Analysis\AlarmDetails.cshtml" />
     <Content Include="Views\Analysis\StatPictures.cshtml" />
+    <Content Include="Views\Admin\Camera.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
