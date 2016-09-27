@@ -30,7 +30,6 @@ namespace SHEP_Platform
         public virtual DbSet<T_AlarmType> T_AlarmType { get; set; }
         public virtual DbSet<T_Country> T_Country { get; set; }
         public virtual DbSet<T_DevAddr> T_DevAddr { get; set; }
-        public virtual DbSet<T_Devs> T_Devs { get; set; }
         public virtual DbSet<T_ESDay> T_ESDay { get; set; }
         public virtual DbSet<T_ESHour> T_ESHour { get; set; }
         public virtual DbSet<T_ESMin> T_ESMin { get; set; }
@@ -48,11 +47,11 @@ namespace SHEP_Platform
         public virtual DbSet<T_ESDaytemp1> T_ESDaytemp1 { get; set; }
         public virtual DbSet<T_Offset> T_Offset { get; set; }
         public virtual DbSet<T_SysConfig> T_SysConfig { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<T_UserStats> T_UserStats { get; set; }
+        public virtual DbSet<T_Camera> T_Camera { get; set; }
+        public virtual DbSet<T_Devs> T_Devs { get; set; }
         public virtual DbSet<T_Alarms> T_Alarms { get; set; }
         public virtual DbSet<T_Photos> T_Photos { get; set; }
-        public virtual DbSet<T_Camera> T_Camera { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {
@@ -807,7 +806,7 @@ namespace SHEP_Platform
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESHour_Update", idParameter, statIdParameter, tPParameter, dBParameter, updateTimeParameter, dataStatusParameter, validDataNumParameter, devIdParameter, countryParameter);
         }
     
-        public virtual int T_ESMin_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> statCode, Nullable<double> tP, Nullable<double> dB, Nullable<System.DateTime> updateTime, Nullable<double> windSpeed, Nullable<double> rain, Nullable<double> windDirection, Nullable<double> temperature, Nullable<double> humidity, Nullable<double> airpressure, string dataStatus, Nullable<int> devId, string country, Nullable<double> pm25, Nullable<double> pm100)
+        public virtual int T_ESMin_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> statCode, Nullable<double> tP, Nullable<double> dB, Nullable<System.DateTime> updateTime, Nullable<double> windSpeed, Nullable<double> rain, Nullable<double> windDirection, Nullable<double> temperature, Nullable<double> humidity, Nullable<double> airpressure, string dataStatus, Nullable<int> devId, string country, Nullable<double> pm25, Nullable<double> pm100, Nullable<double> vocs)
         {
             var statIdParameter = statId.HasValue ?
                 new ObjectParameter("StatId", statId) :
@@ -873,7 +872,11 @@ namespace SHEP_Platform
                 new ObjectParameter("Pm100", pm100) :
                 new ObjectParameter("Pm100", typeof(double));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESMin_ADD", id, statIdParameter, statCodeParameter, tPParameter, dBParameter, updateTimeParameter, windSpeedParameter, rainParameter, windDirectionParameter, temperatureParameter, humidityParameter, airpressureParameter, dataStatusParameter, devIdParameter, countryParameter, pm25Parameter, pm100Parameter);
+            var vocsParameter = vocs.HasValue ?
+                new ObjectParameter("vocs", vocs) :
+                new ObjectParameter("vocs", typeof(double));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESMin_ADD", id, statIdParameter, statCodeParameter, tPParameter, dBParameter, updateTimeParameter, windSpeedParameter, rainParameter, windDirectionParameter, temperatureParameter, humidityParameter, airpressureParameter, dataStatusParameter, devIdParameter, countryParameter, pm25Parameter, pm100Parameter, vocsParameter);
         }
     
         public virtual int T_ESMin_Delete(Nullable<long> id)

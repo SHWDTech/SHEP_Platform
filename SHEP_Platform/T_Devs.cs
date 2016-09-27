@@ -22,6 +22,5 @@ namespace SHEP_Platform
         public System.DateTime EndTime { get; set; }
         public byte DevStatus { get; set; }
         public string VideoURL { get; set; }
-        public string OuterCode { get; set; }
     }
 }

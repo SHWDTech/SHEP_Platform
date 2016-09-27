@@ -254,9 +254,6 @@
     <Compile Include="sp_helpdiagrams_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagrams.cs">
-      <DependentUpon>ESMonitor.tt</DependentUpon>
-    </Compile>
     <Compile Include="T_Alarms.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
