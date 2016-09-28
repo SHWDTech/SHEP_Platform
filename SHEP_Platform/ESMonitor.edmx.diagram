@@ -31,10 +31,10 @@
         <AssociationConnector Association="ESMonitorModel.FK_T_Stats_T_Stage" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ESMonitorModel.T_SysConfig" Width="1.5" PointX="14.375" PointY="5.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_UserStats" Width="1.5" PointX="14.375" PointY="11.75" />
-        <EntityTypeShape EntityType="ESMonitorModel.T_Camera" Width="1.5" PointX="11.375" PointY="14.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Devs" Width="1.5" PointX="12.125" PointY="10.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Alarms" Width="1.5" PointX="13.375" PointY="14.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Photos" Width="1.5" PointX="14.375" PointY="8.75" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_Camera" Width="1.5" PointX="5.25" PointY="9.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
