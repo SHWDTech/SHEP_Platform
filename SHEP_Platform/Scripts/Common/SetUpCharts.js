@@ -52,13 +52,14 @@ Echart_Tools.getGaugeOption = function () {
             feature: {
                 saveAsImage: {
                     type: 'png',
-                    backgroundColor: 'auto',
+                    backgroundColor: '#FFFFFF',
                     excludeComponents: ['toolbox'],
                     show: true,
                     title: '保存为图片'
                 }
             }
         },
+        backgroundColor:'#FFFFFF',
         series: [
             {
                 name: "",
@@ -112,7 +113,7 @@ Echart_Tools.getOption = function () {
             feature: {
                 saveAsImage: {
                     type: 'png',
-                    backgroundColor: 'auto',
+                    backgroundColor: '#FFFFFF',
                     excludeComponents: ['toolbox'],
                     show: true,
                     title: '保存为图片'
@@ -127,6 +128,7 @@ Echart_Tools.getOption = function () {
                 }
             }
         },
+        backgroundColor: '#FFFFFF',
         series: [
         {
             itemStyle: {
@@ -164,7 +166,11 @@ Echart_Tools.getStackLineOption = function () {
         },
         toolbox: {
             feature: {
-                saveAsImage: {}
+                type: 'png',
+                backgroundColor: '#FFFFFF',
+                excludeComponents: ['toolbox'],
+                show: true,
+                title: '保存为图片'
             }
         },
         grid: {
@@ -189,4 +195,10 @@ Echart_Tools.getStackLineOption = function () {
     };
 
     return option;
+};
+
+Echart_Tools.ResetData = function(charts) {
+    charts.forEach(function(chart) {
+        chart.clear();
+    });
 };

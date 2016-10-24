@@ -111,6 +111,7 @@ var load = function (id, name) {
 
 var setChart = function (ret, name, id) {
     var list = ret.dataResult;
+    Echart_Tools.ResetData([mainChart, tpGauge, dbGauge, pm25Gauge]);
     if (list.length === 0) {
         msg.warning('暂无最新数据！');
         return;

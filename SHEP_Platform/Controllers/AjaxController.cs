@@ -102,9 +102,9 @@ namespace SHEP_Platform.Controllers
                     .Select(item => new
                     {
                         Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
-                        MaxVal = double.Parse((item.Value.OrderBy(i => i.AvgTP).First().AvgTP / 1000).ToString()).ToString("f2"),
+                        MaxVal = double.Parse((item.Value.OrderByDescending(i => i.AvgTP).First().AvgTP / 1000).ToString()).ToString("f2"),
                         AvgVal = double.Parse((item.Value.Average(j => j.AvgTP) / 1000).ToString()).ToString("f2"),
-                        MinVal = double.Parse((item.Value.OrderByDescending(k => k.AvgTP).First().AvgTP / 1000).ToString()).ToString("f2"),
+                        MinVal = double.Parse((item.Value.OrderBy(k => k.AvgTP).First().AvgTP / 1000).ToString()).ToString("f2"),
                         ValidNum = item.Value.Count()
                     }).ToList();
 
@@ -125,9 +125,9 @@ namespace SHEP_Platform.Controllers
                     .Select(item => new
                     {
                         Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
-                        MaxVal = double.Parse(item.Value.OrderBy(i => i.AvgDB).First().AvgDB.ToString()).ToString("f2"),
+                        MaxVal = double.Parse(item.Value.OrderByDescending(i => i.AvgDB).First().AvgDB.ToString()).ToString("f2"),
                         AvgVal = double.Parse(item.Value.Average(j => j.AvgDB).ToString()).ToString("f2"),
-                        MinVal = double.Parse(item.Value.OrderByDescending(k => k.AvgDB).First().AvgDB.ToString()).ToString("f2"),
+                        MinVal = double.Parse(item.Value.OrderBy(k => k.AvgDB).First().AvgDB.ToString()).ToString("f2"),
                         ValidNum = item.Value.Count()
                     }).ToList();
 
@@ -149,9 +149,9 @@ namespace SHEP_Platform.Controllers
                     .Select(item => new
                     {
                         Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
-                        MaxVal = double.Parse((item.Value.OrderBy(i => i.AvgPM25).First().AvgPM25 / 1000).ToString()).ToString("f2"),
+                        MaxVal = double.Parse((item.Value.OrderByDescending(i => i.AvgPM25).First().AvgPM25 / 1000).ToString()).ToString("f2"),
                         AvgVal = double.Parse((item.Value.Average(j => j.AvgPM25) / 1000).ToString()).ToString("f2"),
-                        MinVal = double.Parse((item.Value.OrderByDescending(k => k.AvgPM25).First().AvgPM25 / 1000).ToString()).ToString("f2"),
+                        MinVal = double.Parse((item.Value.OrderBy(k => k.AvgPM25).First().AvgPM25 / 1000).ToString()).ToString("f2"),
                         ValidNum = item.Value.Count()
                     }).ToList();
 
@@ -172,9 +172,9 @@ namespace SHEP_Platform.Controllers
                     .Select(item => new
                     {
                         Name = WdContext.StatList.First(o => o.Id == item.Key).StatName,
-                        MaxVal = double.Parse((item.Value.OrderBy(i => i.AvgPM100).First().AvgPM100 / 1000).ToString()).ToString("f2"),
+                        MaxVal = double.Parse((item.Value.OrderByDescending(i => i.AvgPM100).First().AvgPM100 / 1000).ToString()).ToString("f2"),
                         AvgVal = double.Parse((item.Value.Average(j => j.AvgPM100) / 1000).ToString()).ToString("f2"),
-                        MinVal = double.Parse((item.Value.OrderByDescending(k => k.AvgPM100).First().AvgPM100 / 1000).ToString()).ToString("f2"),
+                        MinVal = double.Parse((item.Value.OrderBy(k => k.AvgPM100).First().AvgPM100 / 1000).ToString()).ToString("f2"),
                         ValidNum = item.Value.Count()
                     }).ToList();
 
@@ -240,17 +240,17 @@ namespace SHEP_Platform.Controllers
                     dtTypeName = "日均值";
                     break;
                 case QueryDateRange.LastWeek:
-                    startDate = DateTime.Now.AddDays(-7);
+                    startDate = DateTime.Now.AddDays(-8);
                     dtType = "Day";
                     dtTypeName = "周均值";
                     break;
                 case QueryDateRange.LastMonth:
-                    startDate = DateTime.Now.AddMonths(-1);
+                    startDate = DateTime.Now.AddMonths(-1).AddDays(-1);
                     dtType = "Day";
                     dtTypeName = "月均值";
                     break;
                 case QueryDateRange.LastYear:
-                    startDate = DateTime.Now.AddYears(-1);
+                    startDate = DateTime.Now.AddYears(-1).AddDays(-1);
                     dtType = "Day";
                     dtTypeName = "年均值";
                     break;
