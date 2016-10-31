@@ -52,6 +52,8 @@ namespace SHEP_Platform.Controllers
                     return GetStatWithDevice();
                 case "alarmReaded":
                     return AlarmReaded();
+                case "getStatsFifteenData":
+                    return GetStatsFifteenData();
             }
 
             return null;
@@ -199,6 +201,37 @@ namespace SHEP_Platform.Controllers
                     PM100 = (i.PM100 / 1000).GetValueOrDefault().ToString("f2"),
                     // ReSharper disable once PossibleInvalidOperationException
                     UpdateTime = ((DateTime)i.UpdateTime).ToString("HH:mm:ss")
+                });
+
+            var cameraurl = string.Empty;
+            var devs = DbContext.T_Devs.Where(dev => dev.StatId == statId.ToString()).ToList();
+            if (devs.Count > 0)
+            {
+                cameraurl = devs[0].VideoURL;
+            }
+
+            var ret = new
+            {
+                dataResult,
+                cameraurl
+            };
+
+            return Json(ret);
+        }
+
+        private JsonResult GetStatsFifteenData()
+        {
+            var statId = int.Parse(Request["statId"]);
+            var startDate = DateTime.Now.AddHours(-12);
+            var dataResult = DbContext.T_ESMin_Fifteen.Where(item => item.StatId == statId && item.UpdateTime > startDate)
+                .OrderBy(obj => obj.UpdateTime).ToList()
+                .Select(i => new
+                {
+                    TP = (i.TP / 1000).ToString("f2"),
+                    DB = i.DB.ToString("f2"),
+                    PM25 = (i.PM25 / 1000).ToString("f2"),
+                    PM100 = (i.PM100 / 1000).ToString("f2"),
+                    UpdateTime = i.UpdateTime.ToString("HH:mm:ss")
                 });
 
             var cameraurl = string.Empty;

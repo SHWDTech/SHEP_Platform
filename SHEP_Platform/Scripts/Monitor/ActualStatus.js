@@ -17,6 +17,12 @@ var tasks = [];
 //重复查询结果任务
 var requestId = null;
 
+var ajaxFunction = 'getStatsActualData';
+
+var lastStatId = 0;
+
+var lastStatName = null;
+
 $(function () {
     if (BaseInfo.IsMobileDevice) {
         $('#tpGauge').width(window.screen.width).height(window.screen.width);
@@ -32,6 +38,16 @@ $(function () {
     if (!BaseInfo.IsMobileDevice) {
         mainChart = echarts.init(document.getElementById('divBar'));
     }
+
+    $('#minute').on('click', function() {
+        ajaxFunction = 'getStatsActualData';
+        load(lastStatId, lastStatName);
+    });
+
+    $('#fifteen_minute').on('click', function () {
+        ajaxFunction = 'getStatsFifteenData';
+        load(lastStatId, lastStatName);
+    });
 });
 
 var setDeviceMin = function(id) {
@@ -85,6 +101,8 @@ var startProof = function(statId) {
 
 var load = function (id, name) {
     if (id === -1 || name === 'null') return;
+    lastStatId = id;
+    lastStatName = name;
     if (!BaseInfo.IsMobileDevice) {
         mainChart.showLoading();
     }
@@ -92,7 +110,7 @@ var load = function (id, name) {
     dbGauge.showLoading();
     pm25Gauge.showLoading();
     var param = {
-        'fun': 'getStatsActualData',
+        'fun': ajaxFunction,
         'statId': id
     }
 

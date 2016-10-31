@@ -35,6 +35,7 @@
         <EntityTypeShape EntityType="ESMonitorModel.T_Alarms" Width="1.5" PointX="13.375" PointY="14.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Photos" Width="1.5" PointX="14.375" PointY="8.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Camera" Width="1.5" PointX="5.25" PointY="9.25" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_ESMin_Fifteen" Width="1.5" PointX="0.75" PointY="15.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

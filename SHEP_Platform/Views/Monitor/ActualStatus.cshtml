@@ -6,6 +6,10 @@
 
 <div style="position: relative;">
     <div id="divCharts" style="height: 600px; border: 1px solid #e7e7e7; margin-right: 20px; max-width: 840px;">
+        <div class="form-inline">
+            <input type="button" class="form-control btn btn-default" id="minute" value="分钟均值" />
+            <input type="button" class="form-control btn btn-default" id="fifteen_minute" value="15分钟均值" />
+        </div>
         <div id="itemTitle" style="height: 50px;">
             <h1 id="chartTitle" style="display: inline-block; margin: 0; margin-left: 200px; margin-top: 10px;">@(ViewBag.defaultName + "实时数据")</h1>
             <h5 style="display: inline-block; margin: 0; margin-left: 20px;"><a id="cameraUrl" href="@ViewBag.StatViewUrl">查看实时工地状况</a></h5>

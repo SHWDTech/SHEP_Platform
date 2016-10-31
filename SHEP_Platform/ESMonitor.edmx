@@ -5,12 +5,9 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ESMonitorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ESMonitor2.dbo.T_Alarms' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_Alarms">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="IsReaded" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StatId" Type="int" />
@@ -91,7 +88,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Alarms' does not have a primary k
           <Property Name="Country" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ESMonitor2.dbo.T_ESDaytemp1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ESMonitor.dbo.T_ESDaytemp1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_ESDaytemp1">
           <Key>
             <PropertyRef Name="Id" />
@@ -149,6 +146,20 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_ESDaytemp1' does not have a prima
           <Property Name="DevId" Type="int" />
           <Property Name="Country" Type="varchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="T_ESMin_Fifteen">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatId" Type="int" Nullable="false" />
+          <Property Name="TP" Type="float" Nullable="false" />
+          <Property Name="DB" Type="float" Nullable="false" />
+          <Property Name="PM25" Type="float" Nullable="false" />
+          <Property Name="PM100" Type="float" Nullable="false" />
+          <Property Name="Temperature" Type="float" Nullable="false" />
+          <Property Name="Humidity" Type="float" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="T_Files">
           <Key>
             <PropertyRef Name="Id" />
@@ -169,7 +180,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_ESDaytemp1' does not have a prima
           <Property Name="ModuleId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_Offset">
           <Key>
             <PropertyRef Name="OffSetCpm" />
@@ -187,10 +198,10 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="UsereName" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="AddTime" Type="datetime" Nullable="false" />
           <Property Name="FileName" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="DevId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Province">
           <Key>
@@ -235,7 +246,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="ConfigId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ConfigType" Type="nchar" MaxLength="50" Nullable="false" />
           <Property Name="ConfigName" Type="nchar" MaxLength="50" Nullable="false" />
-          <Property Name="ConfigValue" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConfigValue" Type="nchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="T_TaskNotice">
           <Key>
@@ -312,7 +323,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="StatId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+warning 6013: The table/view 'ESMonitor.dbo.Table_1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="Table_1">
           <Property Name="Guid" Type="nchar" MaxLength="10" />
         </EntityType>-->
@@ -376,6 +387,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="InSert_Alarm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_Alarms_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="InOut" />
           <Parameter Name="StatId" Type="int" Mode="In" />
@@ -699,6 +711,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <Parameter Name="GroupId" Type="int" Mode="In" />
           <Parameter Name="ModuleId" Type="int" Mode="In" />
         </Function>
+        <Function Name="T_InsertInto_Fifteen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_InsertTable_AutoForESDay" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_InsertTable_AutoForESHour" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_Photos_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -964,6 +977,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <Parameter Name="NowTime" Type="datetime" Mode="In" />
         </Function>
         <EntityContainer Name="ESMonitorModelStoreContainer">
+          <EntitySet Name="T_Alarms" EntityType="Self.T_Alarms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_AlarmType" EntityType="Self.T_AlarmType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Camera" EntityType="Self.T_Camera" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Country" EntityType="Self.T_Country" Schema="dbo" store:Type="Tables" />
@@ -972,6 +986,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <EntitySet Name="T_ESDay" EntityType="Self.T_ESDay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ESHour" EntityType="Self.T_ESHour" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ESMin" EntityType="Self.T_ESMin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_ESMin_Fifteen" EntityType="Self.T_ESMin_Fifteen" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Files" EntityType="Self.T_Files" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_GroupModules" EntityType="Self.T_GroupModules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Photos" EntityType="Self.T_Photos" Schema="dbo" store:Type="Tables" />
@@ -986,18 +1001,6 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <EntitySet Name="T_UserInGroups" EntityType="Self.T_UserInGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Users" EntityType="Self.T_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserStats" EntityType="Self.T_UserStats" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_Alarms" EntityType="Self.T_Alarms" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [T_Alarms].[Id] AS [Id], 
-    [T_Alarms].[StatId] AS [StatId], 
-    [T_Alarms].[DevId] AS [DevId], 
-    [T_Alarms].[DustType] AS [DustType], 
-    [T_Alarms].[FaultVal] AS [FaultVal], 
-    [T_Alarms].[UpdateTime] AS [UpdateTime], 
-    [T_Alarms].[Country] AS [Country], 
-    [T_Alarms].[IsReaded] AS [IsReaded]
-    FROM [dbo].[T_Alarms] AS [T_Alarms]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="T_ESDaytemp1" EntityType="Self.T_ESDaytemp1" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [T_ESDaytemp1].[Id] AS [Id], 
@@ -2015,6 +2018,9 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <EntitySet Name="T_Alarms" EntityType="ESMonitorModel.T_Alarms" />
           <EntitySet Name="T_Photos" EntityType="ESMonitorModel.T_Photos" />
           <EntitySet Name="T_Camera" EntityType="ESMonitorModel.T_Camera" />
+          <EntitySet Name="T_ESMin_Fifteen" EntityType="ESMonitorModel.T_ESMin_Fifteen" />
+          <FunctionImport Name="InSert_Alarm" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="T_InsertInto_Fifteen" />
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
@@ -2420,7 +2426,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <Property Name="ConfigId" Type="Guid" Nullable="false" />
           <Property Name="ConfigType" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="500" FixedLength="true" Unicode="true" />
         </EntityType>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -2457,7 +2463,6 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
         <EntityType Name="T_Alarms">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="IsReaded" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StatId" Type="Int32" />
@@ -2491,6 +2496,20 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <Property Name="PassWord" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CameraId" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="T_ESMin_Fifteen">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatId" Type="Int32" Nullable="false" />
+          <Property Name="TP" Type="Double" Nullable="false" />
+          <Property Name="DB" Type="Double" Nullable="false" />
+          <Property Name="PM25" Type="Double" Nullable="false" />
+          <Property Name="PM100" Type="Double" Nullable="false" />
+          <Property Name="Temperature" Type="Double" Nullable="false" />
+          <Property Name="Humidity" Type="Double" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3474,10 +3493,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <EntitySetMapping Name="T_Photos">
             <EntityTypeMapping TypeName="ESMonitorModel.T_Photos">
               <MappingFragment StoreEntitySet="T_Photos">
+                <ScalarProperty Name="UserName" ColumnName="UsereName" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="AddTime" ColumnName="AddTime" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3497,6 +3516,23 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="T_ESMin_Fifteen">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_ESMin_Fifteen">
+              <MappingFragment StoreEntitySet="T_ESMin_Fifteen">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="TP" ColumnName="TP" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="InSert_Alarm" FunctionName="ESMonitorModel.Store.InSert_Alarm" />
+          <FunctionImportMapping FunctionImportName="T_InsertInto_Fifteen" FunctionName="ESMonitorModel.Store.T_InsertInto_Fifteen" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

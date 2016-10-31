@@ -52,6 +52,7 @@ namespace SHEP_Platform
         public virtual DbSet<T_Alarms> T_Alarms { get; set; }
         public virtual DbSet<T_Photos> T_Photos { get; set; }
         public virtual DbSet<T_Camera> T_Camera { get; set; }
+        public virtual DbSet<T_ESMin_Fifteen> T_ESMin_Fifteen { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {
@@ -2153,6 +2154,16 @@ namespace SHEP_Platform
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
+    
+        public virtual ObjectResult<Nullable<int>> InSert_Alarm()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("InSert_Alarm");
+        }
+    
+        public virtual int T_InsertInto_Fifteen()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_InsertInto_Fifteen");
         }
     }
 }
