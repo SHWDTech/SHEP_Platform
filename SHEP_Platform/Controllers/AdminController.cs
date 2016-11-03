@@ -510,6 +510,18 @@ namespace SHEP_Platform.Controllers
             };
             model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
 
+            var stats = DbContext.T_Stats.ToList();
+            var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
+            foreach (var stat in stats)
+            {
+                var select = new SelectListItem {Value = stat.Id.ToString(), Text = stat.StatName};
+                if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
+                {
+                    select.Selected = true;
+                }
+                model.StatsList.Add(select);
+            }
+
             return View(model);
         }
 
@@ -545,6 +557,17 @@ namespace SHEP_Platform.Controllers
                     }
                 };
                 model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
+                var stats = DbContext.T_Stats.ToList();
+                var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
+                foreach (var stat in stats)
+                {
+                    var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
+                    if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
+                    {
+                        select.Selected = true;
+                    }
+                    model.StatsList.Add(select);
+                }
 
                 return View(model);
             }
@@ -572,6 +595,18 @@ namespace SHEP_Platform.Controllers
                     }
                 };
                 model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
+
+                var stats = DbContext.T_Stats.ToList();
+                var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
+                foreach (var stat in stats)
+                {
+                    var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
+                    if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
+                    {
+                        select.Selected = true;
+                    }
+                    model.StatsList.Add(select);
+                }
                 return View(model);
             }
 
@@ -590,6 +625,22 @@ namespace SHEP_Platform.Controllers
                 user.Status = 1;
                 user.RegTime = DateTime.Now;
                 DbContext.T_Users.Add(user);
+            }
+
+
+            var authedStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
+            foreach (var authedStat in authedStats)
+            {
+                DbContext.T_UserStats.Remove(authedStat);
+            }
+            var authStats = Request["stats"];
+            if (!string.IsNullOrWhiteSpace(authStats))
+            {
+                var statLIst = authStats.Split(',').Select(int.Parse);
+                foreach (var stat in statLIst)
+                {
+                    DbContext.T_UserStats.Add(new T_UserStats() {UserId = model.UserId, StatId = stat});
+                }
             }
 
             try
@@ -628,6 +679,18 @@ namespace SHEP_Platform.Controllers
 
                 model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
                 model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
+
+                var stats = DbContext.T_Stats.ToList();
+                var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
+                foreach (var stat in stats)
+                {
+                    var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
+                    if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
+                    {
+                        select.Selected = true;
+                    }
+                    model.StatsList.Add(select);
+                }
 
                 return View(model);
             }

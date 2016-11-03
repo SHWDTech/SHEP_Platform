@@ -53,6 +53,7 @@ namespace SHEP_Platform
         public virtual DbSet<T_Photos> T_Photos { get; set; }
         public virtual DbSet<T_Camera> T_Camera { get; set; }
         public virtual DbSet<T_ESMin_Fifteen> T_ESMin_Fifteen { get; set; }
+        public virtual DbSet<T_AlarmText> T_AlarmText { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {

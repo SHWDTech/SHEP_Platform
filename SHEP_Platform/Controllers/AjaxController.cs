@@ -806,6 +806,28 @@ namespace SHEP_Platform.Controllers
 
                 foreach (var dev in devs)
                 {
+                    if (
+                        DbContext.T_SysConfig.FirstOrDefault(
+                            obj => obj.ConfigType == "AlarmText" && obj.ConfigName == dev.ToString() && obj.ConfigValue == "Trhe") != null)
+                    {
+                        var device = DbContext.T_Devs.First(obj => obj.Id == dev);
+                        var stat = DbContext.T_Stats.First(obj => obj.Id.ToString() == device.StatId);
+                        if (
+                            DbContext.T_AlarmText.FirstOrDefault(
+                                obj => obj.StatId == stat.Id && obj.UpdateTime > DateTime.Today) == null)
+                        {
+                            TextMessageService.Send(stat.Telepone, stat.StatName);
+                            DbContext.T_AlarmText.Add(new T_AlarmText()
+                            {
+                                DevId = dev,
+                                StatId = stat.Id,
+                                UpdateTime = DateTime.Now
+                            });
+
+                            DbContext.SaveChanges();
+                        }
+                    }
+                    
                     var camera = DbContext.T_Camera.First(obj => obj.DevId == dev);
                     var cameraProductId = camera.UserName;
                     var cameraId = HikAction.GetCameraId(cameraProductId);

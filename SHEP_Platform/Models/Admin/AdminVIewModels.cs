@@ -236,19 +236,19 @@ namespace SHEP_Platform.Models.Admin
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
         
-        public Nullable<byte> Status { get; set; }
+        public byte? Status { get; set; }
 
 
-        public System.DateTime RegTime { get; set; }
+        public DateTime RegTime { get; set; }
 
         [Display(Name = "所属用户组")]
         public int RoleId { get; set; }
 
 
-        public Nullable<System.DateTime> LastTime { get; set; }
+        public DateTime? LastTime { get; set; }
 
 
-        public Nullable<System.DateTime> NowTime { get; set; }
+        public DateTime? NowTime { get; set; }
 
         [Display(Name = "所属区域")]
         public string Remark { get; set; }
@@ -256,6 +256,8 @@ namespace SHEP_Platform.Models.Admin
         public SelectList CountryList { get; set; }
 
         public SelectList RoleList { get; set; }
+
+        public List<SelectListItem> StatsList { get; set; } = new List<SelectListItem>();
 
         public bool IsNew { get; set; }
     }
