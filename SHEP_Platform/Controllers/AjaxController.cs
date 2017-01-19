@@ -195,10 +195,10 @@ namespace SHEP_Platform.Controllers
                 // ReSharper disable once PossibleInvalidOperationException
                 .Select(i => new
                 {
-                    TP = (i.TP / 1000).ToString("f2"),
-                    DB = i.DB.ToString("f2"),
-                    PM25 = (i.PM25 / 1000).GetValueOrDefault().ToString("f2"),
-                    PM100 = (i.PM100 / 1000).GetValueOrDefault().ToString("f2"),
+                    TP = (i.TP / 1000).ToString("f3"),
+                    DB = i.DB.ToString("f3"),
+                    PM25 = (i.PM25 / 1000).GetValueOrDefault().ToString("f3"),
+                    PM100 = (i.PM100 / 1000).GetValueOrDefault().ToString("f3"),
                     // ReSharper disable once PossibleInvalidOperationException
                     UpdateTime = ((DateTime)i.UpdateTime).ToString("HH:mm:ss")
                 });
