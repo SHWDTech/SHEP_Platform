@@ -1,0 +1,43 @@
+﻿@model List<SelectListItem>
+@{
+    ViewBag.Title = "Protocol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="display: flex;">
+    @Html.DropDownList("devs", Model, new { @class = "form-control", style = "width: 320px;"})
+    <input type="button" class="btn btn-primary" style="margin-left: 25px;" value="发送" onclick="send()"/>
+</div>
+<div style="margin-top: 15px;">
+    <textarea id ="protocol" class="form-control" style="height: 420px;"></textarea>
+</div>
+<script>
+    var intervalCount = 0;
+    var send = function() {
+        $.post('/Ajax/Access', { fun: 'sendProtocol', dev: $('#devs').val(), protocol: $('#protocol').val() }, function (ret) {
+            if (ret <= 0) {
+                alert('添加发送任务失败。');
+            }
+            intervalCount = 0;
+            getTaskNotice(ret);
+        });
+    }
+
+    function getTaskNotice(taskId) {
+        $.get('/Ajax/Access', { fun: 'getTaskResponse', taskId: taskId }, function(ret) {
+            if (!ret.success) {
+                if (intervalCount >= 12) {
+                    alert('任务超时。');
+                    return;
+                } else {
+                    intervalCount++;
+                    setTimeout(function() {
+                        getTaskNotice(taskId);
+                    }, 10000);
+                }
+            } else {
+                $('#protocol').val(ret.protocol);
+            }
+        });
+    }
+</script>

@@ -795,5 +795,16 @@ namespace SHEP_Platform.Controllers
 
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Protocol()
+        {
+            var devs = DbContext.T_Devs.Select(dev => new SelectListItem
+            {
+                Text = dev.DevCode,
+                Value = dev.Id.ToString()
+            }).ToList();
+
+            return View(devs);
+        }
     }
 }

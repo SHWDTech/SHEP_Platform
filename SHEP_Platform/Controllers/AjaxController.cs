@@ -54,6 +54,10 @@ namespace SHEP_Platform.Controllers
                     return AlarmReaded();
                 case "getStatsFifteenData":
                     return GetStatsFifteenData();
+                case "sendProtocol":
+                    return SendProtocol();
+                case "getTaskResponse":
+                    return GetTaskResponse();
             }
 
             return null;
@@ -868,6 +872,53 @@ namespace SHEP_Platform.Controllers
                 LogService.Instance.Error("拍照失败", ex);
             }
             return null;
+        }
+
+        public JsonResult SendProtocol()
+        {
+            var devId = int.Parse(Request["dev"]);
+            var protocol = Request["protocol"].Replace(" ", string.Empty).Trim();
+            var task = new T_Tasks
+            {
+                CmdType = 0xF8,
+                CmdByte = 0x1F,
+                DevId = devId,
+                Status = 0,
+                Data = Global.StringToHexByte(protocol),
+                Length = (short)protocol.Length,
+            };
+
+            DbContext.T_Tasks.Add(task);
+            try
+            {
+                DbContext.SaveChanges();
+                return Json(task.TaskId, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(-1);
+            }
+        }
+
+        public JsonResult GetTaskResponse()
+        {
+            var taskId = long.Parse(Request["taskId"]);
+            var notice = DbContext.T_TaskNotice.FirstOrDefault(n => n.TaskId == taskId);
+
+            if (notice?.Length == null) return Json(new
+            {
+                success = false
+            }, JsonRequestBehavior.AllowGet);
+            var response = new string[notice.Length.Value];
+            for (var i = 0; i < notice.Length.Value; i++)
+            {
+                response[i] = notice.Data[i].ToString("x2");
+            }
+            return Json(new
+            {
+                success = true,
+                protocol = string.Join(" ", response)
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }
