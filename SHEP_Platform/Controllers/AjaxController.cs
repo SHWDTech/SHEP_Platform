@@ -877,7 +877,7 @@ namespace SHEP_Platform.Controllers
         public JsonResult SendProtocol()
         {
             var devId = int.Parse(Request["dev"]);
-            var protocol = Request["protocol"].Replace(" ", string.Empty).Trim();
+            var protocol = Request["protocol"].ToUpper().Replace("0X", string.Empty).Replace(" ", string.Empty).Trim();
             var task = new T_Tasks
             {
                 CmdType = 0xF8,
@@ -885,7 +885,7 @@ namespace SHEP_Platform.Controllers
                 DevId = devId,
                 Status = 0,
                 Data = Global.StringToHexByte(protocol),
-                Length = (short)protocol.Length,
+                Length = (short)(protocol.Length / 2)
             };
 
             DbContext.T_Tasks.Add(task);
