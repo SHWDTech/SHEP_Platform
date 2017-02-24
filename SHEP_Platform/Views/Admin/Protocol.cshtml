@@ -9,12 +9,16 @@
     <input type="button" class="btn btn-primary" style="margin-left: 25px;" value="发送" onclick="send()"/>
 </div>
 <div style="margin-top: 15px;">
-    <textarea id ="protocol" class="form-control" style="height: 420px;"></textarea>
+    <h4>指令发送框</h4>
+    <textarea id = "protocol" class="form-control" style="height: 200px; margin-top: 15px;"></textarea>
+    <h4>指令接收框</h4>
+    <textarea id = "receive" class="form-control" style="height: 200px; margin-top: 15px;"></textarea>
 </div>
 <script>
     var intervalCount = 0;
     var send = function() {
         $.post('/Ajax/Access', { fun: 'sendProtocol', dev: $('#devs').val(), protocol: $('#protocol').val() }, function (ret) {
+            console.log(ret);
             if (ret <= 0) {
                 alert('添加发送任务失败。');
             }
@@ -36,7 +40,7 @@
                     }, 10000);
                 }
             } else {
-                $('#protocol').val(ret.protocol);
+                $('#receive').val(ret.protocol);
             }
         });
     }
