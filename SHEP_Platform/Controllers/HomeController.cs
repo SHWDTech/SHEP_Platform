@@ -42,7 +42,7 @@ namespace SHEP_Platform.Controllers
                 var lastUpdateTime = DateTime.Now;
                 foreach (var id in devIds)
                 {
-                    var esMin = DbContext.T_ESMin.OrderByDescending(obj => obj.Id).FirstOrDefault(es => es.DevId == id);
+                    var esMin = DbContext.T_ESMin.OrderByDescending(obj => obj.UpdateTime).FirstOrDefault(es => es.DevId == id);
                     if (esMin != null)
                     {
                         tpTotal += esMin.TP;
@@ -59,19 +59,19 @@ namespace SHEP_Platform.Controllers
                 {
                     Name = stat.StatName,
                     Id = stat.Id,
-                    AvgTp = (tpTotal / validDev / 1000.0).ToString("f2"),
-                    AvgDb = (dbTotal / validDev).ToString("f2"),
-                    AvgPm25 = (pm25Total / validDev).ToString("f2"),
-                    AvgPm100 = (pm100Total /validDev).ToString("f2"),
-                    AvgVoc = (vocTotal / validDev).ToString("f2"),
+                    AvgTp = (tpTotal / validDev / 1000.0).ToString("f3"),
+                    AvgDb = (dbTotal / validDev).ToString("f3"),
+                    AvgPm25 = (pm25Total / validDev / 1000.0).ToString("f3"),
+                    AvgPm100 = (pm100Total /validDev / 1000.0).ToString("f3"),
+                    AvgVoc = (vocTotal / validDev).ToString("f3"),
                     UpdateTime = lastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     Longitude = stat.Longitude,
                     Latitude = stat.Latitude,
                     PolluteType = PolluteType.NotOverRange
                 });
 
-                statmodel.AvgTp = (tpTotal/validDev/1000.0).ToString("f2");
-                statmodel.AvgDb = (dbTotal/validDev).ToString("f2");
+                statmodel.AvgTp = (tpTotal/validDev/1000.0).ToString("f3");
+                statmodel.AvgDb = (dbTotal/validDev).ToString("f3");
                 homestatList.StatLists.Add(statmodel);
             }
 
