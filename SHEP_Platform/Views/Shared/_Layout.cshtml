@@ -4,6 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/favicon.ico" />
+    <!--[if lte IE 6]>
+    <!-- bsie css 补丁文件 -->
+    @*<link rel="stylesheet" type="text/css" href="~/Content/bootstrap/bootstrap-ie6.css">*@
+
+    <!-- bsie 额外的 css 补丁文件 -->
+    @*<link rel="stylesheet" type="text/css" href="~/Content/bootstrap/ie.css">*@
+    <![endif]-->
     <title>
         @ViewBag.Title @{
             if (!string.IsNullOrWhiteSpace(ViewBag.SiteMapMenu.ActionMenu.Name))
@@ -25,8 +33,21 @@
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right logoff-form" }))
         {
             @Html.AntiForgeryToken()
-
             <ul class="nav navbar-nav navbar-right">
+                <li class="alarmBtn">
+                    <div class="btn-group btn-default" style="background-color: transparent; -webkit-box-shadow: none; box-shadow: none;">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="viewalrmdetails"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="border-radius: 0; background-color: transparent; color: #fff0f5; border: none; -webkit-box-shadow: none; box-shadow: none; height: 50px;">
+                            <span id="alarmMark">超标报警</span>
+                            <span id="alarmCount" class="badge">0</span>
+                        </button>
+                        <ul id="alarmDetails" class="dropdown-menu" aria-labelledby="viewalrmdetails" style="left: 0; width: 180px;">
+                            <li style="padding: 8px; font-size: 12px; border-bottom: 3px solid #e7e7e7; text-align: left;">
+                                <span style="color: #10721C"><a href="/Analysis/AlarmDetails">查看详情</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li>
                     <a href="javascript:document.getElementById('logoutForm').submit()">退出</a>
                 </li>
@@ -55,10 +76,10 @@
                     <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
                     <span>查询导出</span>
                     <ul class="sub-menu">
-                        <li>@Html.ActionLink("各工程当前情况", "ActualStatus", "Monitor", new {id = ""}, null)</li>
+                        <li>@Html.ActionLink("各工程当前情况", "ActualStatus", "Monitor", new { id = "" }, null)</li>
                         <li>@Html.ActionLink("各工程历史污染物变化情况", "HistoryChange", "Monitor")</li>
                         <li>@Html.ActionLink("按工期进行综合对比", "ScheduleCompare", "Monitor")</li>
-                        <li>@Html.ActionLink("查看工地当前状况", "StatView", "Monitor")</li>
+                        <li>@Html.ActionLink("历史数据表格导出", "DataExport", "Monitor")</li>
                     </ul>
                 </li>
                 <li>
@@ -73,6 +94,7 @@
                     <span>综合评价</span>
                     <ul class="sub-menu">
                         <li>@Html.ActionLink("本区县整体超标情况变化趋势", "AlarmChange", "Analysis")</li>
+                        <li>@Html.ActionLink("查看现场照片", "StatPictures", "Analysis")</li>
                     </ul>
                 </li>
                 @{
@@ -84,10 +106,12 @@
                             <ul class="sub-menu">
                                 <li>@Html.ActionLink("新增监测点", "StatEdit", "Admin", new { id = "" }, null)</li>
                                 <li>@Html.ActionLink("监测点管理", "StatManage", "Admin")</li>
-                                <li>@Html.ActionLink("新增设备", "DevEdit", "Admin", new {id = ""}, null)</li>
+                                <li>@Html.ActionLink("新增设备", "DevEdit", "Admin", new { id = "" }, null)</li>
                                 <li>@Html.ActionLink("设备管理", "DevManage", "Admin")</li>
-                                <li>@Html.ActionLink("新增用户", "UserEdit", "Admin", new {id = ""}, null)</li>
+                                <li>@Html.ActionLink("新增用户", "UserEdit", "Admin", new { id = "" }, null)</li>
                                 <li>@Html.ActionLink("用户管理", "UserManage", "Admin")</li>
+                                <li>@Html.ActionLink("新增摄像头", "Camera", "Admin", new { id = ""}, null)</li>
+                                <li>@Html.ActionLink("管理摄像头", "CameraManage", "Admin")</li>
                             </ul>
                         </li>
                     }
@@ -103,68 +127,23 @@
             <p>&copy; @DateTime.Now.Year - 上海卫东信息科技有限公司。</p>
         </footer>
     </div>
+    <div id="customerModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header"></div>
+                <div class="modal-body"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/base")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/Utility/Layout.js"></script>
     @RenderSection("scripts", required: false)
-    <script type="text/javascript">
-        var currentMenuItem = null;
-        var activedMenuItem = null;
-        var delayActive = null;
-        var lastPoint = null;
-        var IsDelay = false;
-        $(function () {
-            $('.sidebar > ul > li').on('mouseenter mouseleave', function (e) {
-                if (e.type === 'mouseenter') {
-                    currentMenuItem = $(this);
-                } else {
-                    currentMenuItem = null;
-                    if (delayActive != null) {
-                        clearTimeout(delayActive);
-                        delayActive = null;
-                    }
-                }
-            });
-            $('.sidebar').on('mouseleave', function () {
-                $('.sidebar > ul > li').find('ul').hide();
-            });
-
-            $('.sidebar').on('mouseenter mousemove', function (e) {
-                if (e.type === 'mouseenter') {
-                    lastPoint = {
-                        x: e.clientX,
-                        y: e.clientY
-                    }
-                } else {
-                    if ((e.clientY - lastPoint.y) < 0) {
-                        IsDelay = false;
-                    } else {
-                        IsDelay = (e.clientX - lastPoint.x) > 0 ? true : false;
-                    }
-                    lastPoint = {
-                        x: e.clientX,
-                        y: e.clientY
-                    }
-                    if (delayActive != null) {
-                        clearTimeout(delayActive);
-                        delayActive = null;
-                    }
-                    if (IsDelay) {
-                        delayActive = setTimeout("activeChildMenu()", 1500);
-                    } else {
-                        activeChildMenu();
-                    }
-                }
-
-            });
-        });
-
-        function activeChildMenu() {
-            $('.sidebar > ul > li').find('ul').hide();
-            $(currentMenuItem).addClass('hover');
-            $(currentMenuItem).find('ul').show();
-            activedMenuItem = currentMenuItem;
-        }
-    </script>
+    <!--[if lte IE 6]>
+    <!-- bsie js 补丁只在IE6中才执行 -->
+    @*<script type="text/javascript" src="~/Scripts/Utility/bootstrap-ie.js"></script>*@
+    <![endif]-->
 </body>
 </html>

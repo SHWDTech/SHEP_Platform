@@ -2,11 +2,35 @@
 
 BaseInfo.IsMobileDevice = false;
 BaseInfo.Orient = WindowOrientation.Portrait;
+BaseInfo.IsIE = false;
+BaseInfo.IsIE6 = false;
+BaseInfo.IsIE7 = false;
+BaseInfo.IsIE8 = false;
+
+var customerModal = {};
+
+customerModal.Show = function(option) {
+    if (!$('#customerModal')) return;
+
+    var instance = $('#customerModal');
+
+    instance.find('.modal-header').html(option.header);
+
+    instance.find('.modal-body').html(option.body);
+
+    instance.modal({keyboard: true, show: true});
+}
 
 $(function() {
     $(window).on('onorientationchange', function() {
         orient();
     });
+
+    BaseInfo.IsIE = (!!window.ActiveXObject || "ActiveXObject" in window);
+    if (BaseInfo.IsIE) {
+        BaseInfo.IsIE6 = navigator.appVersion.match(/6./i) === "6.";
+        BaseInfo.IsIE7 = navigator.appVersion.match(/7./i) === "7.";
+    }
 });
 
 var trimStr = function (str) {
@@ -75,4 +99,23 @@ var orient = function() {
     }
 
     return BaseInfo.Orient;
+}
+
+// ReSharper disable once NativeTypePrototypeExtending
+Date.prototype.Format = function (fmt) { //author: meizz   
+    var o = {
+        "M+": this.getMonth() + 1,                 //月份   
+        "d+": this.getDate(),                    //日   
+        "h+": this.getHours(),                   //小时   
+        "m+": this.getMinutes(),                 //分   
+        "s+": this.getSeconds(),                 //秒   
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+        "S": this.getMilliseconds()             //毫秒   
+    };
+    if (/(y+)/.test(fmt))
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
 }

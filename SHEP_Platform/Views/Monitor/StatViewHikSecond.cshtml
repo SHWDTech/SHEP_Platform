@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "工程实时状况查看";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="float: right;">
+    <input type="hidden" value="@ViewBag.CameraId" id="cameraId"/>
+    <div id="ocxAlarm" style="display: none;">
+        <p>查看视频请先安装视频插件，<span><a href="/Resources/WdMonitorView.msi">点击此处下载安装</a></span>。<span style="color: red;">并以管理员权限运行安装。</span></p>
+    </div>
+    <object classid="clsid:41353907-A6CF-4BDF-9AE0-EB06F8C48414"
+            width="800" height="600" id="StatMonitor" style="z-index: -1;"></object>
+</div>
+<div style="margin-right: 25px;">
+    <div class="form-inline">
+        <div style="margin-bottom: 30px;">
+            <input type="button" class="form-control camerabtn"/>
+            <input type="button" onmousedown="Up()" onmouseup="Stop()" onmouseleave="Stop()" value="上" class="form-control camerabtn">
+            <input type="button" class="form-control camerabtn" />
+        </div>
+        <div style="margin-bottom: 30px;">
+            <input type="button" onmousedown="Left()" onmouseup="Stop()" onmouseleave="Stop()" value="左" class="form-control camerabtn">
+            <input type="button" onmousedown="SwitchMonitorStatus()" value="开始" class="form-control camerabtn" id="monitorSwitch">
+            <input type="button" onmousedown="Right()" onmouseup="Stop()" onmouseleave="Stop()" value="右" class="form-control camerabtn">
+        </div>
+        <div style="margin-bottom: 30px;">
+            <input type="button" onmousedown="ZoomIn()" onmouseup="Stop()" onmouseleave="Stop()" value="近景" class="form-control camerabtn">
+            <input type="button" onmousedown="Down()" onmouseup="Stop()" onmouseleave="Stop()" value="下" class="form-control camerabtn">
+            <input type="button" onmousedown="ZoomOut" onmouseup="Stop()" onmouseleave="Stop()" value="远景" class="form-control camerabtn">
+        </div>
+</div>
+</div>
+
+@section scripts {
+    <script src="/Scripts/Page/StatViewHikSecond.js"></script>
+}

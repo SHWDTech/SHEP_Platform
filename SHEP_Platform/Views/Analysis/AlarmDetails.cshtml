@@ -1,0 +1,38 @@
+﻿@using PagedList.Mvc
+@using SHEP_Platform.Models.Analysis
+@model AlarmDetailsViewModel
+
+@{
+    ViewBag.Title = "报警信息详情";
+}
+
+@{
+    foreach (var alarmDetail in Model.Details)
+    {
+        var readed = alarmDetail.IsReaded ? "" : "notreaded";
+        <div class="alarmPanel">
+            <div class="alarmTitle @readed" id="@alarmDetail.AlarmId">
+                <input type="checkbox" />
+                <span class="alarmStat">@alarmDetail.StatName</span>
+                <span class="alarmValue">报警值：@alarmDetail.FaultValue.ToString("F2") mg/m³</span>
+                <span class="alarmDate">@alarmDetail.AlarmDateTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
+            </div>
+            <div class="alarmDetail">
+                <div>
+                    <span>负责人：@alarmDetail.ChargeMan</span>
+                    <span>联系电话：@alarmDetail.Telephone</span>
+                    <span>设备编码： @alarmDetail.DevCode</span>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div style="float: right;">
+    @Html.PagedListPager(Model.Details, page => Url.Action("AlarmDetails", new { page }))
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/Page/AlarmDetails.js"></script>
+}

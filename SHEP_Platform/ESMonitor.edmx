@@ -16,6 +16,16 @@
           <Property Name="FaultVal" Type="float" />
           <Property Name="UpdateTime" Type="datetime" />
           <Property Name="Country" Type="varchar" MaxLength="20" />
+          <Property Name="IsReaded" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_AlarmText">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DevId" Type="int" Nullable="false" />
+          <Property Name="StatId" Type="int" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="T_AlarmType">
           <Key>
@@ -26,21 +36,15 @@
           <Property Name="DustRange" Type="float" />
           <Property Name="DbRange" Type="float" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“ESMonitor2.dbo.T_Camera”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="T_Camera">
           <Key>
             <PropertyRef Name="ID" />
-            <PropertyRef Name="DevId" />
-            <PropertyRef Name="DnsAddr" />
-            <PropertyRef Name="UserName" />
-            <PropertyRef Name="PassWord" />
-            <PropertyRef Name="CameraId" />
-            <PropertyRef Name="Type" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CameraName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="DnsAddr" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Port" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PassWord" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CameraId" Type="int" Nullable="false" />
@@ -92,8 +96,8 @@
           <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="Country" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“ESMonitor2.dbo.T_ESDaytemp1”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ESMonitor.dbo.T_ESDaytemp1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_ESDaytemp1">
           <Key>
             <PropertyRef Name="Id" />
@@ -151,6 +155,20 @@
           <Property Name="DevId" Type="int" />
           <Property Name="Country" Type="varchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="T_ESMin_Fifteen">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatId" Type="int" Nullable="false" />
+          <Property Name="TP" Type="float" Nullable="false" />
+          <Property Name="DB" Type="float" Nullable="false" />
+          <Property Name="PM25" Type="float" Nullable="false" />
+          <Property Name="PM100" Type="float" Nullable="false" />
+          <Property Name="Temperature" Type="float" Nullable="false" />
+          <Property Name="Humidity" Type="float" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="T_Files">
           <Key>
             <PropertyRef Name="Id" />
@@ -170,8 +188,8 @@
           <Property Name="GroupId" Type="int" Nullable="false" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“ESMonitor2.dbo.T_Offset”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ESMonitor.dbo.T_Offset' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_Offset">
           <Key>
             <PropertyRef Name="OffSetCpm" />
@@ -189,6 +207,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UsereName" Type="nchar" MaxLength="50" Nullable="false" />
           <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="AddTime" Type="datetime" Nullable="false" />
           <Property Name="FileName" Type="varchar" MaxLength="100" Nullable="false" />
@@ -228,6 +247,15 @@
           <Property Name="Stage" Type="tinyint" Nullable="false" />
           <Property Name="ProType" Type="varchar" MaxLength="20" />
           <Property Name="AlarmType" Type="int" />
+        </EntityType>
+        <EntityType Name="T_SysConfig">
+          <Key>
+            <PropertyRef Name="ConfigId" />
+          </Key>
+          <Property Name="ConfigId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ConfigType" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConfigName" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConfigValue" Type="nchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="T_TaskNotice">
           <Key>
@@ -295,6 +323,14 @@
           <Property Name="NowTime" Type="datetime" />
           <Property Name="Remark" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="T_UserStats">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="StatId" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
           <End Role="T_Country" Type="Self.T_Country" Multiplicity="*" />
@@ -355,6 +391,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="InSert_Alarm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_Alarms_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="InOut" />
           <Parameter Name="StatId" Type="int" Mode="In" />
@@ -678,6 +715,9 @@
           <Parameter Name="GroupId" Type="int" Mode="In" />
           <Parameter Name="ModuleId" Type="int" Mode="In" />
         </Function>
+        <Function Name="T_InsertInto_Fifteen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="T_InsertTable_AutoForESDay" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="T_InsertTable_AutoForESHour" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_Photos_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="InOut" />
           <Parameter Name="DevId" Type="int" Mode="In" />
@@ -942,36 +982,30 @@
         </Function>
         <EntityContainer Name="ESMonitorModelStoreContainer">
           <EntitySet Name="T_Alarms" EntityType="Self.T_Alarms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_AlarmText" EntityType="Self.T_AlarmText" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_AlarmType" EntityType="Self.T_AlarmType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Camera" EntityType="Self.T_Camera" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Country" EntityType="Self.T_Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_DevAddr" EntityType="Self.T_DevAddr" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Devs" EntityType="Self.T_Devs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ESDay" EntityType="Self.T_ESDay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ESHour" EntityType="Self.T_ESHour" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ESMin" EntityType="Self.T_ESMin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_ESMin_Fifteen" EntityType="Self.T_ESMin_Fifteen" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Files" EntityType="Self.T_Files" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_GroupModules" EntityType="Self.T_GroupModules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Photos" EntityType="Self.T_Photos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Province" EntityType="Self.T_Province" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Stage" EntityType="Self.T_Stage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Stats" EntityType="Self.T_Stats" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_SysConfig" EntityType="Self.T_SysConfig" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_TaskNotice" EntityType="Self.T_TaskNotice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Tasks" EntityType="Self.T_Tasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserAuthority" EntityType="Self.T_UserAuthority" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserGroup" EntityType="Self.T_UserGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserInGroups" EntityType="Self.T_UserInGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Users" EntityType="Self.T_Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="T_Camera" EntityType="Self.T_Camera" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [T_Camera].[ID] AS [ID], 
-    [T_Camera].[DevId] AS [DevId], 
-    [T_Camera].[DnsAddr] AS [DnsAddr], 
-    [T_Camera].[UserName] AS [UserName], 
-    [T_Camera].[PassWord] AS [PassWord], 
-    [T_Camera].[CameraId] AS [CameraId], 
-    [T_Camera].[Type] AS [Type]
-    FROM [dbo].[T_Camera] AS [T_Camera]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="T_UserStats" EntityType="Self.T_UserStats" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_ESDaytemp1" EntityType="Self.T_ESDaytemp1" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [T_ESDaytemp1].[Id] AS [Id], 
@@ -1020,18 +1054,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ESMonitorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="T_Alarms">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StatId" Type="Int32" />
-          <Property Name="DevId" Type="Int32" />
-          <Property Name="DustType" Type="Int16" />
-          <Property Name="FaultVal" Type="Double" />
-          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
-          <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="T_AlarmType">
           <Key>
             <PropertyRef Name="Id" />
@@ -1059,19 +1081,6 @@
           </Key>
           <Property Name="DevId" Type="Int32" Nullable="false" />
           <Property Name="NodeId" Type="Binary" MaxLength="4" FixedLength="true" Nullable="false" />
-        </EntityType>
-        <EntityType Name="T_Devs">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DevCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StatId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PreEndTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DevStatus" Type="Byte" Nullable="false" />
-          <Property Name="VideoURL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="T_ESDay">
           <Key>
@@ -1148,15 +1157,6 @@
           </Key>
           <Property Name="GroupId" Type="Int32" Nullable="false" />
           <Property Name="ModuleId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="T_Photos">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DevId" Type="Int32" Nullable="false" />
-          <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Province">
           <Key>
@@ -1267,24 +1267,6 @@
           <Property Name="NowTime" Type="DateTime" Precision="3" />
           <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="T_Camera">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="DevId" />
-            <PropertyRef Name="DnsAddr" />
-            <PropertyRef Name="UserName" />
-            <PropertyRef Name="PassWord" />
-            <PropertyRef Name="CameraId" />
-            <PropertyRef Name="Type" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DevId" Type="Int32" Nullable="false" />
-          <Property Name="DnsAddr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PassWord" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CameraId" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
         <EntityType Name="T_ESDaytemp1">
           <Key>
             <PropertyRef Name="Id" />
@@ -1375,17 +1357,14 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ESMonitorEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="T_Alarms" EntityType="Self.T_Alarms" />
           <EntitySet Name="T_AlarmType" EntityType="Self.T_AlarmType" />
           <EntitySet Name="T_Country" EntityType="Self.T_Country" />
           <EntitySet Name="T_DevAddr" EntityType="Self.T_DevAddr" />
-          <EntitySet Name="T_Devs" EntityType="Self.T_Devs" />
           <EntitySet Name="T_ESDay" EntityType="Self.T_ESDay" />
           <EntitySet Name="T_ESHour" EntityType="Self.T_ESHour" />
           <EntitySet Name="T_ESMin" EntityType="Self.T_ESMin" />
           <EntitySet Name="T_Files" EntityType="Self.T_Files" />
           <EntitySet Name="T_GroupModules" EntityType="Self.T_GroupModules" />
-          <EntitySet Name="T_Photos" EntityType="Self.T_Photos" />
           <EntitySet Name="T_Province" EntityType="Self.T_Province" />
           <EntitySet Name="T_Stage" EntityType="Self.T_Stage" />
           <EntitySet Name="T_Stats" EntityType="Self.T_Stats" />
@@ -1395,7 +1374,6 @@
           <EntitySet Name="T_UserGroup" EntityType="Self.T_UserGroup" />
           <EntitySet Name="T_UserInGroups" EntityType="Self.T_UserInGroups" />
           <EntitySet Name="T_Users" EntityType="Self.T_Users" />
-          <EntitySet Name="T_Camera" EntityType="Self.T_Camera" />
           <EntitySet Name="T_ESDaytemp1" EntityType="Self.T_ESDaytemp1" />
           <EntitySet Name="T_Offset" EntityType="Self.T_Offset" />
           <AssociationSet Name="FK_T_Stats_T_AlarmType1" Association="Self.FK_T_Stats_T_AlarmType1">
@@ -1978,7 +1956,7 @@
             <Parameter Name="NowTime" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM100List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100List_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM100OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100OrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1989,7 +1967,7 @@
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM25List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25List_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM25OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25OrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -2007,6 +1985,48 @@
             <Parameter Name="Country" Mode="In" Type="String" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="T_InsertTable_AutoForESDay1" />
+          <FunctionImport Name="T_InsertTable_AutoForESHour1" />
+          <EntitySet Name="T_SysConfig" EntityType="ESMonitorModel.T_SysConfig" />
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ESMonitorModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ESMonitorModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="T_UserStats" EntityType="ESMonitorModel.T_UserStats" />
+          <EntitySet Name="T_Devs" EntityType="ESMonitorModel.T_Devs" />
+          <EntitySet Name="T_Alarms" EntityType="ESMonitorModel.T_Alarms" />
+          <EntitySet Name="T_Photos" EntityType="ESMonitorModel.T_Photos" />
+          <EntitySet Name="T_Camera" EntityType="ESMonitorModel.T_Camera" />
+          <EntitySet Name="T_ESMin_Fifteen" EntityType="ESMonitorModel.T_ESMin_Fifteen" />
+          <FunctionImport Name="InSert_Alarm" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="T_InsertInto_Fifteen" />
+          <EntitySet Name="T_AlarmText" EntityType="ESMonitorModel.T_AlarmText" />
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
@@ -2405,25 +2425,113 @@
           <Property Type="Int32" Name="StatId" Nullable="false" />
           <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
         </ComplexType>
+        <EntityType Name="T_SysConfig">
+          <Key>
+            <PropertyRef Name="ConfigId" />
+          </Key>
+          <Property Name="ConfigId" Type="Guid" Nullable="false" />
+          <Property Name="ConfigType" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="500" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="T_UserStats">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="StatId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Devs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DevCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="StatId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PreEndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DevStatus" Type="Byte" Nullable="false" />
+          <Property Name="VideoURL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="T_Alarms">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatId" Type="Int32" />
+          <Property Name="DevId" Type="Int32" />
+          <Property Name="DustType" Type="Int16" />
+          <Property Name="FaultVal" Type="Double" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsReaded" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Photos">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DevId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Camera">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CameraName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DevId" Type="Int32" Nullable="false" />
+          <Property Name="DnsAddr" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Port" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PassWord" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CameraId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="T_ESMin_Fifteen">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatId" Type="Int32" Nullable="false" />
+          <Property Name="TP" Type="Double" Nullable="false" />
+          <Property Name="DB" Type="Double" Nullable="false" />
+          <Property Name="PM25" Type="Double" Nullable="false" />
+          <Property Name="PM100" Type="Double" Nullable="false" />
+          <Property Name="Temperature" Type="Double" Nullable="false" />
+          <Property Name="Humidity" Type="Double" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="T_AlarmText">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DevId" Type="Int32" Nullable="false" />
+          <Property Name="StatId" Type="Int32" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ESMonitorModelStoreContainer" CdmEntityContainer="ESMonitorEntities">
-          <EntitySetMapping Name="T_Alarms">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Alarms">
-              <MappingFragment StoreEntitySet="T_Alarms">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="DevId" ColumnName="DevId" />
-                <ScalarProperty Name="DustType" ColumnName="DustType" />
-                <ScalarProperty Name="FaultVal" ColumnName="FaultVal" />
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="T_AlarmType">
             <EntityTypeMapping TypeName="ESMonitorModel.T_AlarmType">
               <MappingFragment StoreEntitySet="T_AlarmType">
@@ -2448,20 +2556,6 @@
               <MappingFragment StoreEntitySet="T_DevAddr">
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="NodeId" ColumnName="NodeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_Devs">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Devs">
-              <MappingFragment StoreEntitySet="T_Devs">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="PreEndTime" ColumnName="PreEndTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="DevStatus" ColumnName="DevStatus" />
-                <ScalarProperty Name="VideoURL" ColumnName="VideoURL" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2542,16 +2636,6 @@
               <MappingFragment StoreEntitySet="T_GroupModules">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_Photos">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Photos">
-              <MappingFragment StoreEntitySet="T_Photos">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="DevId" ColumnName="DevId" />
-                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2660,19 +2744,6 @@
                 <ScalarProperty Name="LastTime" ColumnName="LastTime" />
                 <ScalarProperty Name="NowTime" ColumnName="NowTime" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_Camera">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Camera">
-              <MappingFragment StoreEntitySet="T_Camera">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="DevId" ColumnName="DevId" />
-                <ScalarProperty Name="DnsAddr" ColumnName="DnsAddr" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
-                <ScalarProperty Name="CameraId" ColumnName="CameraId" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3385,6 +3456,108 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESDay1" FunctionName="ESMonitorModel.Store.T_InsertTable_AutoForESDay" />
+          <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESHour1" FunctionName="ESMonitorModel.Store.T_InsertTable_AutoForESHour" />
+          <EntitySetMapping Name="T_SysConfig">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_SysConfig">
+              <MappingFragment StoreEntitySet="T_SysConfig">
+                <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
+                <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
+                <ScalarProperty Name="ConfigType" ColumnName="ConfigType" />
+                <ScalarProperty Name="ConfigId" ColumnName="ConfigId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_UserStats">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_UserStats">
+              <MappingFragment StoreEntitySet="T_UserStats">
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Devs">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_Devs">
+              <MappingFragment StoreEntitySet="T_Devs">
+                <ScalarProperty Name="VideoURL" ColumnName="VideoURL" />
+                <ScalarProperty Name="DevStatus" ColumnName="DevStatus" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="PreEndTime" ColumnName="PreEndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Alarms">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_Alarms">
+              <MappingFragment StoreEntitySet="T_Alarms">
+                <ScalarProperty Name="IsReaded" ColumnName="IsReaded" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="FaultVal" ColumnName="FaultVal" />
+                <ScalarProperty Name="DustType" ColumnName="DustType" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Photos">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_Photos">
+              <MappingFragment StoreEntitySet="T_Photos">
+                <ScalarProperty Name="UserName" ColumnName="UsereName" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Camera">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_Camera">
+              <MappingFragment StoreEntitySet="T_Camera">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CameraId" ColumnName="CameraId" />
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="DnsAddr" ColumnName="DnsAddr" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="CameraName" ColumnName="CameraName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_ESMin_Fifteen">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_ESMin_Fifteen">
+              <MappingFragment StoreEntitySet="T_ESMin_Fifteen">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="TP" ColumnName="TP" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="InSert_Alarm" FunctionName="ESMonitorModel.Store.InSert_Alarm" />
+          <FunctionImportMapping FunctionImportName="T_InsertInto_Fifteen" FunctionName="ESMonitorModel.Store.T_InsertInto_Fifteen" />
+          <EntitySetMapping Name="T_AlarmText">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_AlarmText">
+              <MappingFragment StoreEntitySet="T_AlarmText">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

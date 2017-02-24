@@ -6,51 +6,72 @@
 }
 
 <div>
-    @using (Html.BeginForm("UserEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;" }))
+    @using (Html.BeginForm("UserEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;", @Id = "usereditform" }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.UserId)
         <div class="form-group">
             @Html.LabelFor(m => m.UserName)
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control"})
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Mobile)
-            @Html.TextBoxFor(m => m.Mobile, new {@class = "form-control"})
+            @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.EmailAddress)
-            @Html.TextBoxFor(m => m.EmailAddress, new {@class = "form-control"})
+            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Remark)
-            @Html.DropDownListFor(m => m.Remark, Model.CountryList, new {@class = "form-control"})
+            @Html.DropDownListFor(m => m.Remark, Model.CountryList, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.Remark, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.RoleId)
-            @Html.DropDownListFor(m => m.RoleId, Model.RoleList, new {@class = "form-control"})
+            @Html.DropDownListFor(m => m.RoleId, Model.RoleList, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.PassWord)
-            @Html.PasswordFor(m => m.PassWord, new {@class = "form-control"})
+            @Html.PasswordFor(m => m.PassWord, new { @class = "form-control" })
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.PassWord, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-success">
+            <label for="stats">工地权限</label>
+            <select id="stats" name="stats" style="width: 310px;" multiple="multiple">
+                <optgroup label="工地">
+                    @{
+                        foreach (var stat in Model.StatsList)
+                        {
+                            var selected = stat.Selected ? "selected" : "";
+                            <option value="@stat.Value" @selected>@stat.Text</option>
+                        }
+                    }
+                </optgroup>
+            </select>
+
+        </div>
+        <div>
+            
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-success" onclick="EncrypSubmit()">
                 提交
             </button>
         </div>
@@ -58,6 +79,7 @@
 </div>
 
 @section css{
+    @Styles.Render("~/Content/select2-bootstrap")
     <style type="text/css">
         label {
             width: 100px;
@@ -75,4 +97,24 @@
             min-width: 310px !important;
         }
     </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/select2")
+    <script type="text/javascript" src="~/Scripts/Utility/sha.js"></script>
+    <script type="text/javascript">
+        $('#stats').select2({
+            placeholder: "---选择工地---"
+        });
+        var EncrypSubmit = function () {
+            if ($('#PassWord').val() === '') {
+            } else {
+                var hashObj = new jsSHA('SHA-256', 'TEXT', 1);
+                hashObj.update($('#PassWord').val());
+                $('#PassWord').val(hashObj.getHash('HEX'));
+            }
+
+            document.getElementById('usereditform').submit();
+        }
+    </script>
 }

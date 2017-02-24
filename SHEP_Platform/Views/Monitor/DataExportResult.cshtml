@@ -1,0 +1,88 @@
+﻿@using SHEP_Platform.Models.Monitor
+@model DataExport
+@{
+    var nvaindex = 0;
+    var tableindex = 0;
+}
+
+<ul class="nav nav-tabs">
+    @{
+        foreach (var statse in Model.StatList)
+        {
+            <li role="presentation" class="table-nav"><a href="javascript:void(0)" index="@nvaindex">@statse.StatName</a></li>
+            nvaindex += 1;
+
+        }
+        foreach (var devse in Model.DevList)
+        {
+            <li role="presentation" class="table-nav"><a href="javascript:void(0)" index="@nvaindex">@devse.DevCode</a></li>
+            nvaindex += 1;
+        }
+    }
+</ul>
+<div style="padding: 2px 0 0 0;">
+    @{
+        foreach (var statse in Model.StatList)
+        {
+            <div index="@tableindex" class="data-table" style="display: none;">
+                <table data-toggle="table" class="table table-bordered "
+                       data-url="/Monitor/StatTable/@statse.Id?start=@Model.StartDate&end=@Model.EndDate"
+                       data-pagination="true"
+                       data-side-pagination="server"
+                       data-page-list="[5, 10, 20, 50, 100, 200]"
+                       data-page-size="10">
+                    <thead>
+                        <tr>
+                            <th data-field="UpdateTime" data-align="left" data-formatter="dateFormatter">更新时间</th>
+                            <th data-field="TP" data-align="center">总体颗粒物(mg/m³)</th>
+                            <th data-field="PM25" data-align="center">PM2.5(mg/m³)</th>
+                            <th data-field="PM100" data-align="center">PM10(mg/m³)</th>
+                            <th data-field="DB" data-align="center">噪音值(dB)</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            tableindex += 1;
+        }
+        foreach (var dev in Model.DevList)
+        {
+            <div index="@tableindex" class="data-table" style="display: none;">
+                <table data-toggle="table" class="table table-bordered "
+                       data-url="/Monitor/DevTable/@dev.Id?start=@Model.StartDate&end=@Model.EndDate"
+                       data-pagination="true"
+                       data-side-pagination="server"
+                       data-page-list="[5, 10, 20, 50, 100, 200]"
+                       data-page-size="10">
+                    <thead>
+                        <tr>
+                            <th data-field="UpdateTime" data-align="left" data-formatter="dateFormatter">更新时间</th>
+                            <th data-field="TP" data-align="center">总体颗粒物(mg/m³)</th>
+                            <th data-field="PM25" data-align="center">PM2.5(mg/m³)</th>
+                            <th data-field="PM100" data-align="center">PM10(mg/m³)</th>
+                            <th data-field="DB" data-align="center">噪音值(dB)</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            tableindex += 1;
+        }
+    }
+</div>
+
+<script type="text/javascript" src="/Scripts/Utility/bootstrap-table/bootstrap-table.js"></script>
+<script type="text/javascript" src="/Scripts/Utility/bootstrap-table/bootstrap-table-locale-all.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
+        $('.table-nav').on('click', function () {
+            $('.data-table').hide();
+            $('.table-nav').removeClass('active');
+            $(this).addClass('active');
+            var source = $($(this).find('a')[0]).attr('index');
+            var target = $('div[index=' + source + ']');
+            $(target).show();
+        });
+
+        $('.table-nav')[0].click();
+    })
+</script>

@@ -1,0 +1,25 @@
+﻿@using SHEP_Platform.Models.Analysis
+@model StatPicViewModel
+@{
+    ViewBag.Title = "查看现场照片";
+}
+
+<div>
+    <div>
+        @using (Html.BeginForm("StatPictures", "Analysis", null, FormMethod.Post, new { id = "statPic", @class = "form-inline" }))
+        {
+            <label>选择工地</label>
+            @Html.DropDownListFor(m => m.StatId, (List<SelectListItem>)ViewBag.Stats, new { @class = "form form-control"})
+            <input type="submit" class="form form-control" value="查看图片" />
+            <hr />
+                    }
+    </div>
+    <div>
+        @{
+            foreach (var url in Model.PicUrls)
+            {
+                <img src="@url" class="alarmPic"/>
+            }
+        }
+    </div>
+</div>

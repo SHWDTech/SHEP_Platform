@@ -3,7 +3,7 @@
 }
 
 .section-title h3{
-    color: #1abc9c;
+    color: #FF9933;
     font-size: 20px;
     text-align: center;
 }
@@ -33,7 +33,7 @@
 
 .textbox-wrap {
     border-left: 5px solid #fff;
-    padding: 20px 20px 20px 15px;
+    padding: 15px 20px 15px 15px;
 }
 
 
@@ -58,12 +58,12 @@ button[type="submit"] {
 }
 
 .login-form-action {
-    padding: 15px 20px 30px 20px;
+    padding: 10px 20px 15px 20px;
     line-height: 16px;
 }
 
 .login-form-action .green-btn {
-    background-color: #2ecc71;
+    background-color: #FF9933;
     border: none;
     color: #fff;
 }

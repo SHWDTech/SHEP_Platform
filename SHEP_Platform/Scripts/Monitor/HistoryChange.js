@@ -126,4 +126,22 @@ var reSetChart = function (obj) {
 
     tpChart.setOption(tpOption);
     dbChart.setOption(dbOption);
+
+    $('#chartTitle').html(obj.statName);
+
+    reSetTable(obj);
+};
+
+function reSetTable(obj) {
+    if (obj.average.length === 0) {
+        return;
+    }
+
+    var targets = $('tr[statid=' + obj.statId + ']');
+    targets.find('.pm').html(obj.average.TP);
+    targets.find('.db').html(obj.average.DB);
+    targets.find('.pm25').html(obj.average.PM25);
+    targets.find('.pm100').html(obj.average.PM100);
+
+    $('span[statid=' + obj.statId + ']').html('（' + obj.dttypename +'）');
 };

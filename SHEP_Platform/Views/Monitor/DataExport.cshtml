@@ -1,0 +1,114 @@
+﻿@using SHEP_Platform.Models.Monitor
+@model DataExport
+@{
+    ViewBag.Title = "历史数据表格导出";
+}
+
+@using (Ajax.BeginForm("DataExportResult", null, new AjaxOptions()
+{
+    AllowCache = false,
+    HttpMethod = "POST",
+    InsertionMode = InsertionMode.Replace,
+    LoadingElementDuration = 1000,
+    UpdateTargetId = "exportTable",
+    OnBegin = "checkDate",
+    OnSuccess = "getSuccess"
+}, new { @class = "form-horizontal", role = "form", id = "QueryForm" }))
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="label120">选择统计范围：</label>
+                @* ReSharper disable once CssBrowserCompatibility *@
+                <select class="form-control daterange" id="daterange" name="daterange" style="width: 270px; min-width: 270px;">
+                    <option value="HOLD">选择时间范围</option>
+                    <option value="TD">今天</option>
+                    <option value="LD">昨天</option>
+                    <option value="LW">最近一周</option>
+                    <option value="LM">最近一月</option>
+                    <option value="LY">最近一年</option>
+                    <option value="CUS">指定时间</option>
+                </select>
+                <label class="label120">选择时间范围：</label>
+                <div id="">
+                    <div id="date-selecter" class="input-group">
+                        <div class='input-group date' id='startDate'>
+                            <input type='text' class="form-control" name="startDate" />
+                            <span class="glyphicon glyphicon-calendar input-group-addon"></span>
+                        </div>
+                        <span style="margin-top: auto; margin-bottom: auto;"> - </span>
+                        <div class='input-group date' id='endDate'>
+                            <input type='text' class="form-control" name="endDate" />
+                            <span class="glyphicon glyphicon-calendar input-group-addon"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="label120" style="margin-top: 6.4px;">工地：</label>
+                @* ReSharper disable once CssBrowserCompatibility *@
+                <select id="stat" name="stat" style="width: 270px; min-width: 270px;" multiple="multiple">
+                    <optgroup label="工地">
+                        @{
+                            foreach (var stat in Model.StatList)
+                            {
+                                <option value="@stat.Id">@stat.StatName</option>
+                            }
+                        }
+                    </optgroup>
+                </select>
+                <label class="label120" style="margin-left: 20px; margin-top: 6.4px;">设备：</label>
+                <select id="devs" name="devs" style="width: 325px;" multiple="multiple">
+                    <optgroup label="设备">
+                        @{
+                            foreach (var devse in Model.DevList)
+                            {
+                                <option value="@devse.Id">@devse.DevCode</option>
+                            }
+                        }
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label class="label120">操作：</label>
+                <input type="submit" class="btn btn-success" value="查询" style="width: 80px;"/>
+                <a class="btn btn-primary" style="width: 80px; margin-left: 20px; display: none;" id="export" download>导出</a>
+            </li>
+        </ul>
+    </div>
+}
+
+<div id="exportTable"></div>
+
+@section css{
+    @Styles.Render("~/Content/datetimepickercss")
+    @Styles.Render("~/Content/select2-bootstrap")
+    <link href="/Content/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .form-group {
+            display: flex;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0;
+        }
+
+        label {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        #date-selecter {
+            display: flex;
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/datetimepicker")
+    @Scripts.Render("~/bundles/select2")
+    <script type="text/javascript" src="/Scripts/Utility/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript" src="/Scripts/Monitor/DataExport.js"></script>
+}

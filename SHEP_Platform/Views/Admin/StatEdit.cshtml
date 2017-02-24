@@ -5,7 +5,7 @@
     ViewBag.Title = "系统管理";
 }
 
-<div style="display: flex;">
+<div style="position: relative;">
     <div style="width: 360px;">
         @using (Html.BeginForm("StatEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form" }))
         {
@@ -76,14 +76,18 @@
                 @Html.TextBoxFor(m => m.Latitude, new { @class = "form-control", placeholder = "请输入监测点编码" })
             </div>
             @Html.ValidationMessageFor(m => m.Latitude, "", new { @class = "text-danger" })
+            <div class="form-group" style="width: 100%;">
+                <p id="gpsResult" style="color: red;"></p>
+            </div>
             <div class="form-group">
+                <a class="btn btn-primary" onclick="AddCoorinateTask()">校准工地位置</a>
                 <button type="submit" class="btn btn-success">
                     提交
                 </button>
             </div>
         }
     </div>
-    <div id="mapContainer" style="width: 900px; height: 640px;">
+    <div id="mapContainer" style="position: absolute; top: 0; left: 360px; width: 900px; height: 640px;">
 
     </div>
 </div>
@@ -113,6 +117,7 @@
     @Scripts.Render("~/bundles/datetimepicker")
     <script type="text/javascript" src="/Scripts/Common/MapManipulation.js"></script>
     <script type="text/javascript">
+        var statId = @Model.Id;
         var IsNew = '@Model.IsNew' === 'True';
         var Longitude = @Model.Longitude;
         var Latitude = @Model.Latitude;
@@ -143,5 +148,49 @@
                 $('#Latitude').val(e.point.lat);
             });
         };
+
+        var maxtimeoutTimes;
+
+        function AddCoorinateTask() {
+            $.get("/CommandAjax/Access", {fun: 'addCoordinateTask', statId: statId}, function(ret) {
+                if (ret.success) {
+                    maxtimeoutTimes = 0;
+                    chackResponse(ret.taskId);
+                    $("#gpsResult").html("正在校正经纬度，请耐心等待！");
+                } else {
+                    $("#gpsResult").html("添加校正任务失败，请重试！");
+                }
+            });
+        }
+
+        function chackResponse(taskId) {
+            $.get('/CommandAjax/Access',{fun: 'adjustingCoordinate', taskId: taskId}, function (ret) {
+                if (ret.success) {
+                    UpdateCoordinate(ret.coordinate);
+                } else {
+                    if (maxtimeoutTimes < 20) {
+                        timeID = setTimeout(function() { chackResponse(taskId); }, 3000);
+                    } else {
+                        $("#gpsResult").html('操作超时！');
+                    }
+                }
+
+            });
+            maxtimeoutTimes++;
+        };
+
+        function UpdateCoordinate(obj) {
+            if (obj.result === "failed") {
+                $("#gpsResult").html("获取GPS信息失败，请重试！");
+                return;
+            }
+
+            map.clearOverlays();
+            map.closeInfoWindow();
+            add_MapPoint({longitude:obj.longitude, latitude:obj.latitude}, PolluteStatus.NotOverRange, null);
+            $('#Longitude').val(obj.longitude);
+            $('#Latitude').val(obj.latitude);
+            $("#gpsResult").html("经纬度校正成功！");
+        }
     </script>
 }

@@ -4,7 +4,7 @@
 /* Set padding to keep content from hitting the edges */
 .body-content {
     min-height: 660px;
-    margin-left: 210px;
+    margin-left: 180px;
     border-left: 1px solid #e8e8e8;
     padding: 15px;
     overflow: auto;
@@ -17,7 +17,7 @@
 
 ul {
     list-style: none;
-    padding: 10px 8px;
+    /*padding: 10px 8px;*/
 }
 
 a {
@@ -90,7 +90,7 @@ textarea {
 
 .sidebar {
     height: 100%;
-    width: 210px;
+    width: 180px;
     float: left;
 }
 
@@ -124,7 +124,7 @@ textarea {
         width: 270px;
         position: absolute;
         top: 1px;
-        left: 202px;
+        left: 172px;
         z-index: 9999;
         background-color: #fff;
         border: 1px solid #c8c8c8;
@@ -251,7 +251,7 @@ li .glyphicon {
 }
 
 .daterange {
-    width: 100px;
+    width: auto;
 }
 
 select {
@@ -278,6 +278,22 @@ select {
     color: #d7761f;
 }
 
+.temp {
+    color: #10721c;
+}
+
+.humi {
+    color: #55e7ca;
+}
+
+.windspeed {
+    color: burlywood;
+}
+
+.winddir {
+    color: steelblue;
+}
+
 li span.date {
     color: #b2b2b2;
 }
@@ -296,7 +312,12 @@ li span.date {
     top: 240px;
     left: 600px;
     position: absolute;
-    width: 300px;
+    -moz-min-width: 300px;
+    -ms-min-width: 300px;
+    -o-min-width: 300px;
+    -webkit-min-width: 300px;
+    min-width: 300px;
+    width: auto;
     height: 50px;
     border-radius: 8px;
     border: 1px solid #c7c7c7;
@@ -305,4 +326,88 @@ li span.date {
     padding: 15px 15px;
     text-align: center;
     font-size: 18px;
+}
+
+html > /**/ body #dateQuery {
+    display: none;
+}
+
+html > /**/ body #date-selecter {
+    margin-right: 20px;
+}
+
+label.label120 {
+    -moz-min-width: 120px;
+    -ms-min-width: 120px;
+    -o-min-width: 120px;
+    -webkit-min-width: 120px;
+    min-width: 120px;
+    width: 120px;
+}
+
+* {
+    border-radius: 0 !important;
+}
+
+.dataTable-hidden {
+    display: none;
+}
+
+.camerabtn {
+    width: 80px !important;
+    margin-right: 25px;
+    height: 45px;
+}
+
+.btn .badge.badge-danger {
+    background: #f2dede;
+    color: #a94442;
+    border-color: #ebccd1;
+}
+
+.alarmPanel {
+    border: solid 1px #c1c1c1;
+    padding: 4px 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.alarmDate {
+    color: blue;
+}
+
+.alarmTitle input {
+    margin-right: 15px;
+}
+
+.alarmDetail {
+    display: none;
+    padding-top: 10px;
+    border-top: solid 1px #c1c1c1;
+}
+
+.alarmDetail.view {
+    display: block;
+}
+
+.alarmStat {
+    margin-right: 15px;
+}
+
+.alarmValue {
+    color: #a94442;
+    margin-right: 40px;
+}
+
+.alarmDetail span {
+    margin-right: 40px;
+}
+
+.notreaded {
+    font-weight: bold;
+}
+
+img.alarmPic {
+    height: 80px;
+    margin: 5px;
 }

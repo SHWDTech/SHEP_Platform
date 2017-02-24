@@ -1,6 +1,9 @@
 ﻿//信息面板
 var broad = null;
 
+var requestLeft;
+
+var requestRight;
 
 $(function () {
     //先加载地图控件
@@ -14,16 +17,47 @@ $(function () {
         $('#' + containerName).css('position', 'absolute');
         $('#' + containerName).css('top', 60);
         $('#' + containerName).hide();
-        $('#mapSwitcher').on('click', function() { switchMap() });
+        $('#mapSwitcher').on('click', function () { switchMap() });
     }
     centerPosition = '上海';
     zoom = 12;
     var load = document.createElement("script");
     load.src = "http://api.map.baidu.com/api?v=1.4&callback=map_init(updateStats)";
     document.body.appendChild(load);
+    showAlarmInfo();
+
+    var moveLeft = function () {
+        var left = $('#infobroad').position().left;
+        left += 2;
+        $('#infobroad').css('left', left + 'px');
+        requestLeft = window.requestAnimationFrame(moveLeft);
+    };
+
+    var moveRight = function () {
+        var left = $('#infobroad').position().left;
+        left += -2;
+        $('#infobroad').css('left', left + 'px');
+        requestRight = window.requestAnimationFrame(moveRight);
+    };
+
+    $('#left').on('mousedown', function () {
+        moveLeft();
+    });
+
+    $('#left').on('mouseup', function () {
+        window.cancelAnimationFrame(requestLeft);
+    });
+
+    $('#right').on('mousedown', function () {
+        moveRight();
+    });
+
+    $('#right').on('mouseup', function () {
+        window.cancelAnimationFrame(requestRight);
+    });
 });
 
-var updateStats = function() {
+var updateStats = function () {
     //加载实时信息
     broad = $('#infobroad');
 
@@ -48,4 +82,10 @@ var switchMap = function () {
     } else {
         $('#' + containerName).fadeOut();
     }
+}
+
+var showAlarmInfo = function () {
+    $.post("/Ajax/Access", null, function (ret) {
+
+    });
 }

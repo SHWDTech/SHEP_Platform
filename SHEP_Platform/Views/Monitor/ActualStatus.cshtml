@@ -1,17 +1,27 @@
-﻿@{
+﻿@using SHEP_Platform.Models.Monitor
+@using SHEP_Platform.Process
+@{
     ViewBag.Title = "查询导出";
 }
 
-<div style="display: flex;">
-    <div id="divCharts" style="height: 600px; border: 1px solid #e7e7e7; margin-right: 20px;">
-        <div id="itemTitle" style="height: 50px;">
-            <h1 style="text-align: center;"></h1>
+<div style="position: relative;">
+    <div id="divCharts" style="height: 600px; border: 1px solid #e7e7e7; margin-right: 20px; max-width: 840px;">
+        <div class="form-inline">
+            <input type="button" class="form-control btn btn-default" id="minute" value="分钟均值" />
+            <input type="button" class="form-control btn btn-default" id="fifteen_minute" value="15分钟均值" />
         </div>
-        <div id="divGauge" style="height: 240px; display: flex;">
-            <div id="tpGauge" style="width: 240px; height: 240px; margin-left: 120px;">
+        <div id="itemTitle" style="height: 50px;">
+            <h1 id="chartTitle" style="display: inline-block; margin: 0; margin-left: 200px; margin-top: 10px;">@(ViewBag.defaultName + "实时数据")</h1>
+            <h5 style="display: inline-block; margin: 0; margin-left: 20px;"><a id="cameraUrl" href="@ViewBag.StatViewUrl">查看实时工地状况</a></h5>
+        </div>
+        <div id="divGauge" style="height: 240px; position: relative;">
+            <div id="tpGauge" style="width: 240px; height: 240px; margin-left: 60px;">
 
             </div>
-            <div id="dbGauge" style="width: 240px; height: 240px; margin: 0 120px 0 120px;">
+            <div id="dbGauge" style="width: 240px; height: 240px; position: absolute; top: 0; left: 300px;">
+
+            </div>
+            <div id="pm25Gauge" style="width: 240px; height: 240px; position: absolute; top: 0; left: 540px;">
 
             </div>
         </div>
@@ -19,7 +29,7 @@
 
         </div>
     </div>
-    <div id="divTable" style="-moz-min-width: 300px; -ms-min-width: 300px; -o-min-width: 300px; -webkit-min-width: 300px; min-width: 300px; float: left;">
+    <div id="divTable" style="position: absolute; top: 0; left: 860px; right: 15px; -moz-min-width: 300px; -ms-min-width: 300px; -o-min-width: 300px; -webkit-min-width: 300px; min-width: 300px; float: left; overflow-y: scroll; height: 600px;">
         <table class="table table-striped table-bordered table-hover">
             <colgroup>
                 <col style="width: 75px;" />
@@ -32,39 +42,64 @@
             </thead>
             <tbody>
                 @{
-                    foreach (KeyValuePair<object, object> stat in ViewBag.StatDict)
+                    foreach (KeyValuePair<object, StatHourInfo> stat in ViewBag.StatDict)
                     {
                         var tStat = stat.Key as T_Stats;
-                        var info = stat.Value as T_ESHour;
+                        var hourInfo = stat.Value;
+                        if (hourInfo == null)
+                        {
+                            continue;
+                        }
+                        var current = hourInfo.Current;
 
                         if (tStat == null)
                         {
                             continue;
                         }
 
-                        if (info != null)
+                        if (current != null)
                         {
                             <tr class="statName">
-                                <td colspan="4">@Html.ActionLink(tStat.StatName, null, null, new {href = "javascript:load("+ @tStat.Id + ",'" + @tStat.StatName + "')" })</td>
+                                <td colspan="4">
+                                    @Html.ActionLink(tStat.StatName, null, null, new { href = "javascript:load(" + tStat.Id + ",'" + tStat.StatName + "')" })
+                                    <input type="button" id="setMin" class="form-control btn btn-default" onclick="setDeviceMin(@tStat.Id)" value="校零" style="width: auto;" />
+                                </td>
                             </tr>
                             <tr>
                                 <td>颗粒物(mg/m³)</td>
-                                <td class="pm">@(((info.TP)/1000).ToString("f2"))</td>
+                                <td class="pm">@(((current.TP) / 1000).ToString("f2"))</td>
                                 <td>噪音(dB)</td>
-                                <td class="db">@info.DB.ToString("f2")</td>
+                                <td class="db">@current.DB.ToString("f2")</td>
                             </tr>
                             <tr>
                                 <td>PM2.5(mg/m³)</td>
-                                <td class="pm25">@((info.PM25.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                                <td class="pm25">@((current.PM25.GetValueOrDefault() / 1000).ToString("f2"))</td>
                                 <td>PM10(mg/m³)</td>
-                                <td class="pm100">@((info.PM100.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                                <td class="pm100">@((current.PM100.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                            </tr>
+                            <tr>
+                                <td>温度(℃)</td>
+                                <td class="temp">@current.Temperature.ToString("f2")</td>
+                                <td>湿度(%)</td>
+                                <td class="humi">@current.Humidity.ToString("f2")</td>
+                            </tr>
+                            <tr>
+                                <td>风速(m/s)</td>
+                                <td class="windspeed">@current.WindSpeed</td>
+                                <td>风向(°)</td>
+                                <td class="winddir">@(current.WindDirection + $"({Utility.DetectiveWindDirection(current.WindDirection).Chinese})")</td>
                             </tr>
                         }
                         else
                         {
                             <tr class="statName">
-                                <td colspan="4">@Html.ActionLink(tStat.StatName, null, null, new { href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName
-                                               + "')" })</td>
+                                <td colspan="4">
+                                    @Html.ActionLink(tStat.StatName, null, null, new
+                               {
+                                   href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName
+                                               + "')"
+                               })
+                                </td>
                             </tr>
                             <tr>
                                 <td>颗粒物(mg/m³)</td>
@@ -83,21 +118,33 @@
 =======
 >>>>>>> V2.0
                             </tr>
+                            <tr>
+                                <td>温度(℃)</td>
+                                <td class="danger">暂无数据</td>
+                                <td>湿度(%)</td>
+                                <td class="danger">暂无数据</td>
+                            </tr>
+                            <tr>
+                                <td>风速(m/s)</td>
+                                <td class="danger">暂无数据</td>
+                                <td>风向(°)</td>
+                                <td class="danger">暂无数据</td>
+                            </tr>
                         }
                     }
                 }
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
+</div>
 
-    @section scripts{
-        <script type="text/javascript" src="/Scripts/Utility/echarts.js"></script>
-        <script type="text/javascript" src="/Scripts/Common/SetUpCharts.js"></script>
-        <script type="text/javascript" src="/Scripts/Monitor/ActualStatus.js"></script>
-        <script type="text/javascript">
-            $(function() {
-                load(@ViewBag.defaultId, '@ViewBag.defaultName');
-            })
-        </script>
-    }
+@section scripts{
+    <script type="text/javascript" src="/Scripts/Utility/echarts.js"></script>
+    <script type="text/javascript" src="/Scripts/Common/SetUpCharts.js"></script>
+    <script type="text/javascript" src="/Scripts/Monitor/ActualStatus.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            load(@ViewBag.defaultId, '@ViewBag.defaultName');
+        })
+    </script>
+}

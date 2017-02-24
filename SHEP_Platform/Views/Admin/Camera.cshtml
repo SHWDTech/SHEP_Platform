@@ -1,0 +1,64 @@
+﻿@model T_Camera
+@{
+    
+}
+
+<div>
+    @using (Html.BeginForm("Camera", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;", Id = "cameraForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ID)
+        <div class="form-group">
+            @Html.LabelFor(m => m.CameraName)
+            @Html.TextBoxFor(m => m.CameraName, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.CameraName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.DevId)
+            @Html.DropDownListFor(m => m.DevId, (List<SelectListItem>)ViewBag.DevList, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.DevId, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PassWord)
+            @Html.TextBoxFor(m => m.PassWord, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.PassWord, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">
+                提交
+            </button>
+        </div>
+    }
+</div>
+@section css{
+    <style type="text/css">
+        label {
+            width: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 10px !important;
+        }
+
+        .form-control {
+            -moz-min-width: 310px !important;
+            -ms-min-width: 310px !important;
+            -o-min-width: 310px !important;
+            -webkit-min-width: 310px !important;
+            min-width: 310px !important;
+        }
+    </style>
+}
