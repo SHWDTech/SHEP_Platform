@@ -15,33 +15,13 @@
     <textarea id = "receive" class="form-control" style="height: 200px; margin-top: 15px;"></textarea>
 </div>
 <script>
-    var intervalCount = 0;
     var send = function() {
         $.post('/Ajax/Access', { fun: 'sendProtocol', dev: $('#devs').val(), protocol: $('#protocol').val() }, function (ret) {
             console.log(ret);
             if (ret <= 0) {
                 alert('添加发送任务失败。');
             }
-            intervalCount = 0;
-            getTaskNotice(ret);
-        });
-    }
-
-    function getTaskNotice(taskId) {
-        $.get('/Ajax/Access', { fun: 'getTaskResponse', taskId: taskId }, function(ret) {
-            if (!ret.success) {
-                if (intervalCount >= 12) {
-                    alert('任务超时。');
-                    return;
-                } else {
-                    intervalCount++;
-                    setTimeout(function() {
-                        getTaskNotice(taskId);
-                    }, 10000);
-                }
-            } else {
-                $('#receive').val(ret.protocol);
-            }
+            alert("添加发送任务程工。");
         });
     }
 </script>
