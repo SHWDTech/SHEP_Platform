@@ -1,0 +1,74 @@
+﻿@model List<T_ESMin>
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("DeviceRecent", "Admin", FormMethod.Post))
+{
+    <select id="devId" name="devId">
+        @{
+            var devs = (List<T_Devs>) ViewBag.Devs;
+            foreach (var dev in devs)
+            {
+                <option value="@dev.Id">@dev.DevCode</option>
+            }
+        }
+    </select>
+    <button type="submit">
+        提交
+    </button>
+}
+@{
+    <table>
+        <thead>
+        <tr>
+            <td>
+                TSP
+            </td>
+            <td>
+                PM2.5
+            </td>
+            <td>
+                PM10
+            </td>
+            <td>
+                噪音
+            </td>
+            <td>
+                温度
+            </td>
+            <td>
+                湿度
+            </td>
+            <td>
+                风速
+            </td>
+            <td>
+                风向
+            </td>
+            <td>
+                更新时间
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var min in Model)
+                {
+                    <tr>
+                        <td>@min.TP</td>
+                        <td>@min.PM25</td>
+                        <td>@min.PM100</td>
+                        <td>@min.DB</td>
+                        <td>@min.Temperature</td>
+                        <td>@min.Humidity</td>
+                        <td>@min.WindSpeed</td>
+                        <td>@min.WindDirection</td>
+                        <td>@min.UpdateTime</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

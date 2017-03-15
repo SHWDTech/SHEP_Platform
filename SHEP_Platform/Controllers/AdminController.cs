@@ -806,5 +806,24 @@ namespace SHEP_Platform.Controllers
 
             return View(devs);
         }
+
+        [AllowAnonymous]
+        public ActionResult DeviceRecent()
+        {
+            ViewBag.Devs = DbContext.T_Devs.ToList();
+            if (Request.Form["devId"] != null)
+            {
+                var devId = int.Parse(Request.Form["devId"]);
+                var dt = DateTime.Now.AddMinutes(-5);
+                var recent =
+                    DbContext.T_ESMin.Where(min => min.DevId == devId)
+                        .OrderByDescending(d => d.UpdateTime)
+                        .Take(15)
+                        .ToList();
+
+                return View(recent);
+            }
+            return View(new List<T_ESMin>());
+        }
     }
 }
