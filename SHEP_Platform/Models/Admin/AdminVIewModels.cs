@@ -126,6 +126,8 @@ namespace SHEP_Platform.Models.Admin
 
         public string DevCode { get; set; }
 
+        public int NodeId { get; set; }
+
         public string StartTime { get; set; }
 
         public string PreEndTime { get; set; }
@@ -276,5 +278,16 @@ namespace SHEP_Platform.Models.Admin
 
         [Display(Name = "序列号")]
         public string UserName { get; set; }
+    }
+
+    public class ProtocolDevice
+    {
+        public int Id { get; set; }
+
+        public string DeviceCode { get; set; }
+
+        public string StatName { get; set; }
+
+        public string DeviceNodeId { get; set; }
     }
 }

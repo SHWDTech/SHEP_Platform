@@ -173,8 +173,9 @@ namespace SHEP_Platform.Controllers
             var list = DbContext.T_Devs.ToList().Select(source => new Devs
             {
                 Id = source.Id,
-                StatName = DbContext.T_Stats.FirstOrDefault(obj => obj.Id.ToString() == source.StatId)?.StatCode,
+                StatName = DbContext.T_Stats.FirstOrDefault(obj => obj.Id.ToString() == source.StatId)?.StatName,
                 DevCode = source.DevCode,
+                NodeId = Global.BytesToInt32(DbContext.T_DevAddr.FirstOrDefault(d => d.DevId == source.Id).NodeId, 0, false),
                 StartTime = source.StartTime.ToString("yyyy-MM-dd"),
                 PreEndTime = source.PreEndTime.ToString("yyyy-MM-dd"),
                 EndTime = source.EndTime.ToString("yyyy-MM-dd"),

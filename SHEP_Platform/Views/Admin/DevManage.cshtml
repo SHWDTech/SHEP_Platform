@@ -6,18 +6,20 @@
 }
 
 <table class="table table-bordered table-hover">
-    <colgroup style="width: 150px;"></colgroup>
-    <colgroup style="width: 150px;"></colgroup>
-    <colgroup style="width: 150px;"></colgroup>
-    <colgroup style="width: 150px;"></colgroup>
-    <colgroup style="width: 150px;"></colgroup>
-    <colgroup style="width: 150px;"></colgroup>
-    <colgroup style="width: 150px;"></colgroup>
-    <colgroup style="width: 150px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
+    <colgroup style="width: 100px;"></colgroup>
     <thead>
         <tr>
-            <td>监测点编号</td>
-            <td>设备编号</td>
+            <td>监测点名称</td>
+            <td>设备名称</td>
+            <td>NodeId</td>
             <td>安装时间</td>
             <td>预计结束时间</td>
             <td>实际结束时间</td>
@@ -33,6 +35,7 @@
                 <tr id="@devse.Id">
                     <td>@devse.StatName</td>
                     <td>@devse.DevCode</td>
+                    <td>@devse.NodeId</td>
                     <td>@devse.StartTime</td>
                     <td>@devse.PreEndTime</td>
                     <td>@devse.EndTime</td>
