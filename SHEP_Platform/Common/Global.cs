@@ -15,7 +15,7 @@ namespace SHEP_Platform.Common
             }
 
             var md5 = new MD5CryptoServiceProvider();
-            return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(str))).ToLower().Replace("-","");
+            return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(str))).ToLower().Replace("-", "");
         }
 
         public static string GetUserStatus(byte? statusCode)
@@ -43,6 +43,34 @@ namespace SHEP_Platform.Common
             for (int index = 0; index < numArray.Length; ++index)
                 numArray[index] = Convert.ToByte(hexString.Substring(index * 2, 2), 16);
             return numArray;
+        }
+
+        public static byte[] StringToBytes(string str)
+        {
+            var hexStr = StringToHexString(str);
+            if (hexStr.Length > 8)
+            {
+                hexStr = hexStr.Substring(hexStr.Length - 8, 8);
+            }
+            else if (hexStr.Length < 8)
+            {
+                hexStr = hexStr.PadLeft(8, '0');
+            }
+
+            return StringToHexByte(hexStr);
+        }
+
+        public static string StringToHexString(string str)
+        {
+            var num = int.Parse(str);
+            var bytes = BitConverter.GetBytes(num);
+            var builder = new StringBuilder();
+            foreach (var b in bytes)
+            {
+                builder.Append(b.ToString("X"));
+            }
+
+            return builder.ToString();
         }
 
         public static bool IsMobileDevice(string userAgent)

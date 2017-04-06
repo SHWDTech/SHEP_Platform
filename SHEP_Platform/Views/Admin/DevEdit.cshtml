@@ -13,6 +13,7 @@
         <div class="form-group">
             @Html.LabelFor(m => m.DevCode)
             @Html.TextBoxFor(m => m.DevCode, new { @class = "form-control", placeholder = "请输入设备编码" })
+            <span style="color: red">*</span>
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.DevCode, "", new { @class = "text-danger" })
@@ -48,6 +49,7 @@
         <div class="form-group">
             @Html.LabelFor(m => m.StatId)
             @Html.DropDownListFor(m => m.StatId, Model.StatList, new { @class = "form-control" })
+            <span style="color: red">*</span>
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.StatId, "", new { @class = "text-danger" })
@@ -55,6 +57,7 @@
         <div class="form-group">
             @Html.LabelFor(m => m.DevStatus)
             @Html.DropDownListFor(m => m.DevStatus, Model.StatusLIst, new { @class = "form-control" })
+            <span style="color: red">*</span>
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.DevStatus, "", new { @class = "text-danger" })
@@ -64,6 +67,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Addr)
                 @Html.TextBoxFor(m => m.Addr, new { @class = "form-control" })
+                <span id="hexAddr" style="color: red;"></span>
             </div>
                 <div>
                     @Html.ValidationMessageFor(m => m.Addr, "", new { @class = "text-danger" })
@@ -113,6 +117,16 @@
             $('#EndTime').datetimepicker({
                 locale: 'zh-cn',
                 format: 'L'
+            });
+
+            $('#Addr').on('input', function() {
+                var addr = parseInt($('#Addr').val());
+                var hexAddr = addr.toString(16).toUpperCase();
+                var prefix = '';
+                while (hexAddr.length + prefix.length < 8) {
+                    prefix = prefix + '0';
+                }
+                $('#hexAddr').html('0x' + prefix + hexAddr);
             });
         });
     </script>

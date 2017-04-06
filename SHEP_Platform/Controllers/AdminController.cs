@@ -310,7 +310,7 @@ namespace SHEP_Platform.Controllers
                 var addr = new T_DevAddr
                 {
                     DevId = DbContext.T_Devs.First(obj => obj.DevCode == model.DevCode).Id,
-                    NodeId = Global.StringToHexByte(model.Addr)
+                    NodeId = Global.StringToBytes(model.Addr)
                 };
                 DbContext.T_DevAddr.Add(addr);
                 DbContext.SaveChanges();
