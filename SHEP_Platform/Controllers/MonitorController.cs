@@ -27,7 +27,6 @@ namespace SHEP_Platform.Controllers
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "各工程当前情况";
             var dict = new Dictionary<object, StatHourInfo>();
-            var cameraurl = string.Empty;
             foreach (var stat in WdContext.StatList)
             {
                 var hour = DateTime.Now.AddHours(-1);
@@ -58,15 +57,9 @@ namespace SHEP_Platform.Controllers
                 defaultName = WdContext.StatList.FirstOrDefault(stat => stat.Id == defaultId).StatName;
             }
 
-            var devs = DbContext.T_Devs.Where(dev => dev.StatId == defaultId.ToString()).ToList();
-            if (devs.Count > 0)
-            {
-                cameraurl = devs[0].VideoURL;
-            }
-
             ViewBag.defaultId = defaultId;
             ViewBag.defaultName = defaultName;
-            ViewBag.StatViewUrl = cameraurl;
+            ViewBag.StatViewUrl = $"/Monitor/StatViewHikSecond?id={defaultId}";
 
             return DynamicView("ActualStatus");
         }
@@ -451,7 +444,12 @@ namespace SHEP_Platform.Controllers
         public ActionResult StatViewHikSecond(string id)
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "工程实时状况查看";
-            ViewBag.CameraId = id;
+            var dev = DbContext.T_Devs.FirstOrDefault(d => d.StatId == id);
+            var cam = DbContext.T_Camera.FirstOrDefault(c => c.DevId == dev.Id);
+            if (cam != null)
+            {
+                ViewBag.CameraId = cam.ID;
+            }
             return View();
         }
     }

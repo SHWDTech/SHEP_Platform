@@ -203,12 +203,7 @@ namespace SHEP_Platform.Controllers
                     UpdateTime = ((DateTime)i.UpdateTime).ToString("HH:mm:ss")
                 });
 
-            var cameraurl = string.Empty;
-            var devs = DbContext.T_Devs.Where(dev => dev.StatId == statId.ToString()).ToList();
-            if (devs.Count > 0)
-            {
-                cameraurl = devs[0].VideoURL;
-            }
+            var cameraurl = $"/Monitor/StatViewHikSecond?id={statId}";
 
             var ret = new
             {
@@ -234,12 +229,7 @@ namespace SHEP_Platform.Controllers
                     UpdateTime = i.UpdateTime.ToString("HH:mm:ss")
                 });
 
-            var cameraurl = string.Empty;
-            var devs = DbContext.T_Devs.Where(dev => dev.StatId == statId.ToString()).ToList();
-            if (devs.Count > 0)
-            {
-                cameraurl = devs[0].VideoURL;
-            }
+            var cameraurl = $"/Monitor/StatViewHikSecond?id={statId}";
 
             var ret = new
             {
