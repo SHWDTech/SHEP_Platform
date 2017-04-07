@@ -64,10 +64,11 @@ namespace SHEP_Platform.Common
         {
             var num = int.Parse(str);
             var bytes = BitConverter.GetBytes(num);
+            Array.Reverse(bytes);
             var builder = new StringBuilder();
             foreach (var b in bytes)
             {
-                builder.Append(b.ToString("X"));
+                builder.Append(b.ToString("X2"));
             }
 
             return builder.ToString();

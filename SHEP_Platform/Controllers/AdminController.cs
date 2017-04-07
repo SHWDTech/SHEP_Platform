@@ -223,9 +223,11 @@ namespace SHEP_Platform.Controllers
                 model.StatId = int.Parse(dev.StatId);
                 model.VideoUrl = dev.VideoURL;
 
-                var devAddr = DbContext.T_DevAddr.First(obj => obj.DevId == dev.Id).NodeId;
-
-                model.Addr = BitConverter.ToString(devAddr).Replace("-", string.Empty);
+                var devAddr = DbContext.T_DevAddr.FirstOrDefault(obj => obj.DevId == dev.Id)?.NodeId;
+                if (devAddr != null)
+                {
+                    model.Addr = BitConverter.ToString(devAddr).Replace("-", string.Empty);
+                }
             }
 
             ViewBag.ReturnUrl = "/Admin/DevManage";
@@ -514,7 +516,7 @@ namespace SHEP_Platform.Controllers
             var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
             foreach (var stat in stats)
             {
-                var select = new SelectListItem {Value = stat.Id.ToString(), Text = stat.StatName};
+                var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
                 if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
                 {
                     select.Selected = true;
@@ -639,7 +641,7 @@ namespace SHEP_Platform.Controllers
                 var statLIst = authStats.Split(',').Select(int.Parse);
                 foreach (var stat in statLIst)
                 {
-                    DbContext.T_UserStats.Add(new T_UserStats() {UserId = model.UserId, StatId = stat});
+                    DbContext.T_UserStats.Add(new T_UserStats() { UserId = model.UserId, StatId = stat });
                 }
             }
 
