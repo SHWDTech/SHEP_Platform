@@ -67,7 +67,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Addr)
                 @Html.TextBoxFor(m => m.Addr, new { @class = "form-control" })
-                <span id="hexAddr" style="color: red;"></span>
+                <span id="hexAddr" style="color: red;">*</span>
             </div>
                 <div>
                     @Html.ValidationMessageFor(m => m.Addr, "", new { @class = "text-danger" })

@@ -368,7 +368,9 @@ namespace SHEP_Platform.Controllers
             }
 
             var dev = DbContext.T_Devs.First(item => item.Id == id);
+            var addr = DbContext.T_DevAddr.First(d => d.DevId == dev.Id);
             DbContext.T_Devs.Remove(dev);
+            DbContext.T_DevAddr.Remove(addr);
             DbContext.SaveChanges();
 
             var ret = new
