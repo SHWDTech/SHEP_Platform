@@ -11,8 +11,12 @@
             <input type="button" class="form-control btn btn-default" id="fifteen_minute" value="15分钟均值" />
         </div>
         <div id="itemTitle" style="height: 50px;">
-            <h1 id="chartTitle" style="display: inline-block; margin: 0; margin-left: 200px; margin-top: 10px;">@(ViewBag.defaultName + "实时数据")</h1>
-            <h5 style="display: inline-block; margin: 0; margin-left: 20px;"><a id="cameraUrl" href="@ViewBag.StatViewUrl">查看实时工地状况</a></h5>
+            <h3  id="chartTitle" style="text-align: center;">
+                @(ViewBag.defaultName + "实时数据")
+            </h3>
+            <h5 style="text-align: center;">
+                <a id="cameraUrl" href="@ViewBag.StatViewUrl">查看实时工地状况</a>
+            </h5>
         </div>
         <div id="divGauge" style="height: 240px; position: relative;">
             <div id="tpGauge" style="width: 240px; height: 240px; margin-left: 60px;">
