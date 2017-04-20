@@ -183,9 +183,9 @@ var setChart = function (ret, name, id) {
     var dbGaugeOption = Echart_Tools.getGaugeOption();
     var pm25GaugeOption = Echart_Tools.getGaugeOption();
 
-    tpGaugeOption.title.text = 'PM10';
-    var currentTp = $(list).last()[0].PM100;
-    tpGaugeOption.series[0].data = { name: 'PM10', value: currentTp };
+    tpGaugeOption.title.text = '颗粒物';
+    var currentTp = $(list).last()[0].TP;
+    tpGaugeOption.series[0].data = { name: '颗粒物', value: currentTp };
     tpGaugeOption.series[0].max = currentTp > 2 ? Math.ceil(currentTp) : 2;
     pm25GaugeOption.title.text = 'PM2.5';
     var currentPm25 = $(list).last()[0].PM25;
