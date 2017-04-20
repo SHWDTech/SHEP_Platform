@@ -586,6 +586,7 @@ namespace SHEP_Platform.Controllers
             {
                 user.Status = 1;
                 user.RegTime = DateTime.Now;
+                user.Pwd = Global.GetMd5("31c5bb73ee74ecb23b4bb656b79bfd6792c863d98fd978aaee216c6738427101");
                 DbContext.T_Users.Add(user);
             }
 
