@@ -1,0 +1,77 @@
+﻿@using SHEP_Platform.Models.Admin
+@model UserPassword
+
+@{
+    ViewBag.Title = "系统管理";
+}
+
+<div>
+    @using (Html.BeginForm("EditPwd", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;", Id = "editpwdform" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName)
+            @Html.DisplayFor(m => m.UserName, new { @class = "form-control" })
+            @Html.HiddenFor(m => m.UserName)
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword)
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+        <div>
+            @Html.ValidationSummary()
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-success"  onclick="EncrypSubmit()">
+                提交
+            </button>
+        </div>
+    }
+</div>
+
+@section css{
+    <style type="text/css">
+        label {
+            width: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 10px !important;
+        }
+
+        .form-control {
+            -moz-min-width: 310px !important;
+            -ms-min-width: 310px !important;
+            -o-min-width: 310px !important;
+            -webkit-min-width: 310px !important;
+            min-width: 310px !important;
+        }
+    </style>
+}
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/Utility/sha.js"></script>
+    <script type="text/javascript">
+        var EncrypSubmit = function () {
+            if ($('#Password').val() === '') {
+            } else {
+                var hashObj = new jsSHA('SHA-256', 'TEXT', 1);
+                hashObj.update($('#Password').val());
+                $('#Password').val(hashObj.getHash('HEX'));
+                hashObj = new jsSHA('SHA-256', 'TEXT', 1);
+                hashObj.update($('#ConfirmPassword').val());
+                $('#ConfirmPassword').val(hashObj.getHash('HEX'));
+            }
+
+            document.getElementById('editpwdform').submit();
+        }
+    </script>
+}

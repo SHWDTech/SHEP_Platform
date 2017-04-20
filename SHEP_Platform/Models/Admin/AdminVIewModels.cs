@@ -225,11 +225,6 @@ namespace SHEP_Platform.Models.Admin
         [Display(Name = "用户名")]
         public string UserName { get; set; }
 
-        [Required]
-        [Display(Name = "密码")]
-        [DataType(DataType.Password)]
-        public string PassWord { get; set; }
-
         [Display(Name = "联系电话")]
         [DataType(DataType.PhoneNumber)]
         public string Mobile { get; set; }
@@ -262,6 +257,20 @@ namespace SHEP_Platform.Models.Admin
         public List<SelectListItem> StatsList { get; set; } = new List<SelectListItem>();
 
         public bool IsNew { get; set; }
+    }
+
+    public class UserPassword
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "用户名")]
+        public string UserName { get; set; }
+
+        [Display(Name = "新密码")]
+        public string Password { get; set; }
+
+        [Display(Name = "确认新密码")]
+        public string ConfirmPassword { get; set; }
     }
 
     public class CameraManageViewModel

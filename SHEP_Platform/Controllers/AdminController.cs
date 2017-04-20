@@ -420,6 +420,39 @@ namespace SHEP_Platform.Controllers
             return RedirectToAction("UserManage", "Admin");
         }
 
+        [HttpGet]
+        public ActionResult EditPwd(int id)
+        {
+            var user = DbContext.T_Users.First(u => u.UserId == id);
+            var model = new UserPassword
+            {
+                Id = user.UserId,
+                UserName = user.UserName
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditPwd(UserPassword model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Password))
+            {
+                ModelState.AddModelError("", "密码不能为空。");
+                return View(model);
+            }
+            if (model.Password != model.ConfirmPassword)
+            {
+                ModelState.AddModelError("", "两次输入的密码不一致，请重新输入。");
+                return View(model);
+            }
+
+            var user = DbContext.T_Users.First(u => u.UserId == model.Id);
+            user.Pwd = Global.GetMd5(model.Password);
+            DbContext.SaveChanges();
+
+            return RedirectToAction("UserManage", "Admin");
+        }
+
         public ActionResult UnLock(string id)
         {
             if (!ViewBag.IsAdmin)
@@ -515,7 +548,7 @@ namespace SHEP_Platform.Controllers
             var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
             foreach (var stat in stats)
             {
-                var select = new SelectListItem {Value = stat.Id.ToString(), Text = stat.StatName};
+                var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
                 if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
                 {
                     select.Selected = true;
@@ -534,81 +567,10 @@ namespace SHEP_Platform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            if (DbContext.T_Users.FirstOrDefault(obj => obj.UserName == model.UserName) != null && model.UserId == -1)
+            if (DbContext.T_Users.Any(obj => obj.UserName == model.UserName) && model.UserId != -1)
             {
                 ModelState.AddModelError("UserName", "系统已存在同名用户");
-
-                model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
-                var statusList = new List<SelectListItem>
-                {
-                    new SelectListItem()
-                    {
-                        Text = "超级管理员",
-                        Value = "1"
-                    },
-                    new SelectListItem()
-                    {
-                        Text = "管理员",
-                        Value = "2"
-                    },
-                    new SelectListItem()
-                    {
-                        Text = "工地负责人",
-                        Value = "3"
-                    }
-                };
-                model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
-                var stats = DbContext.T_Stats.ToList();
-                var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
-                foreach (var stat in stats)
-                {
-                    var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
-                    if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
-                    {
-                        select.Selected = true;
-                    }
-                    model.StatsList.Add(select);
-                }
-
-                return View(model);
-            }
-
-            if (string.IsNullOrWhiteSpace(model.PassWord))
-            {
-                ModelState.AddModelError("PassWord", "密码不能为空！");
-                model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
-                var statusList = new List<SelectListItem>
-                {
-                    new SelectListItem()
-                    {
-                        Text = "超级管理员",
-                        Value = "1"
-                    },
-                    new SelectListItem()
-                    {
-                        Text = "管理员",
-                        Value = "2"
-                    },
-                    new SelectListItem()
-                    {
-                        Text = "工地负责人",
-                        Value = "3"
-                    }
-                };
-                model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
-
-                var stats = DbContext.T_Stats.ToList();
-                var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
-                foreach (var stat in stats)
-                {
-                    var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
-                    if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
-                    {
-                        select.Selected = true;
-                    }
-                    model.StatsList.Add(select);
-                }
-                return View(model);
+                return UserEditError(model);
             }
 
             var user = model.UserId == -1 ? new T_Users() : DbContext.T_Users.First(item => item.UserId == model.UserId);
@@ -618,7 +580,6 @@ namespace SHEP_Platform.Controllers
             user.Remark = model.Remark;
             user.RoleId = model.RoleId;
             user.UserName = model.UserName;
-            user.Pwd = Global.GetMd5(model.PassWord);
             user.RoleId = model.RoleId;
 
             if (model.UserId == -1)
@@ -627,7 +588,6 @@ namespace SHEP_Platform.Controllers
                 user.RegTime = DateTime.Now;
                 DbContext.T_Users.Add(user);
             }
-
 
             var authedStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
             foreach (var authedStat in authedStats)
@@ -640,7 +600,7 @@ namespace SHEP_Platform.Controllers
                 var statLIst = authStats.Split(',').Select(int.Parse);
                 foreach (var stat in statLIst)
                 {
-                    DbContext.T_UserStats.Add(new T_UserStats() {UserId = model.UserId, StatId = stat});
+                    DbContext.T_UserStats.Add(new T_UserStats() { UserId = model.UserId, StatId = stat });
                 }
             }
 
@@ -659,44 +619,48 @@ namespace SHEP_Platform.Controllers
                     }
                 }
 
-                var statusList = new List<SelectListItem>
-                {
-                    new SelectListItem()
-                    {
-                        Text = "超级管理员",
-                        Value = "1"
-                    },
-                    new SelectListItem()
-                    {
-                        Text = "管理员",
-                        Value = "2"
-                    },
-                    new SelectListItem()
-                    {
-                        Text = "工地负责人",
-                        Value = "3"
-                    }
-                };
-
-                model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
-                model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
-
-                var stats = DbContext.T_Stats.ToList();
-                var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
-                foreach (var stat in stats)
-                {
-                    var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
-                    if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
-                    {
-                        select.Selected = true;
-                    }
-                    model.StatsList.Add(select);
-                }
-
-                return View(model);
+                return UserEditError(model);
             }
 
             return RedirectToAction("UserManage", "Admin");
+        }
+
+        private ActionResult UserEditError(UserEditViewModel model)
+        {
+            var statusList = new List<SelectListItem>
+            {
+                new SelectListItem()
+                {
+                    Text = "超级管理员",
+                    Value = "1"
+                },
+                new SelectListItem()
+                {
+                    Text = "管理员",
+                    Value = "2"
+                },
+                new SelectListItem()
+                {
+                    Text = "工地负责人",
+                    Value = "3"
+                }
+            };
+
+            model.RoleList = new SelectList(statusList, "Value", "Text", model.RoleId);
+            model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Remark);
+
+            var stats = DbContext.T_Stats.ToList();
+            var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
+            foreach (var stat in stats)
+            {
+                var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
+                if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
+                {
+                    select.Selected = true;
+                }
+                model.StatsList.Add(select);
+            }
+            return View(model);
         }
 
         [HttpGet]
@@ -814,7 +778,6 @@ namespace SHEP_Platform.Controllers
             ViewBag.Devs = DbContext.T_Devs.ToList();
             if (Request.Form["devId"] == null) return View(new List<T_ESMin>());
             var devId = int.Parse(Request.Form["devId"]);
-            var dt = DateTime.Now.AddMinutes(-5);
             var recent =
                 DbContext.T_ESMin.Where(min => min.DevId == devId)
                     .OrderByDescending(d => d.UpdateTime)

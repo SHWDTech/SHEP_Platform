@@ -6,7 +6,7 @@
 }
 
 <div>
-    @using (Html.BeginForm("UserEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;", @Id = "usereditform" }))
+    @using (Html.BeginForm("UserEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;", Id = "usereditform" }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.UserId)
@@ -44,13 +44,6 @@
         </div>
         <div>
             @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.PassWord)
-            @Html.PasswordFor(m => m.PassWord, new { @class = "form-control" })
-        </div>
-        <div>
-            @Html.ValidationMessageFor(m => m.PassWord, "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             <label for="stats">工地权限</label>

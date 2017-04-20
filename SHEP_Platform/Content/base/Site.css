@@ -411,3 +411,12 @@ img.alarmPic {
     height: 80px;
     margin: 5px;
 }
+
+.validation-summary-errors ul {
+    list-style: circle;
+    padding: 0;
+}
+
+.validation-summary-errors ul li {
+    color: red;
+}
