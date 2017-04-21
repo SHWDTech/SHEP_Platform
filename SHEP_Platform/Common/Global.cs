@@ -34,6 +34,14 @@ namespace SHEP_Platform.Common
             return status;
         }
 
+        public static byte[] StringTohexStringByte(string str)
+        {
+            var num = int.Parse(str);
+            var hexStr = num.ToString("x8");
+
+            return StringToHexByte(hexStr);
+        }
+
         public static byte[] StringToHexByte(string hexString)
         {
             hexString = hexString.Replace(" ", "");
