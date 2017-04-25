@@ -5,6 +5,8 @@ using SHEP_Platform.Common;
 using SHEP_Platform.Models.Admin;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
+using System.Transactions;
 using SHWDTech.Platform.Utility;
 
 namespace SHEP_Platform.Controllers
@@ -233,21 +235,6 @@ namespace SHEP_Platform.Controllers
 
             model.StatList = new SelectList(DbContext.T_Stats, "Id", "StatName", model.StatId);
 
-            var statusList = new List<SelectListItem>
-            {
-                new SelectListItem()
-                {
-                    Text = "是",
-                    Value = "1"
-                },
-                new SelectListItem()
-                {
-                    Text = "否",
-                    Value = "0"
-                }
-            };
-            model.StatusLIst = new SelectList(statusList, "Value", "Text", model.DevStatus);
-
             return View(model);
         }
 
@@ -259,98 +246,51 @@ namespace SHEP_Platform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var dev = model.Id == -1 ? new T_Devs() : DbContext.T_Devs.First(item => item.Id == model.Id);
-
-            dev.DevCode = model.DevCode;
-            dev.StartTime = model.StartTime;
-            dev.PreEndTime = model.PreEndTime;
-            dev.EndTime = model.EndTime;
-            dev.VideoURL = model.VideoUrl;
-            dev.StatId = model.StatId.ToString();
-            dev.DevStatus = model.DevStatus;
-
-
-            if (model.Id == -1)
-            {
-                DbContext.T_Devs.Add(dev);
-
-                try
-                {
-                    DbContext.SaveChanges();
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var error in ex.EntityValidationErrors)
-                    {
-                        foreach (var dbValidationError in error.ValidationErrors)
-                        {
-                            ModelState.AddModelError(dbValidationError.PropertyName, dbValidationError.ErrorMessage);
-                        }
-                    }
-
-                    var statusList = new List<SelectListItem>
-                    {
-                        new SelectListItem()
-                        {
-                            Text = "是",
-                            Value = "1"
-                        },
-                        new SelectListItem()
-                        {
-                            Text = "否",
-                            Value = "0"
-                        }
-                    };
-                    model.StatusLIst = new SelectList(statusList, "Value", "Text", model.DevStatus);
-                    model.StatList = new SelectList(DbContext.T_Stats, "Id", "StatName", model.StatId);
-                    model.IsNew = true;
-
-                    return View(model);
-                }
-
-                var addr = new T_DevAddr
-                {
-                    DevId = DbContext.T_Devs.First(obj => obj.DevCode == model.DevCode).Id,
-                    NodeId = Global.StringTohexStringByte(model.Addr)
-                };
-                DbContext.T_DevAddr.Add(addr);
-                DbContext.SaveChanges();
-            }
-            else
+            using (var transaction = new TransactionScope())
             {
                 try
                 {
-                    DbContext.SaveChanges();
-
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    foreach (var error in ex.EntityValidationErrors)
-                    {
-                        foreach (var dbValidationError in error.ValidationErrors)
-                        {
-                            ModelState.AddModelError(dbValidationError.PropertyName, dbValidationError.ErrorMessage);
-                        }
-                    }
-
-                    var statusList = new List<SelectListItem>
-                    {
-                        new SelectListItem()
-                        {
-                            Text = "是",
-                            Value = "1"
-                        },
-                        new SelectListItem()
-                        {
-                            Text = "否",
-                            Value = "0"
-                        }
-                    };
-                    model.StatusLIst = new SelectList(statusList, "Value", "Text", model.DevStatus);
                     model.StatList = new SelectList(DbContext.T_Stats, "Id", "StatName", model.StatId);
+                    var dev = model.Id == -1 ? new T_Devs() : DbContext.T_Devs.First(item => item.Id == model.Id);
+                    dev.DevCode = model.DevCode;
+                    dev.StartTime = model.StartTime;
+                    dev.PreEndTime = model.PreEndTime;
+                    dev.EndTime = model.EndTime;
+                    dev.VideoURL = model.VideoUrl;
+                    dev.StatId = model.StatId.ToString();
+                    dev.DevStatus = model.DevStatus;
 
+                    if (model.Id == -1)
+                    {
+                        if (string.IsNullOrWhiteSpace(model.Addr))
+                        {
+                            ModelState.AddModelError("Addr", "设备ID不能为空。");
+                            return View(model);
+                        }
+                        var addr = Global.StringTohexStringByte(model.Addr);
+                        if (DbContext.T_DevAddr.Any(a => a.NodeId.Equals(addr)))
+                        {
+                            ModelState.AddModelError("Addr", "设备ID已经存在。");
+                            return View(model);
+                        }
+                        DbContext.T_Devs.Add(dev);
+                        DbContext.SaveChanges();
+                        var devAddr = new T_DevAddr
+                        {
+                            DevId = dev.Id,
+                            NodeId = addr
+                        };
+                        DbContext.T_DevAddr.Add(devAddr);
+                    }
+                    DbContext.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("UnKnow", "保存设备信息失败。");
                     return View(model);
                 }
+
+                transaction.Complete();
             }
 
             return RedirectToAction("DevManage", "Admin");

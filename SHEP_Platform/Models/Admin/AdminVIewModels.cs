@@ -39,11 +39,11 @@ namespace SHEP_Platform.Models.Admin
         [MaxLength(10)]
         [DisplayName("负责人")]
         public string ChargeMan { get; set; }
-        
+
         [DataType(DataType.PhoneNumber)]
         [DisplayName("联系电话")]
         public string Telepone { get; set; }
-        
+
         [Range(-180, 180)]
         [Display(Name = "经度")]
         public decimal Longitude { get; set; }
@@ -96,7 +96,7 @@ namespace SHEP_Platform.Models.Admin
         [Required]
         [DisplayName("施工进展")]
         public virtual T_Stage T_Stage { get; set; }
-        public SelectList StageList { get; set; } 
+        public SelectList StageList { get; set; }
 
         public SelectList CountryList { get; set; }
 
@@ -171,9 +171,9 @@ namespace SHEP_Platform.Models.Admin
         [Display(Name = "视频地址")]
         public string VideoUrl { get; set; }
 
-        public bool IsNew { get; set; }
+        public bool IsNew { get; set; } = true;
 
-        public SelectList StatList { get; set; } 
+        public SelectList StatList { get; set; }
 
         public SelectList StatusLIst { get; set; }
 
@@ -232,7 +232,7 @@ namespace SHEP_Platform.Models.Admin
         [Display(Name = "邮箱地址")]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
-        
+
         public byte? Status { get; set; }
 
 

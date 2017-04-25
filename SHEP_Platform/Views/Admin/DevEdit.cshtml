@@ -56,7 +56,10 @@
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.DevStatus)
-            @Html.DropDownListFor(m => m.DevStatus, Model.StatusLIst, new { @class = "form-control" })
+            <select id="DevStatus" name="DevStatus" class="form-control">
+                <option value="0">否</option>
+                <option value="1">是</option>
+            </select>
             <span style="color: red">*</span>
         </div>
         <div>
@@ -73,6 +76,9 @@
                 @Html.ValidationMessageFor(m => m.Addr, "", new { @class = "text-danger" })
             </div>
         }
+        <div>
+            @Html.ValidationMessage("UnKnow", new { @class = "text-danger" })
+        </div>
         <div class="form-group">
             <button type="submit" class="btn btn-success">
                 提交
