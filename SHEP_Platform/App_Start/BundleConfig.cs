@@ -51,7 +51,7 @@ namespace SHEP_Platform
                 "~/Content/bootstrap/bootstrap-datetimepicker.css"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap-table").Include(
-                "~/Content/bootstrap-table/bootstrap-table.css"));
+                "~/Content/bootstrap-table.css"));
 
             bundles.Add(new StyleBundle("~/Content/select2-bootstrap").Include(
                 "~/Content/select2.css",

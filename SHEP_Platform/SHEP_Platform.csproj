@@ -590,8 +590,8 @@
     <Content Include="bdPlayer\js\cyberplayer.min.js" />
     <Content Include="bdPlayer\player\cyberplayer.flash.swf" />
     <Content Include="Content\base\Animation.css" />
-    <Content Include="Content\bootstrap-table\bootstrap-table.css" />
-    <Content Include="Content\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="Content\bootstrap-table.css" />
+    <Content Include="Content\bootstrap-table.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -693,8 +693,8 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <Content Include="Content\bootstrap-table\_bootstrap-datetimepicker.less" />
-    <Content Include="Content\bootstrap-table\bootstrap-datetimepicker-build.less" />
+    <Content Include="Content\_bootstrap-datetimepicker.less" />
+    <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <None Include="Scripts\Utility\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\bootstrap-table\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap-table\bootstrap-table.min.js" />
