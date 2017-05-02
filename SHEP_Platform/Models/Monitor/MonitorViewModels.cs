@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+// ReSharper disable InconsistentNaming
 
 namespace SHEP_Platform.Models.Monitor
 {
@@ -15,6 +16,17 @@ namespace SHEP_Platform.Models.Monitor
         public string StructureDb { get; set; }
     }
 
+    public class ActualStatusViewModel
+    {
+        public int DefaultId { get; set; } = -1;
+
+        public string DefaultName { get; set; } = "未找到指定工地";
+
+        public string StatViewUrl { get; set; } = string.Empty;
+
+        public StatHourInfo StatHourInfo { get; set; }
+    }
+
     public class StatHourInfo
     {
         public T_ESHour Hour { get; set; }
@@ -26,7 +38,7 @@ namespace SHEP_Platform.Models.Monitor
     {
         public string StatName { get; set; }
 
-        public int Id { get; set; } 
+        public int Id { get; set; }
 
         public string AlarmType { get; set; }
 
@@ -68,5 +80,44 @@ namespace SHEP_Platform.Models.Monitor
         /// 工作表数据
         /// </summary>
         public DataTable WorkSheetDatas { get; set; } = new DataTable();
+    }
+
+    public class RecentData
+    {
+        public RecentData(T_ESMin esMin)
+        {
+            if (esMin != null)
+            {
+                TP = $"{esMin.TP}";
+                DB = $"{esMin.DB}";
+                PM25 = $"{esMin.PM25}";
+                PM100 = $"{esMin.PM100}";
+                Temperature = $"{esMin.Temperature}";
+                Humidity = $"{esMin.Humidity}";
+                WindSpeed = $"{esMin.WindSpeed}";
+                WindDirection = $"{esMin.WindDirection}";
+                UpdateTime = $"{esMin.UpdateTime:yyyy-MM-dd HH:mm:ss}";
+                Valid = true;
+            }
+        }
+        public string TP { get; set; } = "暂无数据";
+
+        public string DB { get; set; } = "暂无数据";
+
+        public string PM25 { get; set; } = "暂无数据";
+
+        public string PM100 { get; set; } = "暂无数据";
+
+        public string Temperature { get; set; } = "暂无数据";
+
+        public string Humidity { get; set; } = "暂无数据";
+
+        public string WindSpeed { get; set; } = "暂无数据";
+
+        public string WindDirection { get; set; } = "暂无数据";
+
+        public string UpdateTime { get; set; } = "尚未收到任何数据";
+
+        public bool Valid { get; set; }
     }
 }

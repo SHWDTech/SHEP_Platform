@@ -26,49 +26,37 @@ namespace SHEP_Platform.Controllers
         public ActionResult ActualStatus(string id)
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "各工程当前情况";
-            var dict = new Dictionary<object, StatHourInfo>();
-            var cameraurl = string.Empty;
-            foreach (var stat in WdContext.StatList)
+            var model = new ActualStatusViewModel();
+            if (!string.IsNullOrWhiteSpace(id) && WdContext.StatList.Any(stat => stat.Id.ToString() == id))
             {
-                var hour = DateTime.Now.AddHours(-1);
-                var value =
-                    DbContext.T_ESHour.FirstOrDefault(item => item.StatId == stat.Id && item.UpdateTime.Hour > hour.Hour);
-                var current = DbContext.T_ESMin.OrderByDescending(item => item.UpdateTime).FirstOrDefault(obj => obj.StatId == stat.Id);
+                model.DefaultId = int.Parse(id);
+                model.DefaultName = WdContext.StatList.First(stat => stat.Id == model.DefaultId).StatName;
+            }
+            else if (WdContext.StatList.Count > 0)
+            {
+                model.DefaultId = WdContext.StatList[0].Id;
+                model.DefaultName = WdContext.StatList.First(stat => stat.Id == model.DefaultId).StatName;
+            }
 
-                var info = new StatHourInfo
+            if (model.DefaultId != -1)
+            {
+                var checkTime = DateTime.Now.AddMinutes(-2);
+                var lastMonitorData = DbContext.T_ESMin.Where(m => m.StatId == model.DefaultId && m.UpdateTime > checkTime)
+                    .OrderByDescending(obj => obj.UpdateTime)
+                    .FirstOrDefault();
+                if (lastMonitorData != null)
                 {
-                    Hour = value,
-                    Current = current
-                };
-
-                dict.Add(stat, info);
+                    model.StatHourInfo = new StatHourInfo {Current = lastMonitorData};
+                }
             }
 
-            ViewBag.StatDict = dict;
-            var defaultId = -1;
-            var defaultName = "null";
-            if (!string.IsNullOrWhiteSpace(id))
-            {
-                defaultId = int.Parse(id);
-                defaultName = WdContext.StatList.FirstOrDefault(stat => stat.Id == defaultId).StatName;
-            }
-            else if (WdContext.StatList.Count != 0)
-            {
-                defaultId = WdContext.StatList[0].Id;
-                defaultName = WdContext.StatList.FirstOrDefault(stat => stat.Id == defaultId).StatName;
-            }
-
-            var devs = DbContext.T_Devs.Where(dev => dev.StatId == defaultId.ToString()).ToList();
+            var devs = DbContext.T_Devs.Where(dev => dev.StatId == model.DefaultId.ToString()).ToList();
             if (devs.Count > 0)
             {
-                cameraurl = devs[0].VideoURL;
+                model.StatViewUrl = devs[0].VideoURL;
             }
 
-            ViewBag.defaultId = defaultId;
-            ViewBag.defaultName = defaultName;
-            ViewBag.StatViewUrl = cameraurl;
-
-            return DynamicView("ActualStatus");
+            return DynamicView("ActualStatus", model);
         }
 
         public ActionResult HistoryChange()

@@ -41,12 +41,21 @@ $(function () {
 
     $('#minute').on('click', function() {
         ajaxFunction = 'getStatsActualData';
-        load(lastStatId, lastStatName);
+        load(lastStatId, lastStatName, 1);
     });
 
     $('#fifteen_minute').on('click', function () {
         ajaxFunction = 'getStatsFifteenData';
-        load(lastStatId, lastStatName);
+        load(lastStatId, lastStatName, 1);
+    });
+
+    $('#statDevs').on('change', function () {
+        var devId = $('#statDevs').val();
+        if (devId != -1) {
+            load(devId, '', 2);
+        } else {
+            load(lastStatId, lastStatName, 1);
+        }
     });
 });
 
@@ -99,10 +108,24 @@ var startProof = function(statId) {
     });
 }
 
-var load = function (id, name) {
+var loadDevs = function (statId) {
+    $('#statDevs').empty();
+    $.get('/Ajax/GetStatDevs', { statId: statId }, function (ret) {
+        $('#statDevs').append('<option value="-1">工地整体数据</option>');
+        for (var i = 0; i < ret.length; i++) {
+            var dev = ret[i];
+            $('#statDevs').append('<option value="' + dev.id + '">' + dev.Text + '</option>');
+        }
+    });
+}
+
+var load = function (id, name, type) {
+    //type的取值，1代表获取工地数据，2代表获取设备数据
     if (id === -1 || name === 'null') return;
-    lastStatId = id;
-    lastStatName = name;
+    if (type == 1) {
+        lastStatId = id;
+        lastStatName = name;
+    }
     if (!BaseInfo.IsMobileDevice) {
         mainChart.showLoading();
     }
@@ -111,23 +134,47 @@ var load = function (id, name) {
     pm25Gauge.showLoading();
     var param = {
         'fun': ajaxFunction,
-        'statId': id
+        'targetId': id,
+        'targetType': type
     }
 
     $.post(ajaxUrl, param, function (ret) {
         if (ret) {
-            setChart(ret, name, id);
+            setChart(ret, name, id, type);
             if (!BaseInfo.IsMobileDevice) {
                 mainChart.hideLoading();
             }
             tpGauge.hideLoading();
             dbGauge.hideLoading();
             pm25Gauge.hideLoading();
+            if (type == 1) {
+                setTable(ret, name);
+                loadDevs(id);
+            }
         }
     });
 };
 
-var setChart = function (ret, name, id) {
+var setTable = function(ret, name) {
+    var current = ret.current;
+    $('.statName').html(name);
+    $('.pm').html(current.TP);
+    $('.db').html(current.DB);
+    $('.pm25').html(current.PM25);
+    $('.pm100').html(current.PM100);
+    $('.temp').html(current.Temperature);
+    $('.humi').html(current.Humidity);
+    $('.windspeed').html(current.WindSpeed);
+    $('.winddir').html(current.WindDirection);
+    $('.updt').html(current.UpdateTime);
+    if (current.Valid) {
+        $('.esData').removeClass('danger');
+    } else {
+        $('.esData').addClass('danger');
+    }
+}
+
+var setChart = function (ret, name, id, type) {
     var list = ret.dataResult;
     Echart_Tools.ResetData([mainChart, tpGauge, dbGauge, pm25Gauge]);
     if (list.length === 0) {
@@ -198,9 +245,11 @@ var setChart = function (ret, name, id) {
     tpGauge.setOption(tpGaugeOption);
     dbGauge.setOption(dbGaugeOption);
     pm25Gauge.setOption(pm25GaugeOption);
-    $('#itemTitle').find('#chartTitle').html(name + '实时数据');
-    $('#itemTitle').find('#cameraUrl').attr('href', ret.cameraurl);
+    if (type == 1) {
+        $('#itemTitle').find('#chartTitle').html(name + '实时数据');
+        $('#itemTitle').find('#cameraUrl').attr('href', ret.cameraurl);
+    }
 
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(function () { load(id, name); }, 60000);
+    timeoutId = setTimeout(function () { load(id, name, type); }, 60000);
 };

@@ -1,21 +1,29 @@
 ﻿@using SHEP_Platform.Models.Monitor
 @using SHEP_Platform.Process
+@model ActualStatusViewModel
 @{
     ViewBag.Title = "查询导出";
 }
 
+@Styles.Render("~/Content/bootstrap-table")
+
 <div style="position: relative;">
     <div id="divCharts" style="height: 600px; border: 1px solid #e7e7e7; margin-right: 20px; max-width: 840px;">
-        <div class="form-inline">
-            <input type="button" class="form-control btn btn-default" id="minute" value="分钟均值" />
-            <input type="button" class="form-control btn btn-default" id="fifteen_minute" value="15分钟均值" />
+        <div class="form-inline" style="padding: 5px;">
+            <div style="float: right; display: inline-block;">
+                <span>选择设备</span>
+                <select class="form-control" id="statDevs">
+                </select>
+            </div>
+            <input type="button" class="form-control btn btn-default" id="minute" value="分钟均值"/>
+            <input type="button" class="form-control btn btn-default" id="fifteen_minute" value="15分钟均值"/>
         </div>
         <div id="itemTitle" style="height: 50px;">
-            <h3  id="chartTitle" style="text-align: center;">
-                @(ViewBag.defaultName + "实时数据")
+            <h3 id="chartTitle" style="text-align: center;">
+                @(Model.DefaultName + "实时数据")
             </h3>
             <h5 style="text-align: center;">
-                <a id="cameraUrl" href="@ViewBag.StatViewUrl">查看实时工地状况</a>
+                <a id="cameraUrl" href="@(Model.StatViewUrl)">查看实时工地状况</a>
             </h5>
         </div>
         <div id="divGauge" style="height: 240px; position: relative;">
@@ -46,104 +54,119 @@
             </thead>
             <tbody>
                 @{
-                    foreach (KeyValuePair<object, StatHourInfo> stat in ViewBag.StatDict)
+                    if (Model.StatHourInfo != null)
                     {
-                        var tStat = stat.Key as T_Stats;
-                        var hourInfo = stat.Value;
-                        if (hourInfo == null)
-                        {
-                            continue;
-                        }
-                        var current = hourInfo.Current;
-
-                        if (tStat == null)
-                        {
-                            continue;
-                        }
-
-                        if (current != null)
-                        {
-                            <tr class="statName">
-                                <td colspan="4">
-                                    @Html.ActionLink(tStat.StatName, null, null, new { href = "javascript:load(" + tStat.Id + ",'" + tStat.StatName + "')" })
-                                    <input type="button" id="setMin" class="form-control btn btn-default" onclick="setDeviceMin(@tStat.Id)" value="校零" style="width: auto;" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>颗粒物(mg/m³)</td>
-                                <td class="pm">@(((current.TP) / 1000).ToString("f2"))</td>
-                                <td>噪音(dB)</td>
-                                <td class="db">@current.DB.ToString("f2")</td>
-                            </tr>
-                            <tr>
-                                <td>PM2.5(mg/m³)</td>
-                                <td class="pm25">@((current.PM25.GetValueOrDefault() / 1000).ToString("f2"))</td>
-                                <td>PM10(mg/m³)</td>
-                                <td class="pm100">@((current.PM100.GetValueOrDefault() / 1000).ToString("f2"))</td>
-                            </tr>
-                            <tr>
-                                <td>温度(℃)</td>
-                                <td class="temp">@current.Temperature.ToString("f2")</td>
-                                <td>湿度(%)</td>
-                                <td class="humi">@current.Humidity.ToString("f2")</td>
-                            </tr>
-                            <tr>
-                                <td>风速(m/s)</td>
-                                <td class="windspeed">@current.WindSpeed</td>
-                                <td>风向(°)</td>
-                                <td class="winddir">@(current.WindDirection + $"({Utility.DetectiveWindDirection(current.WindDirection).Chinese})")</td>
-                            </tr>
-                        }
-                        else
-                        {
-                            <tr class="statName">
-                                <td colspan="4">
-                                    @Html.ActionLink(tStat.StatName, null, null, new
-                               {
-                                   href = "javascript:load(" + @tStat.Id + ",'" + @tStat.StatName
-                                               + "')"
-                               })
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>颗粒物(mg/m³)</td>
-                                <td class="danger">暂无数据</td>
-                                <td>噪音(dB)</td>
-                                <td class="danger">暂无数据</td>
-                            </tr>
-                            <tr>
-                                <td>PM2.5(mg/m³)</td>
-                                <td class="danger">暂无数据</td>
-                                <td>PM10(mg/m³)</td>
-                                <td class="danger">暂无数据</td>
-                            </tr>
-                            <tr>
-                                <td>温度(℃)</td>
-                                <td class="danger">暂无数据</td>
-                                <td>湿度(%)</td>
-                                <td class="danger">暂无数据</td>
-                            </tr>
-                            <tr>
-                                <td>风速(m/s)</td>
-                                <td class="danger">暂无数据</td>
-                                <td>风向(°)</td>
-                                <td class="danger">暂无数据</td>
-                            </tr>
-                        }
+                        var current = Model.StatHourInfo.Current;
+                        <tr>
+                            <td colspan="4">
+                                <span class="statName">@Model.DefaultName</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>颗粒物(mg/m³)</td>
+                            <td class="pm esData">@(((current.TP) / 1000).ToString("f2"))</td>
+                            <td>噪音(dB)</td>
+                            <td class="db esData">@current.DB.ToString("f2")</td>
+                        </tr>
+                        <tr>
+                            <td>PM2.5(mg/m³)</td>
+                            <td class="pm25 esData">@((current.PM25.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                            <td>PM10(mg/m³)</td>
+                            <td class="pm100 esData">@((current.PM100.GetValueOrDefault() / 1000).ToString("f2"))</td>
+                        </tr>
+                        <tr>
+                            <td>温度(℃)</td>
+                            <td class="temp esData">@current.Temperature.ToString("f2")</td>
+                            <td>湿度(%)</td>
+                            <td class="humi esData">@current.Humidity.ToString("f2")</td>
+                        </tr>
+                        <tr>
+                            <td>风速(m/s)</td>
+                            <td class="windspeed esData">@current.WindSpeed</td>
+                            <td>风向(°)</td>
+                            <td class="winddir esData">@(current.WindDirection + $"({Utility.DetectiveWindDirection(current.WindDirection).Chinese})")</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">更新时间：    <span class="updt">@($"{current.UpdateTime:yyyy-MM-dd HH:mm:ss}")</span></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">
+                                <span class="statName">@Model.DefaultName</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>颗粒物(mg/m³)</td>
+                            <td class="danger pm esData">暂无数据</td>
+                            <td>噪音(dB)</td>
+                            <td class="danger db esData">暂无数据</td>
+                        </tr>
+                        <tr>
+                            <td>PM2.5(mg/m³)</td>
+                            <td class="danger pm25 esData">暂无数据</td>
+                            <td>PM10(mg/m³)</td>
+                            <td class="danger pm100 esData">暂无数据</td>
+                        </tr>
+                        <tr>
+                            <td>温度(℃)</td>
+                            <td class="danger temp esData">暂无数据</td>
+                            <td>湿度(%)</td>
+                            <td class="danger humi esData">暂无数据</td>
+                        </tr>
+                        <tr>
+                            <td>风速(m/s)</td>
+                            <td class="danger windspeed esData">暂无数据</td>
+                            <td>风向(°)</td>
+                            <td class="danger winddir esData">暂无数据</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="danger esData"><span class="updt">尚未收到任何数据</span></td>
+                        </tr>
                     }
                 }
             </tbody>
         </table>
+        @{
+            var table = Html.BootstrapTable(null, TablePaginationOption.server, new
+            {
+                id = "statList",
+                data_page_size = 10,
+                data_reset_offset = true,
+                data_url = "/Ajax/GetAllStats",
+                data_height = 265
+            });
+            var builder = table.Column("所有工地", "StatName")
+                .Apply(ColumnOption.formatter, "AllStatsFormatter")
+                .Apply(ColumnOption.events, "AllStatsEvents");
+        }
+        @(builder)
     </div>
 </div>
 
 @section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")
     <script type="text/javascript" src="/Scripts/Utility/echarts.js"></script>
     <script type="text/javascript" src="/Scripts/Common/SetUpCharts.js"></script>
     <script type="text/javascript" src="/Scripts/Monitor/ActualStatus.js"></script>
     <script type="text/javascript">
+        window.AllStatsFormatter = function (index, row, element) {
+            return [
+                '<a class="stat" href="javascript:void(0)">' + row.StatName + '</a>'
+            ].join('');
+        }
+
+        window.AllStatsEvents = {
+            'click .stat': function (e, value, row) {
+                load(row.Id, row.StatName, 1);
+            }
+        };
+
         $(function() {
-            load(@ViewBag.defaultId, '@ViewBag.defaultName');
-        })
+            $('#statList').bootstrapTable();
+            loadDevs(@(Model.DefaultId));
+            load(@(Model.DefaultId), '@(Model.DefaultName)', 1);
+        });
     </script>
 }

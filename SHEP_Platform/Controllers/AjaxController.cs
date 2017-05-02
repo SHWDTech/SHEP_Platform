@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using SHEP_Platform.Common;
 using SHEP_Platform.Enum;
 using SHEP_Platform.Models.Analysis;
+using SHEP_Platform.Models.Api;
 using SHEP_Platform.Models.Monitor;
 using SHEP_Platform.Process;
 using SHWDTech.Platform.Utility;
@@ -192,9 +193,20 @@ namespace SHEP_Platform.Controllers
 
         private JsonResult GetStatsActualData()
         {
-            var statId = int.Parse(Request["statId"]);
+            var targetId = int.Parse(Request["targetId"]);
             var startDate = DateTime.Now.AddHours(-1);
-            var dataResult = DbContext.T_ESMin.Where(item => item.StatId == statId && item.UpdateTime > startDate)
+            var query = DbContext.T_ESMin.AsQueryable();
+            var targetType = int.Parse(Request["targetType"]);
+
+            if (targetType == 1)
+            {
+                query = query.Where(q => q.StatId == targetId);
+            }
+            else
+            {
+                query = query.Where(q => q.DevId == targetId);
+            }
+            var dataResult = query.Where(item => item.UpdateTime > startDate)
                 .OrderBy(obj => obj.UpdateTime).ToList()
                 // ReSharper disable once PossibleInvalidOperationException
                 .Select(i => new
@@ -208,15 +220,27 @@ namespace SHEP_Platform.Controllers
                 });
 
             var cameraurl = string.Empty;
-            var devs = DbContext.T_Devs.Where(dev => dev.StatId == statId.ToString()).ToList();
-            if (devs.Count > 0)
+            RecentData current = null;
+            if (targetType == 1)
             {
-                cameraurl = devs[0].VideoURL;
+                var devs = DbContext.T_Devs.Where(dev => dev.StatId == targetId.ToString()).ToList();
+                if (devs.Count > 0)
+                {
+                    cameraurl = devs[0].VideoURL;
+                }
+
+                var checkTime = DateTime.Now.AddMinutes(-2);
+                var lastDt = DbContext.T_ESMin.Where(e => e.StatId == targetId && e.UpdateTime > checkTime)
+                    .OrderByDescending(obj => obj.UpdateTime)
+                    .FirstOrDefault();
+
+                current = new RecentData(lastDt);
             }
 
             var ret = new
             {
                 dataResult,
+                current,
                 cameraurl
             };
 
@@ -225,9 +249,9 @@ namespace SHEP_Platform.Controllers
 
         private JsonResult GetStatsFifteenData()
         {
-            var statId = int.Parse(Request["statId"]);
+            var targetId = int.Parse(Request["targetId"]);
             var startDate = DateTime.Now.AddHours(-12);
-            var dataResult = DbContext.T_ESMin_Fifteen.Where(item => item.StatId == statId && item.UpdateTime > startDate)
+            var dataResult = DbContext.T_ESMin_Fifteen.Where(item => item.StatId == targetId && item.UpdateTime > startDate)
                 .OrderBy(obj => obj.UpdateTime).ToList()
                 .Select(i => new
                 {
@@ -239,7 +263,7 @@ namespace SHEP_Platform.Controllers
                 });
 
             var cameraurl = string.Empty;
-            var devs = DbContext.T_Devs.Where(dev => dev.StatId == statId.ToString()).ToList();
+            var devs = DbContext.T_Devs.Where(dev => dev.StatId == targetId.ToString()).ToList();
             if (devs.Count > 0)
             {
                 cameraurl = devs[0].VideoURL;
@@ -811,7 +835,7 @@ namespace SHEP_Platform.Controllers
                 foreach (var dev in devs)
                 {
                     if (
-                        DbContext.T_SysConfig.FirstOrDefault(
+                        DbContext.T_SysConfig.AsQueryable().FirstOrDefault(
                             obj => obj.ConfigType == "AlarmText" && obj.ConfigName == dev.ToString() && obj.ConfigValue == "Trhe") != null)
                     {
                         var device = DbContext.T_Devs.First(obj => obj.Id == dev);
@@ -831,7 +855,6 @@ namespace SHEP_Platform.Controllers
                             DbContext.SaveChanges();
                         }
                     }
-                    
                     var camera = DbContext.T_Camera.First(obj => obj.DevId == dev);
                     var cameraProductId = camera.UserName;
                     var cameraId = HikAction.GetCameraId(cameraProductId);
@@ -919,6 +942,29 @@ namespace SHEP_Platform.Controllers
                 success = true,
                 protocol = string.Join(" ", response)
             }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetAllStats(TablePost post)
+        {
+            var total = DbContext.T_Stats.Count();
+            var rows = DbContext.T_Stats.OrderBy(o => o.Id).Skip(post.offset).Take(post.limit).Select(s => new
+            {
+                s.Id,
+                s.StatName
+            });
+
+            return Json(new
+            {
+                total,
+                rows
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetStatDevs(string statId)
+        {
+            var devs = DbContext.T_Devs.Where(dev => dev.StatId == statId).Select(o => new { id = o.Id, Text = o.DevCode}).ToList();
+
+            return Json(devs, JsonRequestBehavior.AllowGet);
         }
     }
 }

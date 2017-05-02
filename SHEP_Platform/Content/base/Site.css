@@ -27,8 +27,8 @@ a {
     a:hover {
         color: #10721C;
     }
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
 */
 .dl-horizontal dt {
     white-space: normal;
@@ -303,7 +303,7 @@ li span.date {
 }
 
 .danger {
-    color: red;
+    color: red !important;
 }
 
 .msg {
@@ -420,3 +420,11 @@ img.alarmPic {
 .validation-summary-errors ul li {
     color: red;
 }
+
+.statName {
+    color: #1abc9c;
+}
+
+    .statName:hover {
+        color: #10721C;
+    }

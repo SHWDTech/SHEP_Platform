@@ -35,7 +35,7 @@ namespace SHEP_Platform
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-table").Include(
                 "~/Scripts/Utility/bootstrap-table/bootstrap-table.js",
-                "~/Scripts/Utility/bootstrap-table/bootstrap-table-locale-all.js"));
+                "~/Scripts/Utility/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap/bootstrap.css",
