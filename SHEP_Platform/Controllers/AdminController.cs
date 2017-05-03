@@ -5,7 +5,6 @@ using SHEP_Platform.Common;
 using SHEP_Platform.Models.Admin;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
 using System.Transactions;
 using SHWDTech.Platform.Utility;
 
@@ -507,7 +506,7 @@ namespace SHEP_Platform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            if (DbContext.T_Users.Any(obj => obj.UserName == model.UserName) && model.UserId != -1)
+            if (DbContext.T_Users.Any(obj => obj.UserName == model.UserName) && model.UserId == -1)
             {
                 ModelState.AddModelError("UserName", "系统已存在同名用户");
                 return UserEditError(model);
@@ -530,25 +529,24 @@ namespace SHEP_Platform.Controllers
                 DbContext.T_Users.Add(user);
             }
 
-            var authedStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
-            foreach (var authedStat in authedStats)
-            {
-                DbContext.T_UserStats.Remove(authedStat);
-            }
-            var authStats = Request["stats"];
-            if (!string.IsNullOrWhiteSpace(authStats))
-            {
-                var statLIst = authStats.Split(',').Select(int.Parse);
-                foreach (var stat in statLIst)
-                {
-                    DbContext.T_UserStats.Add(new T_UserStats() { UserId = model.UserId, StatId = stat });
-                }
-            }
-
             try
             {
                 DbContext.SaveChanges();
-
+                var authedStats = DbContext.T_UserStats.Where(obj => obj.UserId == user.UserId).ToList();
+                foreach (var authedStat in authedStats)
+                {
+                    DbContext.T_UserStats.Remove(authedStat);
+                }
+                var authStats = Request["stats"];
+                if (!string.IsNullOrWhiteSpace(authStats))
+                {
+                    var statLIst = authStats.Split(',').Select(int.Parse);
+                    foreach (var stat in statLIst)
+                    {
+                        DbContext.T_UserStats.Add(new T_UserStats { UserId = user.UserId, StatId = stat });
+                    }
+                }
+                DbContext.SaveChanges();
             }
             catch (DbEntityValidationException ex)
             {
