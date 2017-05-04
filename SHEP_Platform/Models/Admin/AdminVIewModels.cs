@@ -175,10 +175,14 @@ namespace SHEP_Platform.Models.Admin
 
         public SelectList StatList { get; set; }
 
-        public SelectList StatusLIst { get; set; }
-
         [Display(Name = "设备ID")]
         public string Addr { get; set; }
+
+        public List<SelectListItem> StatusList { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem{Value = "0", Text = "否"},
+            new SelectListItem{Value = "1", Text = "是"}
+        };
     }
 
     public class UserManageViewModel

@@ -30,10 +30,9 @@
     @Scripts.Render("~/bundles/bootstrap-table")
     <script type="text/javascript">
         window.devMgrFormatter = function (index, row, element) {
-            debugger;
             return [
-                '<a class="update" href="/Admin/DevEdit/' + row.Id + '" style="margin-right: 5px;">更新</a>',
-                '<a class="delete" href="javascript:void(0)">删除</a>'
+                '<a class="update" href="/Admin/DevEdit/' + row.Id + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
+                '<a class="delete" href="javascript:void(0)"><span class="glyphicon glyphicon-remove">删除</span></a>'
             ].join('');
         }
 

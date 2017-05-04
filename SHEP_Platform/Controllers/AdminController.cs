@@ -5,6 +5,7 @@ using SHEP_Platform.Common;
 using SHEP_Platform.Models.Admin;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Transactions;
 using SHEP_Platform.Models.Api;
 using SHWDTech.Platform.Utility;
@@ -287,8 +288,9 @@ namespace SHEP_Platform.Controllers
                     }
                     DbContext.SaveChanges();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Debug.WriteLine(ex.Message);
                     ModelState.AddModelError("UnKnow", "保存设备信息失败。");
                     return View(model);
                 }
