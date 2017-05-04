@@ -20,6 +20,7 @@
             .Column("设备NODEID", "NodeId")
             .Column("设备状态", "Status")
             .Column("操作")
+            .Apply(ColumnOption.width, "120")
             .Apply(ColumnOption.formatter, "devMgrFormatter")
             .Apply(ColumnOption.events, "devMgrEvents");
     }

@@ -3,46 +3,54 @@
     ViewBag.Title = "摄像头管理";
 }
 
-<table class="table table-bordered table-hover">
-    <colgroup style="width: 300px;"></colgroup>
-    <colgroup style="width: 300px;"></colgroup>
-    <colgroup style="width: 150px;"></colgroup>
-    <thead>
-        <tr>
-            <td>摄像头名称</td>
-            <td>序列号</td>
-            <td>操作</td>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            foreach (var camera in Model.Cameras)
-            {
-                <tr id="@camera.Id">
-                    <td>@camera.CameraName</td>
-                    <td>@camera.UserName</td>
-                    <td>
-                        <a href="/Admin/Camera/@camera.Id"><span class="glyphicon glyphicon-pencil"></span>更新</a><span> - </span>
-                        <a href="javascript:delConfirm('@camera.Id')"><span class="glyphicon glyphicon-remove"></span>删除</a><span> - </span>
-                        <a href="/Monitor/StatViewHikSecond?id=@camera.UserName"><span class="glyphicon glyphicon-facetime-video"></span>查看</a>
-                    </td>
-                </tr>
-                            }
-        }
-    </tbody>
-</table>
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+<div>
+    @{
+        var table = Html.BootstrapTable(null, TablePaginationOption.server, new
+        {
+            id = "cammgrTable",
+            data_page_size = 25,
+            data_reset_offset = true,
+            data_url = "/Admin/CamsTable",
+            data_height = 600
+        });
+        var builder = table.Column("摄像头名称", "CameraName")
+            .Column("所属设备", "DevCode")
+            .Column("序列号", "UserName")
+            .Column("操作")
+            .Apply(ColumnOption.width, "180")
+            .Apply(ColumnOption.formatter, "camMgrFormatter")
+            .Apply(ColumnOption.events, "camMgrEvents");
+    }
+    @(builder)
+</div>
 
 @section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")
     <script type="text/javascript">
-        var delConfirm = function (id) {
-            if (confirm('确定删除该摄像头吗？')) {
-                $.get('/Admin/CameraDelete/' + id, null, function (ret) {
-                    if (ret.msg === 'success') {
-                        $('#' + id).remove();
-                        msg.info('删除成功');
-                    }
-                });
+        window.camMgrFormatter = function (index, row, element) {
+            return [
+                '<a class="update" href="/Admin/Camera/' + row.ID + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
+                '<a class="delete" href="javascript:void(0)" style="margin-right: 5px;"><span class="glyphicon glyphicon-remove">删除</span></a>',
+                '<a class="view" href="/Monitor/StatViewHikSecond?id=' + row.UserName + '" ><span class="glyphicon glyphicon-camera">查看</span></a>'
+            ].join('');
+        }
+
+        window.camMgrEvents = {
+            'click .delete': function (e, value, row) {
+                if (confirm('确定删除该摄像头吗？')) {
+                    $.get('/Admin/CameraDelete/' + row.ID, null, function (ret) {
+                        if (ret.msg === 'success') {
+                            $('#' + id).remove();
+                            msg.info('删除成功');
+                        }
+                    });
+                }
             }
         };
+
+        $(function () {
+            $('#cammgrTable').bootstrapTable();
+        });
     </script>
 }

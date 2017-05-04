@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
 namespace SHEP_Platform
 {
     using System;
@@ -15,11 +17,15 @@ namespace SHEP_Platform
     public partial class T_Camera
     {
         public int ID { get; set; }
+        [Display(Name = "摄像头名称")]
         public string CameraName { get; set; }
+        [Display(Name = "关联设备")]
         public int DevId { get; set; }
         public string DnsAddr { get; set; }
         public string Port { get; set; }
+        [Display(Name = "摄像头序列号")]
         public string UserName { get; set; }
+        [Display(Name = "摄像头密码")]
         public string PassWord { get; set; }
         public int CameraId { get; set; }
         public string Type { get; set; }

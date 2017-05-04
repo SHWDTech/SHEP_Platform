@@ -29,14 +29,35 @@ namespace SHEP_Platform.Controllers
             }
 
             WdContext.SiteMapMenu.ActionMenu.Name = "监测点管理";
+            return View();
+        }
 
-            var model = new StatManageViewModel
+        public ActionResult StatsTable(NameQueryTablePost post)
+        {
+            var query = DbContext.T_Stats.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(post.QueryName))
             {
-                PageIndex = 0,
-                PageSize = 10,
-                StatList = DbContext.T_Stats.ToList()
-            };
-            return View(model);
+                query = query.Where(d => d.StatName.Contains(post.QueryName));
+            }
+
+            var total = query.Count();
+            var rows = query.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit).ToList()
+                .Select(s => new
+                {
+                    s.Id,
+                    s.StatCode,
+                    s.StatName,
+                    s.ChargeMan,
+                    s.Telepone,
+                    s.Department,
+                    s.Address,
+                    s.Square
+                });
+            return Json(new
+            {
+                total,
+                rows
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -330,25 +351,49 @@ namespace SHEP_Platform.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var list = DbContext.T_Users.ToList().Select(source => new User
-            {
-                UserId = source.UserId,
-                UserName = source.UserName,
-                RoleName = source.RoleId == 1 ? "超级管理员" : "管理员",
-                Status = Global.GetUserStatus(source.Status),
-                CountryName = DbContext.T_Country.FirstOrDefault(obj => obj.Id.ToString() == source.Remark)?.Country,
-                RegTime = source.RegTime,
-                LastTime = source.LastTime
-            }).ToList();
+            return View();
+        }
 
-            var model = new UserManageViewModel()
+        public ActionResult UsersTable(NameQueryTablePost post)
+        {
+            var query = DbContext.T_Users.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(post.QueryName))
             {
-                PageIndex = 0,
-                PageSize = 10,
-                UserList = list
-            };
+                query = query.Where(d => d.UserName.Contains(post.QueryName));
+            }
 
-            return View(model);
+            var total = query.Count();
+            var rows = query.OrderBy(d => d.UserId).Skip(post.offset).Take(post.limit).ToList()
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.UserName,
+                    RoleName = GetRoleName(u.RoleId),
+                    RegTime = u.RegTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    LastLogin = u.LastTime?.ToString("yyyy-MM-dd HH:mm:ss"),
+                    CountryName = DbContext.T_Country.FirstOrDefault(obj => obj.Id.ToString() == u.Remark)?.Country,
+                    Status = Global.GetUserStatus(u.Status)
+                });
+            return Json(new
+            {
+                total,
+                rows
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        private string GetRoleName(int roleId)
+        {
+            switch (roleId)
+            {
+                case 1:
+                    return "超级管理员";
+                case 2:
+                    return "管理员";
+                case 3:
+                    return "工地负责人";
+            }
+
+            return null;
         }
 
         public ActionResult Lock(string id)
@@ -672,16 +717,30 @@ namespace SHEP_Platform.Controllers
         }
 
         [HttpGet]
-        public ActionResult CameraManage()
-        {
-            var model = new CameraManageViewModel
-            {
-                Cameras = DbContext.T_Camera
-                .Select(obj => new Camera { Id = obj.ID, CameraName = obj.CameraName, UserName = obj.UserName })
-                .ToList()
-            };
+        public ActionResult CameraManage() => View();
 
-            return View(model);
+        public ActionResult CamsTable(NameQueryTablePost post)
+        {
+            var query = DbContext.T_Camera.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(post.QueryName))
+            {
+                query = query.Where(d => d.CameraName.Contains(post.QueryName));
+            }
+
+            var total = query.Count();
+            var rows = query.OrderBy(d => d.ID).Skip(post.offset).Take(post.limit).ToList()
+                .Select(c => new
+                {
+                    c.ID,
+                    c.CameraName,
+                    DbContext.T_Devs.FirstOrDefault(d => d.Id == c.DevId)?.DevCode,
+                    c.UserName
+                });
+            return Json(new
+            {
+                total,
+                rows
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
