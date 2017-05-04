@@ -6,6 +6,7 @@ using SHEP_Platform.Models.Admin;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Transactions;
+using SHEP_Platform.Models.Api;
 using SHWDTech.Platform.Utility;
 
 namespace SHEP_Platform.Controllers
@@ -171,27 +172,32 @@ namespace SHEP_Platform.Controllers
 
             WdContext.SiteMapMenu.ActionMenu.Name = "设备管理";
 
-            var list = DbContext.T_Devs.ToList().Select(source => new Devs
-            {
-                Id = source.Id,
-                StatName = DbContext.T_Stats.FirstOrDefault(obj => obj.Id.ToString() == source.StatId)?.StatName,
-                DevCode = source.DevCode,
-                NodeId = Global.BytesToInt32(DbContext.T_DevAddr.FirstOrDefault(d => d.DevId == source.Id).NodeId, 0, false),
-                StartTime = source.StartTime.ToString("yyyy-MM-dd"),
-                PreEndTime = source.PreEndTime.ToString("yyyy-MM-dd"),
-                EndTime = source.EndTime.ToString("yyyy-MM-dd"),
-                DevStatus = source.DevStatus == 1 ? "是" : "否",
-                VideoURL = source.VideoURL
-            }).ToList();
+            return View();
+        }
 
-            var model = new DevManageViewModel
+        public ActionResult DevsTable(NameQueryTablePost post)
+        {
+            var query = DbContext.T_Devs.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(post.QueryName))
             {
-                PageIndex = 0,
-                PageSize = 10,
-                DevList = list
-            };
+                query = query.Where(d => d.DevCode.Contains(post.QueryName));
+            }
 
-            return View(model);
+            var total = query.Count();
+            var rows = query.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit).ToList()
+                .Select(dev => new
+                {
+                    dev.Id,
+                    dev.DevCode,
+                    DbContext.T_Stats.First(obj => obj.Id.ToString() == dev.StatId).StatName,
+                    NodeId = Global.BytesToInt32(DbContext.T_DevAddr.First(d => d.DevId == dev.Id).NodeId, 0, false),
+                    Status = dev.DevStatus == 1 ? "启用" : "停用"
+                });
+            return Json(new
+            {
+                total,
+                rows
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -225,9 +231,7 @@ namespace SHEP_Platform.Controllers
                 model.StatId = int.Parse(dev.StatId);
                 model.VideoUrl = dev.VideoURL;
 
-                var devAddr = DbContext.T_DevAddr.First(obj => obj.DevId == dev.Id).NodeId;
-
-                model.Addr = BitConverter.ToString(devAddr).Replace("-", string.Empty);
+                model.Addr = Global.BytesToInt32(DbContext.T_DevAddr.First(d => d.DevId == dev.Id).NodeId, 0, false).ToString();
             }
 
             ViewBag.ReturnUrl = "/Admin/DevManage";

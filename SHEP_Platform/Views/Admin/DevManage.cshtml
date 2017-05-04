@@ -4,64 +4,54 @@
 @{
             ViewBag.Title = "系统管理";
 }
-
-<table class="table table-bordered table-hover">
-    <colgroup style="width: 100px;"></colgroup>
-    <colgroup style="width: 100px;"></colgroup>
-    <colgroup style="width: 100px;"></colgroup>
-    <colgroup style="width: 100px;"></colgroup>
-    <colgroup style="width: 100px;"></colgroup>
-    <colgroup style="width: 100px;"></colgroup>
-    <colgroup style="width: 100px;"></colgroup>
-    <colgroup style="width: 100px;"></colgroup>
-    <colgroup style="width: 100px;"></colgroup>
-    <thead>
-        <tr>
-            <td>监测点名称</td>
-            <td>设备名称</td>
-            <td>NodeId</td>
-            <td>安装时间</td>
-            <td>预计结束时间</td>
-            <td>实际结束时间</td>
-            <td>启动</td>
-            <td>视频地址</td>
-            <td>操作</td>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            foreach (var devse in Model.DevList)
-            {
-                <tr id="@devse.Id">
-                    <td>@devse.StatName</td>
-                    <td>@devse.DevCode</td>
-                    <td>@devse.NodeId</td>
-                    <td>@devse.StartTime</td>
-                    <td>@devse.PreEndTime</td>
-                    <td>@devse.EndTime</td>
-                    <td>@devse.DevStatus</td>
-                    <td>@devse.VideoURL</td>
-                    <td>
-                        <a href="/Admin/DevEdit/@devse.Id"><span class="glyphicon glyphicon-pencil"></span>更新</a> -
-                        <a href="javascript:delConfirm('@devse.Id')"><span class="glyphicon glyphicon-remove"></span>删除</a>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+<div>
+    @{
+        var table = Html.BootstrapTable(null, TablePaginationOption.server, new
+        {
+            id = "devmgrTable",
+            data_page_size = 25,
+            data_reset_offset = true,
+            data_url = "/Admin/DevsTable",
+            data_height = 600
+        });
+        var builder = table.Column("监测点名称", "StatName")
+            .Column("设备名称", "DevCode")
+            .Column("设备NODEID", "NodeId")
+            .Column("设备状态", "Status")
+            .Column("操作")
+            .Apply(ColumnOption.formatter, "devMgrFormatter")
+            .Apply(ColumnOption.events, "devMgrEvents");
+    }
+    @(builder)
+</div>
 
 @section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")
     <script type="text/javascript">
-        var delConfirm = function (id) {
-            if (confirm('确定删除该设备吗？')) {
-                $.get('/Admin/DevDelete/' + id, null, function (ret) {
-                    if (ret.msg === 'success') {
-                        $('#' + id).remove();
-                        msg.info('删除成功');
-                    }
-                });
+        window.devMgrFormatter = function (index, row, element) {
+            debugger;
+            return [
+                '<a class="update" href="/Admin/DevEdit/' + row.Id + '" style="margin-right: 5px;">更新</a>',
+                '<a class="delete" href="javascript:void(0)">删除</a>'
+            ].join('');
+        }
+
+        window.devMgrEvents = {
+            'click .delete': function (e, value, row) {
+                if (confirm('确定删除该设备吗？')) {
+                    $.get('/Admin/DevDelete/' + row.Id, null, function (ret) {
+                        if (ret.msg === 'success') {
+                            $('#' + id).remove();
+                            msg.info('删除成功');
+                        }
+                    });
+                }
             }
         };
+
+        $(function () {
+            $('#devmgrTable').bootstrapTable();
+        });
     </script>
 }
