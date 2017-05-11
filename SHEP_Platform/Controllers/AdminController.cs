@@ -253,15 +253,7 @@ namespace SHEP_Platform.Controllers
                 model.StatId = int.Parse(dev.StatId);
                 model.VideoUrl = dev.VideoURL;
 
-<<<<<<< HEAD
                 model.Addr = Global.BytesToInt32(DbContext.T_DevAddr.First(d => d.DevId == dev.Id).NodeId, 0, false).ToString();
-=======
-                var devAddr = DbContext.T_DevAddr.FirstOrDefault(obj => obj.DevId == dev.Id)?.NodeId;
-                if (devAddr != null)
-                {
-                    model.Addr = BitConverter.ToString(devAddr).Replace("-", string.Empty);
-                }
->>>>>>> yingfan
             }
 
             ViewBag.ReturnUrl = "/Admin/DevManage";
@@ -306,7 +298,6 @@ namespace SHEP_Platform.Controllers
                             ModelState.AddModelError("Addr", "设备ID已经存在。");
                             return View(model);
                         }
-<<<<<<< HEAD
                         DbContext.T_Devs.Add(dev);
                         DbContext.SaveChanges();
                         var devAddr = new T_DevAddr
@@ -316,28 +307,6 @@ namespace SHEP_Platform.Controllers
                         };
                         DbContext.T_DevAddr.Add(devAddr);
                     }
-=======
-                    };
-                    model.StatusLIst = new SelectList(statusList, "Value", "Text", model.DevStatus);
-                    model.StatList = new SelectList(DbContext.T_Stats, "Id", "StatName", model.StatId);
-                    model.IsNew = true;
-
-                    return View(model);
-                }
-
-                var addr = new T_DevAddr
-                {
-                    DevId = DbContext.T_Devs.First(obj => obj.DevCode == model.DevCode).Id,
-                    NodeId = Global.StringToBytes(model.Addr)
-                };
-                DbContext.T_DevAddr.Add(addr);
-                DbContext.SaveChanges();
-            }
-            else
-            {
-                try
-                {
->>>>>>> yingfan
                     DbContext.SaveChanges();
                 }
                 catch (Exception ex)
@@ -364,9 +333,7 @@ namespace SHEP_Platform.Controllers
             }
 
             var dev = DbContext.T_Devs.First(item => item.Id == id);
-            var addr = DbContext.T_DevAddr.First(d => d.DevId == dev.Id);
             DbContext.T_Devs.Remove(dev);
-            DbContext.T_DevAddr.Remove(addr);
             DbContext.SaveChanges();
 
             var ret = new
@@ -619,7 +586,6 @@ namespace SHEP_Platform.Controllers
                 var authedStats = DbContext.T_UserStats.Where(obj => obj.UserId == user.UserId).ToList();
                 foreach (var authedStat in authedStats)
                 {
-<<<<<<< HEAD
                     DbContext.T_UserStats.Remove(authedStat);
                 }
                 var authStats = Request["stats"];
@@ -630,9 +596,6 @@ namespace SHEP_Platform.Controllers
                     {
                         DbContext.T_UserStats.Add(new T_UserStats { UserId = user.UserId, StatId = stat });
                     }
-=======
-                    DbContext.T_UserStats.Add(new T_UserStats() { UserId = model.UserId, StatId = stat });
->>>>>>> yingfan
                 }
                 DbContext.SaveChanges();
             }
