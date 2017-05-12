@@ -211,7 +211,7 @@ namespace SHEP_Platform.Controllers
                 {
                     dev.Id,
                     dev.DevCode,
-                    DbContext.T_Stats.First(obj => obj.Id.ToString() == dev.StatId).StatName,
+                    DbContext.T_Stats.FirstOrDefault(obj => obj.Id.ToString() == dev.StatId)?.StatName,
                     NodeId = Global.BytesToInt32(DbContext.T_DevAddr.First(d => d.DevId == dev.Id).NodeId, 0, false),
                     Status = dev.DevStatus == 1 ? "启用" : "停用"
                 });
