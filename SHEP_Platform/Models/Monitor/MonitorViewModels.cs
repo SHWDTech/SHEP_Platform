@@ -88,10 +88,10 @@ namespace SHEP_Platform.Models.Monitor
         {
             if (esMin != null)
             {
-                TP = $"{esMin.TP}";
+                TP = $"{esMin.TP / 1000}";
                 DB = $"{esMin.DB}";
-                PM25 = $"{esMin.PM25}";
-                PM100 = $"{esMin.PM100}";
+                PM25 = $"{esMin.PM25 / 1000}";
+                PM100 = $"{esMin.PM100 / 1000}";
                 Temperature = $"{esMin.Temperature}";
                 Humidity = $"{esMin.Humidity}";
                 WindSpeed = $"{esMin.WindSpeed}";
