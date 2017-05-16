@@ -309,27 +309,27 @@ namespace SHEP_Platform.Models.Admin
     {
         public DeviceActivity(int devId)
         {
-            var redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastConnectTime:{devId}");
+            var redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastConnectTime:{AppConfig.CompanyName}-{devId}");
             if (redisValue.HasValue)
             {
                 LastConnect = redisValue.ToString();
             }
-            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastSendTime:{devId}");
+            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastSendTime:{AppConfig.CompanyName}-{devId}");
             if (redisValue.HasValue)
             {
                 LastSend = redisValue.ToString();
             }
-            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastHeartBeatTime:{devId}");
+            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastHeartBeatTime:{AppConfig.CompanyName}-{devId}");
             if (redisValue.HasValue)
             {
                 LastHeartBeat = redisValue.ToString();
             }
-            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastReciveTime:{devId}");
+            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastReciveTime:{AppConfig.CompanyName}-{devId}");
             if (redisValue.HasValue)
             {
                 LastRecive = redisValue.ToString();
             }
-            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastAutoUploadTime:{devId}");
+            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastAutoUploadTime:{AppConfig.CompanyName}-{devId}");
             if (redisValue.HasValue)
             {
                 LastAutoUpload = redisValue.ToString();

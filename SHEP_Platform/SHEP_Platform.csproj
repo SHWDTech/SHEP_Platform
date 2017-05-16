@@ -164,6 +164,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attribute\WdAuthorizeAttribute.cs" />
+    <Compile Include="Common\AppConfig.cs" />
     <Compile Include="Common\HikAction.cs" />
     <Compile Include="Common\HikMethod.cs" />
     <Compile Include="Common\HkSdk.cs" />
