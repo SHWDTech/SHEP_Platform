@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using SHEP_Platform.Common;
 
 namespace SHEP_Platform.Models.Admin
 {
@@ -302,5 +303,47 @@ namespace SHEP_Platform.Models.Admin
         public string StatName { get; set; }
 
         public string DeviceNodeId { get; set; }
+    }
+
+    public class DeviceActivity
+    {
+        public DeviceActivity(int devId)
+        {
+            var redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastConnectTime:{devId}");
+            if (redisValue.HasValue)
+            {
+                LastConnect = redisValue.ToString();
+            }
+            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastSendTime:{devId}");
+            if (redisValue.HasValue)
+            {
+                LastSend = redisValue.ToString();
+            }
+            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastHeartBeatTime:{devId}");
+            if (redisValue.HasValue)
+            {
+                LastHeartBeat = redisValue.ToString();
+            }
+            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastReciveTime:{devId}");
+            if (redisValue.HasValue)
+            {
+                LastRecive = redisValue.ToString();
+            }
+            redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastAutoUploadTime:{devId}");
+            if (redisValue.HasValue)
+            {
+                LastAutoUpload = redisValue.ToString();
+            }
+        }
+
+        public string LastConnect { get; } = "服务器尚无记录。";
+
+        public string LastAutoUpload { get; } = "服务器尚无记录。";
+
+        public string LastRecive { get; } = "服务器尚无记录。";
+
+        public string LastHeartBeat { get; } = "服务器尚无记录。";
+
+        public string LastSend { get; } = "服务器尚无记录。";
     }
 }

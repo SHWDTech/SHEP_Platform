@@ -84,10 +84,14 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.2.3\lib\net46\StackExchange.Redis.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
@@ -165,6 +169,7 @@
     <Compile Include="Common\HkSdk.cs" />
     <Compile Include="Common\ILogService.cs" />
     <Compile Include="Common\LogService.cs" />
+    <Compile Include="Common\RedisService.cs" />
     <Compile Include="Common\TextMessageService.cs" />
     <Compile Include="Controllers\AppServerController.cs" />
     <Compile Include="Models\Analysis\AlarmDetailsViewModel.cs" />

@@ -776,19 +776,46 @@ namespace SHEP_Platform.Controllers
             return View(devs);
         }
 
-        [AllowAnonymous]
         public ActionResult DeviceRecent()
         {
-            ViewBag.Devs = DbContext.T_Devs.ToList();
-            if (Request.Form["devId"] == null) return View(new List<T_ESMin>());
-            var devId = int.Parse(Request.Form["devId"]);
-            var recent =
-                DbContext.T_ESMin.Where(min => min.DevId == devId)
-                    .OrderByDescending(d => d.UpdateTime)
-                    .Take(15)
-                    .ToList();
+            WdContext.SiteMapMenu.ActionMenu.Name = "设备测试";
+            return View();
+        }
 
-            return View(recent);
+        public ActionResult AllDevice()
+        {
+            return Json(DbContext.T_Devs.Select(d => new
+            {
+                id = d.Id,
+                text = d.DevCode
+            })
+                .ToList(), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DeviceActivity(int devId)
+        {
+            return Json(new DeviceActivity(devId), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DevRecentData(int devId)
+        {
+            var rows = DbContext.T_ESMin.Where(min => min.DevId == devId)
+                .OrderByDescending(o => o.UpdateTime)
+                .Take(15)
+                .ToList()
+                .Select(d => new
+                {
+                    d.TP,
+                    d.DB,
+                    d.PM25,
+                    d.PM100,
+                    d.WindSpeed,
+                    d.WindDirection,
+                    d.Temperature,
+                    d.Humidity,
+                    UpdateTime = $"{d.UpdateTime:yyyy-MM-dd HH:mm:ss fff}"
+                });
+            return Json(rows, JsonRequestBehavior.AllowGet);
         }
     }
 }

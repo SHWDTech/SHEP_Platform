@@ -1,74 +1,85 @@
 ﻿@model List<T_ESMin>
 
-@{
-    Layout = null;
+@section css{
+    @Styles.Render("~/Content/select2-bootstrap")
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
 }
 
-@using (Html.BeginForm("DeviceRecent", "Admin", FormMethod.Post))
-{
-    <select id="devId" name="devId">
-        @{
-            var devs = (List<T_Devs>) ViewBag.Devs;
-            foreach (var dev in devs)
-            {
-                <option value="@dev.Id">@dev.DevCode</option>
-            }
-        }
-    </select>
-    <button type="submit">
-        提交
-    </button>
-}
-@{
-    <table>
+<div>
+    <select id="devId" name="devId" style="width: 200px;"></select>
+    <input type="button" class="btn btn-primary" value="刷新时间信息" onclick="loadDevActivity($('#devId').val())" />
+    <input type="button" class="btn btn-primary" value="查询最近15条数据" id="queryRecent"/>
+    <table class="table table-bordered" style="margin-top: 5px;">
         <thead>
-        <tr>
-            <td>
-                TSP
-            </td>
-            <td>
-                PM2.5
-            </td>
-            <td>
-                PM10
-            </td>
-            <td>
-                噪音
-            </td>
-            <td>
-                温度
-            </td>
-            <td>
-                湿度
-            </td>
-            <td>
-                风速
-            </td>
-            <td>
-                风向
-            </td>
-            <td>
-                更新时间
-            </td>
-        </tr>
+            <tr>
+                <td>上一次连接服务器</td>
+                <td>上一次自动上报</td>
+                <td>上一次接收指令响应</td>
+                <td>上一次心跳包</td>
+                <td>上一次发送数据</td>
+            </tr>
         </thead>
         <tbody>
-            @{
-                foreach (var min in Model)
-                {
-                    <tr>
-                        <td>@min.TP</td>
-                        <td>@min.PM25</td>
-                        <td>@min.PM100</td>
-                        <td>@min.DB</td>
-                        <td>@min.Temperature</td>
-                        <td>@min.Humidity</td>
-                        <td>@min.WindSpeed</td>
-                        <td>@min.WindDirection</td>
-                        <td>@min.UpdateTime</td>
-                    </tr>
-                }
-            }
+            <tr>
+                <td id="lastConnect"></td>
+                <td id="lastAutoUplod"></td>
+                <td id="lastRecive"></td>
+                <td id="lastHeartBeat"></td>
+                <td id="lastSend"></td>
+            </tr>
         </tbody>
     </table>
+</div>
+<div>
+    @{
+        var table = Html.BootstrapTable(null, TablePaginationOption.client, new
+        {
+            id = "devRecentData",
+            data_page_size = 15,
+            data_reset_offset = true,
+            data_height = 400
+        });
+        var builder = table.Column("颗粒物", "TP")
+            .Column("噪音", "DB")
+            .Column("PM2.5", "PM25")
+            .Column("PM10", "PM100")
+            .Column("风速", "WindSpeed")
+            .Column("风向", "WindDirection")
+            .Column("温度", "Temperature")
+            .Column("湿度", "Humidity")
+            .Column("更新时间", "UpdateTime");
+    }
+    @(builder)
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")
+    @Scripts.Render("~/bundles/select2")
+    <script type="text/javascript" src="/Scripts/Utility/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript">
+        $.get('/Admin/AllDevice', null, function (ret) {
+            $('#devId').select2({
+                data: ret
+            });
+        });
+        var loadDevActivity = function (devId) {
+            $.get('/Admin/DeviceActivity', { devId: devId }, function (ret) {
+                $('#lastConnect').html(ret.LastConnect);
+                $('#lastAutoUplod').html(ret.LastAutoUpload);
+                $('#lastRecive').html(ret.LastRecive);
+                $('#lastHeartBeat').html(ret.LastHeartBeat);
+                $('#lastSend').html(ret.LastSend);
+            });
+        }
+        $('#devId').on('select2:select', function (evt) {
+            loadDevActivity(evt.params.data.id);
+        });
+
+        $('#devRecentData').bootstrapTable();
+        $('#queryRecent').on('click', function() {
+            $('#devRecentData').bootstrapTable('refresh',{
+                url: '/Admin/DevRecentData?devId' + '=' + $('#devId').val()
+            });
+        });
+    </script>
 }
