@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using SHEP_Platform.Common;
 using SHEP_Platform.Enum;
+using SHEP_Platform.Models.Admin;
 using SHEP_Platform.Models.Analysis;
 using SHEP_Platform.Models.Api;
 using SHEP_Platform.Models.Monitor;
@@ -198,14 +199,7 @@ namespace SHEP_Platform.Controllers
             var query = DbContext.T_ESMin.AsQueryable();
             var targetType = int.Parse(Request["targetType"]);
 
-            if (targetType == 1)
-            {
-                query = query.Where(q => q.StatId == targetId);
-            }
-            else
-            {
-                query = query.Where(q => q.DevId == targetId);
-            }
+            query = targetType == 1 ? query.Where(q => q.StatId == targetId) : query.Where(q => q.DevId == targetId);
             var dataResult = query.Where(item => item.UpdateTime > startDate)
                 .OrderBy(obj => obj.UpdateTime).ToList()
                 // ReSharper disable once PossibleInvalidOperationException
@@ -962,9 +956,65 @@ namespace SHEP_Platform.Controllers
 
         public JsonResult GetStatDevs(string statId)
         {
-            var devs = DbContext.T_Devs.Where(dev => dev.StatId == statId).Select(o => new { id = o.Id, Text = o.DevCode}).ToList();
+            var devs = DbContext.T_Devs.Where(dev => dev.StatId == statId).Select(o => new { id = o.Id, Text = o.DevCode }).ToList();
 
             return Json(devs, JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowAnonymous]
+        public ActionResult GetDeviceTestServices()
+        {
+            var services = DbContext.T_SysConfig
+                .Where(cfg => cfg.ConfigType == "DeviceTestingApp" && cfg.ConfigName == "Servers")
+                .ToList()
+                .Select(ser => ser.ConfigValue.Split(',')).Select(arr => new ServerInfomation
+                {
+                    ServerName = arr[0],
+                    ServerAddress = arr[1]
+                }).ToList();
+
+            return Content(XmlSerializerHelper.Serialize(services));
+        }
+
+        [AllowAnonymous]
+        public ActionResult GetSystemDevices()
+        {
+            var devs = DbContext.T_Devs.Select(d => new DeviceInfomation
+            {
+                DeviceId = d.Id.ToString(),
+                DeviceName = d.DevCode
+            }).ToList();
+
+            return Content(XmlSerializerHelper.Serialize(devs));
+        }
+
+        [AllowAnonymous]
+        public ActionResult AppGetDeviceActivity(int devId)
+        {
+            return Content(XmlSerializerHelper.Serialize(new DeviceActivity(devId)));
+        }
+
+        [AllowAnonymous]
+        public ActionResult DeviceLastData(int devId)
+        {
+            var data = DbContext.T_ESMin.Where(m => m.DevId == devId).OrderByDescending(min => min.UpdateTime)
+                           .FirstOrDefault();
+            if (data == null)
+            {
+                return Content(string.Empty);
+            }
+            return Content(XmlSerializerHelper.Serialize(new DeviceRecentData
+            {
+                Tp = $"{data.TP}",
+                Db = $"{data.DB}",
+                Pm25 = $"{data.PM25}",
+                Pm100 = $"{data.PM100}",
+                WindSpeed = $"{data.WindSpeed}",
+                WindDirection = $"{data.WindDirection}",
+                Temp = $"{data.Temperature}",
+                Humidity = $"{data.Humidity}",
+                UpdateTime = $"{data.UpdateTime:yyyy-MM-dd HH:mm:ss}"
+            }));
         }
     }
 }

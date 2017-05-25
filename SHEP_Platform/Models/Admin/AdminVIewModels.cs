@@ -307,6 +307,11 @@ namespace SHEP_Platform.Models.Admin
 
     public class DeviceActivity
     {
+        public DeviceActivity()
+        {
+            
+        }
+
         public DeviceActivity(int devId)
         {
             var redisValue = RedisService.GetRedisDatabase().StringGet($"Device-LastConnectTime:{AppConfig.CompanyName}-{devId}");
@@ -336,14 +341,14 @@ namespace SHEP_Platform.Models.Admin
             }
         }
 
-        public string LastConnect { get; } = "服务器尚无记录。";
+        public string LastConnect { get; set; } = "服务器尚无记录。";
 
-        public string LastAutoUpload { get; } = "服务器尚无记录。";
+        public string LastAutoUpload { get; set; } = "服务器尚无记录。";
 
-        public string LastRecive { get; } = "服务器尚无记录。";
+        public string LastRecive { get; set; } = "服务器尚无记录。";
 
-        public string LastHeartBeat { get; } = "服务器尚无记录。";
+        public string LastHeartBeat { get; set; } = "服务器尚无记录。";
 
-        public string LastSend { get; } = "服务器尚无记录。";
+        public string LastSend { get; set; } = "服务器尚无记录。";
     }
 }

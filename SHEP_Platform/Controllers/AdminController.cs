@@ -796,6 +796,7 @@ namespace SHEP_Platform.Controllers
         {
             return Json(new DeviceActivity(devId), JsonRequestBehavior.AllowGet);
         }
+        
 
         public ActionResult DevRecentData(int devId)
         {
