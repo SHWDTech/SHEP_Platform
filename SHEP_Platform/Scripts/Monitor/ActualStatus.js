@@ -6,6 +6,8 @@ var dbGauge = null;
 var pm25Gauge = null;
 //一小时数值变化表
 var mainChart = null;
+//PM10仪表板
+var pm100Gauge = null;
 //Ajax请求地址
 var ajaxUrl = '/Ajax/Access';
 //表格主体
@@ -34,6 +36,8 @@ $(function () {
     dbGauge = echarts.init(document.getElementById('dbGauge'));
 
     pm25Gauge = echarts.init(document.getElementById('pm25Gauge'));
+
+    pm100Gauge = echarts.init(document.getElementById('pm100Gauge'));
 
     if (!BaseInfo.IsMobileDevice) {
         mainChart = echarts.init(document.getElementById('divBar'));
@@ -132,6 +136,7 @@ var load = function (id, name, type) {
     tpGauge.showLoading();
     dbGauge.showLoading();
     pm25Gauge.showLoading();
+    pm100Gauge.showLoading();
     var param = {
         'fun': ajaxFunction,
         'targetId': id,
@@ -147,6 +152,7 @@ var load = function (id, name, type) {
             tpGauge.hideLoading();
             dbGauge.hideLoading();
             pm25Gauge.hideLoading();
+            pm100Gauge.hideLoading();
             if (type == 1) {
                 setTable(ret, name);
                 loadDevs(id);
@@ -176,7 +182,7 @@ var setTable = function(ret, name) {
 
 var setChart = function (ret, name, id, type) {
     var list = ret.dataResult;
-    Echart_Tools.ResetData([mainChart, tpGauge, dbGauge, pm25Gauge]);
+    Echart_Tools.ResetData([mainChart, tpGauge, dbGauge, pm25Gauge, pm100Gauge]);
     if (list.length === 0) {
         msg.warning('暂无最新数据！');
         return;
@@ -229,6 +235,7 @@ var setChart = function (ret, name, id, type) {
     var tpGaugeOption = Echart_Tools.getGaugeOption();
     var dbGaugeOption = Echart_Tools.getGaugeOption();
     var pm25GaugeOption = Echart_Tools.getGaugeOption();
+    var pm100GaugeOption = Echart_Tools.getGaugeOption();
 
     tpGaugeOption.title.text = '颗粒物';
     var currentTp = $(list).last()[0].TP;
@@ -238,6 +245,10 @@ var setChart = function (ret, name, id, type) {
     var currentPm25 = $(list).last()[0].PM25;
     pm25GaugeOption.series[0].data = { name: 'PM2.5', value: currentPm25 };
     pm25GaugeOption.series[0].max = currentPm25 > 2 ? Math.ceil($(list).last()[0].PM25) : 2;
+    pm100GaugeOption.title.text = 'PM100';
+    var currentPm100 = $(list).last()[0].PM100;
+    pm100GaugeOption.series[0].data = { name: 'PM10', value: currentPm100 };
+    pm100GaugeOption.series[0].max = currentPm100 > 2 ? Math.ceil($(list).last()[0].PM25) : 2;
     dbGaugeOption.title.text = '噪音值';
     var currentDb = $(list).last()[0].DB;
     dbGaugeOption.series[0].max = currentDb > 90 ? Math.ceil($(list).last()[0].DB / 10) * 10 : 90;
@@ -245,6 +256,7 @@ var setChart = function (ret, name, id, type) {
     tpGauge.setOption(tpGaugeOption);
     dbGauge.setOption(dbGaugeOption);
     pm25Gauge.setOption(pm25GaugeOption);
+    pm100Gauge.setOption(pm100GaugeOption);
     if (type == 1) {
         $('#itemTitle').find('#chartTitle').html(name + '实时数据');
         $('#itemTitle').find('#cameraUrl').attr('href', ret.cameraurl);

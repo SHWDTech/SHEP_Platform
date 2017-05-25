@@ -940,8 +940,9 @@ namespace SHEP_Platform.Controllers
 
         public JsonResult GetAllStats(TablePost post)
         {
-            var total = DbContext.T_Stats.Count();
-            var rows = DbContext.T_Stats.OrderBy(o => o.Id).Skip(post.offset).Take(post.limit).Select(s => new
+            var total = WdContext.StatList.Count();
+            
+            var rows = WdContext.StatList.OrderBy(o => o.Id).Skip(post.offset).Take(post.limit).Select(s => new
             {
                 s.Id,
                 s.StatName
