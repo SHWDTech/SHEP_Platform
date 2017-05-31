@@ -8,6 +8,7 @@ using Android.Widget;
 using DeviceStatusViewer.Models;
 using DeviceStatusViewer.Utility;
 using System;
+using System.Threading.Tasks;
 using Android.Views;
 using Android.Content;
 
@@ -21,32 +22,41 @@ namespace DeviceStatusViewer
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            try
+            Task.Factory.StartNew(() =>
             {
-                var request = WebRequest.Create("http://yun.shweidong.com:10888/Ajax/GetDeviceTestServices") as HttpWebRequest;
-                if (request != null)
+                try
                 {
-                    request.Method = "GET";
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    var httpresponse = (HttpWebResponse)request.GetResponse();
-                    using (var stream = new StreamReader(httpresponse.GetResponseStream()))
+                    var request =
+                        WebRequest.Create(
+                            "http://yun.shweidong.com:10888/Ajax/GetDeviceTestServices") as HttpWebRequest;
+                    if (request != null)
                     {
-                        var infos = stream.ReadToEnd();
-                        _serverInfos.AddRange(XmlSerializerHelper.DeSerialize<List<ServerInfomation>>(infos));
-                        var servers = _serverInfos.Select(ser => ser.ServerName).ToArray();
-                        ListAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, servers);
+                        request.Method = "GET";
+                        request.ContentType = "application/x-www-form-urlencoded";
+                        var httpresponse = (HttpWebResponse) request.GetResponse();
+                        using (var stream = new StreamReader(httpresponse.GetResponseStream()))
+                        {
+                            var infos = stream.ReadToEnd();
+                            _serverInfos.AddRange(XmlSerializerHelper.DeSerialize<List<ServerInfomation>>(infos));
+                            var servers = _serverInfos.Select(ser => ser.ServerName).ToArray();
+                            RunOnUiThread(() =>
+                            {
+                                ListAdapter =
+                                    new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, servers);
+                            });
+                        }
                     }
                 }
-            }
-            catch (Exception)
-            {
-                using (var callDialog = new AlertDialog.Builder(this))
+                catch (Exception)
                 {
-                    callDialog.SetMessage("获取服务器信息失败了。");
-                    callDialog.SetPositiveButton("好的", delegate { });
-                    callDialog.Show();
+                    using (var callDialog = new AlertDialog.Builder(this))
+                    {
+                        callDialog.SetMessage("获取服务器信息失败了。");
+                        callDialog.SetPositiveButton("好的", delegate { });
+                        callDialog.Show();
+                    }
                 }
-            }
+            });
         }
 
         protected override void OnListItemClick(ListView l, View v, int position, long id)

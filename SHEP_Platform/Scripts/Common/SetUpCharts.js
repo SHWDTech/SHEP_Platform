@@ -59,7 +59,7 @@ Echart_Tools.getGaugeOption = function () {
                 }
             }
         },
-        backgroundColor:'#FFFFFF',
+        backgroundColor: '#FFFFFF',
         series: [
             {
                 name: "",
@@ -105,6 +105,12 @@ Echart_Tools.getOption = function () {
             data: ['']
         },
         xAxis: {
+            selected: {
+                '颗粒物': false,
+                '噪音值': false,
+                'PM2.5': false,
+                'PM10': true
+            },
             data: []
         },
         yAxis: {},
@@ -130,23 +136,23 @@ Echart_Tools.getOption = function () {
         },
         backgroundColor: '#FFFFFF',
         series: [
-        {
-            itemStyle: {
-                normal: {
-                    color: '#1abc9c'
+            {
+                itemStyle: {
+                    normal: {
+                        color: '#1abc9c'
+                    }
+                },
+                name: '',
+                min: 0,
+                type: 'bar',
+                data: [],
+                markPoint: {
+                    data: []
+                },
+                markLine: {
+                    data: []
                 }
-            },
-            name: '',
-            min: 0,
-            type: 'bar',
-            data: [],
-            markPoint: {
-                data: []
-            },
-            markLine: {
-                data: []
             }
-        }
         ]
     };
 
@@ -197,8 +203,8 @@ Echart_Tools.getStackLineOption = function () {
     return option;
 };
 
-Echart_Tools.ResetData = function(charts) {
-    charts.forEach(function(chart) {
+Echart_Tools.ResetData = function (charts) {
+    charts.forEach(function (chart) {
         chart.clear();
     });
 };

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using Android.App;
 using Android.OS;
 using Android.Widget;
@@ -37,83 +38,98 @@ namespace DeviceStatusViewer
 
         private void GetDeviceStatus()
         {
-            try
+            Task.Factory.StartNew(() =>
             {
-                var request = WebRequest.Create($"http://{_serverAddress}/Ajax/AppGetDeviceActivity?devId={_devId}") as HttpWebRequest;
-                if (request != null)
+                try
                 {
-                    request.Method = "GET";
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    var httpresponse = (HttpWebResponse)request.GetResponse();
-                    using (var stream = new StreamReader(httpresponse.GetResponseStream()))
+                    var request =
+                        WebRequest.Create($"http://{_serverAddress}/Ajax/AppGetDeviceActivity?devId={_devId}") as
+                            HttpWebRequest;
+                    if (request != null)
                     {
-                        var infos = stream.ReadToEnd();
-                        var devActivity = XmlSerializerHelper.DeSerialize<Models.DeviceActivity>(infos);
-                        var lastConnect = FindViewById<TextView>(Resource.Id.LastConnect);
-                        lastConnect.Text = devActivity.LastConnect;
-                        var lastAutoUpload = FindViewById<TextView>(Resource.Id.LastAutoUpload);
-                        lastAutoUpload.Text = devActivity.LastAutoUpload;
-                        var lastHeartBeat = FindViewById<TextView>(Resource.Id.LastHeartBeat);
-                        lastHeartBeat.Text = devActivity.LastConnect;
+                        request.Method = "GET";
+                        request.ContentType = "application/x-www-form-urlencoded";
+                        var httpresponse = (HttpWebResponse) request.GetResponse();
+                        using (var stream = new StreamReader(httpresponse.GetResponseStream()))
+                        {
+                            var infos = stream.ReadToEnd();
+                            var devActivity = XmlSerializerHelper.DeSerialize<Models.DeviceActivity>(infos);
+                            var lastConnect = FindViewById<TextView>(Resource.Id.LastConnect);
+                            var lastAutoUpload = FindViewById<TextView>(Resource.Id.LastAutoUpload);
+                            var lastHeartBeat = FindViewById<TextView>(Resource.Id.LastHeartBeat);
+                            RunOnUiThread(() => {
+                                lastAutoUpload.Text = devActivity.LastAutoUpload;
+                                lastConnect.Text = devActivity.LastConnect;
+                                lastHeartBeat.Text = devActivity.LastConnect;
+                            });
+                        }
                     }
                 }
-            }
-            catch (Exception)
-            {
-                using (var callDialog = new AlertDialog.Builder(this))
+                catch (Exception)
                 {
-                    callDialog.SetMessage("获取设备信息失败了。");
-                    callDialog.SetPositiveButton("好的", delegate { });
-                    callDialog.Show();
+                    using (var callDialog = new AlertDialog.Builder(this))
+                    {
+                        callDialog.SetMessage("获取设备信息失败了。");
+                        callDialog.SetPositiveButton("好的", delegate { });
+                        callDialog.Show();
+                    }
                 }
-            }
+            });
         }
 
         private void GetDeviceRecentData()
         {
-            try
+            Task.Factory.StartNew(() =>
             {
-                var request = WebRequest.Create($"http://{_serverAddress}/Ajax/DeviceLastData?devId={_devId}") as HttpWebRequest;
-                if (request != null)
+                try
                 {
-                    request.Method = "GET";
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    var httpresponse = (HttpWebResponse)request.GetResponse();
-                    using (var stream = new StreamReader(httpresponse.GetResponseStream()))
+                    var request =
+                        WebRequest.Create($"http://{_serverAddress}/Ajax/DeviceLastData?devId={_devId}") as
+                            HttpWebRequest;
+                    if (request != null)
                     {
-                        var infos = stream.ReadToEnd();
-                        if (string.IsNullOrWhiteSpace(infos)) return;
-                        var recentData = XmlSerializerHelper.DeSerialize<DeviceRecentData>(infos);
-                        var tp = FindViewById<TextView>(Resource.Id.TP);
-                        tp.Text = recentData.Tp.Trim();
-                        var db = FindViewById<TextView>(Resource.Id.DB);
-                        db.Text = recentData.Db.Trim();
-                        var pm25 = FindViewById<TextView>(Resource.Id.PM25);
-                        pm25.Text = recentData.Pm25.Trim();
-                        var pm100 = FindViewById<TextView>(Resource.Id.PM100);
-                        pm100.Text = recentData.Pm100.Trim();
-                        var windspeed = FindViewById<TextView>(Resource.Id.WindSpeed);
-                        windspeed.Text = recentData.WindSpeed.Trim();
-                        var winddir = FindViewById<TextView>(Resource.Id.WindDirection);
-                        winddir.Text = recentData.WindDirection.Trim();
-                        var temp = FindViewById<TextView>(Resource.Id.Temp);
-                        temp.Text = recentData.Temp.Trim();
-                        var humidity = FindViewById<TextView>(Resource.Id.Humidity);
-                        humidity.Text = recentData.Humidity.Trim();
-                        var updateTime = FindViewById<TextView>(Resource.Id.UpdateTime);
-                        updateTime.Text = recentData.UpdateTime.Trim();
+                        request.Method = "GET";
+                        request.ContentType = "application/x-www-form-urlencoded";
+                        var httpresponse = (HttpWebResponse) request.GetResponse();
+                        using (var stream = new StreamReader(httpresponse.GetResponseStream()))
+                        {
+                            var infos = stream.ReadToEnd();
+                            if (string.IsNullOrWhiteSpace(infos)) return;
+                            var recentData = XmlSerializerHelper.DeSerialize<DeviceRecentData>(infos);
+                            var tp = FindViewById<TextView>(Resource.Id.TP);
+                            var db = FindViewById<TextView>(Resource.Id.DB);
+                            var pm25 = FindViewById<TextView>(Resource.Id.PM25);
+                            var pm100 = FindViewById<TextView>(Resource.Id.PM100);
+                            var windspeed = FindViewById<TextView>(Resource.Id.WindSpeed);
+                            var winddir = FindViewById<TextView>(Resource.Id.WindDirection);
+                            var temp = FindViewById<TextView>(Resource.Id.Temp);
+                            var humidity = FindViewById<TextView>(Resource.Id.Humidity);
+                            var updateTime = FindViewById<TextView>(Resource.Id.UpdateTime);
+                            RunOnUiThread(() =>
+                            {
+                                tp.Text = recentData.Tp.Trim();
+                                db.Text = recentData.Db.Trim();
+                                pm25.Text = recentData.Pm25.Trim();
+                                pm100.Text = recentData.Pm100.Trim();
+                                windspeed.Text = recentData.WindSpeed.Trim();
+                                winddir.Text = recentData.WindDirection.Trim();
+                                temp.Text = recentData.Temp.Trim();
+                                humidity.Text = recentData.Humidity.Trim();
+                                updateTime.Text = recentData.UpdateTime.Trim();
+                            });
+                        }
                     }
                 }
-            }
-            catch (Exception)
-            {
-                using (var callDialog = new AlertDialog.Builder(this))
+                catch (Exception)
                 {
-                    callDialog.SetMessage("获取设备信息失败了。");
-                    callDialog.SetPositiveButton("好的", delegate { });
-                    callDialog.Show();
+                    using (var callDialog = new AlertDialog.Builder(this))
+                    {
+                        callDialog.SetMessage("获取设备信息失败了。");
+                        callDialog.SetPositiveButton("好的", delegate { });
+                        callDialog.Show();
+                    }
                 }
-            }
+            });
         }
     }
 }
