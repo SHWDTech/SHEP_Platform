@@ -217,10 +217,14 @@ namespace SHEP_Platform.Controllers
             RecentData current = null;
             if (targetType == 1)
             {
-                var devs = DbContext.T_Devs.Where(dev => dev.StatId == targetId.ToString()).ToList();
-                if (devs.Count > 0)
+                var dev = DbContext.T_Devs.FirstOrDefault(d => d.StatId == targetId.ToString());
+                if (dev != null)
                 {
-                    cameraurl = devs[0].VideoURL;
+                    var cam = DbContext.T_Camera.FirstOrDefault(c => c.DevId == dev.Id);
+                    if (cam != null)
+                    {
+                        cameraurl = $"/Monitor/StatViewHikSecond?id={cam.CameraName}";
+                    }
                 }
 
                 var checkTime = DateTime.Now.AddMinutes(-2);
@@ -941,7 +945,7 @@ namespace SHEP_Platform.Controllers
         public JsonResult GetAllStats(TablePost post)
         {
             var total = WdContext.StatList.Count();
-            
+
             var rows = WdContext.StatList.OrderBy(o => o.Id).Skip(post.offset).Take(post.limit).Select(s => new
             {
                 s.Id,
