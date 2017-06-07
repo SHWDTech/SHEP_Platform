@@ -7,21 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SHEP_Platform
+namespace DeviceExceptionChecker.Database
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class T_Camera
+    public partial class T_UserStats
     {
-        public int ID { get; set; }
-        public string CameraName { get; set; }
-        public int DevId { get; set; }
-        public string DnsAddr { get; set; }
-        public string Port { get; set; }
-        public string UserName { get; set; }
-        public string PassWord { get; set; }
-        public int CameraId { get; set; }
-        public string Type { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int StatId { get; set; }
     }
 }

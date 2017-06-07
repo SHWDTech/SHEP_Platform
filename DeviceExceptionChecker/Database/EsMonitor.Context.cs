@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SHEP_Platform
+namespace DeviceExceptionChecker.Database
 {
     using System;
     using System.Data.Entity;
@@ -15,10 +15,10 @@ namespace SHEP_Platform
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class ESMonitorEntities : DbContext
+    public partial class ESMonitor2 : DbContext
     {
-        public ESMonitorEntities()
-            : base("name=ESMonitorEntities")
+        public ESMonitor2()
+            : base("name=ESMonitor2")
         {
         }
     
@@ -27,34 +27,147 @@ namespace SHEP_Platform
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<DeviceException> DeviceExceptions { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<T_AlarmType> T_AlarmType { get; set; }
+        public virtual DbSet<T_Camera> T_Camera { get; set; }
         public virtual DbSet<T_Country> T_Country { get; set; }
         public virtual DbSet<T_DevAddr> T_DevAddr { get; set; }
+        public virtual DbSet<T_Devs> T_Devs { get; set; }
         public virtual DbSet<T_ESDay> T_ESDay { get; set; }
         public virtual DbSet<T_ESHour> T_ESHour { get; set; }
         public virtual DbSet<T_ESMin> T_ESMin { get; set; }
+        public virtual DbSet<T_ESMin_Fifteen> T_ESMin_Fifteen { get; set; }
         public virtual DbSet<T_Files> T_Files { get; set; }
         public virtual DbSet<T_GroupModules> T_GroupModules { get; set; }
+        public virtual DbSet<T_Photos> T_Photos { get; set; }
         public virtual DbSet<T_Province> T_Province { get; set; }
         public virtual DbSet<T_Stage> T_Stage { get; set; }
         public virtual DbSet<T_Stats> T_Stats { get; set; }
+        public virtual DbSet<T_SysConfig> T_SysConfig { get; set; }
         public virtual DbSet<T_TaskNotice> T_TaskNotice { get; set; }
         public virtual DbSet<T_Tasks> T_Tasks { get; set; }
         public virtual DbSet<T_UserAuthority> T_UserAuthority { get; set; }
         public virtual DbSet<T_UserGroup> T_UserGroup { get; set; }
         public virtual DbSet<T_UserInGroups> T_UserInGroups { get; set; }
         public virtual DbSet<T_Users> T_Users { get; set; }
+        public virtual DbSet<T_UserStats> T_UserStats { get; set; }
+        public virtual DbSet<T_Alarms> T_Alarms { get; set; }
         public virtual DbSet<T_ESDaytemp1> T_ESDaytemp1 { get; set; }
         public virtual DbSet<T_Offset> T_Offset { get; set; }
-        public virtual DbSet<T_SysConfig> T_SysConfig { get; set; }
-        public virtual DbSet<T_UserStats> T_UserStats { get; set; }
-        public virtual DbSet<T_Devs> T_Devs { get; set; }
-        public virtual DbSet<T_Alarms> T_Alarms { get; set; }
-        public virtual DbSet<T_Photos> T_Photos { get; set; }
-        public virtual DbSet<T_Camera> T_Camera { get; set; }
-        public virtual DbSet<T_ESMin_Fifteen> T_ESMin_Fifteen { get; set; }
-        public virtual DbSet<T_AlarmText> T_AlarmText { get; set; }
-        public virtual DbSet<DeviceException> DeviceException { get; set; }
+    
+        public virtual ObjectResult<CheckForDeviceNoData_Result> CheckForDeviceNoData()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForDeviceNoData_Result>("CheckForDeviceNoData");
+        }
+    
+        public virtual ObjectResult<CheckForDeviceZeroData_Result> CheckForDeviceZeroData()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForDeviceZeroData_Result>("CheckForDeviceZeroData");
+        }
+    
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {
@@ -507,11 +620,6 @@ namespace SHEP_Platform
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESDay_ADD", id, statIdParameter, tPParameter, dBParameter, updateTimeParameter, dataStatusParameter, validDataNumParameter, devIdParameter, countryParameter, pm25Parameter, pm100Parameter);
         }
     
-        public virtual int T_ESDay_AVGFromESHour()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESDay_AVGFromESHour");
-        }
-    
         public virtual int T_ESDay_Delete(Nullable<long> id)
         {
             var idParameter = id.HasValue ?
@@ -598,6 +706,76 @@ namespace SHEP_Platform
                 new ObjectParameter("strWhere", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgNoiseStatList_Result>("T_ESDay_GetAvgNoiseStatList", countryParameter, strWhereParameter);
+        }
+    
+        public virtual ObjectResult<T_ESDay_GetAvgPM100List_Result> T_ESDay_GetAvgPM100List(string strWhere)
+        {
+            var strWhereParameter = strWhere != null ?
+                new ObjectParameter("strWhere", strWhere) :
+                new ObjectParameter("strWhere", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM100List_Result>("T_ESDay_GetAvgPM100List", strWhereParameter);
+        }
+    
+        public virtual ObjectResult<T_ESDay_GetAvgPM100OrderList_Result> T_ESDay_GetAvgPM100OrderList(string country, string strWhere)
+        {
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            var strWhereParameter = strWhere != null ?
+                new ObjectParameter("strWhere", strWhere) :
+                new ObjectParameter("strWhere", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM100OrderList_Result>("T_ESDay_GetAvgPM100OrderList", countryParameter, strWhereParameter);
+        }
+    
+        public virtual ObjectResult<T_ESDay_GetAvgPM100StatList_Result> T_ESDay_GetAvgPM100StatList(string country, string strWhere)
+        {
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            var strWhereParameter = strWhere != null ?
+                new ObjectParameter("strWhere", strWhere) :
+                new ObjectParameter("strWhere", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM100StatList_Result>("T_ESDay_GetAvgPM100StatList", countryParameter, strWhereParameter);
+        }
+    
+        public virtual ObjectResult<T_ESDay_GetAvgPM25List_Result> T_ESDay_GetAvgPM25List(string strWhere)
+        {
+            var strWhereParameter = strWhere != null ?
+                new ObjectParameter("strWhere", strWhere) :
+                new ObjectParameter("strWhere", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM25List_Result>("T_ESDay_GetAvgPM25List", strWhereParameter);
+        }
+    
+        public virtual ObjectResult<T_ESDay_GetAvgPM25OrderList_Result> T_ESDay_GetAvgPM25OrderList(string country, string strWhere)
+        {
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            var strWhereParameter = strWhere != null ?
+                new ObjectParameter("strWhere", strWhere) :
+                new ObjectParameter("strWhere", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM25OrderList_Result>("T_ESDay_GetAvgPM25OrderList", countryParameter, strWhereParameter);
+        }
+    
+        public virtual ObjectResult<T_ESDay_GetAvgPM25StatList_Result> T_ESDay_GetAvgPM25StatList(string country, string strWhere)
+        {
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            var strWhereParameter = strWhere != null ?
+                new ObjectParameter("strWhere", strWhere) :
+                new ObjectParameter("strWhere", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM25StatList_Result>("T_ESDay_GetAvgPM25StatList", countryParameter, strWhereParameter);
         }
     
         public virtual ObjectResult<T_ESDay_GetList_Result> T_ESDay_GetList()
@@ -705,11 +883,6 @@ namespace SHEP_Platform
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESHour_ADD", id, statIdParameter, tPParameter, dBParameter, updateTimeParameter, devIdParameter, countryParameter, dataStatusParameter, validDataNumParameter, pm25Parameter, pm100Parameter);
         }
     
-        public virtual int T_ESHour_AVGFromESMin()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_ESHour_AVGFromESMin");
-        }
-    
         public virtual int T_ESHour_Delete(Nullable<int> id)
         {
             var idParameter = id.HasValue ?
@@ -752,6 +925,32 @@ namespace SHEP_Platform
                 new ObjectParameter("strWhere", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESHour_GetAvgNoiseStatList_Result>("T_ESHour_GetAvgNoiseStatList", countryParameter, strWhereParameter);
+        }
+    
+        public virtual ObjectResult<T_ESHour_GetAvgPM100StatList_Result> T_ESHour_GetAvgPM100StatList(string country, string strWhere)
+        {
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            var strWhereParameter = strWhere != null ?
+                new ObjectParameter("strWhere", strWhere) :
+                new ObjectParameter("strWhere", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESHour_GetAvgPM100StatList_Result>("T_ESHour_GetAvgPM100StatList", countryParameter, strWhereParameter);
+        }
+    
+        public virtual ObjectResult<T_ESHour_GetAvgPM25StatList_Result> T_ESHour_GetAvgPM25StatList(string country, string strWhere)
+        {
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            var strWhereParameter = strWhere != null ?
+                new ObjectParameter("strWhere", strWhere) :
+                new ObjectParameter("strWhere", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESHour_GetAvgPM25StatList_Result>("T_ESHour_GetAvgPM25StatList", countryParameter, strWhereParameter);
         }
     
         public virtual ObjectResult<T_ESHour_GetList_Result> T_ESHour_GetList()
@@ -1044,6 +1243,11 @@ namespace SHEP_Platform
                 new ObjectParameter("ModuleId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_GroupModules_GetModel_Result>("T_GroupModules_GetModel", groupIdParameter, moduleIdParameter);
+        }
+    
+        public virtual int T_InsertInto_Fifteen()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_InsertInto_Fifteen");
         }
     
         public virtual int T_InsertTable_AutoForESDay()
@@ -1947,225 +2151,6 @@ namespace SHEP_Platform
                 new ObjectParameter("NowTime", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_Users_Update", userIdParameter, userNameParameter, pwdParameter, mobileParameter, emailParameter, statusParameter, regTimeParameter, roleIdParameter, lastTimeParameter, nowTimeParameter);
-        }
-    
-        public virtual ObjectResult<T_ESDay_GetAvgPM100List_Result> T_ESDay_GetAvgPM100List(string strWhere)
-        {
-            var strWhereParameter = strWhere != null ?
-                new ObjectParameter("strWhere", strWhere) :
-                new ObjectParameter("strWhere", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM100List_Result>("T_ESDay_GetAvgPM100List", strWhereParameter);
-        }
-    
-        public virtual ObjectResult<T_ESDay_GetAvgPM100OrderList_Result> T_ESDay_GetAvgPM100OrderList(string country, string strWhere)
-        {
-            var countryParameter = country != null ?
-                new ObjectParameter("Country", country) :
-                new ObjectParameter("Country", typeof(string));
-    
-            var strWhereParameter = strWhere != null ?
-                new ObjectParameter("strWhere", strWhere) :
-                new ObjectParameter("strWhere", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM100OrderList_Result>("T_ESDay_GetAvgPM100OrderList", countryParameter, strWhereParameter);
-        }
-    
-        public virtual ObjectResult<T_ESDay_GetAvgPM100StatList_Result> T_ESDay_GetAvgPM100StatList(string country, string strWhere)
-        {
-            var countryParameter = country != null ?
-                new ObjectParameter("Country", country) :
-                new ObjectParameter("Country", typeof(string));
-    
-            var strWhereParameter = strWhere != null ?
-                new ObjectParameter("strWhere", strWhere) :
-                new ObjectParameter("strWhere", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM100StatList_Result>("T_ESDay_GetAvgPM100StatList", countryParameter, strWhereParameter);
-        }
-    
-        public virtual ObjectResult<T_ESDay_GetAvgPM25List_Result> T_ESDay_GetAvgPM25List(string strWhere)
-        {
-            var strWhereParameter = strWhere != null ?
-                new ObjectParameter("strWhere", strWhere) :
-                new ObjectParameter("strWhere", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM25List_Result>("T_ESDay_GetAvgPM25List", strWhereParameter);
-        }
-    
-        public virtual ObjectResult<T_ESDay_GetAvgPM25OrderList_Result> T_ESDay_GetAvgPM25OrderList(string country, string strWhere)
-        {
-            var countryParameter = country != null ?
-                new ObjectParameter("Country", country) :
-                new ObjectParameter("Country", typeof(string));
-    
-            var strWhereParameter = strWhere != null ?
-                new ObjectParameter("strWhere", strWhere) :
-                new ObjectParameter("strWhere", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM25OrderList_Result>("T_ESDay_GetAvgPM25OrderList", countryParameter, strWhereParameter);
-        }
-    
-        public virtual ObjectResult<T_ESDay_GetAvgPM25StatList_Result> T_ESDay_GetAvgPM25StatList(string country, string strWhere)
-        {
-            var countryParameter = country != null ?
-                new ObjectParameter("Country", country) :
-                new ObjectParameter("Country", typeof(string));
-    
-            var strWhereParameter = strWhere != null ?
-                new ObjectParameter("strWhere", strWhere) :
-                new ObjectParameter("strWhere", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESDay_GetAvgPM25StatList_Result>("T_ESDay_GetAvgPM25StatList", countryParameter, strWhereParameter);
-        }
-    
-        public virtual ObjectResult<T_ESHour_GetAvgPM100StatList_Result> T_ESHour_GetAvgPM100StatList(string country, string strWhere)
-        {
-            var countryParameter = country != null ?
-                new ObjectParameter("Country", country) :
-                new ObjectParameter("Country", typeof(string));
-    
-            var strWhereParameter = strWhere != null ?
-                new ObjectParameter("strWhere", strWhere) :
-                new ObjectParameter("strWhere", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESHour_GetAvgPM100StatList_Result>("T_ESHour_GetAvgPM100StatList", countryParameter, strWhereParameter);
-        }
-    
-        public virtual ObjectResult<T_ESHour_GetAvgPM25StatList_Result> T_ESHour_GetAvgPM25StatList(string country, string strWhere)
-        {
-            var countryParameter = country != null ?
-                new ObjectParameter("Country", country) :
-                new ObjectParameter("Country", typeof(string));
-    
-            var strWhereParameter = strWhere != null ?
-                new ObjectParameter("strWhere", strWhere) :
-                new ObjectParameter("strWhere", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<T_ESHour_GetAvgPM25StatList_Result>("T_ESHour_GetAvgPM25StatList", countryParameter, strWhereParameter);
-        }
-    
-        public virtual int T_InsertTable_AutoForESDay1()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_InsertTable_AutoForESDay1");
-        }
-    
-        public virtual int T_InsertTable_AutoForESHour1()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_InsertTable_AutoForESHour1");
-        }
-    
-        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            var versionParameter = version.HasValue ?
-                new ObjectParameter("version", version) :
-                new ObjectParameter("version", typeof(int));
-    
-            var definitionParameter = definition != null ?
-                new ObjectParameter("definition", definition) :
-                new ObjectParameter("definition", typeof(byte[]));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
-        }
-    
-        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            var versionParameter = version.HasValue ?
-                new ObjectParameter("version", version) :
-                new ObjectParameter("version", typeof(int));
-    
-            var definitionParameter = definition != null ?
-                new ObjectParameter("definition", definition) :
-                new ObjectParameter("definition", typeof(byte[]));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
-        }
-    
-        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
-        }
-    
-        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
-        }
-    
-        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
-        }
-    
-        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
-        {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
-    
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            var new_diagramnameParameter = new_diagramname != null ?
-                new ObjectParameter("new_diagramname", new_diagramname) :
-                new ObjectParameter("new_diagramname", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
-        }
-    
-        public virtual int sp_upgraddiagrams()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
-        }
-    
-        public virtual ObjectResult<Nullable<int>> InSert_Alarm()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("InSert_Alarm");
-        }
-    
-        public virtual int T_InsertInto_Fifteen()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_InsertInto_Fifteen");
         }
     }
 }

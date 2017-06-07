@@ -26,5 +26,9 @@ namespace SHEP_Platform
         public Nullable<double> PM25 { get; set; }
         public Nullable<double> PM100 { get; set; }
         public Nullable<double> VOCs { get; set; }
+        public double Temperature { get; set; }
+        public double Humidity { get; set; }
+        public double WindSpeed { get; set; }
+        public double WindDirection { get; set; }
     }
 }

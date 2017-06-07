@@ -7,12 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SHEP_Platform
+namespace DeviceExceptionChecker.Database
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class T_ESDay
+    public partial class T_ESDay_GetModel_Result
     {
         public long Id { get; set; }
         public int StatId { get; set; }
@@ -21,14 +20,5 @@ namespace SHEP_Platform
         public System.DateTime UpdateTime { get; set; }
         public string DataStatus { get; set; }
         public int ValidDataNum { get; set; }
-        public int DevId { get; set; }
-        public string Country { get; set; }
-        public Nullable<double> PM25 { get; set; }
-        public Nullable<double> PM100 { get; set; }
-        public Nullable<double> VOCs { get; set; }
-        public double Temperature { get; set; }
-        public double Humidity { get; set; }
-        public double WindSpeed { get; set; }
-        public double WindDirection { get; set; }
     }
 }

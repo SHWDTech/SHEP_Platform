@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHEP_Platform", "SHEP_Platform\SHEP_Platform.csproj", "{C74A38A6-CFDF-44B4-BF4E-4C01248F7EE0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DustAutoReport", "DustAutoReport\DustAutoReport.csproj", "{677EBDEE-3631-45FE-BB87-C85096C70D6A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HikCameraConfiger", "HikCameraConfiger\HikCameraConfiger.csproj", "{DD246183-AD02-493F-ADE7-D7BDB9104F9E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceStatusViewer", "DeviceStatusViewer\DeviceStatusViewer.csproj", "{7F4FA861-8E6D-4B25-8CAE-98D0B44723A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceExceptionChecker", "DeviceExceptionChecker\DeviceExceptionChecker.csproj", "{109B3496-CD72-4527-BAA3-1737EE73D80E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseModel", "DatabaseModel\DatabaseModel.csproj", "{34B84B17-E7A9-4D21-9E54-F3FC36E3182E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +23,6 @@ Global
 		{C74A38A6-CFDF-44B4-BF4E-4C01248F7EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C74A38A6-CFDF-44B4-BF4E-4C01248F7EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C74A38A6-CFDF-44B4-BF4E-4C01248F7EE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{677EBDEE-3631-45FE-BB87-C85096C70D6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{677EBDEE-3631-45FE-BB87-C85096C70D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{677EBDEE-3631-45FE-BB87-C85096C70D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{677EBDEE-3631-45FE-BB87-C85096C70D6A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD246183-AD02-493F-ADE7-D7BDB9104F9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD246183-AD02-493F-ADE7-D7BDB9104F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD246183-AD02-493F-ADE7-D7BDB9104F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,6 +33,14 @@ Global
 		{7F4FA861-8E6D-4B25-8CAE-98D0B44723A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F4FA861-8E6D-4B25-8CAE-98D0B44723A0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F4FA861-8E6D-4B25-8CAE-98D0B44723A0}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{109B3496-CD72-4527-BAA3-1737EE73D80E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{109B3496-CD72-4527-BAA3-1737EE73D80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{109B3496-CD72-4527-BAA3-1737EE73D80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{109B3496-CD72-4527-BAA3-1737EE73D80E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34B84B17-E7A9-4D21-9E54-F3FC36E3182E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B84B17-E7A9-4D21-9E54-F3FC36E3182E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B84B17-E7A9-4D21-9E54-F3FC36E3182E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B84B17-E7A9-4D21-9E54-F3FC36E3182E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

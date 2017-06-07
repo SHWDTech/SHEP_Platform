@@ -4,24 +4,35 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ESMonitorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ESMonitor2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DeviceException">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ExceptionType" Type="tinyint" Nullable="false" />
           <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="StatId" Type="int" />
           <Property Name="ExceptionValue" Type="float" />
           <Property Name="ExceptionTime" Type="datetime" Nullable="false" />
+          <Property Name="Processed" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ESMonitor2.dbo.T_Alarms' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="T_Alarms">
           <Key>
             <PropertyRef Name="Id" />
-            
+            <PropertyRef Name="IsReaded" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StatId" Type="int" />
@@ -344,6 +355,11 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="StatId" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Table_1">
+          <Property Name="Guid" Type="nchar" MaxLength="10" />
+        </EntityType>-->
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
           <End Role="T_Country" Type="Self.T_Country" Multiplicity="*" />
@@ -404,6 +420,43 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="CheckForDeviceNoData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="CheckForDeviceZeroData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="Pm25Rand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="pm100" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="T_Alarms_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="InOut" />
           <Parameter Name="StatId" Type="int" Mode="In" />
@@ -992,8 +1045,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Parameter Name="LastTime" Type="datetime" Mode="In" />
           <Parameter Name="NowTime" Type="datetime" Mode="In" />
         </Function>
-        <EntityContainer Name="ESMonitorModelStoreContainer">
+        <EntityContainer Name="ESMonitor2ModelStoreContainer">
           <EntitySet Name="DeviceException" EntityType="Self.DeviceException" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_AlarmType" EntityType="Self.T_AlarmType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Camera" EntityType="Self.T_Camera" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Country" EntityType="Self.T_Country" Schema="dbo" store:Type="Tables" />
@@ -1073,10 +1127,33 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <End Role="T_Stats" EntitySet="T_Stats" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ESMonitorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ESMonitor2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DeviceException">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExceptionType" Type="Byte" Nullable="false" />
+          <Property Name="DevId" Type="Int32" Nullable="false" />
+          <Property Name="StatId" Type="Int32" />
+          <Property Name="ExceptionValue" Type="Double" />
+          <Property Name="ExceptionTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Processed" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="T_AlarmType">
           <Key>
             <PropertyRef Name="Id" />
@@ -1086,6 +1163,20 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="DustRange" Type="Double" />
           <Property Name="DbRange" Type="Double" />
           <NavigationProperty Name="T_Stats" Relationship="Self.FK_T_Stats_T_AlarmType1" FromRole="T_AlarmType" ToRole="T_Stats" />
+        </EntityType>
+        <EntityType Name="T_Camera">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CameraName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DevId" Type="Int32" Nullable="false" />
+          <Property Name="DnsAddr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Port" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PassWord" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CameraId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Country">
           <Key>
@@ -1105,6 +1196,19 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="DevId" Type="Int32" Nullable="false" />
           <Property Name="NodeId" Type="Binary" MaxLength="4" FixedLength="true" Nullable="false" />
         </EntityType>
+        <EntityType Name="T_Devs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DevCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StatId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PreEndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DevStatus" Type="Byte" Nullable="false" />
+          <Property Name="VideoURL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="T_ESDay">
           <Key>
             <PropertyRef Name="Id" />
@@ -1113,14 +1217,14 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="StatId" Type="Int32" Nullable="false" />
           <Property Name="TP" Type="Double" Nullable="false" />
           <Property Name="DB" Type="Double" Nullable="false" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="VOCs" Type="Double" />
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="DataStatus" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="ValidDataNum" Type="Int32" Nullable="false" />
           <Property Name="DevId" Type="Int32" Nullable="false" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="PM25" Type="Double" />
-          <Property Name="PM100" Type="Double" />
-          <Property Name="VOCs" Type="Double" />
           <Property Name="Temperature" Type="Double" Nullable="false" />
           <Property Name="Humidity" Type="Double" Nullable="false" />
           <Property Name="WindSpeed" Type="Double" Nullable="false" />
@@ -1134,14 +1238,14 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="StatId" Type="Int32" Nullable="false" />
           <Property Name="TP" Type="Double" Nullable="false" />
           <Property Name="DB" Type="Double" Nullable="false" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="VOCs" Type="Double" />
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DataStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="ValidDataNum" Type="Int32" Nullable="false" />
           <Property Name="DevId" Type="Int32" Nullable="false" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="PM25" Type="Double" />
-          <Property Name="PM100" Type="Double" />
-          <Property Name="VOCs" Type="Double" />
           <Property Name="Temperature" Type="Double" Nullable="false" />
           <Property Name="Humidity" Type="Double" Nullable="false" />
           <Property Name="WindSpeed" Type="Double" Nullable="false" />
@@ -1156,6 +1260,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="StatId" Type="Int32" Nullable="false" />
           <Property Name="TP" Type="Double" Nullable="false" />
           <Property Name="DB" Type="Double" Nullable="false" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="VOCs" Type="Double" />
           <Property Name="UpdateTime" Type="DateTime" Precision="3" />
           <Property Name="WindSpeed" Type="Double" Nullable="false" />
           <Property Name="Rain" Type="Double" />
@@ -1166,9 +1273,20 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="DataStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="DevId" Type="Int32" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="PM25" Type="Double" />
-          <Property Name="PM100" Type="Double" />
-          <Property Name="VOCs" Type="Double" />
+        </EntityType>
+        <EntityType Name="T_ESMin_Fifteen">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatId" Type="Int32" Nullable="false" />
+          <Property Name="TP" Type="Double" Nullable="false" />
+          <Property Name="DB" Type="Double" Nullable="false" />
+          <Property Name="PM25" Type="Double" Nullable="false" />
+          <Property Name="PM100" Type="Double" Nullable="false" />
+          <Property Name="Temperature" Type="Double" Nullable="false" />
+          <Property Name="Humidity" Type="Double" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="T_Files">
           <Key>
@@ -1188,6 +1306,16 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           </Key>
           <Property Name="GroupId" Type="Int32" Nullable="false" />
           <Property Name="ModuleId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Photos">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DevId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Province">
           <Key>
@@ -1231,6 +1359,15 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <NavigationProperty Name="T_AlarmType" Relationship="Self.FK_T_Stats_T_AlarmType1" FromRole="T_Stats" ToRole="T_AlarmType" />
           <NavigationProperty Name="T_Country" Relationship="Self.FK_T_Stats_T_Country" FromRole="T_Stats" ToRole="T_Country" />
           <NavigationProperty Name="T_Stage" Relationship="Self.FK_T_Stats_T_Stage" FromRole="T_Stats" ToRole="T_Stage" />
+        </EntityType>
+        <EntityType Name="T_SysConfig">
+          <Key>
+            <PropertyRef Name="ConfigId" />
+          </Key>
+          <Property Name="ConfigId" Type="Guid" Nullable="false" />
+          <Property Name="ConfigType" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ConfigName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ConfigValue" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="T_TaskNotice">
           <Key>
@@ -1297,6 +1434,28 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="LastTime" Type="DateTime" Precision="3" />
           <Property Name="NowTime" Type="DateTime" Precision="3" />
           <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="T_UserStats">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="StatId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Alarms">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="IsReaded" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatId" Type="Int32" />
+          <Property Name="DevId" Type="Int32" />
+          <Property Name="DustType" Type="Int16" />
+          <Property Name="FaultVal" Type="Double" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsReaded" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="T_ESDaytemp1">
           <Key>
@@ -1387,24 +1546,33 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ESMonitorEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ESMonitor2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DeviceExceptions" EntityType="Self.DeviceException" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="T_AlarmType" EntityType="Self.T_AlarmType" />
+          <EntitySet Name="T_Camera" EntityType="Self.T_Camera" />
           <EntitySet Name="T_Country" EntityType="Self.T_Country" />
           <EntitySet Name="T_DevAddr" EntityType="Self.T_DevAddr" />
+          <EntitySet Name="T_Devs" EntityType="Self.T_Devs" />
           <EntitySet Name="T_ESDay" EntityType="Self.T_ESDay" />
           <EntitySet Name="T_ESHour" EntityType="Self.T_ESHour" />
           <EntitySet Name="T_ESMin" EntityType="Self.T_ESMin" />
+          <EntitySet Name="T_ESMin_Fifteen" EntityType="Self.T_ESMin_Fifteen" />
           <EntitySet Name="T_Files" EntityType="Self.T_Files" />
           <EntitySet Name="T_GroupModules" EntityType="Self.T_GroupModules" />
+          <EntitySet Name="T_Photos" EntityType="Self.T_Photos" />
           <EntitySet Name="T_Province" EntityType="Self.T_Province" />
           <EntitySet Name="T_Stage" EntityType="Self.T_Stage" />
           <EntitySet Name="T_Stats" EntityType="Self.T_Stats" />
+          <EntitySet Name="T_SysConfig" EntityType="Self.T_SysConfig" />
           <EntitySet Name="T_TaskNotice" EntityType="Self.T_TaskNotice" />
           <EntitySet Name="T_Tasks" EntityType="Self.T_Tasks" />
           <EntitySet Name="T_UserAuthority" EntityType="Self.T_UserAuthority" />
           <EntitySet Name="T_UserGroup" EntityType="Self.T_UserGroup" />
           <EntitySet Name="T_UserInGroups" EntityType="Self.T_UserInGroups" />
           <EntitySet Name="T_Users" EntityType="Self.T_Users" />
+          <EntitySet Name="T_UserStats" EntityType="Self.T_UserStats" />
+          <EntitySet Name="T_Alarms" EntityType="Self.T_Alarms" />
           <EntitySet Name="T_ESDaytemp1" EntityType="Self.T_ESDaytemp1" />
           <EntitySet Name="T_Offset" EntityType="Self.T_Offset" />
           <AssociationSet Name="FK_T_Stats_T_AlarmType1" Association="Self.FK_T_Stats_T_AlarmType1">
@@ -1427,6 +1595,38 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <End Role="T_Stage" EntitySet="T_Stage" />
             <End Role="T_Stats" EntitySet="T_Stats" />
           </AssociationSet>
+          <FunctionImport Name="CheckForDeviceNoData" ReturnType="Collection(ESMonitor2Model.CheckForDeviceNoData_Result)" />
+          <FunctionImport Name="CheckForDeviceZeroData" ReturnType="Collection(ESMonitor2Model.CheckForDeviceZeroData_Result)" />
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ESMonitor2Model.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ESMonitor2Model.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
           <FunctionImport Name="T_Alarms_ADD">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
             <Parameter Name="StatId" Mode="In" Type="Int32" />
@@ -1437,21 +1637,21 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="Country" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_Exists">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_GetDataFromESMin" />
-          <FunctionImport Name="T_Alarms_GetDustOverDataCount" ReturnType="Collection(ESMonitorModel.T_Alarms_GetDustOverDataCount_Result)">
-          <Parameter Name="strWhere" Mode="In" Type="String" />
+          <FunctionImport Name="T_Alarms_GetDustOverDataCount" ReturnType="Collection(ESMonitor2Model.T_Alarms_GetDustOverDataCount_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_Alarms_GetDustOverDataPerDay" ReturnType="Collection(ESMonitorModel.T_Alarms_GetDustOverDataPerDay_Result)">
-          <Parameter Name="strWhere" Mode="In" Type="String" />
+          <FunctionImport Name="T_Alarms_GetDustOverDataPerDay" ReturnType="Collection(ESMonitor2Model.T_Alarms_GetDustOverDataPerDay_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_Alarms_GetList" ReturnType="Collection(ESMonitorModel.T_Alarms_GetList_Result)" />
-          <FunctionImport Name="T_Alarms_GetModel" ReturnType="Collection(ESMonitorModel.T_Alarms_GetModel_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_Alarms_GetList" ReturnType="Collection(ESMonitor2Model.T_Alarms_GetList_Result)" />
+          <FunctionImport Name="T_Alarms_GetModel" ReturnType="Collection(ESMonitor2Model.T_Alarms_GetModel_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1469,10 +1669,10 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="DbRange" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_AlarmType_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_AlarmType_GetModel" ReturnType="Collection(ESMonitorModel.T_AlarmType_GetModel_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_AlarmType_GetModel" ReturnType="Collection(ESMonitor2Model.T_AlarmType_GetModel_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_AlarmType_Update">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
@@ -1488,13 +1688,13 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="PassWord" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_Exists">
-          <Parameter Name="DnsAddr" Mode="In" Type="String" />
+            <Parameter Name="DnsAddr" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_Camera_GetModel" ReturnType="Collection(ESMonitorModel.T_Camera_GetModel_Result)">
-          <Parameter Name="DevId" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_Camera_GetModel" ReturnType="Collection(ESMonitor2Model.T_Camera_GetModel_Result)">
+            <Parameter Name="DevId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_Update">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
@@ -1508,7 +1708,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="NodeId" Mode="In" Type="Binary" />
           </FunctionImport>
           <FunctionImport Name="T_DevAddr_Exists">
-          <Parameter Name="NodeId" Mode="In" Type="Binary" />
+            <Parameter Name="NodeId" Mode="In" Type="Binary" />
           </FunctionImport>
           <FunctionImport Name="T_DevAddr_Update">
             <Parameter Name="DevId" Mode="In" Type="Int32" />
@@ -1525,23 +1725,23 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="VideoURL" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_Exists">
-          <Parameter Name="DevCode" Mode="In" Type="String" />
+            <Parameter Name="DevCode" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_Devs_GetList" ReturnType="Collection(ESMonitorModel.T_Devs_GetList_Result)" />
+          <FunctionImport Name="T_Devs_GetList" ReturnType="Collection(ESMonitor2Model.T_Devs_GetList_Result)" />
           <FunctionImport Name="T_Devs_GetListByPage">
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_GetMaxId" />
-          <FunctionImport Name="T_Devs_GetModel" ReturnType="Collection(ESMonitorModel.T_Devs_GetModel_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_Devs_GetModel" ReturnType="Collection(ESMonitor2Model.T_Devs_GetModel_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_Devs_GetRelatedStat" ReturnType="Collection(ESMonitorModel.T_Devs_GetRelatedStat_Result)">
-          <Parameter Name="strWhere" Mode="In" Type="String" />
+          <FunctionImport Name="T_Devs_GetRelatedStat" ReturnType="Collection(ESMonitor2Model.T_Devs_GetRelatedStat_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1566,39 +1766,60 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="Pm25" Mode="In" Type="Double" />
             <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
-          <FunctionImport Name="T_ESDay_AVGFromESHour" />
           <FunctionImport Name="T_ESDay_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int64" />
+            <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_Exists">
-          <Parameter Name="Id" Mode="In" Type="Int64" />
+            <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgCMPList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgCMPList_Result)">
-          <Parameter Name="strWhere" Mode="In" Type="String" />
+          <FunctionImport Name="T_ESDay_GetAvgCMPList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgCMPList_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgCMPOrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgCMPOrderList_Result)">
+          <FunctionImport Name="T_ESDay_GetAvgCMPOrderList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgCMPOrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgCMPStatList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgCMPStatList_Result)">
+          <FunctionImport Name="T_ESDay_GetAvgCMPStatList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgCMPStatList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgNoiseList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgNoiseList_Result)">
-          <Parameter Name="strWhere" Mode="In" Type="String" />
+          <FunctionImport Name="T_ESDay_GetAvgNoiseList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgNoiseList_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgNoiseOrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgNoiseOrderList_Result)">
+          <FunctionImport Name="T_ESDay_GetAvgNoiseOrderList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgNoiseOrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgNoiseStatList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgNoiseStatList_Result)">
+          <FunctionImport Name="T_ESDay_GetAvgNoiseStatList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgNoiseStatList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetList_Result)" />
+          <FunctionImport Name="T_ESDay_GetAvgPM100List" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM100List_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM100OrderList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM100OrderList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM100StatList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM100StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM25List" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM25List_Result)">
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM25OrderList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM25OrderList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetAvgPM25StatList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM25StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESDay_GetList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetList_Result)" />
           <FunctionImport Name="T_ESDay_GetMaxId" />
-          <FunctionImport Name="T_ESDay_GetModel" ReturnType="Collection(ESMonitorModel.T_ESDay_GetModel_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_ESDay_GetModel" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetModel_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_Update">
             <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1624,24 +1845,31 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="Pm25" Mode="In" Type="Double" />
             <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
-          <FunctionImport Name="T_ESHour_AVGFromESMin" />
           <FunctionImport Name="T_ESHour_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_Exists">
-          <Parameter Name="Id" Mode="In" Type="Int64" />
+            <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
-          <FunctionImport Name="T_ESHour_GetAvgCMPStatList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetAvgCMPStatList_Result)">
+          <FunctionImport Name="T_ESHour_GetAvgCMPStatList" ReturnType="Collection(ESMonitor2Model.T_ESHour_GetAvgCMPStatList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_ESHour_GetAvgNoiseStatList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetAvgNoiseStatList_Result)">
+          <FunctionImport Name="T_ESHour_GetAvgNoiseStatList" ReturnType="Collection(ESMonitor2Model.T_ESHour_GetAvgNoiseStatList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_ESHour_GetList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetList_Result)" />
-          <FunctionImport Name="T_ESHour_GetModel" ReturnType="Collection(ESMonitorModel.T_ESHour_GetModel_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_ESHour_GetAvgPM100StatList" ReturnType="Collection(ESMonitor2Model.T_ESHour_GetAvgPM100StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESHour_GetAvgPM25StatList" ReturnType="Collection(ESMonitor2Model.T_ESHour_GetAvgPM25StatList_Result)">
+            <Parameter Name="Country" Mode="In" Type="String" />
+            <Parameter Name="strWhere" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="T_ESHour_GetList" ReturnType="Collection(ESMonitor2Model.T_ESHour_GetList_Result)" />
+          <FunctionImport Name="T_ESHour_GetModel" ReturnType="Collection(ESMonitor2Model.T_ESHour_GetModel_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_Update">
             <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1674,20 +1902,20 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int64" />
+            <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Exists">
-          <Parameter Name="Id" Mode="In" Type="Int64" />
+            <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
-          <FunctionImport Name="T_ESMin_GetCurData" ReturnType="Collection(ESMonitorModel.T_ESMin_GetCurData_Result)">
-          <Parameter Name="StatId" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_ESMin_GetCurData" ReturnType="Collection(ESMonitor2Model.T_ESMin_GetCurData_Result)">
+            <Parameter Name="StatId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_ESMin_GetCurDevData" ReturnType="Collection(ESMonitorModel.T_ESMin_GetCurDevData_Result)">
-          <Parameter Name="devId" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_ESMin_GetCurDevData" ReturnType="Collection(ESMonitor2Model.T_ESMin_GetCurDevData_Result)">
+            <Parameter Name="devId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_ESMin_GetList" ReturnType="Collection(ESMonitorModel.T_ESMin_GetList_Result)" />
-          <FunctionImport Name="T_ESMin_GetModel" ReturnType="Collection(ESMonitorModel.T_ESMin_GetModel_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int64" />
+          <FunctionImport Name="T_ESMin_GetList" ReturnType="Collection(ESMonitor2Model.T_ESMin_GetList_Result)" />
+          <FunctionImport Name="T_ESMin_GetModel" ReturnType="Collection(ESMonitor2Model.T_ESMin_GetModel_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Update">
             <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1717,11 +1945,12 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="GroupId" Mode="In" Type="Int32" />
             <Parameter Name="ModuleId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_GroupModules_GetList" ReturnType="Collection(ESMonitorModel.T_GroupModules_GetList_Result)" />
-          <FunctionImport Name="T_GroupModules_GetModel" ReturnType="Collection(ESMonitorModel.T_GroupModules_GetModel_Result)">
+          <FunctionImport Name="T_GroupModules_GetList" ReturnType="Collection(ESMonitor2Model.T_GroupModules_GetList_Result)" />
+          <FunctionImport Name="T_GroupModules_GetModel" ReturnType="Collection(ESMonitor2Model.T_GroupModules_GetModel_Result)">
             <Parameter Name="GroupId" Mode="In" Type="Int32" />
             <Parameter Name="ModuleId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="T_InsertInto_Fifteen" />
           <FunctionImport Name="T_InsertTable_AutoForESDay" />
           <FunctionImport Name="T_InsertTable_AutoForESHour" />
           <FunctionImport Name="T_Photos_ADD">
@@ -1731,30 +1960,30 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="FileName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Photos_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Photos_GetListByPage">
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_Photos_GetModel" ReturnType="Collection(ESMonitorModel.T_Photos_GetModel_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_Photos_GetModel" ReturnType="Collection(ESMonitor2Model.T_Photos_GetModel_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_ProduceReport" ReturnType="Collection(ESMonitorModel.T_ProduceReport_Result)">
+          <FunctionImport Name="T_ProduceReport" ReturnType="Collection(ESMonitor2Model.T_ProduceReport_Result)">
             <Parameter Name="selectControl" Mode="In" Type="Int32" />
             <Parameter Name="statetime" Mode="In" Type="DateTime" />
             <Parameter Name="endtime" Mode="In" Type="DateTime" />
             <Parameter Name="indexKind" Mode="In" Type="Int32" />
             <Parameter Name="country" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_StageReport" ReturnType="Collection(ESMonitorModel.T_StageReport_Result)">
+          <FunctionImport Name="T_StageReport" ReturnType="Collection(ESMonitor2Model.T_StageReport_Result)">
             <Parameter Name="starttime" Mode="In" Type="DateTime" />
             <Parameter Name="endtime" Mode="In" Type="DateTime" />
             <Parameter Name="indexKind" Mode="In" Type="Int32" />
             <Parameter Name="country" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_StatCompare" ReturnType="Collection(ESMonitorModel.T_StatCompare_Result)">
+          <FunctionImport Name="T_StatCompare" ReturnType="Collection(ESMonitor2Model.T_StatCompare_Result)">
             <Parameter Name="statetime" Mode="In" Type="DateTime" />
             <Parameter Name="endtime" Mode="In" Type="DateTime" />
             <Parameter Name="Country" Mode="In" Type="Int32" />
@@ -1777,20 +2006,20 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="AlarmType" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_Exists">
-          <Parameter Name="StatCode" Mode="In" Type="String" />
+            <Parameter Name="StatCode" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_Stats_GetList" ReturnType="Collection(ESMonitorModel.T_Stats_GetList_Result)" />
+          <FunctionImport Name="T_Stats_GetList" ReturnType="Collection(ESMonitor2Model.T_Stats_GetList_Result)" />
           <FunctionImport Name="T_Stats_GetListByPage">
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_GetMaxId" />
-          <FunctionImport Name="T_Stats_GetModel" ReturnType="Collection(ESMonitorModel.T_Stats_GetModel_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_Stats_GetModel" ReturnType="Collection(ESMonitor2Model.T_Stats_GetModel_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1816,16 +2045,16 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="UpdateTime" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_Delete">
-          <Parameter Name="TaskId" Mode="In" Type="Int64" />
+            <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
-          <FunctionImport Name="T_TaskNotice_GetList" ReturnType="Collection(ESMonitorModel.T_TaskNotice_GetList_Result)" />
+          <FunctionImport Name="T_TaskNotice_GetList" ReturnType="Collection(ESMonitor2Model.T_TaskNotice_GetList_Result)" />
           <FunctionImport Name="T_TaskNotice_GetListByPage">
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_TaskNotice_GetModel" ReturnType="Collection(ESMonitorModel.T_TaskNotice_GetModel_Result)">
-          <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <FunctionImport Name="T_TaskNotice_GetModel" ReturnType="Collection(ESMonitor2Model.T_TaskNotice_GetModel_Result)">
+            <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_Update">
             <Parameter Name="TaskId" Mode="In" Type="Int64" />
@@ -1845,16 +2074,16 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="Length" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_Delete">
-          <Parameter Name="TaskId" Mode="In" Type="Int64" />
+            <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
-          <FunctionImport Name="T_Tasks_GetList" ReturnType="Collection(ESMonitorModel.T_Tasks_GetList_Result)" />
+          <FunctionImport Name="T_Tasks_GetList" ReturnType="Collection(ESMonitor2Model.T_Tasks_GetList_Result)" />
           <FunctionImport Name="T_Tasks_GetListByPage">
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_Tasks_GetModel" ReturnType="Collection(ESMonitorModel.T_Tasks_GetModel_Result)">
-          <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <FunctionImport Name="T_Tasks_GetModel" ReturnType="Collection(ESMonitor2Model.T_Tasks_GetModel_Result)">
+            <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_Update">
             <Parameter Name="TaskId" Mode="In" Type="Int64" />
@@ -1881,10 +2110,10 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="AuthType" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="T_UserAuthority_DeleteByUserId">
-          <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_UserAuthority_GetAuths" ReturnType="Collection(ESMonitorModel.T_UserAuthority_GetAuths_Result)">
-          <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_UserAuthority_GetAuths" ReturnType="Collection(ESMonitor2Model.T_UserAuthority_GetAuths_Result)">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGrantedNodes_ADD">
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -1895,10 +2124,10 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="NodeId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGrantedNodes_DeleteByUserId">
-          <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGrantedNodes_GetGrantedNodes">
-          <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_ADD">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
@@ -1907,19 +2136,19 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_Delete">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_Exists">
-          <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Name" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_UserGroup_GetList" ReturnType="Collection(ESMonitorModel.T_UserGroup_GetList_Result)" />
+          <FunctionImport Name="T_UserGroup_GetList" ReturnType="Collection(ESMonitor2Model.T_UserGroup_GetList_Result)" />
           <FunctionImport Name="T_UserGroup_GetListByPage">
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="T_UserGroup_GetModel" ReturnType="Collection(ESMonitorModel.T_UserGroup_GetModel_Result)">
-          <Parameter Name="Id" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_UserGroup_GetModel" ReturnType="Collection(ESMonitor2Model.T_UserGroup_GetModel_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1939,9 +2168,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="GroupId" Mode="In" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_UserInGroups_GetList" ReturnType="Collection(ESMonitorModel.T_UserInGroups_GetList_Result)" />
+          <FunctionImport Name="T_UserInGroups_GetList" ReturnType="Collection(ESMonitor2Model.T_UserInGroups_GetList_Result)" />
           <FunctionImport Name="T_UserInGroups_GetMaxId" />
-          <FunctionImport Name="T_UserInGroups_GetModel" ReturnType="Collection(ESMonitorModel.T_UserInGroups_GetModel_Result)">
+          <FunctionImport Name="T_UserInGroups_GetModel" ReturnType="Collection(ESMonitor2Model.T_UserInGroups_GetModel_Result)">
             <Parameter Name="GroupId" Mode="In" Type="Int32" />
             <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -1959,20 +2188,20 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="Remark" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Users_Delete">
-          <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Users_Exists">
-          <Parameter Name="UserId" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="T_Users_GetList" ReturnType="Collection(ESMonitorModel.T_Users_GetList_Result)" />
+          <FunctionImport Name="T_Users_GetList" ReturnType="Collection(ESMonitor2Model.T_Users_GetList_Result)" />
           <FunctionImport Name="T_Users_GetListByPage">
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Users_GetMaxId" />
-          <FunctionImport Name="T_Users_GetModel" ReturnType="Collection(ESMonitorModel.T_Users_GetModel_Result)">
-          <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <FunctionImport Name="T_Users_GetModel" ReturnType="Collection(ESMonitor2Model.T_Users_GetModel_Result)">
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Users_Update">
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -1986,80 +2215,28 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="LastTime" Mode="In" Type="DateTime" />
             <Parameter Name="NowTime" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgPM100List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100List_Result)">
-          <Parameter Name="strWhere" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgPM100OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100OrderList_Result)">
-            <Parameter Name="Country" Mode="In" Type="String" />
-            <Parameter Name="strWhere" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgPM100StatList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM100StatList_Result)">
-            <Parameter Name="Country" Mode="In" Type="String" />
-            <Parameter Name="strWhere" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgPM25List" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25List_Result)">
-          <Parameter Name="strWhere" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgPM25OrderList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25OrderList_Result)">
-            <Parameter Name="Country" Mode="In" Type="String" />
-            <Parameter Name="strWhere" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="T_ESDay_GetAvgPM25StatList" ReturnType="Collection(ESMonitorModel.T_ESDay_GetAvgPM25StatList_Result)">
-            <Parameter Name="Country" Mode="In" Type="String" />
-            <Parameter Name="strWhere" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="T_ESHour_GetAvgPM100StatList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetAvgPM100StatList_Result)">
-            <Parameter Name="Country" Mode="In" Type="String" />
-            <Parameter Name="strWhere" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="T_ESHour_GetAvgPM25StatList" ReturnType="Collection(ESMonitorModel.T_ESHour_GetAvgPM25StatList_Result)">
-            <Parameter Name="Country" Mode="In" Type="String" />
-            <Parameter Name="strWhere" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="T_InsertTable_AutoForESDay1" />
-          <FunctionImport Name="T_InsertTable_AutoForESHour1" />
-          <EntitySet Name="T_SysConfig" EntityType="ESMonitorModel.T_SysConfig" />
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ESMonitorModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ESMonitorModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="T_UserStats" EntityType="ESMonitorModel.T_UserStats" />
-          <EntitySet Name="T_Devs" EntityType="ESMonitorModel.T_Devs" />
-          <EntitySet Name="T_Alarms" EntityType="ESMonitorModel.T_Alarms" />
-          <EntitySet Name="T_Photos" EntityType="ESMonitorModel.T_Photos" />
-          <EntitySet Name="T_Camera" EntityType="ESMonitorModel.T_Camera" />
-          <EntitySet Name="T_ESMin_Fifteen" EntityType="ESMonitorModel.T_ESMin_Fifteen" />
-          <FunctionImport Name="InSert_Alarm" ReturnType="Collection(Int32)" />
-          <FunctionImport Name="T_InsertInto_Fifteen" />
-          <EntitySet Name="T_AlarmText" EntityType="ESMonitorModel.T_AlarmText" />
-          <EntitySet Name="DeviceException" EntityType="ESMonitorModel.DeviceException" />
         </EntityContainer>
+        <ComplexType Name="CheckForDeviceNoData_Result">
+          <Property Type="Byte" Name="ExceptionType" Nullable="false" />
+          <Property Type="Int32" Name="DevId" Nullable="false" />
+          <Property Type="Int32" Name="StatId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="CheckForDeviceZeroData_Result">
+          <Property Type="Byte" Name="ExceptionType" Nullable="false" />
+          <Property Type="Int32" Name="DevId" Nullable="false" />
+          <Property Type="Int32" Name="StatId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="TPNum" Nullable="true" />
@@ -2161,6 +2338,40 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="Int32" Name="StatId" Nullable="false" />
           <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM100List_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="DateTime" Name="updateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM100OrderList_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="Double" Name="MaxPM100" Nullable="true" />
+          <Property Type="Double" Name="MinPM100" Nullable="true" />
+          <Property Type="Int32" Name="ValidDataNum" Nullable="true" />
+          <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DevCode" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM100StatList_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM25List_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="DateTime" Name="updateTime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM25OrderList_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="Double" Name="MaxPM25" Nullable="true" />
+          <Property Type="Double" Name="MinPM25" Nullable="true" />
+          <Property Type="Int32" Name="ValidDataNum" Nullable="true" />
+          <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DevCode" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="T_ESDay_GetAvgPM25StatList_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
+        </ComplexType>
         <ComplexType Name="T_ESDay_GetList_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
           <Property Type="Int32" Name="StatId" Nullable="false" />
@@ -2186,6 +2397,16 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
         </ComplexType>
         <ComplexType Name="T_ESHour_GetAvgNoiseStatList_Result">
           <Property Type="Double" Name="AvgDB" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="T_ESHour_GetAvgPM100StatList_Result">
+          <Property Type="Double" Name="AvgPM100" Nullable="true" />
+          <Property Type="Int32" Name="StatId" Nullable="false" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="T_ESHour_GetAvgPM25StatList_Result">
+          <Property Type="Double" Name="AvgPM25" Nullable="true" />
           <Property Type="Int32" Name="StatId" Nullable="false" />
           <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
         </ComplexType>
@@ -2216,6 +2437,8 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="Double" Name="Temperature" Nullable="false" />
           <Property Type="Double" Name="Humidity" Nullable="false" />
           <Property Type="Int32" Name="DevId" Nullable="true" />
+          <Property Type="Double" Name="PM25" Nullable="true" />
+          <Property Type="Double" Name="PM100" Nullable="true" />
         </ComplexType>
         <ComplexType Name="T_ESMin_GetCurDevData_Result">
           <Property Type="Double" Name="TP" Nullable="false" />
@@ -2226,6 +2449,8 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="Double" Name="Temperature" Nullable="false" />
           <Property Type="Double" Name="Humidity" Nullable="false" />
           <Property Type="Int32" Name="DevId" Nullable="true" />
+          <Property Type="Double" Name="PM25" Nullable="true" />
+          <Property Type="Double" Name="PM100" Nullable="true" />
         </ComplexType>
         <ComplexType Name="T_ESMin_GetList_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
@@ -2233,6 +2458,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="Int32" Name="StatId" Nullable="false" />
           <Property Type="Double" Name="TP" Nullable="false" />
           <Property Type="Double" Name="DB" Nullable="false" />
+          <Property Type="Double" Name="PM25" Nullable="true" />
+          <Property Type="Double" Name="PM100" Nullable="true" />
+          <Property Type="Double" Name="VOCs" Nullable="true" />
           <Property Type="DateTime" Name="UpdateTime" Nullable="true" Precision="23" />
           <Property Type="Double" Name="WindSpeed" Nullable="false" />
           <Property Type="Double" Name="Rain" Nullable="true" />
@@ -2250,6 +2478,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="Int32" Name="StatId" Nullable="false" />
           <Property Type="Double" Name="TP" Nullable="false" />
           <Property Type="Double" Name="DB" Nullable="false" />
+          <Property Type="Double" Name="PM25" Nullable="true" />
+          <Property Type="Double" Name="PM100" Nullable="true" />
+          <Property Type="Double" Name="VOCs" Nullable="true" />
           <Property Type="DateTime" Name="UpdateTime" Nullable="true" Precision="23" />
           <Property Type="Double" Name="WindSpeed" Nullable="false" />
           <Property Type="Double" Name="Rain" Nullable="true" />
@@ -2304,7 +2535,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="String" Name="Telepone" Nullable="false" MaxLength="20" />
           <Property Type="Decimal" Name="Longitude" Nullable="false" Precision="9" Scale="6" />
           <Property Type="Decimal" Name="Latitude" Nullable="false" Precision="9" Scale="6" />
-          <Property Type="String" Name="Department" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Address" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="Country" Nullable="false" />
           <Property Type="String" Name="Street" Nullable="false" MaxLength="20" />
@@ -2320,7 +2551,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="String" Name="Telepone" Nullable="false" MaxLength="20" />
           <Property Type="Decimal" Name="Longitude" Nullable="false" Precision="9" Scale="6" />
           <Property Type="Decimal" Name="Latitude" Nullable="false" Precision="9" Scale="6" />
-          <Property Type="String" Name="Department" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Address" Nullable="false" MaxLength="50" />
           <Property Type="Int32" Name="Country" Nullable="false" />
           <Property Type="String" Name="Street" Nullable="false" MaxLength="20" />
@@ -2413,171 +2644,38 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="DateTime" Name="NowTime" Nullable="true" Precision="23" />
           <Property Type="String" Name="Remark" Nullable="true" MaxLength="50" />
         </ComplexType>
-        <ComplexType Name="T_ESDay_GetAvgPM100List_Result">
-          <Property Type="Double" Name="AvgPM100" Nullable="true" />
-          <Property Type="DateTime" Name="updateTime" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="T_ESDay_GetAvgPM100OrderList_Result">
-          <Property Type="Double" Name="AvgPM100" Nullable="true" />
-          <Property Type="Double" Name="MaxPM100" Nullable="true" />
-          <Property Type="Double" Name="MinPM100" Nullable="true" />
-          <Property Type="Int32" Name="ValidDataNum" Nullable="true" />
-          <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="DevCode" Nullable="false" MaxLength="20" />
-        </ComplexType>
-        <ComplexType Name="T_ESDay_GetAvgPM100StatList_Result">
-          <Property Type="Double" Name="AvgPM100" Nullable="true" />
-          <Property Type="Int32" Name="StatId" Nullable="false" />
-          <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="T_ESDay_GetAvgPM25List_Result">
-          <Property Type="Double" Name="AvgPM25" Nullable="true" />
-          <Property Type="DateTime" Name="updateTime" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="T_ESDay_GetAvgPM25OrderList_Result">
-          <Property Type="Double" Name="AvgPM25" Nullable="true" />
-          <Property Type="Double" Name="MaxPM25" Nullable="true" />
-          <Property Type="Double" Name="MinPM25" Nullable="true" />
-          <Property Type="Int32" Name="ValidDataNum" Nullable="true" />
-          <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="DevCode" Nullable="false" MaxLength="20" />
-        </ComplexType>
-        <ComplexType Name="T_ESDay_GetAvgPM25StatList_Result">
-          <Property Type="Double" Name="AvgPM25" Nullable="true" />
-          <Property Type="Int32" Name="StatId" Nullable="false" />
-          <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
-        </ComplexType>
-        <ComplexType Name="T_ESHour_GetAvgPM100StatList_Result">
-          <Property Type="Double" Name="AvgPM100" Nullable="true" />
-          <Property Type="Int32" Name="StatId" Nullable="false" />
-          <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
-        </ComplexType>
-        <ComplexType Name="T_ESHour_GetAvgPM25StatList_Result">
-          <Property Type="Double" Name="AvgPM25" Nullable="true" />
-          <Property Type="Int32" Name="StatId" Nullable="false" />
-          <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="23" />
-        </ComplexType>
-        <EntityType Name="T_SysConfig">
-          <Key>
-            <PropertyRef Name="ConfigId" />
-          </Key>
-          <Property Name="ConfigId" Type="Guid" Nullable="false" />
-          <Property Name="ConfigType" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
-        </EntityType>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
-        <EntityType Name="T_UserStats">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="StatId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="T_Devs">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DevCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="StatId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PreEndTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DevStatus" Type="Byte" Nullable="false" />
-          <Property Name="VideoURL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="T_Alarms">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StatId" Type="Int32" />
-          <Property Name="DevId" Type="Int32" />
-          <Property Name="DustType" Type="Int16" />
-          <Property Name="FaultVal" Type="Double" />
-          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
-          <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="IsReaded" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="T_Photos">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="AddTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="FileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="DevId" Type="Int32" Nullable="false" />
-          <Property Name="UserName1" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="false" />
-        </EntityType>
-        <EntityType Name="T_Camera">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CameraName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DevId" Type="Int32" Nullable="false" />
-          <Property Name="DnsAddr" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Port" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PassWord" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CameraId" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="T_ESMin_Fifteen">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StatId" Type="Int32" Nullable="false" />
-          <Property Name="TP" Type="Double" Nullable="false" />
-          <Property Name="DB" Type="Double" Nullable="false" />
-          <Property Name="PM25" Type="Double" Nullable="false" />
-          <Property Name="PM100" Type="Double" Nullable="false" />
-          <Property Name="Temperature" Type="Double" Nullable="false" />
-          <Property Name="Humidity" Type="Double" Nullable="false" />
-          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="T_AlarmText">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DevId" Type="Int32" Nullable="false" />
-          <Property Name="StatId" Type="Int32" Nullable="false" />
-          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="DeviceException">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="ExceptionType" Type="Byte" Nullable="false" />
-          <Property Name="DevId" Type="Int32" Nullable="false" />
-          <Property Name="StatId" Type="Int32" />
-          <Property Name="ExceptionValue" Type="Double" />
-          <Property Name="ExceptionTime" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ESMonitorModelStoreContainer" CdmEntityContainer="ESMonitorEntities">
+        <EntityContainerMapping StorageEntityContainer="ESMonitor2ModelStoreContainer" CdmEntityContainer="ESMonitor2">
+          <EntitySetMapping Name="DeviceExceptions">
+            <EntityTypeMapping TypeName="ESMonitor2Model.DeviceException">
+              <MappingFragment StoreEntitySet="DeviceException">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ExceptionType" ColumnName="ExceptionType" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="ExceptionValue" ColumnName="ExceptionValue" />
+                <ScalarProperty Name="ExceptionTime" ColumnName="ExceptionTime" />
+                <ScalarProperty Name="Processed" ColumnName="Processed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ESMonitor2Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="T_AlarmType">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_AlarmType">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_AlarmType">
               <MappingFragment StoreEntitySet="T_AlarmType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2586,8 +2684,23 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="T_Camera">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Camera">
+              <MappingFragment StoreEntitySet="T_Camera">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CameraName" ColumnName="CameraName" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="DnsAddr" ColumnName="DnsAddr" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="CameraId" ColumnName="CameraId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="T_Country">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Country">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Country">
               <MappingFragment StoreEntitySet="T_Country">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Province" ColumnName="Province" />
@@ -2596,68 +2709,82 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_DevAddr">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_DevAddr">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_DevAddr">
               <MappingFragment StoreEntitySet="T_DevAddr">
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="NodeId" ColumnName="NodeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="T_Devs">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Devs">
+              <MappingFragment StoreEntitySet="T_Devs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="PreEndTime" ColumnName="PreEndTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="DevStatus" ColumnName="DevStatus" />
+                <ScalarProperty Name="VideoURL" ColumnName="VideoURL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="T_ESDay">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_ESDay">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_ESDay">
               <MappingFragment StoreEntitySet="T_ESDay">
-                <ScalarProperty Name="WindDirection" ColumnName="WindDirection" />
-                <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
-                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
-                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
-                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
-                <ScalarProperty Name="PM100" ColumnName="PM100" />
-                <ScalarProperty Name="PM25" ColumnName="PM25" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
                 <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="DataStatus" ColumnName="DataStatus" />
                 <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
+                <ScalarProperty Name="WindDirection" ColumnName="WindDirection" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_ESHour">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_ESHour">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_ESHour">
               <MappingFragment StoreEntitySet="T_ESHour">
-                <ScalarProperty Name="WindDirection" ColumnName="WindDirection" />
-                <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
-                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
-                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
-                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
-                <ScalarProperty Name="PM100" ColumnName="PM100" />
-                <ScalarProperty Name="PM25" ColumnName="PM25" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
                 <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="DataStatus" ColumnName="DataStatus" />
                 <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
+                <ScalarProperty Name="WindDirection" ColumnName="WindDirection" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_ESMin">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_ESMin">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_ESMin">
               <MappingFragment StoreEntitySet="T_ESMin">
-                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
-                <ScalarProperty Name="PM100" ColumnName="PM100" />
-                <ScalarProperty Name="PM25" ColumnName="PM25" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatCode" ColumnName="StatCode" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
                 <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
                 <ScalarProperty Name="Rain" ColumnName="Rain" />
@@ -2671,8 +2798,23 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="T_ESMin_Fifteen">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_ESMin_Fifteen">
+              <MappingFragment StoreEntitySet="T_ESMin_Fifteen">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="TP" ColumnName="TP" />
+                <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="T_Files">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Files">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Files">
               <MappingFragment StoreEntitySet="T_Files">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
@@ -2684,15 +2826,26 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_GroupModules">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_GroupModules">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_GroupModules">
               <MappingFragment StoreEntitySet="T_GroupModules">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="T_Photos">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Photos">
+              <MappingFragment StoreEntitySet="T_Photos">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="T_Province">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Province">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Province">
               <MappingFragment StoreEntitySet="T_Province">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Province" ColumnName="Province" />
@@ -2700,7 +2853,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_Stage">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Stage">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Stage">
               <MappingFragment StoreEntitySet="T_Stage">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StageName" ColumnName="StageName" />
@@ -2708,7 +2861,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_Stats">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Stats">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Stats">
               <MappingFragment StoreEntitySet="T_Stats">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatCode" ColumnName="StatCode" />
@@ -2730,8 +2883,18 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="T_SysConfig">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_SysConfig">
+              <MappingFragment StoreEntitySet="T_SysConfig">
+                <ScalarProperty Name="ConfigId" ColumnName="ConfigId" />
+                <ScalarProperty Name="ConfigType" ColumnName="ConfigType" />
+                <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
+                <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="T_TaskNotice">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_TaskNotice">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_TaskNotice">
               <MappingFragment StoreEntitySet="T_TaskNotice">
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
@@ -2742,7 +2905,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_Tasks">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Tasks">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Tasks">
               <MappingFragment StoreEntitySet="T_Tasks">
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
@@ -2756,7 +2919,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_UserAuthority">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_UserAuthority">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_UserAuthority">
               <MappingFragment StoreEntitySet="T_UserAuthority">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="AuthObjId" ColumnName="AuthObjId" />
@@ -2765,7 +2928,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_UserGroup">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_UserGroup">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_UserGroup">
               <MappingFragment StoreEntitySet="T_UserGroup">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -2775,7 +2938,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_UserInGroups">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_UserInGroups">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_UserInGroups">
               <MappingFragment StoreEntitySet="T_UserInGroups">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -2783,7 +2946,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_Users">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Users">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Users">
               <MappingFragment StoreEntitySet="T_Users">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -2799,8 +2962,31 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="T_UserStats">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_UserStats">
+              <MappingFragment StoreEntitySet="T_UserStats">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Alarms">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Alarms">
+              <MappingFragment StoreEntitySet="T_Alarms">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="DustType" ColumnName="DustType" />
+                <ScalarProperty Name="FaultVal" ColumnName="FaultVal" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="IsReaded" ColumnName="IsReaded" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="T_ESDaytemp1">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_ESDaytemp1">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_ESDaytemp1">
               <MappingFragment StoreEntitySet="T_ESDaytemp1">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
@@ -2817,7 +3003,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="T_Offset">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Offset">
+            <EntityTypeMapping TypeName="ESMonitor2Model.T_Offset">
               <MappingFragment StoreEntitySet="T_Offset">
                 <ScalarProperty Name="OffSetCpm" ColumnName="OffSetCpm" />
                 <ScalarProperty Name="OffSetPlusCpm" ColumnName="OffSetPlusCpm" />
@@ -2826,13 +3012,55 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="T_Alarms_ADD" FunctionName="ESMonitorModel.Store.T_Alarms_ADD" />
-          <FunctionImportMapping FunctionImportName="T_Alarms_Delete" FunctionName="ESMonitorModel.Store.T_Alarms_Delete" />
-          <FunctionImportMapping FunctionImportName="T_Alarms_Exists" FunctionName="ESMonitorModel.Store.T_Alarms_Exists" />
-          <FunctionImportMapping FunctionImportName="T_Alarms_GetDataFromESMin" FunctionName="ESMonitorModel.Store.T_Alarms_GetDataFromESMin" />
-          <FunctionImportMapping FunctionImportName="T_Alarms_GetDustOverDataCount" FunctionName="ESMonitorModel.Store.T_Alarms_GetDustOverDataCount">
+          <FunctionImportMapping FunctionImportName="CheckForDeviceNoData" FunctionName="ESMonitor2Model.Store.CheckForDeviceNoData">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Alarms_GetDustOverDataCount_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.CheckForDeviceNoData_Result">
+                <ScalarProperty Name="ExceptionType" ColumnName="ExceptionType" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CheckForDeviceZeroData" FunctionName="ESMonitor2Model.Store.CheckForDeviceZeroData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.CheckForDeviceZeroData_Result">
+                <ScalarProperty Name="ExceptionType" ColumnName="ExceptionType" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ESMonitor2Model.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ESMonitor2Model.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ESMonitor2Model.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ESMonitor2Model.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ESMonitor2Model.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ESMonitor2Model.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ESMonitor2Model.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="T_Alarms_ADD" FunctionName="ESMonitor2Model.Store.T_Alarms_ADD" />
+          <FunctionImportMapping FunctionImportName="T_Alarms_Delete" FunctionName="ESMonitor2Model.Store.T_Alarms_Delete" />
+          <FunctionImportMapping FunctionImportName="T_Alarms_Exists" FunctionName="ESMonitor2Model.Store.T_Alarms_Exists" />
+          <FunctionImportMapping FunctionImportName="T_Alarms_GetDataFromESMin" FunctionName="ESMonitor2Model.Store.T_Alarms_GetDataFromESMin" />
+          <FunctionImportMapping FunctionImportName="T_Alarms_GetDustOverDataCount" FunctionName="ESMonitor2Model.Store.T_Alarms_GetDustOverDataCount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Alarms_GetDustOverDataCount_Result">
                 <ScalarProperty Name="StatName" ColumnName="StatName" />
                 <ScalarProperty Name="TPNum" ColumnName="TPNum" />
                 <ScalarProperty Name="DBNum" ColumnName="DBNum" />
@@ -2840,17 +3068,17 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Alarms_GetDustOverDataPerDay" FunctionName="ESMonitorModel.Store.T_Alarms_GetDustOverDataPerDay">
+          <FunctionImportMapping FunctionImportName="T_Alarms_GetDustOverDataPerDay" FunctionName="ESMonitor2Model.Store.T_Alarms_GetDustOverDataPerDay">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Alarms_GetDustOverDataPerDay_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Alarms_GetDustOverDataPerDay_Result">
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="Total" ColumnName="Total" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Alarms_GetList" FunctionName="ESMonitorModel.Store.T_Alarms_GetList">
+          <FunctionImportMapping FunctionImportName="T_Alarms_GetList" FunctionName="ESMonitor2Model.Store.T_Alarms_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Alarms_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Alarms_GetList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
@@ -2861,9 +3089,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Alarms_GetModel" FunctionName="ESMonitorModel.Store.T_Alarms_GetModel">
+          <FunctionImportMapping FunctionImportName="T_Alarms_GetModel" FunctionName="ESMonitor2Model.Store.T_Alarms_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Alarms_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Alarms_GetModel_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
@@ -2874,12 +3102,12 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Alarms_Update" FunctionName="ESMonitorModel.Store.T_Alarms_Update" />
-          <FunctionImportMapping FunctionImportName="T_AlarmType_ADD_" FunctionName="ESMonitorModel.Store.T_AlarmType_ADD_" />
-          <FunctionImportMapping FunctionImportName="T_AlarmType_Delete" FunctionName="ESMonitorModel.Store.T_AlarmType_Delete" />
-          <FunctionImportMapping FunctionImportName="T_AlarmType_GetModel" FunctionName="ESMonitorModel.Store.T_AlarmType_GetModel">
+          <FunctionImportMapping FunctionImportName="T_Alarms_Update" FunctionName="ESMonitor2Model.Store.T_Alarms_Update" />
+          <FunctionImportMapping FunctionImportName="T_AlarmType_ADD_" FunctionName="ESMonitor2Model.Store.T_AlarmType_ADD_" />
+          <FunctionImportMapping FunctionImportName="T_AlarmType_Delete" FunctionName="ESMonitor2Model.Store.T_AlarmType_Delete" />
+          <FunctionImportMapping FunctionImportName="T_AlarmType_GetModel" FunctionName="ESMonitor2Model.Store.T_AlarmType_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_AlarmType_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_AlarmType_GetModel_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="DustRange" ColumnName="DustRange" />
@@ -2887,13 +3115,13 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_AlarmType_Update" FunctionName="ESMonitorModel.Store.T_AlarmType_Update" />
-          <FunctionImportMapping FunctionImportName="T_Camera_ADD" FunctionName="ESMonitorModel.Store.T_Camera_ADD" />
-          <FunctionImportMapping FunctionImportName="T_Camera_Delete" FunctionName="ESMonitorModel.Store.T_Camera_Delete" />
-          <FunctionImportMapping FunctionImportName="T_Camera_Exists" FunctionName="ESMonitorModel.Store.T_Camera_Exists" />
-          <FunctionImportMapping FunctionImportName="T_Camera_GetModel" FunctionName="ESMonitorModel.Store.T_Camera_GetModel">
+          <FunctionImportMapping FunctionImportName="T_AlarmType_Update" FunctionName="ESMonitor2Model.Store.T_AlarmType_Update" />
+          <FunctionImportMapping FunctionImportName="T_Camera_ADD" FunctionName="ESMonitor2Model.Store.T_Camera_ADD" />
+          <FunctionImportMapping FunctionImportName="T_Camera_Delete" FunctionName="ESMonitor2Model.Store.T_Camera_Delete" />
+          <FunctionImportMapping FunctionImportName="T_Camera_Exists" FunctionName="ESMonitor2Model.Store.T_Camera_Exists" />
+          <FunctionImportMapping FunctionImportName="T_Camera_GetModel" FunctionName="ESMonitor2Model.Store.T_Camera_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Camera_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Camera_GetModel_Result">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="DnsAddr" ColumnName="DnsAddr" />
@@ -2902,16 +3130,16 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Camera_Update" FunctionName="ESMonitorModel.Store.T_Camera_Update" />
-          <FunctionImportMapping FunctionImportName="T_DevAddr_ADD" FunctionName="ESMonitorModel.Store.T_DevAddr_ADD" />
-          <FunctionImportMapping FunctionImportName="T_DevAddr_Exists" FunctionName="ESMonitorModel.Store.T_DevAddr_Exists" />
-          <FunctionImportMapping FunctionImportName="T_DevAddr_Update" FunctionName="ESMonitorModel.Store.T_DevAddr_Update" />
-          <FunctionImportMapping FunctionImportName="T_Devs_ADD" FunctionName="ESMonitorModel.Store.T_Devs_ADD" />
-          <FunctionImportMapping FunctionImportName="T_Devs_Delete" FunctionName="ESMonitorModel.Store.T_Devs_Delete" />
-          <FunctionImportMapping FunctionImportName="T_Devs_Exists" FunctionName="ESMonitorModel.Store.T_Devs_Exists" />
-          <FunctionImportMapping FunctionImportName="T_Devs_GetList" FunctionName="ESMonitorModel.Store.T_Devs_GetList">
+          <FunctionImportMapping FunctionImportName="T_Camera_Update" FunctionName="ESMonitor2Model.Store.T_Camera_Update" />
+          <FunctionImportMapping FunctionImportName="T_DevAddr_ADD" FunctionName="ESMonitor2Model.Store.T_DevAddr_ADD" />
+          <FunctionImportMapping FunctionImportName="T_DevAddr_Exists" FunctionName="ESMonitor2Model.Store.T_DevAddr_Exists" />
+          <FunctionImportMapping FunctionImportName="T_DevAddr_Update" FunctionName="ESMonitor2Model.Store.T_DevAddr_Update" />
+          <FunctionImportMapping FunctionImportName="T_Devs_ADD" FunctionName="ESMonitor2Model.Store.T_Devs_ADD" />
+          <FunctionImportMapping FunctionImportName="T_Devs_Delete" FunctionName="ESMonitor2Model.Store.T_Devs_Delete" />
+          <FunctionImportMapping FunctionImportName="T_Devs_Exists" FunctionName="ESMonitor2Model.Store.T_Devs_Exists" />
+          <FunctionImportMapping FunctionImportName="T_Devs_GetList" FunctionName="ESMonitor2Model.Store.T_Devs_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Devs_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Devs_GetList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DevCode" ColumnName="DevCode" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
@@ -2923,11 +3151,11 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Devs_GetListByPage" FunctionName="ESMonitorModel.Store.T_Devs_GetListByPage" />
-          <FunctionImportMapping FunctionImportName="T_Devs_GetMaxId" FunctionName="ESMonitorModel.Store.T_Devs_GetMaxId" />
-          <FunctionImportMapping FunctionImportName="T_Devs_GetModel" FunctionName="ESMonitorModel.Store.T_Devs_GetModel">
+          <FunctionImportMapping FunctionImportName="T_Devs_GetListByPage" FunctionName="ESMonitor2Model.Store.T_Devs_GetListByPage" />
+          <FunctionImportMapping FunctionImportName="T_Devs_GetMaxId" FunctionName="ESMonitor2Model.Store.T_Devs_GetMaxId" />
+          <FunctionImportMapping FunctionImportName="T_Devs_GetModel" FunctionName="ESMonitor2Model.Store.T_Devs_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Devs_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Devs_GetModel_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DevCode" ColumnName="DevCode" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
@@ -2939,9 +3167,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Devs_GetRelatedStat" FunctionName="ESMonitorModel.Store.T_Devs_GetRelatedStat">
+          <FunctionImportMapping FunctionImportName="T_Devs_GetRelatedStat" FunctionName="ESMonitor2Model.Store.T_Devs_GetRelatedStat">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Devs_GetRelatedStat_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Devs_GetRelatedStat_Result">
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
@@ -2949,21 +3177,21 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Devs_Update" FunctionName="ESMonitorModel.Store.T_Devs_Update" />
-          <FunctionImportMapping FunctionImportName="T_ESDay_ADD" FunctionName="ESMonitorModel.Store.T_ESDay_ADD" />
-          <FunctionImportMapping FunctionImportName="T_ESDay_Delete" FunctionName="ESMonitorModel.Store.T_ESDay_Delete" />
-          <FunctionImportMapping FunctionImportName="T_ESDay_Exists" FunctionName="ESMonitorModel.Store.T_ESDay_Exists" />
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgCMPList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgCMPList">
+          <FunctionImportMapping FunctionImportName="T_Devs_Update" FunctionName="ESMonitor2Model.Store.T_Devs_Update" />
+          <FunctionImportMapping FunctionImportName="T_ESDay_ADD" FunctionName="ESMonitor2Model.Store.T_ESDay_ADD" />
+          <FunctionImportMapping FunctionImportName="T_ESDay_Delete" FunctionName="ESMonitor2Model.Store.T_ESDay_Delete" />
+          <FunctionImportMapping FunctionImportName="T_ESDay_Exists" FunctionName="ESMonitor2Model.Store.T_ESDay_Exists" />
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgCMPList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgCMPList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgCMPList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgCMPList_Result">
                 <ScalarProperty Name="AvgTP" ColumnName="AvgTP" />
                 <ScalarProperty Name="updateTime" ColumnName="updateTime" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgCMPOrderList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgCMPOrderList">
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgCMPOrderList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgCMPOrderList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgCMPOrderList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgCMPOrderList_Result">
                 <ScalarProperty Name="AvgTP" ColumnName="AvgTP" />
                 <ScalarProperty Name="MaxTP" ColumnName="MaxTP" />
                 <ScalarProperty Name="MinTP" ColumnName="MinTP" />
@@ -2973,26 +3201,26 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgCMPStatList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgCMPStatList">
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgCMPStatList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgCMPStatList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgCMPStatList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgCMPStatList_Result">
                 <ScalarProperty Name="AvgTP" ColumnName="AvgTP" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgNoiseList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgNoiseList">
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgNoiseList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgNoiseList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgNoiseList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgNoiseList_Result">
                 <ScalarProperty Name="AvgDB" ColumnName="AvgDB" />
                 <ScalarProperty Name="updateTime" ColumnName="updateTime" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgNoiseOrderList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgNoiseOrderList">
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgNoiseOrderList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgNoiseOrderList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgNoiseOrderList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgNoiseOrderList_Result">
                 <ScalarProperty Name="AvgDB" ColumnName="AvgDB" />
                 <ScalarProperty Name="MaxDB" ColumnName="MaxDB" />
                 <ScalarProperty Name="MinDB" ColumnName="MinDB" />
@@ -3002,18 +3230,76 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgNoiseStatList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgNoiseStatList">
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgNoiseStatList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgNoiseStatList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgNoiseStatList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgNoiseStatList_Result">
                 <ScalarProperty Name="AvgDB" ColumnName="AvgDB" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetList" FunctionName="ESMonitorModel.Store.T_ESDay_GetList">
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100List" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgPM100List">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgPM100List_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="updateTime" ColumnName="updateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100OrderList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgPM100OrderList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgPM100OrderList_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="MaxPM100" ColumnName="MaxPM100" />
+                <ScalarProperty Name="MinPM100" ColumnName="MinPM100" />
+                <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
+                <ScalarProperty Name="StatName" ColumnName="StatName" />
+                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100StatList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgPM100StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgPM100StatList_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25List" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgPM25List">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgPM25List_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="updateTime" ColumnName="updateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25OrderList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgPM25OrderList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgPM25OrderList_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="MaxPM25" ColumnName="MaxPM25" />
+                <ScalarProperty Name="MinPM25" ColumnName="MinPM25" />
+                <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
+                <ScalarProperty Name="StatName" ColumnName="StatName" />
+                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25StatList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetAvgPM25StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetAvgPM25StatList_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetList" FunctionName="ESMonitor2Model.Store.T_ESDay_GetList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
@@ -3024,10 +3310,10 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetMaxId" FunctionName="ESMonitorModel.Store.T_ESDay_GetMaxId" />
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetModel" FunctionName="ESMonitorModel.Store.T_ESDay_GetModel">
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetMaxId" FunctionName="ESMonitor2Model.Store.T_ESDay_GetMaxId" />
+          <FunctionImportMapping FunctionImportName="T_ESDay_GetModel" FunctionName="ESMonitor2Model.Store.T_ESDay_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESDay_GetModel_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
@@ -3038,31 +3324,49 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_Update" FunctionName="ESMonitorModel.Store.T_ESDay_Update" />
-          <FunctionImportMapping FunctionImportName="T_ESHour_ADD" FunctionName="ESMonitorModel.Store.T_ESHour_ADD" />
-          <FunctionImportMapping FunctionImportName="T_ESHour_Delete" FunctionName="ESMonitorModel.Store.T_ESHour_Delete" />
-          <FunctionImportMapping FunctionImportName="T_ESHour_Exists" FunctionName="ESMonitorModel.Store.T_ESHour_Exists" />
-          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgCMPStatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgCMPStatList">
+          <FunctionImportMapping FunctionImportName="T_ESDay_Update" FunctionName="ESMonitor2Model.Store.T_ESDay_Update" />
+          <FunctionImportMapping FunctionImportName="T_ESHour_ADD" FunctionName="ESMonitor2Model.Store.T_ESHour_ADD" />
+          <FunctionImportMapping FunctionImportName="T_ESHour_Delete" FunctionName="ESMonitor2Model.Store.T_ESHour_Delete" />
+          <FunctionImportMapping FunctionImportName="T_ESHour_Exists" FunctionName="ESMonitor2Model.Store.T_ESHour_Exists" />
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgCMPStatList" FunctionName="ESMonitor2Model.Store.T_ESHour_GetAvgCMPStatList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetAvgCMPStatList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESHour_GetAvgCMPStatList_Result">
                 <ScalarProperty Name="AvgTP" ColumnName="AvgTP" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgNoiseStatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgNoiseStatList">
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgNoiseStatList" FunctionName="ESMonitor2Model.Store.T_ESHour_GetAvgNoiseStatList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetAvgNoiseStatList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESHour_GetAvgNoiseStatList_Result">
                 <ScalarProperty Name="AvgDB" ColumnName="AvgDB" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESHour_GetList" FunctionName="ESMonitorModel.Store.T_ESHour_GetList">
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgPM100StatList" FunctionName="ESMonitor2Model.Store.T_ESHour_GetAvgPM100StatList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESHour_GetAvgPM100StatList_Result">
+                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgPM25StatList" FunctionName="ESMonitor2Model.Store.T_ESHour_GetAvgPM25StatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESHour_GetAvgPM25StatList_Result">
+                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetList" FunctionName="ESMonitor2Model.Store.T_ESHour_GetList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESHour_GetList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
@@ -3073,9 +3377,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESHour_GetModel" FunctionName="ESMonitorModel.Store.T_ESHour_GetModel">
+          <FunctionImportMapping FunctionImportName="T_ESHour_GetModel" FunctionName="ESMonitor2Model.Store.T_ESHour_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESHour_GetModel_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
@@ -3086,13 +3390,13 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESHour_Update" FunctionName="ESMonitorModel.Store.T_ESHour_Update" />
-          <FunctionImportMapping FunctionImportName="T_ESMin_ADD" FunctionName="ESMonitorModel.Store.T_ESMin_ADD" />
-          <FunctionImportMapping FunctionImportName="T_ESMin_Delete" FunctionName="ESMonitorModel.Store.T_ESMin_Delete" />
-          <FunctionImportMapping FunctionImportName="T_ESMin_Exists" FunctionName="ESMonitorModel.Store.T_ESMin_Exists" />
-          <FunctionImportMapping FunctionImportName="T_ESMin_GetCurData" FunctionName="ESMonitorModel.Store.T_ESMin_GetCurData">
+          <FunctionImportMapping FunctionImportName="T_ESHour_Update" FunctionName="ESMonitor2Model.Store.T_ESHour_Update" />
+          <FunctionImportMapping FunctionImportName="T_ESMin_ADD" FunctionName="ESMonitor2Model.Store.T_ESMin_ADD" />
+          <FunctionImportMapping FunctionImportName="T_ESMin_Delete" FunctionName="ESMonitor2Model.Store.T_ESMin_Delete" />
+          <FunctionImportMapping FunctionImportName="T_ESMin_Exists" FunctionName="ESMonitor2Model.Store.T_ESMin_Exists" />
+          <FunctionImportMapping FunctionImportName="T_ESMin_GetCurData" FunctionName="ESMonitor2Model.Store.T_ESMin_GetCurData">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESMin_GetCurData_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESMin_GetCurData_Result">
                 <ScalarProperty Name="TP" ColumnName="TP" />
                 <ScalarProperty Name="DB" ColumnName="DB" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
@@ -3101,12 +3405,14 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
                 <ScalarProperty Name="Temperature" ColumnName="Temperature" />
                 <ScalarProperty Name="Humidity" ColumnName="Humidity" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESMin_GetCurDevData" FunctionName="ESMonitorModel.Store.T_ESMin_GetCurDevData">
+          <FunctionImportMapping FunctionImportName="T_ESMin_GetCurDevData" FunctionName="ESMonitor2Model.Store.T_ESMin_GetCurDevData">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESMin_GetCurDevData_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESMin_GetCurDevData_Result">
                 <ScalarProperty Name="TP" ColumnName="TP" />
                 <ScalarProperty Name="DB" ColumnName="DB" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
@@ -3115,17 +3421,22 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
                 <ScalarProperty Name="Temperature" ColumnName="Temperature" />
                 <ScalarProperty Name="Humidity" ColumnName="Humidity" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESMin_GetList" FunctionName="ESMonitorModel.Store.T_ESMin_GetList">
+          <FunctionImportMapping FunctionImportName="T_ESMin_GetList" FunctionName="ESMonitor2Model.Store.T_ESMin_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESMin_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESMin_GetList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatCode" ColumnName="StatCode" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
                 <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
                 <ScalarProperty Name="Rain" ColumnName="Rain" />
@@ -3139,14 +3450,17 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESMin_GetModel" FunctionName="ESMonitorModel.Store.T_ESMin_GetModel">
+          <FunctionImportMapping FunctionImportName="T_ESMin_GetModel" FunctionName="ESMonitor2Model.Store.T_ESMin_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESMin_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ESMin_GetModel_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatCode" ColumnName="StatCode" />
                 <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="TP" ColumnName="TP" />
                 <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="VOCs" ColumnName="VOCs" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
                 <ScalarProperty Name="Rain" ColumnName="Rain" />
@@ -3160,32 +3474,35 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESMin_Update" FunctionName="ESMonitorModel.Store.T_ESMin_Update" />
-          <FunctionImportMapping FunctionImportName="T_GroupModules_ADD" FunctionName="ESMonitorModel.Store.T_GroupModules_ADD" />
-          <FunctionImportMapping FunctionImportName="T_GroupModules_Delete" FunctionName="ESMonitorModel.Store.T_GroupModules_Delete" />
-          <FunctionImportMapping FunctionImportName="T_GroupModules_Exists" FunctionName="ESMonitorModel.Store.T_GroupModules_Exists" />
-          <FunctionImportMapping FunctionImportName="T_GroupModules_GetList" FunctionName="ESMonitorModel.Store.T_GroupModules_GetList">
+          <FunctionImportMapping FunctionImportName="T_ESMin_Update" FunctionName="ESMonitor2Model.Store.T_ESMin_Update" />
+          <FunctionImportMapping FunctionImportName="T_GroupModules_ADD" FunctionName="ESMonitor2Model.Store.T_GroupModules_ADD" />
+          <FunctionImportMapping FunctionImportName="T_GroupModules_Delete" FunctionName="ESMonitor2Model.Store.T_GroupModules_Delete" />
+          <FunctionImportMapping FunctionImportName="T_GroupModules_Exists" FunctionName="ESMonitor2Model.Store.T_GroupModules_Exists" />
+          <FunctionImportMapping FunctionImportName="T_GroupModules_GetList" FunctionName="ESMonitor2Model.Store.T_GroupModules_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_GroupModules_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_GroupModules_GetList_Result">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_GroupModules_GetModel" FunctionName="ESMonitorModel.Store.T_GroupModules_GetModel">
+          <FunctionImportMapping FunctionImportName="T_GroupModules_GetModel" FunctionName="ESMonitor2Model.Store.T_GroupModules_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_GroupModules_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_GroupModules_GetModel_Result">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Photos_ADD" FunctionName="ESMonitorModel.Store.T_Photos_ADD" />
-          <FunctionImportMapping FunctionImportName="T_Photos_Delete" FunctionName="ESMonitorModel.Store.T_Photos_Delete" />
-          <FunctionImportMapping FunctionImportName="T_Photos_GetListByPage" FunctionName="ESMonitorModel.Store.T_Photos_GetListByPage" />
-          <FunctionImportMapping FunctionImportName="T_Photos_GetModel" FunctionName="ESMonitorModel.Store.T_Photos_GetModel">
+          <FunctionImportMapping FunctionImportName="T_InsertInto_Fifteen" FunctionName="ESMonitor2Model.Store.T_InsertInto_Fifteen" />
+          <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESDay" FunctionName="ESMonitor2Model.Store.T_InsertTable_AutoForESDay" />
+          <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESHour" FunctionName="ESMonitor2Model.Store.T_InsertTable_AutoForESHour" />
+          <FunctionImportMapping FunctionImportName="T_Photos_ADD" FunctionName="ESMonitor2Model.Store.T_Photos_ADD" />
+          <FunctionImportMapping FunctionImportName="T_Photos_Delete" FunctionName="ESMonitor2Model.Store.T_Photos_Delete" />
+          <FunctionImportMapping FunctionImportName="T_Photos_GetListByPage" FunctionName="ESMonitor2Model.Store.T_Photos_GetListByPage" />
+          <FunctionImportMapping FunctionImportName="T_Photos_GetModel" FunctionName="ESMonitor2Model.Store.T_Photos_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Photos_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Photos_GetModel_Result">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DEVID" ColumnName="DEVID" />
                 <ScalarProperty Name="ADDTIME" ColumnName="ADDTIME" />
@@ -3193,9 +3510,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ProduceReport" FunctionName="ESMonitorModel.Store.T_ProduceReport">
+          <FunctionImportMapping FunctionImportName="T_ProduceReport" FunctionName="ESMonitor2Model.Store.T_ProduceReport">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ProduceReport_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_ProduceReport_Result">
                 <ScalarProperty Name="StatName" ColumnName="StatName" />
                 <ScalarProperty Name="Column1" ColumnName="Column1" />
                 <ScalarProperty Name="IndexAVG" ColumnName="IndexAVG" />
@@ -3205,9 +3522,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_StageReport" FunctionName="ESMonitorModel.Store.T_StageReport">
+          <FunctionImportMapping FunctionImportName="T_StageReport" FunctionName="ESMonitor2Model.Store.T_StageReport">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_StageReport_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_StageReport_Result">
                 <ScalarProperty Name="StatName" ColumnName="StatName" />
                 <ScalarProperty Name="IndexAVG" ColumnName="IndexAVG" />
                 <ScalarProperty Name="IndexMAX" ColumnName="IndexMAX" />
@@ -3216,9 +3533,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_StatCompare" FunctionName="ESMonitorModel.Store.T_StatCompare">
+          <FunctionImportMapping FunctionImportName="T_StatCompare" FunctionName="ESMonitor2Model.Store.T_StatCompare">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_StatCompare_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_StatCompare_Result">
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="TPAVG" ColumnName="TPAVG" />
                 <ScalarProperty Name="DBAVG" ColumnName="DBAVG" />
@@ -3226,12 +3543,12 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Stats_ADD" FunctionName="ESMonitorModel.Store.T_Stats_ADD" />
-          <FunctionImportMapping FunctionImportName="T_Stats_Delete" FunctionName="ESMonitorModel.Store.T_Stats_Delete" />
-          <FunctionImportMapping FunctionImportName="T_Stats_Exists" FunctionName="ESMonitorModel.Store.T_Stats_Exists" />
-          <FunctionImportMapping FunctionImportName="T_Stats_GetList" FunctionName="ESMonitorModel.Store.T_Stats_GetList">
+          <FunctionImportMapping FunctionImportName="T_Stats_ADD" FunctionName="ESMonitor2Model.Store.T_Stats_ADD" />
+          <FunctionImportMapping FunctionImportName="T_Stats_Delete" FunctionName="ESMonitor2Model.Store.T_Stats_Delete" />
+          <FunctionImportMapping FunctionImportName="T_Stats_Exists" FunctionName="ESMonitor2Model.Store.T_Stats_Exists" />
+          <FunctionImportMapping FunctionImportName="T_Stats_GetList" FunctionName="ESMonitor2Model.Store.T_Stats_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Stats_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Stats_GetList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatCode" ColumnName="StatCode" />
                 <ScalarProperty Name="StatName" ColumnName="StatName" />
@@ -3249,11 +3566,11 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Stats_GetListByPage" FunctionName="ESMonitorModel.Store.T_Stats_GetListByPage" />
-          <FunctionImportMapping FunctionImportName="T_Stats_GetMaxId" FunctionName="ESMonitorModel.Store.T_Stats_GetMaxId" />
-          <FunctionImportMapping FunctionImportName="T_Stats_GetModel" FunctionName="ESMonitorModel.Store.T_Stats_GetModel">
+          <FunctionImportMapping FunctionImportName="T_Stats_GetListByPage" FunctionName="ESMonitor2Model.Store.T_Stats_GetListByPage" />
+          <FunctionImportMapping FunctionImportName="T_Stats_GetMaxId" FunctionName="ESMonitor2Model.Store.T_Stats_GetMaxId" />
+          <FunctionImportMapping FunctionImportName="T_Stats_GetModel" FunctionName="ESMonitor2Model.Store.T_Stats_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Stats_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Stats_GetModel_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatCode" ColumnName="StatCode" />
                 <ScalarProperty Name="StatName" ColumnName="StatName" />
@@ -3272,12 +3589,12 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Stats_Update" FunctionName="ESMonitorModel.Store.T_Stats_Update" />
-          <FunctionImportMapping FunctionImportName="T_TaskNotice_ADD" FunctionName="ESMonitorModel.Store.T_TaskNotice_ADD" />
-          <FunctionImportMapping FunctionImportName="T_TaskNotice_Delete" FunctionName="ESMonitorModel.Store.T_TaskNotice_Delete" />
-          <FunctionImportMapping FunctionImportName="T_TaskNotice_GetList" FunctionName="ESMonitorModel.Store.T_TaskNotice_GetList">
+          <FunctionImportMapping FunctionImportName="T_Stats_Update" FunctionName="ESMonitor2Model.Store.T_Stats_Update" />
+          <FunctionImportMapping FunctionImportName="T_TaskNotice_ADD" FunctionName="ESMonitor2Model.Store.T_TaskNotice_ADD" />
+          <FunctionImportMapping FunctionImportName="T_TaskNotice_Delete" FunctionName="ESMonitor2Model.Store.T_TaskNotice_Delete" />
+          <FunctionImportMapping FunctionImportName="T_TaskNotice_GetList" FunctionName="ESMonitor2Model.Store.T_TaskNotice_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_TaskNotice_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_TaskNotice_GetList_Result">
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
@@ -3286,10 +3603,10 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_TaskNotice_GetListByPage" FunctionName="ESMonitorModel.Store.T_TaskNotice_GetListByPage" />
-          <FunctionImportMapping FunctionImportName="T_TaskNotice_GetModel" FunctionName="ESMonitorModel.Store.T_TaskNotice_GetModel">
+          <FunctionImportMapping FunctionImportName="T_TaskNotice_GetListByPage" FunctionName="ESMonitor2Model.Store.T_TaskNotice_GetListByPage" />
+          <FunctionImportMapping FunctionImportName="T_TaskNotice_GetModel" FunctionName="ESMonitor2Model.Store.T_TaskNotice_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_TaskNotice_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_TaskNotice_GetModel_Result">
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
@@ -3298,12 +3615,12 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_TaskNotice_Update" FunctionName="ESMonitorModel.Store.T_TaskNotice_Update" />
-          <FunctionImportMapping FunctionImportName="T_Tasks_ADD" FunctionName="ESMonitorModel.Store.T_Tasks_ADD" />
-          <FunctionImportMapping FunctionImportName="T_Tasks_Delete" FunctionName="ESMonitorModel.Store.T_Tasks_Delete" />
-          <FunctionImportMapping FunctionImportName="T_Tasks_GetList" FunctionName="ESMonitorModel.Store.T_Tasks_GetList">
+          <FunctionImportMapping FunctionImportName="T_TaskNotice_Update" FunctionName="ESMonitor2Model.Store.T_TaskNotice_Update" />
+          <FunctionImportMapping FunctionImportName="T_Tasks_ADD" FunctionName="ESMonitor2Model.Store.T_Tasks_ADD" />
+          <FunctionImportMapping FunctionImportName="T_Tasks_Delete" FunctionName="ESMonitor2Model.Store.T_Tasks_Delete" />
+          <FunctionImportMapping FunctionImportName="T_Tasks_GetList" FunctionName="ESMonitor2Model.Store.T_Tasks_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Tasks_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Tasks_GetList_Result">
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="SendTime" ColumnName="SendTime" />
@@ -3315,10 +3632,10 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Tasks_GetListByPage" FunctionName="ESMonitorModel.Store.T_Tasks_GetListByPage" />
-          <FunctionImportMapping FunctionImportName="T_Tasks_GetModel" FunctionName="ESMonitorModel.Store.T_Tasks_GetModel">
+          <FunctionImportMapping FunctionImportName="T_Tasks_GetListByPage" FunctionName="ESMonitor2Model.Store.T_Tasks_GetListByPage" />
+          <FunctionImportMapping FunctionImportName="T_Tasks_GetModel" FunctionName="ESMonitor2Model.Store.T_Tasks_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Tasks_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Tasks_GetModel_Result">
                 <ScalarProperty Name="TaskId" ColumnName="TaskId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="SendTime" ColumnName="SendTime" />
@@ -3330,29 +3647,29 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Tasks_Update" FunctionName="ESMonitorModel.Store.T_Tasks_Update" />
-          <FunctionImportMapping FunctionImportName="T_Tasks_UpdateStatus" FunctionName="ESMonitorModel.Store.T_Tasks_UpdateStatus" />
-          <FunctionImportMapping FunctionImportName="T_UserAuthority_ADD" FunctionName="ESMonitorModel.Store.T_UserAuthority_ADD" />
-          <FunctionImportMapping FunctionImportName="T_UserAuthority_Delete" FunctionName="ESMonitorModel.Store.T_UserAuthority_Delete" />
-          <FunctionImportMapping FunctionImportName="T_UserAuthority_DeleteByUserId" FunctionName="ESMonitorModel.Store.T_UserAuthority_DeleteByUserId" />
-          <FunctionImportMapping FunctionImportName="T_UserAuthority_GetAuths" FunctionName="ESMonitorModel.Store.T_UserAuthority_GetAuths">
+          <FunctionImportMapping FunctionImportName="T_Tasks_Update" FunctionName="ESMonitor2Model.Store.T_Tasks_Update" />
+          <FunctionImportMapping FunctionImportName="T_Tasks_UpdateStatus" FunctionName="ESMonitor2Model.Store.T_Tasks_UpdateStatus" />
+          <FunctionImportMapping FunctionImportName="T_UserAuthority_ADD" FunctionName="ESMonitor2Model.Store.T_UserAuthority_ADD" />
+          <FunctionImportMapping FunctionImportName="T_UserAuthority_Delete" FunctionName="ESMonitor2Model.Store.T_UserAuthority_Delete" />
+          <FunctionImportMapping FunctionImportName="T_UserAuthority_DeleteByUserId" FunctionName="ESMonitor2Model.Store.T_UserAuthority_DeleteByUserId" />
+          <FunctionImportMapping FunctionImportName="T_UserAuthority_GetAuths" FunctionName="ESMonitor2Model.Store.T_UserAuthority_GetAuths">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_UserAuthority_GetAuths_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_UserAuthority_GetAuths_Result">
                 <ScalarProperty Name="AuthObjId" ColumnName="AuthObjId" />
                 <ScalarProperty Name="AuthType" ColumnName="AuthType" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_UserGrantedNodes_ADD" FunctionName="ESMonitorModel.Store.T_UserGrantedNodes_ADD" />
-          <FunctionImportMapping FunctionImportName="T_UserGrantedNodes_Delete" FunctionName="ESMonitorModel.Store.T_UserGrantedNodes_Delete" />
-          <FunctionImportMapping FunctionImportName="T_UserGrantedNodes_DeleteByUserId" FunctionName="ESMonitorModel.Store.T_UserGrantedNodes_DeleteByUserId" />
-          <FunctionImportMapping FunctionImportName="T_UserGrantedNodes_GetGrantedNodes" FunctionName="ESMonitorModel.Store.T_UserGrantedNodes_GetGrantedNodes" />
-          <FunctionImportMapping FunctionImportName="T_UserGroup_ADD" FunctionName="ESMonitorModel.Store.T_UserGroup_ADD" />
-          <FunctionImportMapping FunctionImportName="T_UserGroup_Delete" FunctionName="ESMonitorModel.Store.T_UserGroup_Delete" />
-          <FunctionImportMapping FunctionImportName="T_UserGroup_Exists" FunctionName="ESMonitorModel.Store.T_UserGroup_Exists" />
-          <FunctionImportMapping FunctionImportName="T_UserGroup_GetList" FunctionName="ESMonitorModel.Store.T_UserGroup_GetList">
+          <FunctionImportMapping FunctionImportName="T_UserGrantedNodes_ADD" FunctionName="ESMonitor2Model.Store.T_UserGrantedNodes_ADD" />
+          <FunctionImportMapping FunctionImportName="T_UserGrantedNodes_Delete" FunctionName="ESMonitor2Model.Store.T_UserGrantedNodes_Delete" />
+          <FunctionImportMapping FunctionImportName="T_UserGrantedNodes_DeleteByUserId" FunctionName="ESMonitor2Model.Store.T_UserGrantedNodes_DeleteByUserId" />
+          <FunctionImportMapping FunctionImportName="T_UserGrantedNodes_GetGrantedNodes" FunctionName="ESMonitor2Model.Store.T_UserGrantedNodes_GetGrantedNodes" />
+          <FunctionImportMapping FunctionImportName="T_UserGroup_ADD" FunctionName="ESMonitor2Model.Store.T_UserGroup_ADD" />
+          <FunctionImportMapping FunctionImportName="T_UserGroup_Delete" FunctionName="ESMonitor2Model.Store.T_UserGroup_Delete" />
+          <FunctionImportMapping FunctionImportName="T_UserGroup_Exists" FunctionName="ESMonitor2Model.Store.T_UserGroup_Exists" />
+          <FunctionImportMapping FunctionImportName="T_UserGroup_GetList" FunctionName="ESMonitor2Model.Store.T_UserGroup_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_UserGroup_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_UserGroup_GetList_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Orders" ColumnName="Orders" />
@@ -3360,10 +3677,10 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_UserGroup_GetListByPage" FunctionName="ESMonitorModel.Store.T_UserGroup_GetListByPage" />
-          <FunctionImportMapping FunctionImportName="T_UserGroup_GetModel" FunctionName="ESMonitorModel.Store.T_UserGroup_GetModel">
+          <FunctionImportMapping FunctionImportName="T_UserGroup_GetListByPage" FunctionName="ESMonitor2Model.Store.T_UserGroup_GetListByPage" />
+          <FunctionImportMapping FunctionImportName="T_UserGroup_GetModel" FunctionName="ESMonitor2Model.Store.T_UserGroup_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_UserGroup_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_UserGroup_GetModel_Result">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Orders" ColumnName="Orders" />
@@ -3371,33 +3688,33 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_UserGroup_Update" FunctionName="ESMonitorModel.Store.T_UserGroup_Update" />
-          <FunctionImportMapping FunctionImportName="T_UserInGroups_ADD" FunctionName="ESMonitorModel.Store.T_UserInGroups_ADD" />
-          <FunctionImportMapping FunctionImportName="T_UserInGroups_Delete" FunctionName="ESMonitorModel.Store.T_UserInGroups_Delete" />
-          <FunctionImportMapping FunctionImportName="T_UserInGroups_Exists" FunctionName="ESMonitorModel.Store.T_UserInGroups_Exists" />
-          <FunctionImportMapping FunctionImportName="T_UserInGroups_GetList" FunctionName="ESMonitorModel.Store.T_UserInGroups_GetList">
+          <FunctionImportMapping FunctionImportName="T_UserGroup_Update" FunctionName="ESMonitor2Model.Store.T_UserGroup_Update" />
+          <FunctionImportMapping FunctionImportName="T_UserInGroups_ADD" FunctionName="ESMonitor2Model.Store.T_UserInGroups_ADD" />
+          <FunctionImportMapping FunctionImportName="T_UserInGroups_Delete" FunctionName="ESMonitor2Model.Store.T_UserInGroups_Delete" />
+          <FunctionImportMapping FunctionImportName="T_UserInGroups_Exists" FunctionName="ESMonitor2Model.Store.T_UserInGroups_Exists" />
+          <FunctionImportMapping FunctionImportName="T_UserInGroups_GetList" FunctionName="ESMonitor2Model.Store.T_UserInGroups_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_UserInGroups_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_UserInGroups_GetList_Result">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_UserInGroups_GetMaxId" FunctionName="ESMonitorModel.Store.T_UserInGroups_GetMaxId" />
-          <FunctionImportMapping FunctionImportName="T_UserInGroups_GetModel" FunctionName="ESMonitorModel.Store.T_UserInGroups_GetModel">
+          <FunctionImportMapping FunctionImportName="T_UserInGroups_GetMaxId" FunctionName="ESMonitor2Model.Store.T_UserInGroups_GetMaxId" />
+          <FunctionImportMapping FunctionImportName="T_UserInGroups_GetModel" FunctionName="ESMonitor2Model.Store.T_UserInGroups_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_UserInGroups_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_UserInGroups_GetModel_Result">
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Users_ADD" FunctionName="ESMonitorModel.Store.T_Users_ADD" />
-          <FunctionImportMapping FunctionImportName="T_Users_Delete" FunctionName="ESMonitorModel.Store.T_Users_Delete" />
-          <FunctionImportMapping FunctionImportName="T_Users_Exists" FunctionName="ESMonitorModel.Store.T_Users_Exists" />
-          <FunctionImportMapping FunctionImportName="T_Users_GetList" FunctionName="ESMonitorModel.Store.T_Users_GetList">
+          <FunctionImportMapping FunctionImportName="T_Users_ADD" FunctionName="ESMonitor2Model.Store.T_Users_ADD" />
+          <FunctionImportMapping FunctionImportName="T_Users_Delete" FunctionName="ESMonitor2Model.Store.T_Users_Delete" />
+          <FunctionImportMapping FunctionImportName="T_Users_Exists" FunctionName="ESMonitor2Model.Store.T_Users_Exists" />
+          <FunctionImportMapping FunctionImportName="T_Users_GetList" FunctionName="ESMonitor2Model.Store.T_Users_GetList">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Users_GetList_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Users_GetList_Result">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Pwd" ColumnName="Pwd" />
@@ -3412,11 +3729,11 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Users_GetListByPage" FunctionName="ESMonitorModel.Store.T_Users_GetListByPage" />
-          <FunctionImportMapping FunctionImportName="T_Users_GetMaxId" FunctionName="ESMonitorModel.Store.T_Users_GetMaxId" />
-          <FunctionImportMapping FunctionImportName="T_Users_GetModel" FunctionName="ESMonitorModel.Store.T_Users_GetModel">
+          <FunctionImportMapping FunctionImportName="T_Users_GetListByPage" FunctionName="ESMonitor2Model.Store.T_Users_GetListByPage" />
+          <FunctionImportMapping FunctionImportName="T_Users_GetMaxId" FunctionName="ESMonitor2Model.Store.T_Users_GetMaxId" />
+          <FunctionImportMapping FunctionImportName="T_Users_GetModel" FunctionName="ESMonitor2Model.Store.T_Users_GetModel">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_Users_GetModel_Result">
+              <ComplexTypeMapping TypeName="ESMonitor2Model.T_Users_GetModel_Result">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Pwd" ColumnName="Pwd" />
@@ -3431,186 +3748,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_Users_Update" FunctionName="ESMonitorModel.Store.T_Users_Update" />
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100List" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM100List">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM100List_Result">
-                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
-                <ScalarProperty Name="updateTime" ColumnName="updateTime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100OrderList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM100OrderList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM100OrderList_Result">
-                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
-                <ScalarProperty Name="MaxPM100" ColumnName="MaxPM100" />
-                <ScalarProperty Name="MinPM100" ColumnName="MinPM100" />
-                <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
-                <ScalarProperty Name="StatName" ColumnName="StatName" />
-                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM100StatList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM100StatList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM100StatList_Result">
-                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25List" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM25List">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM25List_Result">
-                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
-                <ScalarProperty Name="updateTime" ColumnName="updateTime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25OrderList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM25OrderList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM25OrderList_Result">
-                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
-                <ScalarProperty Name="MaxPM25" ColumnName="MaxPM25" />
-                <ScalarProperty Name="MinPM25" ColumnName="MinPM25" />
-                <ScalarProperty Name="ValidDataNum" ColumnName="ValidDataNum" />
-                <ScalarProperty Name="StatName" ColumnName="StatName" />
-                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESDay_GetAvgPM25StatList" FunctionName="ESMonitorModel.Store.T_ESDay_GetAvgPM25StatList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESDay_GetAvgPM25StatList_Result">
-                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgPM100StatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgPM100StatList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetAvgPM100StatList_Result">
-                <ScalarProperty Name="AvgPM100" ColumnName="AvgPM100" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_ESHour_GetAvgPM25StatList" FunctionName="ESMonitorModel.Store.T_ESHour_GetAvgPM25StatList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ESMonitorModel.T_ESHour_GetAvgPM25StatList_Result">
-                <ScalarProperty Name="AvgPM25" ColumnName="AvgPM25" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESDay1" FunctionName="ESMonitorModel.Store.T_InsertTable_AutoForESDay" />
-          <FunctionImportMapping FunctionImportName="T_InsertTable_AutoForESHour1" FunctionName="ESMonitorModel.Store.T_InsertTable_AutoForESHour" />
-          <EntitySetMapping Name="T_SysConfig">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_SysConfig">
-              <MappingFragment StoreEntitySet="T_SysConfig">
-                <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
-                <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
-                <ScalarProperty Name="ConfigType" ColumnName="ConfigType" />
-                <ScalarProperty Name="ConfigId" ColumnName="ConfigId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_UserStats">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_UserStats">
-              <MappingFragment StoreEntitySet="T_UserStats">
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_Devs">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Devs">
-              <MappingFragment StoreEntitySet="T_Devs">
-                <ScalarProperty Name="VideoURL" ColumnName="VideoURL" />
-                <ScalarProperty Name="DevStatus" ColumnName="DevStatus" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="PreEndTime" ColumnName="PreEndTime" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="DevCode" ColumnName="DevCode" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_Alarms">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Alarms">
-              <MappingFragment StoreEntitySet="T_Alarms">
-                <ScalarProperty Name="IsReaded" ColumnName="IsReaded" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-                <ScalarProperty Name="FaultVal" ColumnName="FaultVal" />
-                <ScalarProperty Name="DustType" ColumnName="DustType" />
-                <ScalarProperty Name="DevId" ColumnName="DevId" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_Photos">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Photos">
-              <MappingFragment StoreEntitySet="T_Photos">
-                <ScalarProperty Name="UserName1" ColumnName="UserName" />
-                <ScalarProperty Name="DevId" ColumnName="DevId" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_Camera">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_Camera">
-              <MappingFragment StoreEntitySet="T_Camera">
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="CameraId" ColumnName="CameraId" />
-                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Port" ColumnName="Port" />
-                <ScalarProperty Name="DnsAddr" ColumnName="DnsAddr" />
-                <ScalarProperty Name="DevId" ColumnName="DevId" />
-                <ScalarProperty Name="CameraName" ColumnName="CameraName" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="T_ESMin_Fifteen">
-            <EntityTypeMapping TypeName="ESMonitorModel.T_ESMin_Fifteen">
-              <MappingFragment StoreEntitySet="T_ESMin_Fifteen">
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
-                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
-                <ScalarProperty Name="PM100" ColumnName="PM100" />
-                <ScalarProperty Name="PM25" ColumnName="PM25" />
-                <ScalarProperty Name="DB" ColumnName="DB" />
-                <ScalarProperty Name="TP" ColumnName="TP" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="T_InsertInto_Fifteen" FunctionName="ESMonitorModel.Store.T_InsertInto_Fifteen" />
-          <EntitySetMapping Name="DeviceException">
-            <EntityTypeMapping TypeName="ESMonitorModel.DeviceException">
-              <MappingFragment StoreEntitySet="DeviceException">
-                <ScalarProperty Name="ExceptionTime" ColumnName="ExceptionTime" />
-                <ScalarProperty Name="ExceptionValue" ColumnName="ExceptionValue" />
-                <ScalarProperty Name="StatId" ColumnName="StatId" />
-                <ScalarProperty Name="DevId" ColumnName="DevId" />
-                <ScalarProperty Name="ExceptionType" ColumnName="ExceptionType" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="T_Users_Update" FunctionName="ESMonitor2Model.Store.T_Users_Update" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -3625,10 +3763,10 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

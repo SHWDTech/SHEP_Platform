@@ -7,18 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SHEP_Platform
+namespace DeviceExceptionChecker.Database
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class T_Photos
+    public partial class T_UserGroup_GetList_Result
     {
-        public long ID { get; set; }
-        public string UserName { get; set; }
-        public System.DateTime AddTime { get; set; }
-        public string FileName { get; set; }
-        public int DevId { get; set; }
-        public string UserName1 { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public Nullable<int> Orders { get; set; }
+        public string Description { get; set; }
     }
 }

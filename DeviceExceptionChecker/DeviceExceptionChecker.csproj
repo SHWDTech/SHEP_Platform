@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{109B3496-CD72-4527-BAA3-1737EE73D80E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DeviceExceptionChecker</RootNamespace>
+    <AssemblyName>DeviceExceptionChecker</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AlarmSender\TextMessageSender.cs" />
+    <Compile Include="Database\CheckForDeviceNoData_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\CheckForDeviceZeroData_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\DeviceException.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EsMonitor.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EsMonitor.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EsMonitor.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\EsMonitor.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EsMonitor.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Database\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\sp_helpdiagrams_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\sysdiagram.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Alarms.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Alarms_GetDustOverDataCount_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Alarms_GetDustOverDataPerDay_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Alarms_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Alarms_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_AlarmType.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_AlarmType_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Camera.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Camera_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Country.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_DevAddr.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Devs.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Devs_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Devs_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Devs_GetRelatedStat_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDaytemp1.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgCMPList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgCMPOrderList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgCMPStatList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgNoiseList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgNoiseOrderList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgNoiseStatList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgPM100List_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgPM100OrderList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgPM100StatList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgPM25List_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgPM25OrderList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetAvgPM25StatList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESDay_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESHour.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESHour_GetAvgCMPStatList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESHour_GetAvgNoiseStatList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESHour_GetAvgPM100StatList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESHour_GetAvgPM25StatList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESHour_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESHour_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESMin.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESMin_Fifteen.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESMin_GetCurData_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESMin_GetCurDevData_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESMin_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ESMin_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Files.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_GroupModules.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_GroupModules_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_GroupModules_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Offset.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Photos.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Photos_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_ProduceReport_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Province.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Stage.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_StageReport_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_StatCompare_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Stats.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Stats_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Stats_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_SysConfig.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_TaskNotice.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_TaskNotice_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_TaskNotice_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Tasks.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Tasks_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Tasks_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_UserAuthority.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_UserAuthority_GetAuths_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_UserGroup.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_UserGroup_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_UserGroup_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_UserInGroups.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_UserInGroups_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_UserInGroups_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Users.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_UserStats.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Users_GetList_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\T_Users_GetModel_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageWarpper\DustMessageWarpper.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="Database\EsMonitor.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EsMonitor.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Database\EsMonitor.edmx.diagram">
+      <DependentUpon>EsMonitor.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Database\EsMonitor.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EsMonitor.edmx</DependentUpon>
+      <LastGenOutput>EsMonitor.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Database\EsMonitor.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EsMonitor.edmx</DependentUpon>
+      <LastGenOutput>EsMonitor.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseModel\DatabaseModel.csproj">
+      <Project>{34b84b17-e7a9-4d21-9e54-f3fc36e3182e}</Project>
+      <Name>DatabaseModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

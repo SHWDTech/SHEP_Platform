@@ -7,28 +7,30 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SHEP_Platform
+namespace DeviceExceptionChecker.Database
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class T_ESDay
+    public partial class T_ESMin
     {
         public long Id { get; set; }
+        public Nullable<int> StatCode { get; set; }
         public int StatId { get; set; }
         public double TP { get; set; }
         public double DB { get; set; }
-        public System.DateTime UpdateTime { get; set; }
-        public string DataStatus { get; set; }
-        public int ValidDataNum { get; set; }
-        public int DevId { get; set; }
-        public string Country { get; set; }
         public Nullable<double> PM25 { get; set; }
         public Nullable<double> PM100 { get; set; }
         public Nullable<double> VOCs { get; set; }
+        public Nullable<System.DateTime> UpdateTime { get; set; }
+        public double WindSpeed { get; set; }
+        public Nullable<double> Rain { get; set; }
+        public double WindDirection { get; set; }
         public double Temperature { get; set; }
         public double Humidity { get; set; }
-        public double WindSpeed { get; set; }
-        public double WindDirection { get; set; }
+        public Nullable<double> Airpressure { get; set; }
+        public string DataStatus { get; set; }
+        public Nullable<int> DevId { get; set; }
+        public string Country { get; set; }
     }
 }

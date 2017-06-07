@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="ESMonitorModel.T_AlarmType" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Country" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_DevAddr" Width="1.5" PointX="7.75" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ESMonitorModel.T_ESDay" Width="1.5" PointX="7.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ESMonitorModel.T_ESDay" Width="1.5" PointX="7.625" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_ESHour" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_ESMin" Width="1.5" PointX="2.75" PointY="10.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Files" Width="1.5" PointX="9.75" PointY="2.375" IsExpanded="true" />
@@ -37,6 +37,7 @@
         <EntityTypeShape EntityType="ESMonitorModel.T_Camera" Width="1.5" PointX="5.25" PointY="9.25" />
         <EntityTypeShape EntityType="ESMonitorModel.T_ESMin_Fifteen" Width="1.5" PointX="0.75" PointY="15.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_AlarmText" Width="1.5" PointX="3.375" PointY="15.75" />
+        <EntityTypeShape EntityType="ESMonitorModel.DeviceException" Width="1.5" PointX="10.75" PointY="14.25" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

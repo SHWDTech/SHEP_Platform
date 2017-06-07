@@ -7,18 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SHEP_Platform
+namespace DeviceExceptionChecker.Database
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class T_Photos
+    public partial class T_Alarms_GetDustOverDataCount_Result
     {
-        public long ID { get; set; }
-        public string UserName { get; set; }
-        public System.DateTime AddTime { get; set; }
-        public string FileName { get; set; }
-        public int DevId { get; set; }
-        public string UserName1 { get; set; }
+        public string StatName { get; set; }
+        public Nullable<int> TPNum { get; set; }
+        public Nullable<int> DBNum { get; set; }
+        public Nullable<int> Total { get; set; }
     }
 }
