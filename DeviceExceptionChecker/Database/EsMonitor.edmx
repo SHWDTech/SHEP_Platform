@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ESMonitor2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ESMonitor2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DeviceException">
           <Key>
             <PropertyRef Name="Id" />
@@ -355,11 +355,6 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="StatId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Table_1">
-          <Property Name="Guid" Type="nchar" MaxLength="10" />
-        </EntityType>-->
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
           <End Role="T_Country" Type="Self.T_Country" Multiplicity="*" />
@@ -421,6 +416,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           </ReferentialConstraint>
         </Association>
         <Function Name="CheckForDeviceNoData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="CheckForDeviceNoiseExcessive" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CheckForDeviceZeroData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="Pm25Rand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
@@ -1127,8 +1123,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <End Role="T_Stats" EntitySet="T_Stats" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ESMonitor2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1637,21 +1632,21 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="Country" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_Exists">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_GetDataFromESMin" />
           <FunctionImport Name="T_Alarms_GetDustOverDataCount" ReturnType="Collection(ESMonitor2Model.T_Alarms_GetDustOverDataCount_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_GetDustOverDataPerDay" ReturnType="Collection(ESMonitor2Model.T_Alarms_GetDustOverDataPerDay_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_GetList" ReturnType="Collection(ESMonitor2Model.T_Alarms_GetList_Result)" />
           <FunctionImport Name="T_Alarms_GetModel" ReturnType="Collection(ESMonitor2Model.T_Alarms_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Alarms_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1669,10 +1664,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="DbRange" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_AlarmType_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_AlarmType_GetModel" ReturnType="Collection(ESMonitor2Model.T_AlarmType_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_AlarmType_Update">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
@@ -1688,13 +1683,13 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="PassWord" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_Exists">
-            <Parameter Name="DnsAddr" Mode="In" Type="String" />
+          <Parameter Name="DnsAddr" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_GetModel" ReturnType="Collection(ESMonitor2Model.T_Camera_GetModel_Result)">
-            <Parameter Name="DevId" Mode="In" Type="Int32" />
+          <Parameter Name="DevId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Camera_Update">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
@@ -1708,7 +1703,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="NodeId" Mode="In" Type="Binary" />
           </FunctionImport>
           <FunctionImport Name="T_DevAddr_Exists">
-            <Parameter Name="NodeId" Mode="In" Type="Binary" />
+          <Parameter Name="NodeId" Mode="In" Type="Binary" />
           </FunctionImport>
           <FunctionImport Name="T_DevAddr_Update">
             <Parameter Name="DevId" Mode="In" Type="Int32" />
@@ -1725,10 +1720,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="VideoURL" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_Exists">
-            <Parameter Name="DevCode" Mode="In" Type="String" />
+          <Parameter Name="DevCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_GetList" ReturnType="Collection(ESMonitor2Model.T_Devs_GetList_Result)" />
           <FunctionImport Name="T_Devs_GetListByPage">
@@ -1738,10 +1733,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           </FunctionImport>
           <FunctionImport Name="T_Devs_GetMaxId" />
           <FunctionImport Name="T_Devs_GetModel" ReturnType="Collection(ESMonitor2Model.T_Devs_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_GetRelatedStat" ReturnType="Collection(ESMonitor2Model.T_Devs_GetRelatedStat_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Devs_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -1767,13 +1762,13 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_Exists">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgCMPList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgCMPList_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgCMPOrderList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgCMPOrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1784,7 +1779,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgNoiseList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgNoiseList_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgNoiseOrderList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgNoiseOrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1795,7 +1790,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM100List" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM100List_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM100OrderList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM100OrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1806,7 +1801,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM25List" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM25List_Result)">
-            <Parameter Name="strWhere" Mode="In" Type="String" />
+          <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_GetAvgPM25OrderList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetAvgPM25OrderList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1819,7 +1814,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <FunctionImport Name="T_ESDay_GetList" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetList_Result)" />
           <FunctionImport Name="T_ESDay_GetMaxId" />
           <FunctionImport Name="T_ESDay_GetModel" ReturnType="Collection(ESMonitor2Model.T_ESDay_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESDay_Update">
             <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1846,10 +1841,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_Exists">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_GetAvgCMPStatList" ReturnType="Collection(ESMonitor2Model.T_ESHour_GetAvgCMPStatList_Result)">
             <Parameter Name="Country" Mode="In" Type="String" />
@@ -1869,7 +1864,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           </FunctionImport>
           <FunctionImport Name="T_ESHour_GetList" ReturnType="Collection(ESMonitor2Model.T_ESHour_GetList_Result)" />
           <FunctionImport Name="T_ESHour_GetModel" ReturnType="Collection(ESMonitor2Model.T_ESHour_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESHour_Update">
             <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1902,20 +1897,20 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="Pm100" Mode="In" Type="Double" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Exists">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_GetCurData" ReturnType="Collection(ESMonitor2Model.T_ESMin_GetCurData_Result)">
-            <Parameter Name="StatId" Mode="In" Type="Int32" />
+          <Parameter Name="StatId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_GetCurDevData" ReturnType="Collection(ESMonitor2Model.T_ESMin_GetCurDevData_Result)">
-            <Parameter Name="devId" Mode="In" Type="Int32" />
+          <Parameter Name="devId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_GetList" ReturnType="Collection(ESMonitor2Model.T_ESMin_GetList_Result)" />
           <FunctionImport Name="T_ESMin_GetModel" ReturnType="Collection(ESMonitor2Model.T_ESMin_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int64" />
+          <Parameter Name="Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_ESMin_Update">
             <Parameter Name="Id" Mode="In" Type="Int64" />
@@ -1960,7 +1955,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="FileName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Photos_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Photos_GetListByPage">
             <Parameter Name="PageSize" Mode="In" Type="Int32" />
@@ -1968,7 +1963,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Photos_GetModel" ReturnType="Collection(ESMonitor2Model.T_Photos_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_ProduceReport" ReturnType="Collection(ESMonitor2Model.T_ProduceReport_Result)">
             <Parameter Name="selectControl" Mode="In" Type="Int32" />
@@ -2006,10 +2001,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="AlarmType" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_Exists">
-            <Parameter Name="StatCode" Mode="In" Type="String" />
+          <Parameter Name="StatCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_GetList" ReturnType="Collection(ESMonitor2Model.T_Stats_GetList_Result)" />
           <FunctionImport Name="T_Stats_GetListByPage">
@@ -2019,7 +2014,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           </FunctionImport>
           <FunctionImport Name="T_Stats_GetMaxId" />
           <FunctionImport Name="T_Stats_GetModel" ReturnType="Collection(ESMonitor2Model.T_Stats_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Stats_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -2045,7 +2040,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="UpdateTime" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_Delete">
-            <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_GetList" ReturnType="Collection(ESMonitor2Model.T_TaskNotice_GetList_Result)" />
           <FunctionImport Name="T_TaskNotice_GetListByPage">
@@ -2054,7 +2049,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_GetModel" ReturnType="Collection(ESMonitor2Model.T_TaskNotice_GetModel_Result)">
-            <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_TaskNotice_Update">
             <Parameter Name="TaskId" Mode="In" Type="Int64" />
@@ -2074,7 +2069,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="Length" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_Delete">
-            <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_GetList" ReturnType="Collection(ESMonitor2Model.T_Tasks_GetList_Result)" />
           <FunctionImport Name="T_Tasks_GetListByPage">
@@ -2083,7 +2078,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_GetModel" ReturnType="Collection(ESMonitor2Model.T_Tasks_GetModel_Result)">
-            <Parameter Name="TaskId" Mode="In" Type="Int64" />
+          <Parameter Name="TaskId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="T_Tasks_Update">
             <Parameter Name="TaskId" Mode="In" Type="Int64" />
@@ -2110,10 +2105,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="AuthType" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="T_UserAuthority_DeleteByUserId">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserAuthority_GetAuths" ReturnType="Collection(ESMonitor2Model.T_UserAuthority_GetAuths_Result)">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGrantedNodes_ADD">
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -2124,10 +2119,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="NodeId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGrantedNodes_DeleteByUserId">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGrantedNodes_GetGrantedNodes">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_ADD">
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
@@ -2136,10 +2131,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="Description" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_Delete">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_Exists">
-            <Parameter Name="Name" Mode="In" Type="String" />
+          <Parameter Name="Name" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_GetList" ReturnType="Collection(ESMonitor2Model.T_UserGroup_GetList_Result)" />
           <FunctionImport Name="T_UserGroup_GetListByPage">
@@ -2148,7 +2143,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="strWhere" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_GetModel" ReturnType="Collection(ESMonitor2Model.T_UserGroup_GetModel_Result)">
-            <Parameter Name="Id" Mode="In" Type="Int32" />
+          <Parameter Name="Id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_UserGroup_Update">
             <Parameter Name="Id" Mode="In" Type="Int32" />
@@ -2188,10 +2183,10 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="Remark" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="T_Users_Delete">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Users_Exists">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Users_GetList" ReturnType="Collection(ESMonitor2Model.T_Users_GetList_Result)" />
           <FunctionImport Name="T_Users_GetListByPage">
@@ -2201,7 +2196,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           </FunctionImport>
           <FunctionImport Name="T_Users_GetMaxId" />
           <FunctionImport Name="T_Users_GetModel" ReturnType="Collection(ESMonitor2Model.T_Users_GetModel_Result)">
-            <Parameter Name="UserId" Mode="In" Type="Int32" />
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="T_Users_Update">
             <Parameter Name="UserId" Mode="In" Type="Int32" />
@@ -2215,6 +2210,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             <Parameter Name="LastTime" Mode="In" Type="DateTime" />
             <Parameter Name="NowTime" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="CheckForDeviceNoiseExcessive" ReturnType="Collection(ESMonitor2Model.CheckForDeviceNoiseExcessive_Result)" />
         </EntityContainer>
         <ComplexType Name="CheckForDeviceNoData_Result">
           <Property Type="Byte" Name="ExceptionType" Nullable="false" />
@@ -2643,6 +2639,11 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <Property Type="DateTime" Name="LastTime" Nullable="true" Precision="23" />
           <Property Type="DateTime" Name="NowTime" Nullable="true" Precision="23" />
           <Property Type="String" Name="Remark" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="CheckForDeviceNoiseExcessive_Result">
+          <Property Type="Byte" Name="ExceptionType" Nullable="false" />
+          <Property Type="Int32" Name="DevId" Nullable="false" />
+          <Property Type="Int32" Name="StatId" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3749,6 +3750,15 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="T_Users_Update" FunctionName="ESMonitor2Model.Store.T_Users_Update" />
+          <FunctionImportMapping FunctionImportName="CheckForDeviceNoiseExcessive" FunctionName="ESMonitor2Model.Store.CheckForDeviceNoiseExcessive">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitor2Model.CheckForDeviceNoiseExcessive_Result">
+                <ScalarProperty Name="ExceptionType" ColumnName="ExceptionType" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

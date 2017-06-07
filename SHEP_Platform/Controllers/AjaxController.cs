@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web.Mvc;
-using System.Windows.Forms;
 using Newtonsoft.Json;
 using SHEP_Platform.Common;
 using SHEP_Platform.Enum;
@@ -13,7 +12,6 @@ using SHEP_Platform.Models.Analysis;
 using SHEP_Platform.Models.Api;
 using SHEP_Platform.Models.Monitor;
 using SHEP_Platform.Process;
-using SHWDTech.Platform.Utility;
 
 namespace SHEP_Platform.Controllers
 {
@@ -815,83 +813,83 @@ namespace SHEP_Platform.Controllers
         [AllowAnonymous]
         public JsonResult AlarmPicture()
         {
-            var devsJson = Request["devs"];
-            if (string.IsNullOrWhiteSpace(devsJson)) return null;
+            //var devsJson = Request["devs"];
+            //if (string.IsNullOrWhiteSpace(devsJson)) return null;
 
-            try
-            {
-                var init = HikAction.InitLib();
-                if (init != 0)
-                {
-                    LogService.Instance.Info($"初始化视频模块失败，错误码：{init}");
-                    return Json(init, JsonRequestBehavior.AllowGet);
-                }
+            //try
+            //{
+            //    var init = HikAction.InitLib();
+            //    if (init != 0)
+            //    {
+            //        LogService.Instance.Info($"初始化视频模块失败，错误码：{init}");
+            //        return Json(init, JsonRequestBehavior.AllowGet);
+            //    }
 
-                var box = new PictureBox();
-                var devs = JsonConvert.DeserializeObject<int[]>(devsJson);
+            //    var box = new PictureBox();
+            //    var devs = JsonConvert.DeserializeObject<int[]>(devsJson);
 
-                foreach (var dev in devs)
-                {
-                    if (
-                        DbContext.T_SysConfig.AsQueryable().FirstOrDefault(
-                            obj => obj.ConfigType == "AlarmText" && obj.ConfigName == dev.ToString() && obj.ConfigValue == "Trhe") != null)
-                    {
-                        var device = DbContext.T_Devs.First(obj => obj.Id == dev);
-                        var stat = DbContext.T_Stats.First(obj => obj.Id.ToString() == device.StatId);
-                        if (
-                            DbContext.T_AlarmText.FirstOrDefault(
-                                obj => obj.StatId == stat.Id && obj.UpdateTime > DateTime.Today) == null)
-                        {
-                            TextMessageService.Send(stat.Telepone, stat.StatName);
-                            DbContext.T_AlarmText.Add(new T_AlarmText()
-                            {
-                                DevId = dev,
-                                StatId = stat.Id,
-                                UpdateTime = DateTime.Now
-                            });
+            //    foreach (var dev in devs)
+            //    {
+            //        if (
+            //            DbContext.T_SysConfig.AsQueryable().FirstOrDefault(
+            //                obj => obj.ConfigType == "AlarmText" && obj.ConfigName == dev.ToString() && obj.ConfigValue == "Trhe") != null)
+            //        {
+            //            var device = DbContext.T_Devs.First(obj => obj.Id == dev);
+            //            var stat = DbContext.T_Stats.First(obj => obj.Id.ToString() == device.StatId);
+            //            if (
+            //                DbContext.T_AlarmText.FirstOrDefault(
+            //                    obj => obj.StatId == stat.Id && obj.UpdateTime > DateTime.Today) == null)
+            //            {
+            //                TextMessageService.Send(stat.Telepone, stat.StatName);
+            //                DbContext.T_AlarmText.Add(new T_AlarmText()
+            //                {
+            //                    DevId = dev,
+            //                    StatId = stat.Id,
+            //                    UpdateTime = DateTime.Now
+            //                });
 
-                            DbContext.SaveChanges();
-                        }
-                    }
-                    var camera = DbContext.T_Camera.First(obj => obj.DevId == dev);
-                    var cameraProductId = camera.UserName;
-                    var cameraId = HikAction.GetCameraId(cameraProductId);
-                    if (HikAction.StartPlay(box.Handle, cameraId, camera.PassWord) != 0)
-                    {
-                        LogService.Instance.Error($"启动摄像头预览失败：摄像头ID{camera.UserName}。");
-                        return null;
-                    }
-                    var start = DateTime.Now;
-                    var ret = -1;
-                    var fileName = string.Empty;
-                    do
-                    {
-                        if ((DateTime.Now - start).TotalSeconds > 300) break;
-                        var now = $"{DateTime.Now:yyyyMMddHHmmss}";
-                        fileName = $"\\HikPicture\\{camera.UserName}\\AlarmPic\\{now}.jpg";
-                        ret = HikAction.TakePicture($"\\HikPicture\\{camera.UserName}\\AlarmPic", $"{now}.jpg");
-                    }
-                    while (ret != 0);
+            //                DbContext.SaveChanges();
+            //            }
+            //        }
+            //        var camera = DbContext.T_Camera.First(obj => obj.DevId == dev);
+            //        var cameraProductId = camera.UserName;
+            //        var cameraId = HikAction.GetCameraId(cameraProductId);
+            //        if (HikAction.StartPlay(box.Handle, cameraId, camera.PassWord) != 0)
+            //        {
+            //            LogService.Instance.Error($"启动摄像头预览失败：摄像头ID{camera.UserName}。");
+            //            return null;
+            //        }
+            //        var start = DateTime.Now;
+            //        var ret = -1;
+            //        var fileName = string.Empty;
+            //        do
+            //        {
+            //            if ((DateTime.Now - start).TotalSeconds > 300) break;
+            //            var now = $"{DateTime.Now:yyyyMMddHHmmss}";
+            //            fileName = $"\\HikPicture\\{camera.UserName}\\AlarmPic\\{now}.jpg";
+            //            ret = HikAction.TakePicture($"\\HikPicture\\{camera.UserName}\\AlarmPic", $"{now}.jpg");
+            //        }
+            //        while (ret != 0);
 
-                    if (ret == 0)
-                    {
-                        DbContext.T_Photos.Add(new T_Photos
-                        {
-                            AddTime = DateTime.Now,
-                            FileName = fileName,
-                            DevId = camera.DevId,
-                            UserName = "System"
-                        });
-                        DbContext.SaveChanges();
-                    }
+            //        if (ret == 0)
+            //        {
+            //            DbContext.T_Photos.Add(new T_Photos
+            //            {
+            //                AddTime = DateTime.Now,
+            //                FileName = fileName,
+            //                DevId = camera.DevId,
+            //                UserName = "System"
+            //            });
+            //            DbContext.SaveChanges();
+            //        }
 
-                    HikAction.StopPlay();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogService.Instance.Error("拍照失败", ex);
-            }
+            //        HikAction.StopPlay();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogService.Instance.Error("拍照失败", ex);
+            //}
             return null;
         }
 

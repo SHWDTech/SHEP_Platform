@@ -22,6 +22,7 @@ namespace DeviceExceptionChecker
                 {
                     CheckForDeviceNoData(ctx);
                     CheckForZeroData(ctx);
+                    CheckForNoiseNightExcessive(ctx);
                 }
                 catch (Exception ex)
                 {
@@ -54,6 +55,20 @@ namespace DeviceExceptionChecker
         static void CheckForZeroData(ESMonitor2 ctx)
         {
             var result = ctx.CheckForDeviceZeroData();
+            foreach (var dataResult in result)
+            {
+                var devName = ctx.T_Devs.First(d => d.Id == dataResult.DevId).DevCode;
+                var statName = ctx.T_Stats.First(s => s.Id == dataResult.StatId).StatName;
+                foreach (var number in _textMobileNumber["OfflineException"])
+                {
+                    TextMessageSender.Send(number, DustMessageWarpper.WarpperMessage((DeviceExceptionType)dataResult.ExceptionType, devName, statName, 0));
+                }
+            }
+        }
+
+        static void CheckForNoiseNightExcessive(ESMonitor2 ctx)
+        {
+            var result = ctx.CheckForDeviceNoiseExcessive();
             foreach (var dataResult in result)
             {
                 var devName = ctx.T_Devs.First(d => d.Id == dataResult.DevId).DevCode;

@@ -10,16 +10,10 @@
 namespace SHEP_Platform
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class DeviceException
+    public partial class sp_helpdiagramdefinition1_Result
     {
-        public int Id { get; set; }
-        public byte ExceptionType { get; set; }
-        public int DevId { get; set; }
-        public Nullable<int> StatId { get; set; }
-        public Nullable<double> ExceptionValue { get; set; }
-        public System.DateTime ExceptionTime { get; set; }
-        public bool Processed { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

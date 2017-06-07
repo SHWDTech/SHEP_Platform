@@ -164,6 +164,12 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attribute\WdAuthorizeAttribute.cs" />
+    <Compile Include="CheckForDeviceNoData_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CheckForDeviceZeroData_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="Common\AppConfig.cs" />
     <Compile Include="Common\HikAction.cs" />
     <Compile Include="Common\HikMethod.cs" />
@@ -174,6 +180,9 @@
     <Compile Include="Common\TextMessageService.cs" />
     <Compile Include="Common\XmlSerializerHelper.cs" />
     <Compile Include="Controllers\AppServerController.cs" />
+    <Compile Include="DeviceException.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Analysis\AlarmDetailsViewModel.cs" />
     <Compile Include="Models\Analysis\StatPicViewModel.cs" />
     <Compile Include="Models\Api\AppServer.cs" />
@@ -236,10 +245,19 @@
     <Compile Include="Process\ProtocolCmd.cs" />
     <Compile Include="Process\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sp_helpdiagramdefinition1_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
+    <Compile Include="sp_helpdiagrams1_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_Alarms.cs">
@@ -255,9 +273,6 @@
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_Alarms_GetModel_Result.cs">
-      <DependentUpon>ESMonitor.tt</DependentUpon>
-    </Compile>
-    <Compile Include="T_AlarmText.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_AlarmType.cs">
@@ -1063,6 +1078,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeviceExceptionChecker\DeviceExceptionChecker.csproj">
+      <Project>{109B3496-CD72-4527-BAA3-1737EE73D80E}</Project>
+      <Name>DeviceExceptionChecker</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

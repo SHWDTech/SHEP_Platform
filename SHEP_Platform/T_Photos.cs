@@ -19,6 +19,5 @@ namespace SHEP_Platform
         public System.DateTime AddTime { get; set; }
         public string FileName { get; set; }
         public int DevId { get; set; }
-        public string UserName1 { get; set; }
     }
 }

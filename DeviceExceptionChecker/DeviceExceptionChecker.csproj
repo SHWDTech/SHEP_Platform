@@ -54,6 +54,9 @@
     <Compile Include="Database\CheckForDeviceNoData_Result.cs">
       <DependentUpon>EsMonitor.tt</DependentUpon>
     </Compile>
+    <Compile Include="Database\CheckForDeviceNoiseExcessive_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="Database\CheckForDeviceZeroData_Result.cs">
       <DependentUpon>EsMonitor.tt</DependentUpon>
     </Compile>

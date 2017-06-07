@@ -2152,5 +2152,10 @@ namespace DeviceExceptionChecker.Database
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_Users_Update", userIdParameter, userNameParameter, pwdParameter, mobileParameter, emailParameter, statusParameter, regTimeParameter, roleIdParameter, lastTimeParameter, nowTimeParameter);
         }
+    
+        public virtual ObjectResult<CheckForDeviceNoiseExcessive_Result> CheckForDeviceNoiseExcessive()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForDeviceNoiseExcessive_Result>("CheckForDeviceNoiseExcessive");
+        }
     }
 }
