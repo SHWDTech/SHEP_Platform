@@ -6,7 +6,7 @@ using System.Threading;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using SHEP_Platform.Common;
-using SHEP_Platform.Enum;
+using SHEP_Platform.Enums;
 using SHEP_Platform.Models.Admin;
 using SHEP_Platform.Models.Analysis;
 using SHEP_Platform.Models.Api;
@@ -676,29 +676,12 @@ namespace SHEP_Platform.Controllers
         private JsonResult GetAlarmInfo()
         {
             var currentStatIds = WdContext.StatList.Select(obj => obj.Id).ToList();
-            var topAlarms = DbContext.T_Alarms.Where(obj => obj.DustType == 0 && currentStatIds.Contains(obj.StatId.Value) && !obj.IsReaded)
-                .OrderByDescending(item => item.UpdateTime).Take(10);
-
-            var details = new List<AlarmDetail>();
-            foreach (var pmAlarm in topAlarms)
-            {
-                var stat = WdContext.StatList.First(obj => obj.Id == pmAlarm.StatId);
-                if (pmAlarm.StatId != null)
-                {
-                    var detail = new AlarmDetail { StatName = stat.StatName, Id = stat.Id, IsReaded = pmAlarm.IsReaded };
-                    if (pmAlarm.UpdateTime != null) detail.AlarmDateTime = pmAlarm.UpdateTime.Value.ToString("hh:mm:ss");
-                    detail.AlarmType = "扬尘值";
-                    if (pmAlarm.FaultVal != null) detail.AlarmValue = ((pmAlarm.FaultVal.Value) / 1000.0).ToString("f2");
-
-                    details.Add(detail);
-                }
-            }
+            var topAlarms = DbContext.DeviceException.Where(obj => currentStatIds.Contains(obj.StatId.Value) && !obj.Processed)
+                .GroupBy(item => item.DevId);
 
             var ret = new
             {
-                total = topAlarms.Count(),
-                notRead = topAlarms.Count(obj => !obj.IsReaded),
-                details
+                inProcess = topAlarms.Count()
             };
 
             return Json(ret);

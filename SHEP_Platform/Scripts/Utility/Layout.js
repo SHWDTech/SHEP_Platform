@@ -62,25 +62,10 @@ function activeChildMenu() {
 
 function getAlarmInformation() {
     $.post("/Ajax/Access", { 'fun': 'getAlarmInfo' }, function (result) {
-        if (result.total > 0) {
+        if (result.inProcess > 0) {
             $('#alarmCount').addClass('badge-danger');
-            $('#alarmCount').html(result.notRead);
+            $('#alarmCount').html(result.inProcess);
             $('#alarmDetails')[0].style.display = '';
-            for (var i = 0; i < result.details.length; i++) {
-                var item = result.details[i];
-                $('#alarmDetails').append('<li><div style="padding: 2px; font-size: 12px;"><a href="/Monitor/ActualStatus/' 
-                    + item.Id + '">' 
-                    + item.StatName 
-                    + '</a>'
-                    + '</br>'
-                    + '报警值：'
-                    + item.AlarmValue
-                    + 'mg/m³'
-                    + '</br>'
-                    + '时间:'
-                    + item.AlarmDateTime
-                    + '</div></hr></li>');
-            }
             
         }
     });

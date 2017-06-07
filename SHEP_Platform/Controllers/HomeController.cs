@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using SHEP_Platform.Enum;
+using SHEP_Platform.Enums;
 using SHEP_Platform.Models.Home;
 
 namespace SHEP_Platform.Controllers

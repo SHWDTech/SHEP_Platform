@@ -16,6 +16,9 @@
           <Property Name="ExceptionValue" Type="float" />
           <Property Name="ExceptionTime" Type="datetime" Nullable="false" />
           <Property Name="Processed" Type="bit" Nullable="false" />
+          <Property Name="ProgressMan" Type="varchar" MaxLength="50" />
+          <Property Name="DeviceExceptionReason" Type="varchar" MaxLength="500" />
+          <Property Name="ProgressResult" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -355,16 +358,6 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="StatId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Table_1">
-          <Property Name="Guid" Type="nchar" MaxLength="10" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="randview">
-          <Property Name="rd" Type="float" />
-        </EntityType>-->
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
           <End Role="T_Country" Type="Self.T_Country" Multiplicity="*" />
@@ -2641,6 +2634,9 @@ warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary k
           <Property Name="ExceptionValue" Type="Double" />
           <Property Name="ExceptionTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Processed" Type="Boolean" Nullable="false" />
+          <Property Name="ProgressMan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeviceExceptionReason" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ProgressResult" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -3704,6 +3700,9 @@ warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary k
           <EntitySetMapping Name="DeviceException">
             <EntityTypeMapping TypeName="ESMonitorModel.DeviceException">
               <MappingFragment StoreEntitySet="DeviceException">
+                <ScalarProperty Name="ProgressResult" ColumnName="ProgressResult" />
+                <ScalarProperty Name="DeviceExceptionReason" ColumnName="DeviceExceptionReason" />
+                <ScalarProperty Name="ProgressMan" ColumnName="ProgressMan" />
                 <ScalarProperty Name="Processed" ColumnName="Processed" />
                 <ScalarProperty Name="ExceptionTime" ColumnName="ExceptionTime" />
                 <ScalarProperty Name="ExceptionValue" ColumnName="ExceptionValue" />

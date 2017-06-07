@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using SHEP_Platform.Enum;
+using SHEP_Platform.Enums;
 using SHEP_Platform.Models.Monitor;
 using SHEP_Platform.ShwdResult;
 

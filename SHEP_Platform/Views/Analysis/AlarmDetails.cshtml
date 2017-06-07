@@ -1,38 +1,74 @@
-﻿@using PagedList.Mvc
-@using SHEP_Platform.Models.Analysis
-@model AlarmDetailsViewModel
-
-@{
+﻿@{
     ViewBag.Title = "报警信息详情";
 }
 
-@{
-    foreach (var alarmDetail in Model.Details)
-    {
-        var readed = alarmDetail.IsReaded ? "" : "notreaded";
-        <div class="alarmPanel">
-            <div class="alarmTitle @readed" id="@alarmDetail.AlarmId">
-                <input type="checkbox" />
-                <span class="alarmStat">@alarmDetail.StatName</span>
-                <span class="alarmValue">报警值：@alarmDetail.FaultValue.ToString("F2") mg/m³</span>
-                <span class="alarmDate">@alarmDetail.AlarmDateTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+<div class="modal fade" id="dmrModal" tabindex="-1" role="dialog" aria-labelledby="alarmDetailModallabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="alarmDetailModallabel"></h4>
             </div>
-            <div class="alarmDetail">
-                <div>
-                    <span>负责人：@alarmDetail.ChargeMan</span>
-                    <span>联系电话：@alarmDetail.Telephone</span>
-                    <span>设备编码： @alarmDetail.DevCode</span>
-                </div>
+            <div class="modal-body">
+
             </div>
         </div>
+    </div>
+</div>
+<div>
+    @{
+        var table = Html.BootstrapTable(null, TablePaginationOption.server, new
+        {
+            id = "alarmDetailsTable",
+            data_page_size = 25,
+            data_reset_offset = true,
+            data_url = "/Analysis/AlarmDetailsTable",
+            data_height = 600
+        });
+        var builder = table.Column("报警详情")
+            .Apply(ColumnOption.formatter, "alarmDetailFormat")
+            .Column("操作")
+            .Apply(ColumnOption.width, "120")
+            .Apply(ColumnOption.formatter, "alarmDetailMgrFormatter")
+            .Apply(ColumnOption.events, "operateEvents");
     }
-}
-
-<div style="float: right;">
-    @Html.PagedListPager(Model.Details, page => Url.Action("AlarmDetails", new { page }))
+    @(builder)
 </div>
 
-
 @section scripts{
-    <script src="~/Scripts/Page/AlarmDetails.js"></script>
+    @Scripts.Render("~/bundles/bootstrap-table")
+    <script type="text/javascript">
+        var expTypes = {
+            0: '设备断线异常',
+            1: '颗粒物数据异常',
+            2: '噪音夜间超标'
+        }
+        var getExceptionName = function(exp) {
+            return '报警类型：<span style="color:red;">' + expTypes[exp.ExceptionType]
+                + '</span>    报警时间：<span style="color:orange;">' + exp.ExceptionTime + '</span>'
+                + '    报警相关值：<span style="color: purple;">' + exp.ExceptionValue + '</span>';
+        }
+        window.alarmDetailFormat = function (index, row, element) {
+            return '<div>工地名称：<a href="/Monitor/ActualStatus/"' + row.statId + '>' + row.statName + '</a>  设备名称：' + '<span style="color:blue;">' + row.devName + '</span>' + '</div>'
+                + '<div>' + row.exceptions.map(function (exp) { return getExceptionName(exp) }).join('</br>') + '</div>';
+        }
+
+        window.alarmDetailMgrFormatter = function(index, row, element) {
+            return '<a class="process" href="javascript:void(0)" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">异常处理完成</span></a>'
+        }
+
+        window.operateEvents = {
+            'click .process': function (e, value, row) {
+                $.get('/Analysis/ProcessDeviceException', { DevId: row.devId, DevName: row.devName, StatId: row.statId, StatName: row.statName}, function (ret) {
+                    $('#dmrModal .modal-body').html(ret);
+                    $('#dmrModal').modal();
+                });
+            }
+        };
+
+        $(function () {
+            $('#alarmDetailsTable').bootstrapTable();
+        });
+    </script>
 }

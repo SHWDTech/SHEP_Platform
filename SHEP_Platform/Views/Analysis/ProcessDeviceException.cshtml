@@ -1,0 +1,80 @@
+﻿@using DatabaseModel
+@using SHEP_Platform.Common
+@model SHEP_Platform.Models.Analysis.AlarmProcessViewModel
+@{
+    Layout = null;
+}
+<div id = "DeviceExceptionProcessFrom">
+    @using (Ajax.BeginForm("ProgressDeviceException", "Analysis", null, new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "DeviceExceptionProcessFrom"
+    }, new { @class = "form-inline", role = "form", style = "width: 450px; margin: auto;"}))
+    {
+        @Html.HiddenFor(m => m.DevId)
+        @Html.HiddenFor(m => m.StatId)
+        @Html.HiddenFor(m => m.DevName)
+        @Html.HiddenFor(m => m.StatName)
+        foreach (var t in Model.Exceptions)
+        {
+            @Html.Hidden("Exceptions", t.ToString())
+        }
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+                <td>@Html.LabelFor(m => m.StatName)</td>
+                <td colspan="3">@Html.DisplayFor(m => m.StatName, new { @class = "form-control" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.DevName)</td>
+                <td colspan="3">@Html.DisplayFor(m => m.DevName, new { @class = "form-control" })</td>
+            </tr>
+            <tr>
+                <td><label>待处理异常</label></td>
+                <td colspan="3">
+                    @{
+                        foreach (var exception in Model.Exceptions)
+                        {
+                            <input type="checkbox" name="CheckedExceptions" id="@($"exception-{exception}")" value="@exception.ToString()" />
+                            <label for="@($"exception-{exception}")">@(EnumHelper<DeviceExceptionType>.GetDisplayValue(exception))</label>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.ProgressMan)</td>
+                <td colspan="3">@Html.TextBoxFor(m => m.ProgressMan, new { @class = "form-control", style="width:100%" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.DeviceExceptionReason)</td>
+                <td colspan="3">@Html.TextBoxFor(m => m.DeviceExceptionReason, new { @class = "form-control", style = "width:100%" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.ProgressResult)</td>
+                <td colspan="3">@Html.TextAreaFor(m => m.ProgressResult, new { @class = "form-control", style = "width:100%; height: 150px;" })</td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    @Html.ValidationSummary(false)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <button type="submit" class="btn btn-primary" id="submit" style="float: right;" disabled="disabled">确认提交</button>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    }
+</div>
+
+<script type="text/javascript">
+    $('input[type=checkbox]').on('click', function () {
+        if ($('input[type=checkbox]:checked').length > 0) {
+            $('#submit').attr('disabled', false);
+        } else {
+            $('#submit').attr('disabled', true);
+        }
+    });
+</script>

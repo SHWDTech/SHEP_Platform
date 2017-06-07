@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SHEP_Platform.Enum;
+using SHEP_Platform.Enums;
 
 namespace SHEP_Platform.Process
 {

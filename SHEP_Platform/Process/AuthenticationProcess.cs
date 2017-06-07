@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using SHEP_Platform.Common;
-using SHEP_Platform.Enum;
+using SHEP_Platform.Enums;
 
 namespace SHEP_Platform.Process
 {

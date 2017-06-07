@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using SHEP_Platform.Enum;
+using SHEP_Platform.Enums;
 
 namespace SHEP_Platform.Process
 {

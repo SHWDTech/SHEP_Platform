@@ -171,6 +171,7 @@
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="Common\AppConfig.cs" />
+    <Compile Include="Common\EnumHelper.cs" />
     <Compile Include="Common\HikAction.cs" />
     <Compile Include="Common\HikMethod.cs" />
     <Compile Include="Common\HkSdk.cs" />
@@ -206,13 +207,13 @@
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
-    <Compile Include="Enum\HikMethod.cs" />
-    <Compile Include="Enum\LoginResultType.cs" />
-    <Compile Include="Enum\PollutantType.cs" />
-    <Compile Include="Enum\PolluteType.cs" />
-    <Compile Include="Enum\QueryDateRange.cs" />
-    <Compile Include="Enum\Stage.cs" />
-    <Compile Include="Enum\WindDirectionEnum.cs" />
+    <Compile Include="Enums\HikMethod.cs" />
+    <Compile Include="Enums\LoginResultType.cs" />
+    <Compile Include="Enums\PollutantType.cs" />
+    <Compile Include="Enums\PolluteType.cs" />
+    <Compile Include="Enums\QueryDateRange.cs" />
+    <Compile Include="Enums\Stage.cs" />
+    <Compile Include="Enums\WindDirectionEnum.cs" />
     <Compile Include="ESMonitor.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1064,6 +1065,7 @@
     <Content Include="Views\Admin\Protocol.cshtml" />
     <Content Include="Views\Admin\DeviceRecent.cshtml" />
     <Content Include="Views\Admin\EditPwd.cshtml" />
+    <Content Include="Views\Analysis\ProcessDeviceException.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1080,6 +1082,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseModel\DatabaseModel.csproj">
+      <Project>{34b84b17-e7a9-4d21-9e54-f3fc36e3182e}</Project>
+      <Name>DatabaseModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DeviceExceptionChecker\DeviceExceptionChecker.csproj">
       <Project>{109B3496-CD72-4527-BAA3-1737EE73D80E}</Project>
       <Name>DeviceExceptionChecker</Name>

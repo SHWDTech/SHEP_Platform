@@ -1,4 +1,4 @@
-﻿using SHEP_Platform.Enum;
+﻿using SHEP_Platform.Enums;
 
 namespace SHEP_Platform.Process
 {

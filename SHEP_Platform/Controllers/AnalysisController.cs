@@ -1,8 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using PagedList;
+using DatabaseModel;
+using OfficeOpenXml.FormulaParsing.Utilities;
 using SHEP_Platform.Models.Analysis;
+using SHEP_Platform.Models.Api;
 
 namespace SHEP_Platform.Controllers
 {
@@ -38,39 +41,34 @@ namespace SHEP_Platform.Controllers
             return View();
         }
 
-        public ActionResult AlarmDetails(AlarmDetailsViewModel model)
+        public ActionResult AlarmDetails() => View();
+
+        public ActionResult AlarmDetailsTable(TablePost post)
         {
-            var statList = WdContext.StatList.Select(obj => obj.Id).ToList();
-            var alarms = DbContext.T_Alarms
-                .Where(obj => statList.Contains(obj.StatId.Value))
-                .OrderByDescending(item => item.UpdateTime);
-
-            var details = (from alarm in alarms
-                           where alarm.FaultVal != null
-                           let stat = DbContext.T_Stats.FirstOrDefault(obj => obj.Id == alarm.StatId)
-                           let dev = DbContext.T_Devs.FirstOrDefault(obj => obj.Id == alarm.DevId.Value)
-                           select new AlarmFullDetail
-                           {
-                               AlarmId = alarm.Id,
-                               StatName = stat.StatName,
-                               ChargeMan = stat.ChargeMan,
-                               Telephone = stat.Telepone,
-                               DevCode = dev.DevCode,
-                               // ReSharper disable once PossibleInvalidOperationException
-                               AlarmDateTime = alarm.UpdateTime.Value,
-                               FaultValue = (alarm.FaultVal.Value / 1000.0),
-                               IsReaded = alarm.IsReaded
-                           });
-
-            model.Details = details.ToPagedList(model.page, 10);
-
-            return View(model);
+            var exceptions = DbContext.DeviceException.Where(obj => !obj.Processed).GroupBy(e => e.DevId).OrderBy(ex => ex.Key);
+            var total = exceptions.Count();
+            var rows = (from grp in exceptions.Skip(post.offset).Take(post.limit).Select(e => new { DevId = e.Key, Exceptions = e.Select(ex => new { ex.ExceptionType, ex.ExceptionTime, ex.ExceptionValue }) }).ToList()
+                        let dev = DbContext.T_Devs.FirstOrDefault(d => d.Id == grp.DevId)
+                        let stat = DbContext.T_Stats.FirstOrDefault(s => s.Id.ToString() == dev.StatId)
+                        select new
+                        {
+                            devId = dev.Id,
+                            devName = dev.DevCode,
+                            statName = stat.StatName,
+                            statId = dev.StatId,
+                            exceptions = grp.Exceptions.Select(g => new { g.ExceptionType, ExceptionTime = $"{g.ExceptionTime:yyyy-MM-dd HH:mm:ss}", g.ExceptionValue })
+                        }).ToList();
+            return Json(new
+            {
+                total,
+                rows
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult StatPictures()
         {
-            ViewBag.Stats = WdContext.StatList.Select(obj => new SelectListItem {Text = obj.StatName, Value = obj.Id.ToString()}).ToList();
+            ViewBag.Stats = WdContext.StatList.Select(obj => new SelectListItem { Text = obj.StatName, Value = obj.Id.ToString() }).ToList();
 
             return View(new StatPicViewModel());
         }
@@ -92,6 +90,49 @@ namespace SHEP_Platform.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult ProcessDeviceException(AlarmProcessViewModel model)
+        {
+            model.Exceptions = DbContext.DeviceException
+                .Where(obj => !obj.Processed && obj.DevId == model.DevId && obj.StatId == model.StatId)
+                .Select(item => item.ExceptionType).ToList()
+                .Select(v => (DeviceExceptionType) v).ToList();
+            model.ProgressMan = model.DeviceExceptionReason = model.ProgressResult = string.Empty;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ProgressDeviceException(AlarmProcessViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return RedirectToAction("ProcessDeviceException", model);
+                }
+                var exceptionBytes = model.CheckedExceptions.Select(exp => (byte)exp).ToList();
+                var exceptions =
+                    DbContext.DeviceException.Where(e => e.DevId == model.DevId && e.StatId == model.StatId &&
+                                                         exceptionBytes.Contains(e.ExceptionType))
+                                                         .ToList();
+                foreach (var exp in exceptions)
+                {
+                    exp.Processed = true;
+                    exp.ProgressMan = model.ProgressMan;
+                    exp.DeviceExceptionReason = model.DeviceExceptionReason;
+                    exp.ProgressResult = model.ProgressResult;
+                }
+
+                DbContext.SaveChanges();
+                return Content("异常处理完成！");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return RedirectToAction("ProcessDeviceException", model);
+            }
         }
     }
 }

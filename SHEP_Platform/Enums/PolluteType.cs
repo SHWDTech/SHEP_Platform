@@ -1,4 +1,4 @@
-﻿namespace SHEP_Platform.Enum
+﻿namespace SHEP_Platform.Enums
 {
     public static class PolluteType
     {
