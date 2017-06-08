@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="84fc837ede9141a7aaba317a80d97c36" Name="Diagram1">
+      <Diagram DiagramId="fd583568bbac428783763012c9088585" Name="Diagram1">
         <EntityTypeShape EntityType="ESMonitor2Model.DeviceException" Width="1.5" PointX="5.75" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitor2Model.sysdiagram" Width="1.5" PointX="7.75" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ESMonitor2Model.T_AlarmType" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />

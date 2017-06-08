@@ -21,5 +21,8 @@ namespace DeviceExceptionChecker.Database
         public Nullable<double> ExceptionValue { get; set; }
         public System.DateTime ExceptionTime { get; set; }
         public bool Processed { get; set; }
+        public string ProgressMan { get; set; }
+        public string DeviceExceptionReason { get; set; }
+        public string ProgressResult { get; set; }
     }
 }

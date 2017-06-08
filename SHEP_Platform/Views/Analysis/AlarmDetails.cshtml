@@ -42,7 +42,8 @@
         var expTypes = {
             0: '设备断线异常',
             1: '颗粒物数据异常',
-            2: '噪音夜间超标'
+            2: '噪音夜间超标',
+            3: '颗粒物超标'
         }
         var getExceptionName = function(exp) {
             return '报警类型：<span style="color:red;">' + expTypes[exp.ExceptionType]

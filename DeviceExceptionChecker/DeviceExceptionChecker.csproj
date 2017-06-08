@@ -60,6 +60,9 @@
     <Compile Include="Database\CheckForDeviceZeroData_Result.cs">
       <DependentUpon>EsMonitor.tt</DependentUpon>
     </Compile>
+    <Compile Include="Database\CheckForTspExcessive_Result.cs">
+      <DependentUpon>EsMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="Database\DeviceException.cs">
       <DependentUpon>EsMonitor.tt</DependentUpon>
     </Compile>
@@ -337,6 +340,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseModel\DatabaseModel.csproj">
+      <Project>{34b84b17-e7a9-4d21-9e54-f3fc36e3182e}</Project>
+      <Name>DatabaseModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Database\EsMonitor.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EsMonitor.edmx</DependentUpon>
@@ -347,15 +359,6 @@
       <DependentUpon>EsMonitor.edmx</DependentUpon>
       <LastGenOutput>EsMonitor.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DatabaseModel\DatabaseModel.csproj">
-      <Project>{34b84b17-e7a9-4d21-9e54-f3fc36e3182e}</Project>
-      <Name>DatabaseModel</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

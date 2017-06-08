@@ -61,9 +61,19 @@ namespace DeviceExceptionChecker.Database
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForDeviceNoData_Result>("CheckForDeviceNoData");
         }
     
+        public virtual ObjectResult<CheckForDeviceNoiseExcessive_Result> CheckForDeviceNoiseExcessive()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForDeviceNoiseExcessive_Result>("CheckForDeviceNoiseExcessive");
+        }
+    
         public virtual ObjectResult<CheckForDeviceZeroData_Result> CheckForDeviceZeroData()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForDeviceZeroData_Result>("CheckForDeviceZeroData");
+        }
+    
+        public virtual ObjectResult<CheckForTspExcessive_Result> CheckForTspExcessive()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForTspExcessive_Result>("CheckForTspExcessive");
         }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
@@ -2151,11 +2161,6 @@ namespace DeviceExceptionChecker.Database
                 new ObjectParameter("NowTime", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_Users_Update", userIdParameter, userNameParameter, pwdParameter, mobileParameter, emailParameter, statusParameter, regTimeParameter, roleIdParameter, lastTimeParameter, nowTimeParameter);
-        }
-    
-        public virtual ObjectResult<CheckForDeviceNoiseExcessive_Result> CheckForDeviceNoiseExcessive()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForDeviceNoiseExcessive_Result>("CheckForDeviceNoiseExcessive");
         }
     }
 }

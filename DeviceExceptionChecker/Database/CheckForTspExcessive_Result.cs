@@ -11,7 +11,7 @@ namespace DeviceExceptionChecker.Database
 {
     using System;
     
-    public partial class CheckForDeviceNoiseExcessive_Result
+    public partial class CheckForTspExcessive_Result
     {
         public byte ExceptionType { get; set; }
         public int DevId { get; set; }

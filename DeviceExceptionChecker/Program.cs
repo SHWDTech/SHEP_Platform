@@ -23,6 +23,7 @@ namespace DeviceExceptionChecker
                     CheckForDeviceNoData(ctx);
                     CheckForZeroData(ctx);
                     CheckForNoiseNightExcessive(ctx);
+                    CheckForTspExcessive(ctx);
                 }
                 catch (Exception ex)
                 {
@@ -75,7 +76,21 @@ namespace DeviceExceptionChecker
                 var statName = ctx.T_Stats.First(s => s.Id == dataResult.StatId).StatName;
                 foreach (var number in _textMobileNumber["OfflineException"])
                 {
-                    TextMessageSender.Send(number, DustMessageWarpper.WarpperMessage((DeviceExceptionType)dataResult.ExceptionType, devName, statName, 0));
+                    TextMessageSender.Send(number, DustMessageWarpper.WarpperMessage((DeviceExceptionType)dataResult.ExceptionType, devName, statName, dataResult.ExceptionValue));
+                }
+            }
+        }
+
+        static void CheckForTspExcessive(ESMonitor2 ctx)
+        {
+            var result = ctx.CheckForTspExcessive();
+            foreach (var dataResult in result)
+            {
+                var devName = ctx.T_Devs.First(d => d.Id == dataResult.DevId).DevCode;
+                var statName = ctx.T_Stats.First(s => s.Id == dataResult.StatId).StatName;
+                foreach (var number in _textMobileNumber["OfflineException"])
+                {
+                    TextMessageSender.Send(number, DustMessageWarpper.WarpperMessage((DeviceExceptionType)dataResult.ExceptionType, devName, statName, dataResult.ExceptionValue));
                 }
             }
         }
