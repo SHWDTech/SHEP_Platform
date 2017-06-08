@@ -59,5 +59,7 @@ namespace SHEP_Platform.Models.Analysis
         [Required(ErrorMessage = "必须填写处理结果")]
         [Display(Name = "异常处理结果")]
         public string ProgressResult { get; set; }
+
+        public bool IsPostBack { get; set; }
     }
 }
