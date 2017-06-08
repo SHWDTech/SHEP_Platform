@@ -50,10 +50,10 @@ namespace SHEP_Platform.Controllers
                 }
             }
 
-            var devs = DbContext.T_Devs.Where(dev => dev.StatId == model.DefaultId.ToString()).ToList();
-            if (devs.Count > 0)
+            var dev = DbContext.T_Devs.FirstOrDefault(d => d.StatId == model.DefaultId.ToString());
+            if (dev != null)
             {
-                var cam = DbContext.T_Camera.FirstOrDefault(c => c.DevId == devs[0].Id);
+                var cam = DbContext.T_Camera.FirstOrDefault(c => c.DevId == dev.Id);
                 if (cam != null)
                 {
                     model.StatViewUrl = $"/Monitor/StatViewHikSecond?id={cam.CameraName}";
