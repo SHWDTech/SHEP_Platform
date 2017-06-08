@@ -19,6 +19,7 @@
           <Property Name="ProgressMan" Type="varchar" MaxLength="50" />
           <Property Name="DeviceExceptionReason" Type="varchar" MaxLength="500" />
           <Property Name="ProgressResult" Type="varchar" MaxLength="500" />
+          <Property Name="Comment" Type="varchar" MaxLength="2000" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -419,7 +420,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <Function Name="CheckForDeviceNoData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="CheckForDeviceNoiseExcessive" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CheckForDeviceZeroData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="CheckForTspExcessive" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="Pm25Rand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="id" Type="int" Mode="In" />
@@ -2143,6 +2146,8 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams1" />
+          <FunctionImport Name="CheckForDeviceNoiseExcessive" ReturnType="Collection(ESMonitorModel.CheckForDeviceNoiseExcessive_Result)" />
+          <FunctionImport Name="CheckForTspExcessive" ReturnType="Collection(ESMonitorModel.CheckForTspExcessive_Result)" />
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
@@ -2637,6 +2642,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="ProgressMan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DeviceExceptionReason" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ProgressResult" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -2678,6 +2684,18 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="CheckForDeviceNoiseExcessive_Result">
+          <Property Type="Byte" Name="ExceptionType" Nullable="false" />
+          <Property Type="Int32" Name="DevId" Nullable="false" />
+          <Property Type="Int32" Name="StatId" Nullable="true" />
+          <Property Type="Double" Name="ExceptionValue" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="CheckForTspExcessive_Result">
+          <Property Type="Byte" Name="ExceptionType" Nullable="false" />
+          <Property Type="Int32" Name="DevId" Nullable="false" />
+          <Property Type="Int32" Name="StatId" Nullable="true" />
+          <Property Type="Double" Name="ExceptionValue" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3700,6 +3718,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <EntitySetMapping Name="DeviceException">
             <EntityTypeMapping TypeName="ESMonitorModel.DeviceException">
               <MappingFragment StoreEntitySet="DeviceException">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="ProgressResult" ColumnName="ProgressResult" />
                 <ScalarProperty Name="DeviceExceptionReason" ColumnName="DeviceExceptionReason" />
                 <ScalarProperty Name="ProgressMan" ColumnName="ProgressMan" />
@@ -3777,6 +3796,26 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram1" FunctionName="ESMonitorModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams1" FunctionName="ESMonitorModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="CheckForDeviceNoiseExcessive" FunctionName="ESMonitorModel.Store.CheckForDeviceNoiseExcessive">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.CheckForDeviceNoiseExcessive_Result">
+                <ScalarProperty Name="ExceptionType" ColumnName="ExceptionType" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="ExceptionValue" ColumnName="ExceptionValue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CheckForTspExcessive" FunctionName="ESMonitorModel.Store.CheckForTspExcessive">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ESMonitorModel.CheckForTspExcessive_Result">
+                <ScalarProperty Name="ExceptionType" ColumnName="ExceptionType" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="ExceptionValue" ColumnName="ExceptionValue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

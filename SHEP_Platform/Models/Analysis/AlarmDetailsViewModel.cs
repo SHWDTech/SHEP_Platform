@@ -62,4 +62,28 @@ namespace SHEP_Platform.Models.Analysis
 
         public bool IsPostBack { get; set; }
     }
+
+    public class ExceptionCommentViewModel
+    {
+        public int ExceptioId { get; set; }
+
+        [Display(Name = "异常类型")]
+        public string ExceptionName { get; set; }
+
+        [Display(Name = "异常数据")]
+        public double? ExceptionValue { get; set; }
+
+        [Display(Name ="设备名称")]
+        public string DevName { get; set; }
+
+        [Display(Name = "设备NODEID")]
+        public int DevNodeId { get; set; }
+
+
+        [Display(Name = "工地")]
+        public string StatName { get; set; }
+
+        [Display(Name = "异常备注信息")]
+        public string Comment { get; set; }
+    }
 }

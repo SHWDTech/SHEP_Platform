@@ -10,20 +10,12 @@
 namespace SHEP_Platform
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class DeviceException
+    public partial class CheckForTspExcessive_Result
     {
-        public int Id { get; set; }
         public byte ExceptionType { get; set; }
         public int DevId { get; set; }
         public Nullable<int> StatId { get; set; }
         public Nullable<double> ExceptionValue { get; set; }
-        public System.DateTime ExceptionTime { get; set; }
-        public bool Processed { get; set; }
-        public string ProgressMan { get; set; }
-        public string DeviceExceptionReason { get; set; }
-        public string ProgressResult { get; set; }
-        public string Comment { get; set; }
     }
 }

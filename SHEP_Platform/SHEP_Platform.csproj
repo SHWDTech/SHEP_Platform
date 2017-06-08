@@ -167,7 +167,13 @@
     <Compile Include="CheckForDeviceNoData_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
+    <Compile Include="CheckForDeviceNoiseExcessive_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="CheckForDeviceZeroData_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CheckForTspExcessive_Result.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="Common\AppConfig.cs" />
@@ -1066,6 +1072,7 @@
     <Content Include="Views\Admin\DeviceRecent.cshtml" />
     <Content Include="Views\Admin\EditPwd.cshtml" />
     <Content Include="Views\Analysis\ProcessDeviceException.cshtml" />
+    <Content Include="Views\Analysis\ExceptionComment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

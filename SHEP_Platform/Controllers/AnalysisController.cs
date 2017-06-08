@@ -3,9 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using DatabaseModel;
-using OfficeOpenXml.FormulaParsing.Utilities;
+using SHEP_Platform.Common;
 using SHEP_Platform.Models.Analysis;
 using SHEP_Platform.Models.Api;
+using SHWDTech.Platform.Utility;
 
 namespace SHEP_Platform.Controllers
 {
@@ -22,7 +23,7 @@ namespace SHEP_Platform.Controllers
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "本区县污染物平均浓度报表";
 
-            return DynamicView("AveragePolluteReport");
+            return DynamicView(nameof(AveragePolluteReport));
         }
 
         public ActionResult AlarmChange()
@@ -30,7 +31,7 @@ namespace SHEP_Platform.Controllers
             WdContext.SiteMapMenu.ControllerMenu.Name = "综合评价";
             WdContext.SiteMapMenu.ActionMenu.Name = "本曲线整体超标情况变化趋势";
 
-            return DynamicView("AlarmChange");
+            return DynamicView(nameof(AlarmChange));
         }
 
         public ActionResult VocViewer()
@@ -47,16 +48,38 @@ namespace SHEP_Platform.Controllers
         {
             var exceptions = DbContext.DeviceException.Where(obj => !obj.Processed).GroupBy(e => e.DevId).OrderBy(ex => ex.Key);
             var total = exceptions.Count();
-            var rows = (from grp in exceptions.Skip(post.offset).Take(post.limit).Select(e => new { DevId = e.Key, Exceptions = e.Select(ex => new { ex.ExceptionType, ex.ExceptionTime, ex.ExceptionValue }) }).ToList()
+            var rows = (from grp in exceptions.Skip(post.offset).Take(post.limit).Select(e => new
+            {
+                DevId = e.Key,
+                Exceptions = e.Select(ex => new
+                {
+                    ExceptionId = ex.Id,
+                    ex.ExceptionType,
+                    ex.ExceptionTime,
+                    ex.ExceptionValue,
+                    ex.Comment
+                })
+            }).ToList()
                         let dev = DbContext.T_Devs.FirstOrDefault(d => d.Id == grp.DevId)
                         let stat = DbContext.T_Stats.FirstOrDefault(s => s.Id.ToString() == dev.StatId)
+                        let devAddr = DbContext.T_DevAddr.FirstOrDefault(a => a.DevId == dev.Id)
                         select new
                         {
                             devId = dev.Id,
                             devName = dev.DevCode,
+                            devNodeId = Global.BytesToInt32(devAddr.NodeId, 0, false),
                             statName = stat.StatName,
+                            chargeMan = stat.ChargeMan,
+                            telephone = stat.Telepone,
                             statId = dev.StatId,
-                            exceptions = grp.Exceptions.Select(g => new { g.ExceptionType, ExceptionTime = $"{g.ExceptionTime:yyyy-MM-dd HH:mm:ss}", g.ExceptionValue })
+                            exceptions = grp.Exceptions.Select(g => new
+                            {
+                                g.ExceptionId,
+                                g.ExceptionType,
+                                ExceptionTime = $"{g.ExceptionTime:yyyy-MM-dd HH:mm:ss}",
+                                g.ExceptionValue,
+                                Comment = g.Comment?.Length > 20 ? $"{g.Comment?.Substring(0, 20)}..." : g.Comment
+                            })
                         }).ToList();
             return Json(new
             {
@@ -98,7 +121,7 @@ namespace SHEP_Platform.Controllers
             model.Exceptions = DbContext.DeviceException
                 .Where(obj => !obj.Processed && obj.DevId == model.DevId && obj.StatId == model.StatId)
                 .Select(item => item.ExceptionType).ToList()
-                .Select(v => (DeviceExceptionType) v).ToList();
+                .Select(v => (DeviceExceptionType)v).ToList();
             return View(model);
         }
 
@@ -110,7 +133,7 @@ namespace SHEP_Platform.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return RedirectToAction("ProcessDeviceException", model);
+                    return RedirectToAction(nameof(ProcessDeviceException), model);
                 }
                 var exceptionBytes = model.CheckedExceptions.Select(exp => (byte)exp).ToList();
                 var exceptions =
@@ -131,7 +154,52 @@ namespace SHEP_Platform.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return RedirectToAction("ProcessDeviceException", model);
+                return RedirectToAction(nameof(ProcessDeviceException), model);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult ExceptionComment(int exceptionId)
+        {
+            var exp = DbContext.DeviceException.FirstOrDefault(e => e.Id == exceptionId);
+            if (exp == null)
+            {
+                ModelState.AddModelError("", "未找到指定异常数据。");
+                return View();
+            }
+            var model = new ExceptionCommentViewModel
+            {
+                ExceptioId = exp.Id,
+                ExceptionName = EnumHelper<DeviceExceptionType>.GetDisplayValue((DeviceExceptionType)exp.ExceptionType),
+                ExceptionValue = exp.ExceptionValue,
+                DevName = DbContext.T_Devs.First(dev => dev.Id == exp.DevId).DevCode,
+                DevNodeId = Global.BytesToInt32(DbContext.T_DevAddr.First(a => a.DevId == exp.DevId).NodeId, 0 , false),
+                StatName = DbContext.T_Stats.First(s => s.Id == exp.StatId).StatName,
+                Comment = exp.Comment
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ExceptionComment(ExceptionCommentViewModel model)
+        {
+            try
+            {
+                var exp = DbContext.DeviceException.FirstOrDefault(e => e.Id == model.ExceptioId);
+                if (exp == null)
+                {
+                    ModelState.AddModelError("", "未找到指定异常数据。");
+                    return View(model);
+                }
+                exp.Comment = model.Comment;
+                DbContext.SaveChanges();
+                return Content("保存完成！");
+            }
+            catch (Exception ex)
+            {
+                LogService.Instance.Error("保存异常备注信息失败！", ex);
+                return View(model);
             }
         }
     }

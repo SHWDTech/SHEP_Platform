@@ -29,7 +29,7 @@
         var builder = table.Column("报警详情")
             .Apply(ColumnOption.formatter, "alarmDetailFormat")
             .Column("操作")
-            .Apply(ColumnOption.width, "120")
+            .Apply(ColumnOption.width, "100")
             .Apply(ColumnOption.formatter, "alarmDetailMgrFormatter")
             .Apply(ColumnOption.events, "operateEvents");
     }
@@ -48,15 +48,19 @@
         var getExceptionName = function(exp) {
             return '报警类型：<span style="color:red;">' + expTypes[exp.ExceptionType]
                 + '</span>    报警时间：<span style="color:orange;">' + exp.ExceptionTime + '</span>'
-                + '    报警相关值：<span style="color: purple;">' + exp.ExceptionValue + '</span>';
+                + '  报警相关值：<span style="color: purple;">' + exp.ExceptionValue + '</span>'
+                + '  本次报警备注：' + exp.Comment + '</span>'
+                + ' <a href="javascript:void(0)" onclick="addComment(' + exp.ExceptionId + ')"' + ' > 添加备注</a>';
         }
         window.alarmDetailFormat = function (index, row, element) {
-            return '<div>工地名称：<a href="/Monitor/ActualStatus/"' + row.statId + '>' + row.statName + '</a>  设备名称：' + '<span style="color:blue;">' + row.devName + '</span>' + '</div>'
+            return '<div>工地名称：<a href="/Monitor/ActualStatus/' + row.statId + '">' + row.statName + '</a>  设备名称：' + '<span style="color:blue;">'
+                + row.devName + '</span>' + '  设备NODEID：' + '<span style="color:blue;">' + row.devNodeId + '</span>' + '</div>'
+                + '<div>负责人：<span style="color:dodgerblue;">' + row.chargeMan + '</span>  联系电话：<span style="color:violet;">' + row.telephone + '</span></div>'
                 + '<div>' + row.exceptions.map(function (exp) { return getExceptionName(exp) }).join('</br>') + '</div>';
         }
-
+        
         window.alarmDetailMgrFormatter = function(index, row, element) {
-            return '<a class="process" href="javascript:void(0)" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">异常处理完成</span></a>'
+            return '<a class="process" href="javascript:void(0)" style="margin-right: 5px;"><span class="glyphicon glyphicon-ok-circle">处理完成</span></a>';
         }
 
         window.operateEvents = {
@@ -68,6 +72,12 @@
             }
         };
 
+        var addComment = function(expId) {
+            $.get('/Analysis/ExceptionComment', { exceptionId: expId}, function (ret) {
+                $('#dmrModal .modal-body').html(ret);
+                $('#dmrModal').modal();
+            });
+        }
         $(function () {
             $('#alarmDetailsTable').bootstrapTable();
         });

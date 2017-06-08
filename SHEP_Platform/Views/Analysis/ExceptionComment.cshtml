@@ -1,0 +1,49 @@
+﻿@model SHEP_Platform.Models.Analysis.ExceptionCommentViewModel
+@{
+    Layout = null;
+}
+<div id="exceptionComment">
+    @using (Ajax.BeginForm("ExceptionComment", "Analysis", null, new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "exceptionComment"
+    }, new { @class = "form-inline", role = "form", style = "width: 500px; margin: auto;" }))
+    {
+        @Html.HiddenFor(m => m.ExceptioId)
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <td>@Html.LabelFor(m => m.StatName)</td>
+                    <td colspan="3">@Html.DisplayFor(m => m.StatName, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.DevName)</td>
+                    <td>@Html.DisplayFor(m => m.DevName, new { @class = "form-control" })</td>
+                    <td>@Html.LabelFor(m => m.DevNodeId)</td>
+                    <td>@Html.DisplayFor(m => m.DevNodeId, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.ExceptionName)</td>
+                    <td>@Html.DisplayFor(m => m.ExceptionName, new { @class = "form-control" })</td>
+                    <td>@Html.LabelFor(m => m.ExceptionValue)</td>
+                    <td>@Html.DisplayFor(m => m.ExceptionValue, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Comment)</td>
+                    <td colspan="3">@Html.TextAreaFor(m => m.Comment, new { @class = "form-control", style = "width: 100%; height: 200px;" })</td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        @Html.ValidationSummary()
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <button type="submit" class="btn btn-primary" id="submit" style="float: right;">确认提交</button>
+                </td>
+            </tr>
+        </thead>
+    </table>
+    }
+</div>

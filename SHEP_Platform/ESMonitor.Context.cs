@@ -2280,5 +2280,15 @@ namespace SHEP_Platform
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams1");
         }
+    
+        public virtual ObjectResult<CheckForDeviceNoiseExcessive_Result> CheckForDeviceNoiseExcessive()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForDeviceNoiseExcessive_Result>("CheckForDeviceNoiseExcessive");
+        }
+    
+        public virtual ObjectResult<CheckForTspExcessive_Result> CheckForTspExcessive()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForTspExcessive_Result>("CheckForTspExcessive");
+        }
     }
 }
