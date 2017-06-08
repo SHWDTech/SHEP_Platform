@@ -56,7 +56,20 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    @Html.ValidationSummary(false)
+                    @{
+                        if (Model.IsPostBack)
+                        {
+                            <div>
+                                @Html.ValidationMessage("ProgressMan")
+                            </div>
+                            <div>
+                                @Html.ValidationMessage("DeviceExceptionReason")
+                            </div>
+                            <div>
+                                @Html.ValidationMessage("ProgressResult")
+                            </div>
+                        }
+                    }
                 </td>
             </tr>
             <tr>

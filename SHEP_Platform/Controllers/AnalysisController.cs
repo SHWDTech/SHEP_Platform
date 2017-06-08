@@ -99,13 +99,13 @@ namespace SHEP_Platform.Controllers
                 .Where(obj => !obj.Processed && obj.DevId == model.DevId && obj.StatId == model.StatId)
                 .Select(item => item.ExceptionType).ToList()
                 .Select(v => (DeviceExceptionType) v).ToList();
-            model.ProgressMan = model.DeviceExceptionReason = model.ProgressResult = string.Empty;
             return View(model);
         }
 
         [HttpPost]
         public ActionResult ProgressDeviceException(AlarmProcessViewModel model)
         {
+            model.IsPostBack = true;
             try
             {
                 if (!ModelState.IsValid)
