@@ -46,14 +46,18 @@ namespace SHEP_Platform.Controllers
                     .FirstOrDefault();
                 if (lastMonitorData != null)
                 {
-                    model.StatHourInfo = new StatHourInfo {Current = lastMonitorData};
+                    model.StatHourInfo = new StatHourInfo { Current = lastMonitorData };
                 }
             }
 
             var devs = DbContext.T_Devs.Where(dev => dev.StatId == model.DefaultId.ToString()).ToList();
             if (devs.Count > 0)
             {
-                model.StatViewUrl = devs[0].VideoURL;
+                var cam = DbContext.T_Camera.FirstOrDefault(c => c.DevId == devs[0].Id);
+                if (cam != null)
+                {
+                    model.StatViewUrl = $"/Monitor/StatViewHikSecond?id={cam.CameraName}";
+                }
             }
 
             return DynamicView("ActualStatus", model);
