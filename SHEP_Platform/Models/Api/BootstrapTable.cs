@@ -20,4 +20,11 @@ namespace SHEP_Platform.Models.Api
     {
         public string QueryName { get; set; }
     }
+
+    public class ExceptionHistoryTablePost : TablePost
+    {
+        public int? DevId { get; set; }
+
+        public int? StatId { get; set; }
+    }
 }

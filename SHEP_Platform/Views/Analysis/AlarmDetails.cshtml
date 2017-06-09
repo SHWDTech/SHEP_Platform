@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
 <div class="modal fade" id="dmrModal" tabindex="-1" role="dialog" aria-labelledby="alarmDetailModallabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -29,7 +29,7 @@
         var builder = table.Column("报警详情")
             .Apply(ColumnOption.formatter, "alarmDetailFormat")
             .Column("操作")
-            .Apply(ColumnOption.width, "100")
+            .Apply(ColumnOption.width, "180")
             .Apply(ColumnOption.formatter, "alarmDetailMgrFormatter")
             .Apply(ColumnOption.events, "operateEvents");
     }
@@ -60,12 +60,21 @@
         }
         
         window.alarmDetailMgrFormatter = function(index, row, element) {
-            return '<a class="process" href="javascript:void(0)" style="margin-right: 5px;"><span class="glyphicon glyphicon-ok-circle">处理完成</span></a>';
+            return [
+                '<a class="process" href="javascript:void(0)" style="margin-right: 5px;"><span class="glyphicon glyphicon-ok-circle">处理完成</span></a>',
+                '<a class="history" href="javascript:void(0)" style="margin-right: 5px;"><span class="glyphicon glyphicon-list-alt">历史纪录</span></a>'
+            ].join('');
         }
 
         window.operateEvents = {
             'click .process': function (e, value, row) {
                 $.get('/Analysis/ProcessDeviceException', { DevId: row.devId, DevName: row.devName, StatId: row.statId, StatName: row.statName}, function (ret) {
+                    $('#dmrModal .modal-body').html(ret);
+                    $('#dmrModal').modal();
+                });
+            },
+            'click .history': function (e, value, row) {
+                $.get('/Analysis/ExceptionHistory', { devId: row.devId, partial: true}, function (ret) {
                     $('#dmrModal .modal-body').html(ret);
                     $('#dmrModal').modal();
                 });

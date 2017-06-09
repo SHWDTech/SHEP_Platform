@@ -20,6 +20,7 @@
           <Property Name="DeviceExceptionReason" Type="varchar" MaxLength="500" />
           <Property Name="ProgressResult" Type="varchar" MaxLength="500" />
           <Property Name="Comment" Type="varchar" MaxLength="2000" />
+          <Property Name="ProcessDateTime" Type="datetime" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -2643,6 +2644,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="DeviceExceptionReason" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ProgressResult" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Comment" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="ProcessDateTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -3718,6 +3720,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <EntitySetMapping Name="DeviceException">
             <EntityTypeMapping TypeName="ESMonitorModel.DeviceException">
               <MappingFragment StoreEntitySet="DeviceException">
+                <ScalarProperty Name="ProcessDateTime" ColumnName="ProcessDateTime" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="ProgressResult" ColumnName="ProgressResult" />
                 <ScalarProperty Name="DeviceExceptionReason" ColumnName="DeviceExceptionReason" />

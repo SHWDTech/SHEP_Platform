@@ -25,5 +25,6 @@ namespace SHEP_Platform
         public string DeviceExceptionReason { get; set; }
         public string ProgressResult { get; set; }
         public string Comment { get; set; }
+        public Nullable<System.DateTime> ProcessDateTime { get; set; }
     }
 }

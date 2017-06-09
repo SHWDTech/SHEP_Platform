@@ -1073,6 +1073,7 @@
     <Content Include="Views\Admin\EditPwd.cshtml" />
     <Content Include="Views\Analysis\ProcessDeviceException.cshtml" />
     <Content Include="Views\Analysis\ExceptionComment.cshtml" />
+    <Content Include="Views\Analysis\ExceptionHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -146,6 +146,7 @@ namespace SHEP_Platform.Controllers
                     exp.ProgressMan = model.ProgressMan;
                     exp.DeviceExceptionReason = model.DeviceExceptionReason;
                     exp.ProgressResult = model.ProgressResult;
+                    exp.ProcessDateTime = DateTime.Now;
                 }
 
                 DbContext.SaveChanges();
@@ -201,6 +202,52 @@ namespace SHEP_Platform.Controllers
                 LogService.Instance.Error("保存异常备注信息失败！", ex);
                 return View(model);
             }
+        }
+
+        public ActionResult ExceptionHistory(int? devId, bool? partial)
+        {
+            ViewBag.DevId = devId;
+            if (partial == true)
+            {
+                return PartialView();
+            }
+            return View();
+        }
+
+        public ActionResult ExceptionHistoryTable(ExceptionHistoryTablePost post)
+        {
+            var query = DbContext.DeviceException.AsQueryable();
+            if (post.StatId != null)
+            {
+                query = query.Where(q => q.StatId == post.StatId);
+            }
+            if (post.DevId != null)
+            {
+                query = query.Where(q => q.DevId == post.DevId);
+            }
+            var total = query.Count();
+            var ret = query.OrderBy(q => q.Id).Skip(post.offset).Take(post.limit)
+                .ToList();
+
+            var rows = ret.Select(r => new
+            {
+                r.Id,
+                DbContext.T_Stats.First(s => s.Id == r.StatId).StatName,
+                DbContext.T_Devs.First(d => d.Id == r.DevId).DevCode,
+                NodeId = Global.BytesToInt32(DbContext.T_DevAddr.First(a => a.DevId == r.DevId).NodeId, 0, false),
+                ExceptionType = EnumHelper<DeviceExceptionType>.GetDisplayValue((DeviceExceptionType)r.ExceptionType),
+                r.Comment,
+                ExceptionStatus = r.Processed ? "已处理" : "未处理",
+                r.DeviceExceptionReason,
+                r.ProgressMan,
+                r.ProgressResult,
+                ProcessDateTime = $"{r.ProcessDateTime: yyyy-MM-dd HH:mm:ss}"
+            });
+            return Json(new
+            {
+                total,
+                rows
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

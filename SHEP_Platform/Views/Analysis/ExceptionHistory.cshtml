@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "设备异常历史";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+<div>
+    @{
+        var table = Html.BootstrapTable(null, TablePaginationOption.server, new
+        {
+            id = "exceptionHistoryTable",
+            data_page_size = 25,
+            data_reset_offset = true,
+            data_url = "/Analysis/ExceptionHistoryTable",
+            data_query_params = "exceptionParams",
+            data_height = 600
+        });
+        var builder = table.Column("监测点名称", "StatName")
+            .Column("设备名称", "DevCode")
+            .Column("NODEID", "NodeId")
+            .Column("异常类型", "ExceptionType")
+            .Apply(ColumnOption.width, "120")
+            .Column("备注信息", "Comment")
+            .Column("状态", "ExceptionStatus")
+            .Apply(ColumnOption.width, "60")
+            .Column("异常原因", "DeviceExceptionReason")
+            .Column("异常处理人", "ProgressMan")
+            .Column("异常处理结果", "ProgressResult")
+            .Column("异常处理时间", "ProcessDateTime");
+    }
+    @(builder)
+</div>
+
+<script type="text/javascript">
+    var exceptionParams = function (params) {
+        params.devId = @(ViewBag.DevId == null ? "null" : $"{ViewBag.DevId}");
+        return params;
+    }
+</script>
+@Scripts.Render("~/bundles/bootstrap-table")
