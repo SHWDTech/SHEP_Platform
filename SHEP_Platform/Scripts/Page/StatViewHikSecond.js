@@ -17,7 +17,7 @@ $(function () {
     }
 
     StatMonitor = document.getElementById('StatMonitor');
-    StatMonitor.SetConnectServer("localhost:6330");
+    StatMonitor.SetConnectServer(location.host);
     StatMonitor.SetupCamera($('#cameraId').val());
 });
 
