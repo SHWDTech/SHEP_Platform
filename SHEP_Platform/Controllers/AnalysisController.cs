@@ -46,7 +46,8 @@ namespace SHEP_Platform.Controllers
 
         public ActionResult AlarmDetailsTable(TablePost post)
         {
-            var exceptions = DbContext.DeviceException.Where(obj => !obj.Processed).GroupBy(e => e.DevId).OrderBy(ex => ex.Key);
+            var statIds = WdContext.StatList.Select(s => s.Id).ToList();
+            var exceptions = DbContext.DeviceException.Where(obj => !obj.Processed && statIds.Contains(obj.StatId.Value)).GroupBy(e => e.DevId).OrderBy(ex => ex.Key);
             var total = exceptions.Count();
             var rows = (from grp in exceptions.Skip(post.offset).Take(post.limit).Select(e => new
             {
