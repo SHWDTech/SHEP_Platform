@@ -3,12 +3,12 @@ var ajaxUrl = '/Ajax/Access';
 $(function () {
     $('#startDate').datetimepicker({
         locale: 'zh-cn',
-        format: 'L'
+        format: 'YYYY-MM-DD'
     });
 
     $('#endDate').datetimepicker({
         locale: 'zh-cn',
-        format: 'L'
+        format: 'YYYY-MM-DD'
     });
 
     disableDatePicker();
