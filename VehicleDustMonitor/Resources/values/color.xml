@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <color name="colorPrimary">#3F51B5</color>
+  <color name="colorPrimaryDark">#303F9F</color>
+  <color name="colorAccent">#FF4081</color>
+
+  <color name="me_item_bg_normal">#ffffff</color>
+  <color name="me_item_bg_press">#f0f0f0</color>
+  <color name="loading_color">#31A0F8</color>
+
+
+  <color name="backgroud_blue">#0C4C8F</color>
+  <color name="well_color">#19BE22</color>
+  <color name="middle_color">#E8C00A</color>
+  <color name="bad_color">#FB4413</color>
+
+  <color name="chart_bg">#68A2D1</color>
+  <color name="search_bg">#B3B6C1</color>
+
+  <color name="primary">#2196F3</color>
+  <color name="primary_dark">#1976D2</color>
+  <color name="primary_light">#BBDEFB</color>
+  <color name="accent">#FF5722</color>
+  <color name="primary_text">#212121</color>
+  <color name="secondary_text">#757575</color>
+  <color name="icons">#FFFFFF</color>
+  <color name="divider">#BDBDBD</color>
+</resources>
