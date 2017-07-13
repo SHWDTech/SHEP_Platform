@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -63,6 +61,8 @@ namespace VehicleDustMonitor.Xamarin.Activity
 
         private bool _isQuit;
 
+        private RecentDataRequestHandler _requestDataHandler;
+
         private VehicleRecord _vehicleRecord;
 
         protected override void OnCreate(Bundle bundle)
@@ -72,6 +72,9 @@ namespace VehicleDustMonitor.Xamarin.Activity
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             Cheeseknife.Bind(this);
+            _requestDataHandler = new RecentDataRequestHandler(this);
+
+            _requestDataHandler.SendEmptyMessage(0);
             LoadBasicInfomation();
         }
 
@@ -99,7 +102,6 @@ namespace VehicleDustMonitor.Xamarin.Activity
                 }
                 return;
             }
-            Task.Factory.StartNew(RequestLastData);
             InitChartView();
         }
 
@@ -132,10 +134,8 @@ namespace VehicleDustMonitor.Xamarin.Activity
             for (var i = 0; i < _vehicleRecord.RecordDatas.Count; i++)
             {
                 var data = _vehicleRecord.RecordDatas[i];
-                using (var entry = new Entry(i, (float)data))
-                {
-                    yVals1.Add(entry);
-                }
+                var entry = new Entry(i, (float) data);
+                yVals1.Add(entry);
             }
 
             LineDataSet set1;
@@ -150,30 +150,30 @@ namespace VehicleDustMonitor.Xamarin.Activity
             }
             else
             {
-                using (set1 = new LineDataSet(yVals1, string.Empty))
+                set1 = new LineDataSet(yVals1, string.Empty)
                 {
-                    set1.AxisDependency = YAxis.AxisDependency.Left;
-                    set1.Color = ColorTemplate.HoloBlue;
-                    set1.SetCircleColor(Color.White);
-                    set1.LineWidth = 4f;
-                    set1.CircleRadius = 3f;
-                    set1.FillAlpha = 65;
+                    AxisDependency = YAxis.AxisDependency.Left,
+                    Color = ColorTemplate.HoloBlue
+                };
+                set1.SetCircleColor(Color.White);
+                set1.LineWidth = 4f;
+                set1.CircleRadius = 3f;
+                set1.FillAlpha = 65;
 
-                    set1.SetDrawValues(_vehicleRecord.RecordDatas.Count != 0);
+                set1.SetDrawValues(_vehicleRecord.RecordDatas.Count != 0);
 
-                    set1.FillColor = ColorTemplate.HoloBlue;
-                    set1.HighLightColor = Color.Rgb(244, 117, 117);
-                    set1.SetDrawCircleHole(false);
+                set1.FillColor = ColorTemplate.HoloBlue;
+                set1.HighLightColor = Color.Rgb(244, 117, 117);
+                set1.SetDrawCircleHole(false);
 
-                    var dataSets = new List<ILineDataSet> { set1 };
+                var dataSets = new List<ILineDataSet> { set1 };
 
-                    var data = new LineData(dataSets);
-                    data.SetValueTextColor(Color.White);
-                    data.SetValueTextSize(12f);
+                var data = new LineData(dataSets);
+                data.SetValueTextColor(Color.White);
+                data.SetValueTextSize(12f);
 
-                    RecentDataChart.Data = data;
-                    RecentDataChart.Invalidate();
-                }
+                RecentDataChart.Data = data;
+                RecentDataChart.Invalidate();
             }
         }
 
@@ -190,34 +190,34 @@ namespace VehicleDustMonitor.Xamarin.Activity
             TxtCordinate.Text = cordinate;
         }
 
-        private void RequestLastData()
+        public void RequestLastData()
         {
-            while (!_isQuit)
+            ApiManager.GetLastData($"{_deviceId}", new HttpResponseHandler
             {
-                ApiManager.GetLastData($"{_deviceId}", new HttpResponseHandler
+                OnResponse = args =>
                 {
-                    OnResponse = args =>
-                    {
-                        if (string.IsNullOrWhiteSpace(args.Response)) return;
-                        var data = JsonConvert.DeserializeObject<DeviceRecentData>(args.Response);
-                        
-                        RunOnUiThread(() => UpdateInformation(data));
-                    }
-                });
-                Thread.Sleep(60000);
-            }
+                    if (string.IsNullOrWhiteSpace(args.Response)) return;
+                    var data = JsonConvert.DeserializeObject<DeviceRecentData>(args.Response);
+                    UpdateInformation(data);
+                    if (_isQuit) return;
+                    _requestDataHandler.SendEmptyMessageDelayed(0, 5000);
+                }
+            });
         }
 
         private void UpdateInformation(DeviceRecentData lastData)
         {
-            TxtLastData.Text = $"{Math.Round(int.Parse(lastData.Tp) / 1000.0, 3)} mg/m³";
-            TxtLastDateTime.Text = lastData.UpdateTime;
-            if (_vehicleRecord != null && _isRecordStarted)
+            RunOnUiThread(() =>
             {
-                _vehicleRecord.RecordDatas.Add(Math.Round(int.Parse(lastData.Tp) / 1000.0, 3));
-                SetLineChartData();
-                TxtGeneralAvg.Text = $"{_vehicleRecord.RecordDatas.Average()}";
-            }
+                if (_vehicleRecord != null && _isRecordStarted)
+                {
+                    _vehicleRecord.RecordDatas.Add(Math.Round(int.Parse(lastData.Tp) / 1000.0, 3));
+                    SetLineChartData();
+                }
+                TxtLastData.Text = $"{Math.Round(int.Parse(lastData.Tp) / 1000.0, 3)} mg/m³";
+                TxtLastDateTime.Text = lastData.UpdateTime;
+                TxtGeneralAvg.Text = _vehicleRecord == null ? "-" : $"{_vehicleRecord.RecordDatas.Average()}";
+            });
         }
 
         private void Logout()
@@ -254,7 +254,7 @@ namespace VehicleDustMonitor.Xamarin.Activity
                 TxtProjectName.Enabled = false;
                 InputProjectEditText.Text = "输入";
             }
-            
+
         }
 
         [OnClick(Resource.Id.inputComment)]
@@ -273,7 +273,7 @@ namespace VehicleDustMonitor.Xamarin.Activity
                 TxtComment.Enabled = false;
                 InputCommentEditText.Text = "输入";
             }
-            
+
         }
 
         private void StartRecord(bool force = false)
@@ -287,7 +287,7 @@ namespace VehicleDustMonitor.Xamarin.Activity
                         {
                             StartRecord(true);
                         })
-                        .SetNegativeButton("取消", delegate{})
+                        .SetNegativeButton("取消", delegate { })
                         .Create()
                         .Show();
                 }
@@ -312,6 +312,21 @@ namespace VehicleDustMonitor.Xamarin.Activity
             var now = DateTime.Now;
             _vehicleRecord.EndDateTime = now;
             TxtEndDateTime.Text = $"{now: MM-dd HH:mm:ss}";
+        }
+    }
+
+    public class RecentDataRequestHandler : Handler
+    {
+        private readonly MainActivity _activity;
+
+        public RecentDataRequestHandler(MainActivity activity)
+        {
+            _activity = activity;
+        }
+
+        public override void HandleMessage(Message msg)
+        {
+            _activity.RequestLastData();
         }
     }
 }
