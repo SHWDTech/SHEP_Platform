@@ -64,12 +64,12 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1.5">
             <View
                 android:background="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="1px" />
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="36dp">
                 <TextView
@@ -77,26 +77,46 @@
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="设备名称：" />
                 <TextView
                     android:textColor="@android:color/white"
+                    android:id="@+id/txtDeviceName"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:layout_marginLeft="180dp"
+                    android:layout_marginRight="5dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="设备ID：" />
-            </RelativeLayout>
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:id="@+id/txtDeviceNodeId"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
             <View
                 android:background="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="1px" />
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="36dp">
                 <TextView
@@ -104,16 +124,26 @@
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="测试均值：" />
-            </RelativeLayout>
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:id="@+id/txtGeneralAvg"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="无数据" />
+            </LinearLayout>
             <View
                 android:background="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="1px" />
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="36dp">
                 <TextView
@@ -121,21 +151,41 @@
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="最新数据：" />
                 <TextView
                     android:textColor="@android:color/white"
+                    android:id="@+id/txtLastData"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:layout_marginLeft="180dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="无数据" />
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="更新时间：" />
-            </RelativeLayout>
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:id="@+id/txtLastDataTime"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="无数据" />
+            </LinearLayout>
             <View
                 android:background="@android:color/white"
                 android:layout_width="match_parent"
@@ -152,14 +202,169 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="当前坐标：" />
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:id="@+id/txtCordinate"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="64dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+                <ImageView
+                    android:id="@+id/refreshCordinate"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/loadingpage_error"
+                    android:layout_marginRight="60dp"
+                    android:padding="4dp"
+                    android:clickable="true"
+                    android:scaleType="centerInside"
+                    android:layout_width="@dimen/fragment_title_height"
+                    android:layout_height="@dimen/fragment_title_height" />
+                <ImageView
+                    android:id="@+id/locate"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/yesmap"
+                    android:padding="4dp"
+                    android:clickable="true"
+                    android:scaleType="centerInside"
+                    android:layout_width="@dimen/fragment_title_height"
+                    android:layout_height="@dimen/fragment_title_height" />
             </RelativeLayout>
+            <View
+                android:background="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开始时间：" />
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:id="@+id/txtStartDateTime"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" - " />
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="结束时间：" />
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:id="@+id/txtEndDateTime"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" - " />
+            </LinearLayout>
+            <View
+                android:background="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="工地名称：" />
+                <EditText
+                    android:textColor="@android:color/white"
+                    android:id="@+id/txtProjectName"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:id="@+id/inputProject"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="输入" />
+            </LinearLayout>
+            <View
+                android:background="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="备注：" />
+                <EditText
+                    android:textColor="@android:color/white"
+                    android:id="@+id/txtComment"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:enabled="false"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textColor="@android:color/white"
+                    android:id="@+id/inputComment"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="输入" />
+            </LinearLayout>
             <View
                 android:background="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="1px" />
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="40dp"
                 android:minWidth="25px"
                 android:minHeight="25px">
                 <Button

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
-    <string name="ApplicationName">VehicleDustMonitor</string>
+  <string name="Hello">Hello World, Click Me!</string>
+  <string name="ApplicationName">VehicleDustMonitor</string>
+
+  <string name="prompt_account">账号</string>
+  <string name="prompt_password">密码</string>
+  <string name="action_sign_in">登录</string>
+  <string name="action_sign_in_short">Sign in</string>
 </resources>

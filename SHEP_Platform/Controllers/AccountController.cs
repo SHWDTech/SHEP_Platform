@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using SHEP_Platform.Common;
 using SHEP_Platform.Models.Account;
 using SHEP_Platform.Process;
 
@@ -63,7 +65,26 @@ namespace SHEP_Platform.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction(nameof(Login), "Account");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult VehicleLogin(string username, string password)
+        {
+            var result = AccountProcess.Login(username, password);
+            var loginResult = new VehicleLoginResult();
+            if (result.User != null)
+            {
+                loginResult.LoginSuccessed = true;
+                var userStat = DbContext.T_UserStats.First(s => s.UserId == result.User.UserId);
+                var dev = DbContext.T_Devs.First(d => d.StatId == userStat.StatId.ToString());
+                loginResult.DeviceId = dev.Id;
+                loginResult.DeviceName = dev.DevCode;
+                loginResult.DeviceNodeId = $"{Global.BytesToInt32(DbContext.T_DevAddr.First(d => d.DevId == dev.Id).NodeId, 0, false)}";
+            }
+            
+            return Json(loginResult);
         }
     }
 }

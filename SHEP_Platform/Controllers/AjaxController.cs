@@ -1002,5 +1002,28 @@ namespace SHEP_Platform.Controllers
                 UpdateTime = $"{data.UpdateTime:yyyy-MM-dd HH:mm:ss}"
             }));
         }
+
+        [AllowAnonymous]
+        public ActionResult DeviceRecentData(int devId)
+        {
+            var data = DbContext.T_ESMin.Where(m => m.DevId == devId).OrderByDescending(min => min.UpdateTime)
+                .FirstOrDefault();
+            if (data == null)
+            {
+                return Content(string.Empty);
+            }
+            return Json(new DeviceRecentData
+            {
+                Tp = $"{data.TP}",
+                Db = $"{data.DB}",
+                Pm25 = $"{data.PM25}",
+                Pm100 = $"{data.PM100}",
+                WindSpeed = $"{data.WindSpeed}",
+                WindDirection = $"{data.WindDirection}",
+                Temp = $"{data.Temperature}",
+                Humidity = $"{data.Humidity}",
+                UpdateTime = $"{data.UpdateTime:yyyy-MM-dd HH:mm:ss}"
+            });
+        }
     }
 }
