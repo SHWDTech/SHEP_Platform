@@ -38,6 +38,7 @@
         <EntityTypeShape EntityType="ESMonitorModel.DeviceException" Width="1.5" PointX="10.75" PointY="14.25" />
         <EntityTypeShape EntityType="ESMonitorModel.sysdiagrams" Width="1.5" PointX="14.375" PointY="8.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_Photos" Width="1.5" PointX="3.375" PointY="15.75" />
+        <EntityTypeShape EntityType="ESMonitorModel.VehicleRecord" Width="1.5" PointX="15.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

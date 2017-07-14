@@ -360,6 +360,17 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="StatId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="VehicleRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="DevId" Type="int" Nullable="false" />
+          <Property Name="RecordName" Type="varchar" MaxLength="200" />
+          <Property Name="Comment" Type="varchar" MaxLength="200" />
+          <Property Name="StartDateTime" Type="datetime" Nullable="false" />
+          <Property Name="EndDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
           <End Role="T_Country" Type="Self.T_Country" Multiplicity="*" />
@@ -1073,6 +1084,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <EntitySet Name="T_UserInGroups" EntityType="Self.T_UserInGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Users" EntityType="Self.T_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserStats" EntityType="Self.T_UserStats" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleRecord" EntityType="Self.VehicleRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Alarms" EntityType="Self.T_Alarms" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [T_Alarms].[Id] AS [Id], 
@@ -2149,6 +2161,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <FunctionImport Name="sp_upgraddiagrams1" />
           <FunctionImport Name="CheckForDeviceNoiseExcessive" ReturnType="Collection(ESMonitorModel.CheckForDeviceNoiseExcessive_Result)" />
           <FunctionImport Name="CheckForTspExcessive" ReturnType="Collection(ESMonitorModel.CheckForTspExcessive_Result)" />
+          <EntitySet Name="VehicleRecord" EntityType="ESMonitorModel.VehicleRecord" />
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
@@ -2699,6 +2712,17 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Type="Int32" Name="StatId" Nullable="true" />
           <Property Type="Double" Name="ExceptionValue" Nullable="true" />
         </ComplexType>
+        <EntityType Name="VehicleRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="DevId" Type="Int32" Nullable="false" />
+          <Property Name="RecordName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="StartDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3819,6 +3843,18 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="VehicleRecord">
+            <EntityTypeMapping TypeName="ESMonitorModel.VehicleRecord">
+              <MappingFragment StoreEntitySet="VehicleRecord">
+                <ScalarProperty Name="EndDateTime" ColumnName="EndDateTime" />
+                <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="RecordName" ColumnName="RecordName" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

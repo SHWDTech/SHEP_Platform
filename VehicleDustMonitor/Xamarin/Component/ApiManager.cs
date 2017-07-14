@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Text;
+using VehicleDustMonitor.Xamarin.Model;
 
 namespace VehicleDustMonitor.Xamarin.Component
 {
@@ -13,6 +14,8 @@ namespace VehicleDustMonitor.Xamarin.Component
 
         private static readonly string ApiLastData = $"{ApiServer}/Ajax/DeviceRecentData";
 
+        private static readonly string ApiUploadRecord = $"{ApiServer}/Ajax/UploadVehicleRecord";
+
         public const string HttpMethodPost = "POST";
 
         public const string HttpMethodGet = "GET";
@@ -20,6 +23,16 @@ namespace VehicleDustMonitor.Xamarin.Component
         private const string LoginParamterNamePassword = "password";
 
         private const string GetLastDataParamterNameDevId = "devId";
+
+        private const string UploadRecordParamterNameDevId = "DevId";
+
+        private const string UploadRecordParamterNameRecordName = "RecordName";
+
+        private const string UploadRecordParamterNameComment = "Comment";
+
+        private const string UploadRecordParamterNameStartDateTime = "StartDateTime";
+
+        private const string UploadRecordParamterNameEndDateTime = "EndDateTime";
 
         public static void StartRequest(string api, string method, XHttpRequestParamters paramter, HttpResponseHandler handler)
         {
@@ -96,6 +109,17 @@ namespace VehicleDustMonitor.Xamarin.Component
             var requestParams = new XHttpRequestParamters();
             requestParams.AddBodyParamter(GetLastDataParamterNameDevId, devId);
             StartRequest(ApiLastData, HttpMethodPost, requestParams, handler);
+        }
+
+        public static void UploadRecord(VehicleRecord record, HttpResponseHandler handler)
+        {
+            var requestParams = new XHttpRequestParamters();
+            requestParams.AddBodyParamter(UploadRecordParamterNameDevId, $"{record.DevId}");
+            requestParams.AddBodyParamter(UploadRecordParamterNameRecordName, $"{record.RecordName}");
+            requestParams.AddBodyParamter(UploadRecordParamterNameComment, $"{record.Comment}");
+            requestParams.AddBodyParamter(UploadRecordParamterNameStartDateTime, $"{record.StartDateTime}");
+            requestParams.AddBodyParamter(UploadRecordParamterNameEndDateTime, $"{record.EndDateTime}");
+            StartRequest(ApiUploadRecord, HttpMethodPost, requestParams, handler);
         }
     }
 }

@@ -315,10 +315,11 @@
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:layout_alignParentLeft="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_width="72dp"
+                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:text="输入" />
+                    android:text="编辑" />
             </LinearLayout>
             <View
                 android:background="@android:color/white"
@@ -335,7 +336,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="备注：" />
+                    android:text="信息备注：" />
                 <EditText
                     android:textColor="@android:color/white"
                     android:id="@+id/txtComment"
@@ -353,27 +354,33 @@
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:layout_alignParentLeft="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_width="72dp"
+                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:text="输入" />
+                    android:text="编辑" />
             </LinearLayout>
             <View
                 android:background="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="1px" />
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:gravity="center_horizontal"
                 android:minWidth="25px"
                 android:minHeight="25px">
                 <Button
                     android:text="开始记录"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:id="@+id/btnRecord" />
-            </RelativeLayout>
+                <Button
+                    android:text="上传记录"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnUploadRecord" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

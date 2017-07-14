@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace VehicleDustMonitor.Xamarin.Model
+namespace SHEP_Platform.Models.Api
 {
-    public class VehicleRecord
+    public class VehicleRecordUpload
     {
         public DateTime StartDateTime { get; set; } = DateTime.MinValue;
 
@@ -14,7 +13,5 @@ namespace VehicleDustMonitor.Xamarin.Model
         public string RecordName { get; set; }
 
         public string Comment { get; set; }
-
-        public List<double> RecordDatas { get; set; } = new List<double>();
     }
 }

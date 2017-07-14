@@ -196,6 +196,7 @@
     <Compile Include="Models\Api\BootstrapTable.cs" />
     <Compile Include="Models\Api\DeviceRecentData.cs" />
     <Compile Include="Models\Api\ServerInfomation.cs" />
+    <Compile Include="Models\Api\VehicleRecordUpload.cs" />
     <Compile Include="Process\GlobalConfig.cs" />
     <Compile Include="ShwdResult\ExcelResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -499,6 +500,9 @@
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_Users_GetModel_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VehicleRecord.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
   </ItemGroup>

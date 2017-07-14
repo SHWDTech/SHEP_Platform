@@ -925,7 +925,7 @@ namespace SHEP_Platform.Controllers
 
         public JsonResult GetAllStats(TablePost post)
         {
-            var total = WdContext.StatList.Count();
+            var total = WdContext.StatList.Count;
 
             var rows = WdContext.StatList.OrderBy(o => o.Id).Skip(post.offset).Take(post.limit).Select(s => new
             {
@@ -1024,6 +1024,36 @@ namespace SHEP_Platform.Controllers
                 Humidity = $"{data.Humidity}",
                 UpdateTime = $"{data.UpdateTime:yyyy-MM-dd HH:mm:ss}"
             });
+        }
+
+        [AllowAnonymous]
+        public ActionResult UploadVehicleRecord(VehicleRecordUpload model)
+        {
+            try
+            {
+                var record = new VehicleRecord
+                {
+                    RecordName = model.RecordName,
+                    Comment = model.Comment,
+                    DevId = model.DevId,
+                    StartDateTime = model.StartDateTime,
+                    EndDateTime = model.EndDateTime
+                };
+                DbContext.VehicleRecord.Add(record);
+                var ret = DbContext.SaveChanges();
+                return Json(new
+                {
+                    success = ret >= 0
+                });
+
+            }
+            catch (Exception)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
         }
     }
 }
