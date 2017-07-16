@@ -365,12 +365,14 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DevId" Type="int" Nullable="false" />
           <Property Name="RecordName" Type="varchar" MaxLength="200" />
           <Property Name="Comment" Type="varchar" MaxLength="200" />
           <Property Name="StartDateTime" Type="datetime" Nullable="false" />
           <Property Name="EndDateTime" Type="datetime" Nullable="false" />
+          <Property Name="Lat" Type="float" />
+          <Property Name="Lng" Type="float" />
         </EntityType>
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
@@ -2724,6 +2726,8 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="StartDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Lat" Type="Double" />
+          <Property Name="Lng" Type="Double" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3849,6 +3853,8 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <EntitySetMapping Name="VehicleRecord">
             <EntityTypeMapping TypeName="ESMonitorModel.VehicleRecord">
               <MappingFragment StoreEntitySet="VehicleRecord">
+                <ScalarProperty Name="Lng" ColumnName="Lng" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
                 <ScalarProperty Name="EndDateTime" ColumnName="EndDateTime" />
                 <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />

@@ -13,5 +13,9 @@ namespace SHEP_Platform.Models.Api
         public string RecordName { get; set; }
 
         public string Comment { get; set; }
+
+        public float Lat { get; set; }
+
+        public float Lng { get; set; }
     }
 }

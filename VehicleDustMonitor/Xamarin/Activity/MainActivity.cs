@@ -430,6 +430,8 @@ namespace VehicleDustMonitor.Xamarin.activity
             values.Put(VehicleRecordEntity.ColumnNameStartDateTime, $"{_vehicleRecord.StartDateTime:yyyy-MM-dd HH:mm:ss}");
             values.Put(VehicleRecordEntity.ColumnNameEndDateTIme, $"{_vehicleRecord.EndDateTime:yyyy-MM-dd HH:mm:ss}");
             values.Put(VehicleRecordEntity.ColumnNameAverage, $"{_vehicleRecord.RecordDatas.Average()}");
+            values.Put(VehicleRecordEntity.ColumnNameLat, $"{_cordinate.Lat}");
+            values.Put(VehicleRecordEntity.ColumnNameLng, $"{_cordinate.Lng}");
             var newRowId = db.Insert(VehicleRecordEntity.TableName, null, values);
             values.Clear();
             foreach (var recordData in _vehicleRecord.RecordDatas)
@@ -456,7 +458,7 @@ namespace VehicleDustMonitor.Xamarin.activity
 
         private void UploadRecord()
         {
-            ApiManager.UploadRecord(_vehicleRecord, new HttpResponseHandler
+            ApiManager.UploadRecord(_vehicleRecord, $"{_cordinate.Lat}", $"{_cordinate.Lng}", new HttpResponseHandler
             {
                 OnResponse = args =>
                 {
@@ -503,4 +505,6 @@ namespace VehicleDustMonitor.Xamarin.activity
         }
     }
 }
+
+
 

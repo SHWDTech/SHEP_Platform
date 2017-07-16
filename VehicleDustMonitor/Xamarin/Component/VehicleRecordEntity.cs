@@ -18,8 +18,12 @@
 
         public const string ColumnNameAverage = "Average";
 
+        public const string ColumnNameLat = "Lat";
+
+        public const string ColumnNameLng = "Lng";
+
         public static readonly string SqlCreateEntitis =
-            $"CREATE TABLE {TableName} ({ColumnNameId} INTEGER PRIMARY KEY AUTOINCREMENT, {ColumnNameDevId} INTEGER, {ColumnNameRecordName} TEXT, {ColumnNameComment} TEXT, {ColumnNameStartDateTime} TEXT, {ColumnNameEndDateTIme} TEXT, {ColumnNameAverage} FLOAT)";
+            $"CREATE TABLE {TableName} ({ColumnNameId} INTEGER PRIMARY KEY AUTOINCREMENT, {ColumnNameDevId} INTEGER, {ColumnNameRecordName} TEXT, {ColumnNameComment} TEXT, {ColumnNameStartDateTime} TEXT, {ColumnNameEndDateTIme} TEXT, {ColumnNameAverage} FLOAT, {ColumnNameLat} FLOAT, {ColumnNameLng} FLOAT)";
 
         public static readonly string SqlDeleteEntitis = $"DROP TABLE IF EXISTS {TableName}";
     }

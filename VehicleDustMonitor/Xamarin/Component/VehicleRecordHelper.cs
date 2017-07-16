@@ -8,7 +8,7 @@ namespace VehicleDustMonitor.Xamarin.Component
 {
     public class VehicleRecordHelper : SQLiteOpenHelper
     {
-        public static readonly int DatabaseVersion = 1;
+        public static readonly int DatabaseVersion = 2;
 
         public static readonly string DatabaseFileName = "VehicleRecord.sqlite";
 

@@ -36,6 +36,10 @@ namespace VehicleDustMonitor.Xamarin.Component
 
         private const string UploadRecordParamterNameEndDateTime = "EndDateTime";
 
+        private const string UploadRecordParamterNameLat = "Lat";
+
+        private const string UploadRecordParamterNameLng = "Lng";
+
         private const string RefreshCordinateParamterNameDevId = "devId";
 
         public static void StartRequest(string api, string method, XHttpRequestParamters paramter, HttpResponseHandler handler)
@@ -115,7 +119,7 @@ namespace VehicleDustMonitor.Xamarin.Component
             StartRequest(ApiLastData, HttpMethodPost, requestParams, handler);
         }
 
-        public static void UploadRecord(VehicleRecord record, HttpResponseHandler handler)
+        public static void UploadRecord(VehicleRecord record, string lat, string lng, HttpResponseHandler handler)
         {
             var requestParams = new XHttpRequestParamters();
             requestParams.AddBodyParamter(UploadRecordParamterNameDevId, $"{record.DevId}");
@@ -123,6 +127,8 @@ namespace VehicleDustMonitor.Xamarin.Component
             requestParams.AddBodyParamter(UploadRecordParamterNameComment, $"{record.Comment}");
             requestParams.AddBodyParamter(UploadRecordParamterNameStartDateTime, $"{record.StartDateTime}");
             requestParams.AddBodyParamter(UploadRecordParamterNameEndDateTime, $"{record.EndDateTime}");
+            requestParams.AddBodyParamter(UploadRecordParamterNameLat, lat);
+            requestParams.AddBodyParamter(UploadRecordParamterNameLng, lng);
             StartRequest(ApiUploadRecord, HttpMethodPost, requestParams, handler);
         }
 

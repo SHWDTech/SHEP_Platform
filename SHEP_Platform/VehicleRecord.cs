@@ -20,5 +20,7 @@ namespace SHEP_Platform
         public string Comment { get; set; }
         public System.DateTime StartDateTime { get; set; }
         public System.DateTime EndDateTime { get; set; }
+        public Nullable<double> Lat { get; set; }
+        public Nullable<double> Lng { get; set; }
     }
 }

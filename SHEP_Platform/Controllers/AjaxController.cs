@@ -1037,7 +1037,9 @@ namespace SHEP_Platform.Controllers
                     Comment = model.Comment,
                     DevId = model.DevId,
                     StartDateTime = model.StartDateTime,
-                    EndDateTime = model.EndDateTime
+                    EndDateTime = model.EndDateTime,
+                    Lat = model.Lat,
+                    Lng = model.Lng
                 };
                 DbContext.VehicleRecord.Add(record);
                 var ret = DbContext.SaveChanges();
