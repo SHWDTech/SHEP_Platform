@@ -18,7 +18,7 @@ using VehicleDustMonitor.Xamarin.Model;
 using AlertDialog = Android.Support.V7.App.AlertDialog;
 using Android.Graphics;
 
-namespace VehicleDustMonitor.Xamarin.Activity
+namespace VehicleDustMonitor.Xamarin.activity
 {
     [Activity(Label = nameof(VehicleDustMonitor))]
     public class MainActivity : AppCompatActivity
@@ -71,16 +71,20 @@ namespace VehicleDustMonitor.Xamarin.Activity
 
         private DateTime _lastDataDateTime = DateTime.MinValue;
 
-        protected override void OnCreate(Bundle bundle)
+        private VehicleRecordHelper _sqlHelper;
+
+        private CurrentCordinate _cordinate;
+
+        protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(bundle);
+            base.OnCreate(savedInstanceState);
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             Cheeseknife.Bind(this);
             TxtTitle.Text = "未开始记录";
             _requestDataHandler = new RecentDataRequestHandler(this);
-
+            _sqlHelper = new VehicleRecordHelper(this);
             _requestDataHandler.SendEmptyMessage(0);
             LoadBasicInfomation();
         }
@@ -137,7 +141,7 @@ namespace VehicleDustMonitor.Xamarin.Activity
         private void SetLineChartData()
         {
             RecentDataChart.Clear();
-            var yVals1 = _vehicleRecord.RecordDatas.Select((data, i) => new Entry(i, (float) data)).ToList();
+            var yVals1 = _vehicleRecord.RecordDatas.Select((data, i) => new Entry(i, (float)data)).ToList();
 
             LineDataSet set1;
 
@@ -199,7 +203,7 @@ namespace VehicleDustMonitor.Xamarin.Activity
                 {
                     if (string.IsNullOrWhiteSpace(args.Response)) return;
                     var data = JsonConvert.DeserializeObject<DeviceRecentData>(args.Response);
-                    
+
                     UpdateInformation(data);
                     if (_isQuit) return;
                     _requestDataHandler.SendEmptyMessageDelayed(0, 15000);
@@ -247,6 +251,10 @@ namespace VehicleDustMonitor.Xamarin.Activity
         {
             TxtComment.Enabled = false;
             InputCommentEditText.Text = "编辑";
+            if (_vehicleRecord != null)
+            {
+                _vehicleRecord.Comment = TxtComment.Text;
+            }
             if (!TxtProjectName.Enabled)
             {
                 TxtProjectName.Enabled = true;
@@ -276,6 +284,10 @@ namespace VehicleDustMonitor.Xamarin.Activity
             {
                 TxtComment.Enabled = false;
                 InputCommentEditText.Text = "编辑";
+                if (_vehicleRecord != null)
+                {
+                    _vehicleRecord.Comment = TxtComment.Text;
+                }
             }
 
         }
@@ -283,20 +295,60 @@ namespace VehicleDustMonitor.Xamarin.Activity
         [OnClick(Resource.Id.btnUploadRecord)]
         protected void UploadRecord(object sender, EventArgs args)
         {
-            if (_vehicleRecord == null || _isRecordStarted)
+            if (_vehicleRecord.IsSaved)
             {
-                Toast.MakeText(this, "需要先完成一次记录。", ToastLength.Short).Show();
+                UploadRecord();
+            }
+            else
+            {
+                CheckRecordBeforeSave();
+            }
+        }
+
+        [OnClick(Resource.Id.refreshCordinate)]
+        protected void RefreshCordinate(object sender, EventArgs args)
+        {
+            ApiManager.RefreshCordinate(_deviceId, new HttpResponseHandler
+            {
+                OnResponse = eventArgs =>
+                {
+                    var latlng = JsonConvert.DeserializeObject<CurrentCordinate>(eventArgs.Response);
+                    _cordinate = latlng;
+                    RunOnUiThread(() =>
+                    {
+                        TxtCordinate.Text = $"{_cordinate.Lng} , {_cordinate.Lat}";
+                    });
+                },
+                OnError = eventArgs =>
+                {
+                    _cordinate = null;
+                }
+            });
+        }
+
+
+        [OnClick(Resource.Id.locate)]
+        protected void ShowLocate(object sender, EventArgs args)
+        {
+            if (_cordinate == null)
+            {
+                Toast.MakeText(this, "还没有获取到有效的GPS坐标信息。", ToastLength.Short).Show();
                 return;
             }
-            CheckUploadRecord();
+            var intent = new Intent(this, typeof(CurrentPositionActivity));
+            var bundle = new Bundle();
+            bundle.PutDouble("Lat", _cordinate.Lat);
+            bundle.PutDouble("Lng", _cordinate.Lng);
+            intent.PutExtras(bundle);
+            StartActivity(intent);
         }
 
         private void StartRecord(bool force = false)
         {
             if (_vehicleRecord != null && !force)
             {
-                var hint = _isRecordStarted 
-                    ? "当前记录未结束，重新开始会丢失记录信息，是否确认重新开始记录?" 
+                var hint = _isRecordStarted
+                    ? "当前记录未结束，重新开始会丢失记录信息，是否确认重新开始记录?"
                     : "当前记录未上传，重新开始会丢失记录信息，是否确认重新开始记录?";
                 using (var builder = new AlertDialog.Builder(this))
                 {
@@ -314,13 +366,13 @@ namespace VehicleDustMonitor.Xamarin.Activity
             }
             _isRecordStarted = true;
             TxtTitle.Text = "记录中";
+            var now = DateTime.Now;
             _vehicleRecord = new VehicleRecord
             {
-                DevId = _deviceId
+                DevId = _deviceId,
+                StartDateTime = now
             };
             BtnRecord.Text = "停止记录";
-            var now = DateTime.Now;
-            _vehicleRecord.StartDateTime = now;
             TxtStartDateTime.Text = $"{now: M-dd HH:mm:ss}";
             TxtEndDateTime.Text = "-";
         }
@@ -334,13 +386,16 @@ namespace VehicleDustMonitor.Xamarin.Activity
             var now = DateTime.Now;
             _vehicleRecord.EndDateTime = now;
             TxtEndDateTime.Text = $"{now: MM-dd HH:mm:ss}";
+            _vehicleRecord.RecordName = $"车载扬尘记录-工地{TxtProjectName.Text}-{_vehicleRecord.StartDateTime}至{_vehicleRecord.EndDateTime}";
+
+            CheckRecordBeforeSave();
 
             using (var builder = new AlertDialog.Builder(this))
             {
                 builder.SetMessage("是否立即上传本次记录?")
                     .SetPositiveButton("立即上传", delegate
                     {
-                        CheckUploadRecord();
+                        UploadRecord();
                     })
                     .SetNegativeButton("稍候上传", delegate { })
                     .Create()
@@ -348,25 +403,51 @@ namespace VehicleDustMonitor.Xamarin.Activity
             }
         }
 
-        private void CheckUploadRecord()
+        private void CheckRecordBeforeSave()
         {
             if (string.IsNullOrWhiteSpace(TxtProjectName.Text) ||
                 string.IsNullOrWhiteSpace(TxtComment.Text))
             {
                 using (var builder = new AlertDialog.Builder(this))
                 {
-                    builder.SetMessage("测试点信息或备注信息未填写，确认上传吗?")
-                        .SetPositiveButton("立即上传", delegate
+                    builder.SetMessage("测试点信息或备注信息未填写，立即保存记录信息吗？")
+                        .SetPositiveButton("立即保存", delegate
                         {
-                            UploadRecord();
+                            SaveRecord();
                         })
-                        .SetNegativeButton("完善信息", delegate { })
+                        .SetNegativeButton("完善信息", delegate
+                        {
+                            BtnUploadRecord.Text = "保存并上传";
+                        })
                         .Create()
                         .Show();
                 }
-                return;
             }
-            UploadRecord();
+            else
+            {
+                SaveRecord();
+            }
+        }
+
+        private void SaveRecord()
+        {
+            var db = _sqlHelper.WritableDatabase;
+            var values = new ContentValues();
+            values.Put(VehicleRecordEntity.ColumnNameRecordName, _vehicleRecord.RecordName);
+            values.Put(VehicleRecordEntity.ColumnNameComment, _vehicleRecord.Comment);
+            values.Put(VehicleRecordEntity.ColumnNameDevId, _vehicleRecord.DevId);
+            values.Put(VehicleRecordEntity.ColumnNameStartDateTime, $"{_vehicleRecord.StartDateTime:yyyy-MM-dd HH:mm:ss}");
+            values.Put(VehicleRecordEntity.ColumnNameEndDateTIme, $"{_vehicleRecord.EndDateTime:yyyy-MM-dd HH:mm:ss}");
+            var newRowId = db.Insert(VehicleRecordEntity.TableName, null, values);
+            values.Clear();
+            foreach (var recordData in _vehicleRecord.RecordDatas)
+            {
+                values.Put(VehicleRecordValuesEntity.ColumnNameRecordId, newRowId);
+                values.Put(VehicleRecordValuesEntity.ColumnNameValue, recordData);
+                db.Insert(VehicleRecordValuesEntity.TableName, null, values);
+            }
+
+            _vehicleRecord.IsSaved = true;
         }
 
         private void UploadRecord()
@@ -375,7 +456,7 @@ namespace VehicleDustMonitor.Xamarin.Activity
             {
                 OnResponse = args =>
                 {
-                    
+
                 }
             });
         }

@@ -16,6 +16,8 @@ namespace VehicleDustMonitor.Xamarin.Component
 
         private static readonly string ApiUploadRecord = $"{ApiServer}/Ajax/UploadVehicleRecord";
 
+        private static readonly string ApiRefreshCordinate = $"{ApiServer}/Ajax/RefreshCordinate";
+
         public const string HttpMethodPost = "POST";
 
         public const string HttpMethodGet = "GET";
@@ -33,6 +35,8 @@ namespace VehicleDustMonitor.Xamarin.Component
         private const string UploadRecordParamterNameStartDateTime = "StartDateTime";
 
         private const string UploadRecordParamterNameEndDateTime = "EndDateTime";
+
+        private const string RefreshCordinateParamterNameDevId = "devId";
 
         public static void StartRequest(string api, string method, XHttpRequestParamters paramter, HttpResponseHandler handler)
         {
@@ -120,6 +124,13 @@ namespace VehicleDustMonitor.Xamarin.Component
             requestParams.AddBodyParamter(UploadRecordParamterNameStartDateTime, $"{record.StartDateTime}");
             requestParams.AddBodyParamter(UploadRecordParamterNameEndDateTime, $"{record.EndDateTime}");
             StartRequest(ApiUploadRecord, HttpMethodPost, requestParams, handler);
+        }
+
+        public static void RefreshCordinate(int devId, HttpResponseHandler handler)
+        {
+            var requestParams = new XHttpRequestParamters();
+            requestParams.AddBodyParamter(RefreshCordinateParamterNameDevId, $"{devId}");
+            StartRequest(ApiRefreshCordinate, HttpMethodPost, requestParams, handler);
         }
     }
 }

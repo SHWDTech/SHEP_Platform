@@ -12,7 +12,7 @@ using VehicleDustMonitor.Xamarin.Component;
 using VehicleDustMonitor.Xamarin.Model;
 
 
-namespace VehicleDustMonitor.Xamarin.Activity
+namespace VehicleDustMonitor.Xamarin.activity
 {
     [Activity(Label = nameof(VehicleDustMonitor), MainLauncher = true, Icon = "@drawable/icon")]
     public class LoginActivity : AppCompatActivity

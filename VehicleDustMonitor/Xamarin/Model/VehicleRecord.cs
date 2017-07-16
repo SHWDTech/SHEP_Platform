@@ -16,5 +16,7 @@ namespace VehicleDustMonitor.Xamarin.Model
         public string Comment { get; set; }
 
         public List<double> RecordDatas { get; set; } = new List<double>();
+
+        public bool IsSaved { get; set; }
     }
 }

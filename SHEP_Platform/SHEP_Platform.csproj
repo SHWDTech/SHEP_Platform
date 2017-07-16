@@ -194,6 +194,7 @@
     <Compile Include="Models\Analysis\StatPicViewModel.cs" />
     <Compile Include="Models\Api\AppServer.cs" />
     <Compile Include="Models\Api\BootstrapTable.cs" />
+    <Compile Include="Models\Api\Cordinate.cs" />
     <Compile Include="Models\Api\DeviceRecentData.cs" />
     <Compile Include="Models\Api\ServerInfomation.cs" />
     <Compile Include="Models\Api\VehicleRecordUpload.cs" />
@@ -1120,7 +1121,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>6330</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -1055,5 +1055,19 @@ namespace SHEP_Platform.Controllers
                 });
             }
         }
+
+        [AllowAnonymous]
+        public ActionResult RefreshCordinate(int devId)
+        {
+            var statId = DbContext.T_Devs.First(d => d.Id == devId).StatId;
+            var stat = DbContext.T_Stats.First(s => s.Id.ToString() == statId);
+            var cordinate = new Cordinate
+            {
+                Lat = (double)stat.Latitude,
+                Lng = (double)stat.Longitude
+            };
+
+            return Json(cordinate);
+        }
     }
 }

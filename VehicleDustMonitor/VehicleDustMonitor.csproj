@@ -17,7 +17,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -101,8 +101,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Xamarin\Activity\LoginActivity.cs" />
-    <Compile Include="Xamarin\Activity\MainActivity.cs" />
+    <Compile Include="Xamarin\activity\CurrentPositionActivity.cs" />
+    <Compile Include="Xamarin\fragment\CategoryMapFragment.cs" />
+    <Compile Include="Xamarin\Component\VehicleRecordEntity.cs" />
+    <Compile Include="Xamarin\Component\VehicleRecordHelper.cs" />
+    <Compile Include="Xamarin\activity\LoginActivity.cs" />
+    <Compile Include="Xamarin\activity\MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xamarin\Component\ApiManager.cs" />
@@ -111,7 +115,9 @@
     <Compile Include="Xamarin\Component\HttpRequestEventArgs.cs" />
     <Compile Include="Xamarin\Component\HttpResponseAsyncResult.cs" />
     <Compile Include="Xamarin\Component\HttpResponseHandler.cs" />
+    <Compile Include="Xamarin\Component\VehicleRecordValuesEntity.cs" />
     <Compile Include="Xamarin\Component\XHttpRequestParamters.cs" />
+    <Compile Include="Xamarin\Model\CurrentCordinate.cs" />
     <Compile Include="Xamarin\Model\DeviceRecentData.cs" />
     <Compile Include="Xamarin\Model\VehicleLoginResult.cs" />
     <Compile Include="Xamarin\Model\VehicleRecord.cs" />
@@ -125,6 +131,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\activity_login.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\fragment_category_map.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\Current_Position_Map.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -159,6 +171,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\mipmap-xhdpi\yesmap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xhdpi\history_record.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xhdpi\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AMap_2DMap\AMap_2DMap.csproj">
+      <Project>{e3d286ea-759c-409e-9ee7-07db07d9de4d}</Project>
+      <Name>AMap_2DMap</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
