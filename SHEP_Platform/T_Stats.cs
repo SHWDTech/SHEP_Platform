@@ -31,6 +31,7 @@ namespace SHEP_Platform
         public byte Stage { get; set; }
         public string ProType { get; set; }
         public Nullable<int> AlarmType { get; set; }
+        public Nullable<System.DateTime> GpsUpdateTime { get; set; }
     
         public virtual T_AlarmType T_AlarmType { get; set; }
         public virtual T_Country T_Country { get; set; }

@@ -102,6 +102,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Xamarin\activity\CurrentPositionActivity.cs" />
+    <Compile Include="Xamarin\activity\HistoryRecordActivity.cs" />
+    <Compile Include="Xamarin\adapter\HistoryRecordAdapter.cs" />
     <Compile Include="Xamarin\fragment\CategoryMapFragment.cs" />
     <Compile Include="Xamarin\Component\VehicleRecordEntity.cs" />
     <Compile Include="Xamarin\Component\VehicleRecordHelper.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Xamarin\Component\XHttpRequestParamters.cs" />
     <Compile Include="Xamarin\Model\CurrentCordinate.cs" />
     <Compile Include="Xamarin\Model\DeviceRecentData.cs" />
+    <Compile Include="Xamarin\Model\HistoryRecordItem.cs" />
     <Compile Include="Xamarin\Model\VehicleLoginResult.cs" />
     <Compile Include="Xamarin\Model\VehicleRecord.cs" />
   </ItemGroup>
@@ -137,6 +140,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Current_Position_Map.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\activity_history_records.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\item_vehicle_record.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

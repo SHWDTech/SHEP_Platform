@@ -1041,18 +1041,12 @@ namespace SHEP_Platform.Controllers
                 };
                 DbContext.VehicleRecord.Add(record);
                 var ret = DbContext.SaveChanges();
-                return Json(new
-                {
-                    success = ret >= 0
-                });
+                return Json(ret >= 0);
 
             }
             catch (Exception)
             {
-                return Json(new
-                {
-                    success = false
-                });
+                return Json(false);
             }
         }
 
@@ -1061,10 +1055,12 @@ namespace SHEP_Platform.Controllers
         {
             var statId = DbContext.T_Devs.First(d => d.Id == devId).StatId;
             var stat = DbContext.T_Stats.First(s => s.Id.ToString() == statId);
+            Global.bd_decrypt((double)stat.Latitude, (double)stat.Longitude, out double lat, out double lng);
             var cordinate = new Cordinate
             {
-                Lat = (double)stat.Latitude,
-                Lng = (double)stat.Longitude
+                Lat = lat,
+                Lng = lng,
+                UpdateTime = stat.GpsUpdateTime ?? DateTime.MinValue 
             };
 
             return Json(cordinate);

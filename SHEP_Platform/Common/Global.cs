@@ -112,5 +112,15 @@ namespace SHEP_Platform.Common
             var pattern = "iPhone|iPod|Android|ios|iPad|UCWEB|Windows Phone OS";
             return Regex.IsMatch(userAgent, pattern);
         }
+
+        public static void bd_decrypt(double bdLat, double bdLon, out double ggLat, out double ggLon)
+        {
+            var x = bdLon - 0.0065;
+            var y = bdLat - 0.006;
+            var z = Math.Sqrt(x * x + y * y) - 0.00002 * Math.Sin(y * Math.PI);
+            var theta = Math.Atan2(y, x) - 0.000003 * Math.Cos(x * Math.PI);
+            ggLon = z * Math.Cos(theta);
+            ggLat = z * Math.Sin(theta);
+        }
     }
 }

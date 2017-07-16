@@ -188,13 +188,13 @@
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="当前坐标：" />
+                    android:text="坐标更新时间：" />
                 <TextView
                     android:textColor="@android:color/white"
                     android:id="@+id/txtCordinate"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:layout_marginLeft="64dp"
+                    android:layout_marginLeft="96dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"

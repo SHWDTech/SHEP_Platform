@@ -276,6 +276,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="Stage" Type="tinyint" Nullable="false" />
           <Property Name="ProType" Type="varchar" MaxLength="20" />
           <Property Name="AlarmType" Type="int" />
+          <Property Name="GpsUpdateTime" Type="datetime" />
         </EntityType>
         <EntityType Name="T_SysConfig">
           <Key>
@@ -1299,6 +1300,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <NavigationProperty Name="T_AlarmType" Relationship="Self.FK_T_Stats_T_AlarmType1" FromRole="T_Stats" ToRole="T_AlarmType" />
           <NavigationProperty Name="T_Country" Relationship="Self.FK_T_Stats_T_Country" FromRole="T_Stats" ToRole="T_Country" />
           <NavigationProperty Name="T_Stage" Relationship="Self.FK_T_Stats_T_Stage" FromRole="T_Stats" ToRole="T_Stage" />
+          <Property Name="GpsUpdateTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="T_TaskNotice">
           <Key>
@@ -2863,6 +2865,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <EntitySetMapping Name="T_Stats">
             <EntityTypeMapping TypeName="ESMonitorModel.T_Stats">
               <MappingFragment StoreEntitySet="T_Stats">
+                <ScalarProperty Name="GpsUpdateTime" ColumnName="GpsUpdateTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StatCode" ColumnName="StatCode" />
                 <ScalarProperty Name="StatCodeUp" ColumnName="StatCodeUp" />
