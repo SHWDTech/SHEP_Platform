@@ -458,6 +458,11 @@ namespace VehicleDustMonitor.Xamarin.activity
 
         private void UploadRecord()
         {
+            if (_vehicleRecord == null || _isRecordStarted)
+            {
+                Toast.MakeText(this, "记录未完成，请完成后上传", ToastLength.Short).Show();
+                return;
+            }
             ApiManager.UploadRecord(_vehicleRecord, $"{_cordinate.Lat}", $"{_cordinate.Lng}", new HttpResponseHandler
             {
                 OnResponse = args =>
