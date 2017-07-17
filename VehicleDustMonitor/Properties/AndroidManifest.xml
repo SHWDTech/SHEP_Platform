@@ -2,5 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="VehicleDustMonitor.VehicleDustMonitor" android:versionCode="2" android:versionName="1.1" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="16" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="VehicleDustMonitor" android:icon="@drawable/Icon" android:theme="@style/SHWDTech.Theme.Light.NoActionBar"></application>
+	<application android:label="卫东车载扬尘监控" android:icon="@drawable/Icon" android:theme="@style/SHWDTech.Theme.Light.NoActionBar"></application>
 </manifest>

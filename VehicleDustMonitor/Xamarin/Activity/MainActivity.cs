@@ -114,6 +114,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                 return;
             }
             InitChartView();
+            RefreshCordinate(null, null);
         }
 
         protected override void OnDestroy()
@@ -294,6 +295,15 @@ namespace VehicleDustMonitor.Xamarin.activity
         [OnClick(Resource.Id.btnUploadRecord)]
         protected void UploadRecord(object sender, EventArgs args)
         {
+            if (_vehicleRecord == null || _isRecordStarted)
+            {
+                Toast.MakeText(this, "记录未完成，请完成后上传", ToastLength.Short).Show();
+                return;
+            }
+            if (_vehicleRecord != null && !_vehicleRecord.IsSaved)
+            {
+                CheckRecordBeforeSave();
+            }
             UploadRecord();
         }
 
@@ -383,7 +393,7 @@ namespace VehicleDustMonitor.Xamarin.activity
         private void StopRecord()
         {
             _isRecordStarted = false;
-            TxtTitle.Text = "记录结束，未上传";
+            TxtTitle.Text = "记录结束，未保存";
             BtnUploadRecord.Enabled = true;
             BtnRecord.Text = "开始记录";
             var now = DateTime.Now;
@@ -396,6 +406,24 @@ namespace VehicleDustMonitor.Xamarin.activity
 
         private void CheckRecordBeforeSave()
         {
+            if (_cordinate == null)
+            {
+                using (var builder = new AlertDialog.Builder(this))
+                {
+                    builder.SetMessage("本次记录尚未更新坐标信息，是否保存？")
+                        .SetPositiveButton("立即保存", delegate
+                        {
+                            SaveRecord();
+                        })
+                        .SetNegativeButton("完善信息", delegate
+                        {
+                            BtnUploadRecord.Text = "保存并上传";
+                        })
+                        .Create()
+                        .Show();
+                }
+                return;
+            }
             if (string.IsNullOrWhiteSpace(TxtProjectName.Text) ||
                 string.IsNullOrWhiteSpace(TxtComment.Text))
             {
@@ -413,11 +441,9 @@ namespace VehicleDustMonitor.Xamarin.activity
                         .Create()
                         .Show();
                 }
+                return;
             }
-            else
-            {
-                SaveRecord();
-            }
+            SaveRecord();
         }
 
         private void SaveRecord()
@@ -429,7 +455,7 @@ namespace VehicleDustMonitor.Xamarin.activity
             values.Put(VehicleRecordEntity.ColumnNameDevId, _vehicleRecord.DevId);
             values.Put(VehicleRecordEntity.ColumnNameStartDateTime, $"{_vehicleRecord.StartDateTime:yyyy-MM-dd HH:mm:ss}");
             values.Put(VehicleRecordEntity.ColumnNameEndDateTIme, $"{_vehicleRecord.EndDateTime:yyyy-MM-dd HH:mm:ss}");
-            values.Put(VehicleRecordEntity.ColumnNameAverage, $"{_vehicleRecord.RecordDatas.Average()}");
+            values.Put(VehicleRecordEntity.ColumnNameAverage, $"{Math.Round(_vehicleRecord.RecordDatas.Average(), 3)}");
             values.Put(VehicleRecordEntity.ColumnNameLat, $"{_cordinate.Lat}");
             values.Put(VehicleRecordEntity.ColumnNameLng, $"{_cordinate.Lng}");
             var newRowId = db.Insert(VehicleRecordEntity.TableName, null, values);
@@ -442,7 +468,7 @@ namespace VehicleDustMonitor.Xamarin.activity
             }
 
             _vehicleRecord.IsSaved = true;
-
+            TxtTitle.Text = "记录已保存，未上传";
             using (var builder = new AlertDialog.Builder(this))
             {
                 builder.SetMessage("是否立即上传本次记录?")
@@ -458,11 +484,6 @@ namespace VehicleDustMonitor.Xamarin.activity
 
         private void UploadRecord()
         {
-            if (_vehicleRecord == null || _isRecordStarted)
-            {
-                Toast.MakeText(this, "记录未完成，请完成后上传", ToastLength.Short).Show();
-                return;
-            }
             ApiManager.UploadRecord(_vehicleRecord, $"{_cordinate.Lat}", $"{_cordinate.Lng}", new HttpResponseHandler
             {
                 OnResponse = args =>
@@ -474,6 +495,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                         RunOnUiThread(() =>
                         {
                             Toast.MakeText(this, "上传成功！", ToastLength.Short).Show();
+                            TxtTitle.Text = "记录已上传";
                         });
                     }
                     else
@@ -492,6 +514,28 @@ namespace VehicleDustMonitor.Xamarin.activity
                     });
                 }
             });
+        }
+
+        public override void OnBackPressed()
+        {
+            if (_isRecordStarted)
+            {
+                using (var builder = new AlertDialog.Builder(this))
+                {
+                    builder.SetMessage("正在记录中，退出后会丢失记录信息，确认退出吗？")
+                        .SetPositiveButton("退出", delegate
+                        {
+                            Finish();
+                        })
+                        .SetNegativeButton("取消", delegate { })
+                        .Create()
+                        .Show();
+                }
+            }
+            else
+            {
+                Finish();
+            }
         }
     }
 

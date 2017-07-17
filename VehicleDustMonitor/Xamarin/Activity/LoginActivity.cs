@@ -14,7 +14,7 @@ using VehicleDustMonitor.Xamarin.Model;
 
 namespace VehicleDustMonitor.Xamarin.activity
 {
-    [Activity(Label = nameof(VehicleDustMonitor), MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "卫东车载扬尘监控", MainLauncher = true, Icon = "@drawable/icon")]
     public class LoginActivity : AppCompatActivity
     {
         [BindView(Resource.Id.txtAccount)] protected AutoCompleteTextView AccountTextView { get; set; }
