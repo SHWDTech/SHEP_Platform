@@ -304,7 +304,10 @@ namespace VehicleDustMonitor.Xamarin.activity
             {
                 CheckRecordBeforeSave();
             }
-            UploadRecord();
+            else
+            {
+                UploadRecord();
+            }
         }
 
         [OnClick(Resource.Id.refreshCordinate)]

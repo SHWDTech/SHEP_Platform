@@ -29,12 +29,10 @@ namespace VehicleDustMonitor.Xamarin.activity
             SetContentView(Resource.Layout.activity_login);
             Cheeseknife.Bind(this);
             var authed = GetSharedPreferences(nameof(VehicleDustMonitor), FileCreationMode.Private).GetBoolean("Authenticated", false);
-            if (authed)
-            {
-                var intent = new Intent(this, typeof(MainActivity));
-                StartActivity(intent);
-                Finish();
-            }
+            if (!authed) return;
+            var intent = new Intent(this, typeof(MainActivity));
+            StartActivity(intent);
+            Finish();
         }
 
 
