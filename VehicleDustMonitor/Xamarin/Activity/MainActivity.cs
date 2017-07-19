@@ -387,10 +387,11 @@ namespace VehicleDustMonitor.Xamarin.activity
                 DevId = _deviceId,
                 StartDateTime = now
             };
-            TxtProjectName.Text = TxtCordinate.Text = string.Empty;
+            TxtProjectName.Text = TxtComment.Text = string.Empty;
             BtnRecord.Text = "停止记录";
             TxtStartDateTime.Text = $"{now: M-dd HH:mm:ss}";
             TxtEndDateTime.Text = "-";
+            RefreshCordinate(null, null);
         }
 
         private void StopRecord()
