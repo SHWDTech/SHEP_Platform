@@ -24,5 +24,7 @@ namespace SHEP_Platform.Models.Api
         public string VersionName { get; set; }
 
         public int VersionCode { get; set; }
+
+        public string ApkAddress { get; set; }
     }
 }

@@ -1073,17 +1073,18 @@ namespace SHEP_Platform.Controllers
         [HttpGet]
         public ActionResult VehicleAndroidVersionCode()
         {
-            var codeString = DbContext.T_SysConfig.First(c => c.ConfigType == "VehicleDustApp" && c.ConfigName == "AndroidVersionCode")
-                .ConfigValue;
+            var configs = DbContext.T_SysConfig.Where(c => c.ConfigType == "VehicleDustApp")
+                .ToDictionary(k => k.ConfigName.Trim(), v => v.ConfigValue);
+            var codeString = configs["AndroidVersionCode"];
             var versionCode = int.Parse(codeString);
-            var versionName = DbContext.T_SysConfig
-                .First(c => c.ConfigType == "VehicleDustApp" && c.ConfigName == "AndroidVersionName")
-                .ConfigValue;
+            var versionName = configs["AndroidVersionName"];
+            var apkAddress = configs["AppDownload"];
 
             return Json(new VehicleAndroidVersionInfo
             {
                 VersionName = versionName,
-                VersionCode = versionCode
+                VersionCode = versionCode,
+                ApkAddress = apkAddress
             }, JsonRequestBehavior.AllowGet);
         }
     }

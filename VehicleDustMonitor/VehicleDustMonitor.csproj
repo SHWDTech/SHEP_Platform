@@ -104,6 +104,9 @@
     <Compile Include="Xamarin\activity\CurrentPositionActivity.cs" />
     <Compile Include="Xamarin\activity\HistoryRecordActivity.cs" />
     <Compile Include="Xamarin\adapter\HistoryRecordAdapter.cs" />
+    <Compile Include="Xamarin\application\VehicleDustApplication.cs" />
+    <Compile Include="Xamarin\Component\SdUtils.cs" />
+    <Compile Include="Xamarin\Component\UpdateUtil.cs" />
     <Compile Include="Xamarin\fragment\CategoryMapFragment.cs" />
     <Compile Include="Xamarin\Component\VehicleRecordEntity.cs" />
     <Compile Include="Xamarin\Component\VehicleRecordHelper.cs" />
@@ -125,6 +128,7 @@
     <Compile Include="Xamarin\Model\VehicleAndroidVersionInfo.cs" />
     <Compile Include="Xamarin\Model\VehicleLoginResult.cs" />
     <Compile Include="Xamarin\Model\VehicleRecord.cs" />
+    <Compile Include="Xamarin\receiver\DownloadReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GettingStarted.Xamarin" />

@@ -147,7 +147,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                 OnResponse = args =>
                 {
                     var info = JsonConvert.DeserializeObject<VehicleAndroidVersionInfo>(args.Response);
-                    if (info.VersionCode > PackageManager.GetPackageInfo(PackageName, 0).VersionCode)
+                    if (info.VersionCode > UpdateUtil.Instance.CurrentVersionCode)
                     {
                         RunOnUiThread(() =>
                         {
@@ -156,7 +156,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                                 builder.SetMessage($"发现新版本，版本号：{info.VersionName}，是否更新？")
                                     .SetPositiveButton("立即更新", delegate
                                     {
-
+                                        DoUpdate(info);
                                     })
                                     .SetNegativeButton("稍后再说", delegate { })
                                     .Create()
@@ -166,6 +166,12 @@ namespace VehicleDustMonitor.Xamarin.activity
                     }
                 }
             });
+        }
+
+        private static void DoUpdate(VehicleAndroidVersionInfo info)
+        {
+            UpdateUtil.Instance.VersionInfo = info;
+            UpdateUtil.Instance.DoUpdate();
         }
 
         private void SetLineChartData()
