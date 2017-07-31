@@ -430,6 +430,8 @@ namespace VehicleDustMonitor.Xamarin.activity
             BtnRecord.Text = "停止记录";
             TxtStartDateTime.Text = $"{now: M-dd HH:mm:ss}";
             TxtEndDateTime.Text = "-";
+            RecentDataChart.Clear();
+            RecentDataChart.Invalidate();
             RefreshCordinate(null, null);
         }
 
