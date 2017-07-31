@@ -357,6 +357,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                     RunOnUiThread(() =>
                     {
                         TxtCordinate.Text = $"{new DateTime(_cordinate.DateTicks):yyyy-MM-dd HH:mm:ss}";
+                        Toast.MakeText(this, "GPS信息已更新", ToastLength.Short).Show();
                     });
                 },
                 OnError = eventArgs =>

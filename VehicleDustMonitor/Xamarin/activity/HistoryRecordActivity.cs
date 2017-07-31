@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Android.App;
 using Android.OS;
+using Android.Widget;
+using CheeseBind;
 using VehicleDustMonitor.Xamarin.adapter;
 using VehicleDustMonitor.Xamarin.Component;
 using VehicleDustMonitor.Xamarin.Model;
@@ -9,13 +11,24 @@ using VehicleDustMonitor.Xamarin.Model;
 namespace VehicleDustMonitor.Xamarin.activity
 {
     [Activity(Label = nameof(HistoryRecordActivity))]
-    public class HistoryRecordActivity : ListActivity
+    public class HistoryRecordActivity : Activity
     {
         private VehicleRecordHelper _sqlHelper;
+
+        [BindView(Resource.Id.history_records_list)]
+        protected ListView HistoryListView;
+
+        [OnClick(Resource.Id.back)]
+        protected void Back(object sender, EventArgs args)
+        {
+            Finish();
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetContentView(Resource.Layout.activity_history_records);
+            Cheeseknife.Bind(this);
             _sqlHelper = new VehicleRecordHelper(this);
             LoadRecoreds();
         }
@@ -49,7 +62,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                 canRead = cursor.MoveToNext();
             }
 
-            ListAdapter = new HistoryRecordAdapter(this, items);
+            HistoryListView.Adapter = new HistoryRecordAdapter(this, items);
         }
     }
 }

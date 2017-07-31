@@ -17,11 +17,14 @@ namespace VehicleDustMonitor.Xamarin.activity
     [Activity(Label = "卫东车载扬尘监控", MainLauncher = true, Icon = "@drawable/icon")]
     public class LoginActivity : AppCompatActivity
     {
-        [BindView(Resource.Id.txtAccount)] protected AutoCompleteTextView AccountTextView { get; set; }
+        [BindView(Resource.Id.txtAccount)]
+        protected AutoCompleteTextView AccountTextView { get; set; }
 
-        [BindView(Resource.Id.textLoginPassword)] protected EditText PasswordTextView { get; set; }
+        [BindView(Resource.Id.textLoginPassword)]
+        protected EditText PasswordTextView { get; set; }
 
-        [BindView(Resource.Id.btnLogin)] protected Button BtnLoginButton { get; set; }
+        [BindView(Resource.Id.btnLogin)]
+        protected Button BtnLoginButton { get; set; }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -40,7 +43,7 @@ namespace VehicleDustMonitor.Xamarin.activity
         protected void Login(object sender, EventArgs args)
         {
             BtnLoginButton.Text = "登陆中，请稍候...";
-            BtnLoginButton.Enabled = false;
+            BtnLoginButton.Enabled = AccountTextView.Enabled = PasswordTextView.Enabled = false;
             ApiManager.Login(AccountTextView.Text, BaseUtils.GetHashSha256(PasswordTextView.Text), new HttpResponseHandler
             {
                 OnResponse = eventArgs =>
@@ -82,7 +85,7 @@ namespace VehicleDustMonitor.Xamarin.activity
         private void LoginFailed()
         {
             BtnLoginButton.Text = "登陆";
-            BtnLoginButton.Enabled = true;
+            BtnLoginButton.Enabled = AccountTextView.Enabled = PasswordTextView.Enabled = true;
             Toast.MakeText(this, "登陆失败，请重新尝试！", ToastLength.Short).Show();
         }
     }
