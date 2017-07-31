@@ -18,6 +18,8 @@ namespace VehicleDustMonitor.Xamarin.Component
 
         private static readonly string ApiRefreshCordinate = $"{ApiServer}/Ajax/RefreshCordinate";
 
+        private static readonly string ApiGetVersionCode = $"{ApiServer}/Ajax/VehicleAndroidVersionCode";
+
         public const string HttpMethodPost = "POST";
 
         public const string HttpMethodGet = "GET";
@@ -58,9 +60,19 @@ namespace VehicleDustMonitor.Xamarin.Component
             {
                 builder.AppendFormat("&{0}={1}", bodyParamter.Key, bodyParamter.Value);
             }
-            builder.Remove(0, 1);
+            if (builder.Length > 0)
+            {
+                builder.Remove(0, 1);
+            }
 
-            request.BeginGetRequestStream(PostCallBack, new HttpRequestAsyncState(request, builder, handler));
+            if (method == HttpMethodPost)
+            {
+                request.BeginGetRequestStream(PostCallBack, new HttpRequestAsyncState(request, builder, handler));
+            }
+            if (method == HttpMethodGet)
+            {
+                request.BeginGetResponse(ReadCallBack, new HttpResponseAsyncResult(request, handler));
+            }
         }
 
         private static void PostCallBack(IAsyncResult asynchronousResult)
@@ -137,6 +149,12 @@ namespace VehicleDustMonitor.Xamarin.Component
             var requestParams = new XHttpRequestParamters();
             requestParams.AddBodyParamter(RefreshCordinateParamterNameDevId, $"{devId}");
             StartRequest(ApiRefreshCordinate, HttpMethodPost, requestParams, handler);
+        }
+
+        public static void GetVersionCode(HttpResponseHandler handler)
+        {
+            var requestParams = new XHttpRequestParamters();
+            StartRequest(ApiGetVersionCode, HttpMethodGet, requestParams, handler);
         }
     }
 }

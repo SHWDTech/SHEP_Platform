@@ -8,6 +8,6 @@ namespace VehicleDustMonitor.Xamarin.Model
 
         public double Lng { get; set; }
 
-        public DateTime UpdateTime { get; set; }
+        public long DateTicks { get; set; }
     }
 }

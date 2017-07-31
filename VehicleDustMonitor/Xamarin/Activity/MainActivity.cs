@@ -87,6 +87,8 @@ namespace VehicleDustMonitor.Xamarin.activity
             _sqlHelper = new VehicleRecordHelper(this);
             _requestDataHandler.SendEmptyMessage(0);
             LoadBasicInfomation();
+            RefreshCordinate(null, null);
+            CheckUpdate();
         }
 
         protected override void OnStart()
@@ -114,7 +116,6 @@ namespace VehicleDustMonitor.Xamarin.activity
                 return;
             }
             InitChartView();
-            RefreshCordinate(null, null);
         }
 
         protected override void OnDestroy()
@@ -137,6 +138,34 @@ namespace VehicleDustMonitor.Xamarin.activity
             RecentDataChart.XAxis.Enabled = false;
             RecentDataChart.AxisLeft.Enabled = false;
             RecentDataChart.AxisRight.Enabled = false;
+        }
+
+        private void CheckUpdate()
+        {
+            ApiManager.GetVersionCode(new HttpResponseHandler
+            {
+                OnResponse = args =>
+                {
+                    var info = JsonConvert.DeserializeObject<VehicleAndroidVersionInfo>(args.Response);
+                    if (info.VersionCode > PackageManager.GetPackageInfo(PackageName, 0).VersionCode)
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            using (var builder = new AlertDialog.Builder(this))
+                            {
+                                builder.SetMessage($"发现新版本，版本号：{info.VersionName}，是否更新？")
+                                    .SetPositiveButton("立即更新", delegate
+                                    {
+
+                                    })
+                                    .SetNegativeButton("稍后再说", delegate { })
+                                    .Create()
+                                    .Show();
+                            }
+                        });
+                    }
+                }
+            });
         }
 
         private void SetLineChartData()
@@ -321,7 +350,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                     _cordinate = latlng;
                     RunOnUiThread(() =>
                     {
-                        TxtCordinate.Text = $"{_cordinate.UpdateTime:yyyy-MM-dd HH:mm:ss}";
+                        TxtCordinate.Text = $"{new DateTime(_cordinate.DateTicks):yyyy-MM-dd HH:mm:ss}";
                     });
                 },
                 OnError = eventArgs =>

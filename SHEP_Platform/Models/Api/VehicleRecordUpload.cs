@@ -18,4 +18,11 @@ namespace SHEP_Platform.Models.Api
 
         public float Lng { get; set; }
     }
+
+    public class VehicleAndroidVersionInfo
+    {
+        public string VersionName { get; set; }
+
+        public int VersionCode { get; set; }
+    }
 }

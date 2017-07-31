@@ -122,6 +122,7 @@
     <Compile Include="Xamarin\Model\CurrentCordinate.cs" />
     <Compile Include="Xamarin\Model\DeviceRecentData.cs" />
     <Compile Include="Xamarin\Model\HistoryRecordItem.cs" />
+    <Compile Include="Xamarin\Model\VehicleAndroidVersionInfo.cs" />
     <Compile Include="Xamarin\Model\VehicleLoginResult.cs" />
     <Compile Include="Xamarin\Model\VehicleRecord.cs" />
   </ItemGroup>

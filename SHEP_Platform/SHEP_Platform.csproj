@@ -707,6 +707,7 @@
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <Compile Include="Models\Api\DeviceInfomation.cs" />
+    <Content Include="Resources\VehicleDustMonitor.apk" />
     <None Include="Scripts\Utility\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\Utility\jquery-2.2.4.js" />
     <Content Include="Scripts\Utility\jquery-2.2.4.min.js" />

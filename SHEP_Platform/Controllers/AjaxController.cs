@@ -1063,10 +1063,28 @@ namespace SHEP_Platform.Controllers
             {
                 Lat = lat,
                 Lng = lng,
-                UpdateTime = stat.GpsUpdateTime ?? DateTime.MinValue 
+                DateTicks = stat.GpsUpdateTime?.Ticks ?? DateTime.MinValue.Ticks
             };
 
             return Json(cordinate);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult VehicleAndroidVersionCode()
+        {
+            var codeString = DbContext.T_SysConfig.First(c => c.ConfigType == "VehicleDustApp" && c.ConfigName == "AndroidVersionCode")
+                .ConfigValue;
+            var versionCode = int.Parse(codeString);
+            var versionName = DbContext.T_SysConfig
+                .First(c => c.ConfigType == "VehicleDustApp" && c.ConfigName == "AndroidVersionName")
+                .ConfigValue;
+
+            return Json(new VehicleAndroidVersionInfo
+            {
+                VersionName = versionName,
+                VersionCode = versionCode
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }
