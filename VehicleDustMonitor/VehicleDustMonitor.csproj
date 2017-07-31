@@ -105,6 +105,7 @@
     <Compile Include="Xamarin\activity\HistoryRecordActivity.cs" />
     <Compile Include="Xamarin\adapter\HistoryRecordAdapter.cs" />
     <Compile Include="Xamarin\application\VehicleDustApplication.cs" />
+    <Compile Include="Xamarin\Component\LineChartFormatter.cs" />
     <Compile Include="Xamarin\Component\SdUtils.cs" />
     <Compile Include="Xamarin\Component\UpdateUtil.cs" />
     <Compile Include="Xamarin\fragment\CategoryMapFragment.cs" />

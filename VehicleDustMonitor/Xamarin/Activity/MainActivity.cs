@@ -196,6 +196,8 @@ namespace VehicleDustMonitor.Xamarin.activity
                     AxisDependency = YAxis.AxisDependency.Left,
                     Color = ColorTemplate.HoloBlue
                 };
+                var formatter = new LineChartFormatter();
+                set1.ValueFormatter = formatter;
                 set1.SetCircleColor(Color.White);
                 set1.LineWidth = 4f;
                 set1.CircleRadius = 3f;
@@ -215,6 +217,7 @@ namespace VehicleDustMonitor.Xamarin.activity
 
                 RecentDataChart.Data = data;
                 RecentDataChart.Invalidate();
+                RecentDataChart.LineData.SetValueFormatter(formatter);
             }
         }
 
