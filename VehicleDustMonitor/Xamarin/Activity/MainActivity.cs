@@ -69,7 +69,7 @@ namespace VehicleDustMonitor.Xamarin.activity
 
         private VehicleRecord _vehicleRecord;
 
-        private DateTime _lastDataDateTime = DateTime.MinValue;
+        private DateTime _lastDataDateTime;
 
         private VehicleRecordHelper _sqlHelper;
 
@@ -242,7 +242,7 @@ namespace VehicleDustMonitor.Xamarin.activity
             }
             else
             {
-                StopRecord();
+                TryStopRecord();
             }
         }
 
@@ -381,7 +381,7 @@ namespace VehicleDustMonitor.Xamarin.activity
             }
             _isRecordStarted = true;
             TxtTitle.Text = "记录中";
-            var now = DateTime.Now;
+            var now = _lastDataDateTime = DateTime.Now;
             _vehicleRecord = new VehicleRecord
             {
                 DevId = _deviceId,
@@ -392,6 +392,30 @@ namespace VehicleDustMonitor.Xamarin.activity
             TxtStartDateTime.Text = $"{now: M-dd HH:mm:ss}";
             TxtEndDateTime.Text = "-";
             RefreshCordinate(null, null);
+        }
+
+        private void TryStopRecord()
+        {
+            if (_vehicleRecord.RecordDatas.Count <= 0)
+            {
+                using (var builder = new AlertDialog.Builder(this))
+                {
+                    builder.SetMessage("本次记录尚未采集到任何数据，确认结束吗？")
+                        .SetPositiveButton("继续采集", delegate
+                        {
+                            
+                        })
+                        .SetNegativeButton("确认", delegate
+                        {
+                            StopRecord();
+                        })
+                        .Create()
+                        .Show();
+                }
+                return;
+            }
+
+            StopRecord();
         }
 
         private void StopRecord()
@@ -459,7 +483,7 @@ namespace VehicleDustMonitor.Xamarin.activity
             values.Put(VehicleRecordEntity.ColumnNameDevId, _vehicleRecord.DevId);
             values.Put(VehicleRecordEntity.ColumnNameStartDateTime, $"{_vehicleRecord.StartDateTime:yyyy-MM-dd HH:mm:ss}");
             values.Put(VehicleRecordEntity.ColumnNameEndDateTIme, $"{_vehicleRecord.EndDateTime:yyyy-MM-dd HH:mm:ss}");
-            values.Put(VehicleRecordEntity.ColumnNameAverage, $"{Math.Round(_vehicleRecord.RecordDatas.Average(), 3)}");
+            values.Put(VehicleRecordEntity.ColumnNameAverage, $"{Math.Round(_vehicleRecord.RecordDatas.Count > 0 ? _vehicleRecord.RecordDatas.Average() : 0, 3)}");
             values.Put(VehicleRecordEntity.ColumnNameLat, $"{_cordinate.Lat}");
             values.Put(VehicleRecordEntity.ColumnNameLng, $"{_cordinate.Lng}");
             var newRowId = db.Insert(VehicleRecordEntity.TableName, null, values);

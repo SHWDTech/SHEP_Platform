@@ -1006,7 +1006,8 @@ namespace SHEP_Platform.Controllers
         [AllowAnonymous]
         public ActionResult DeviceRecentData(int devId)
         {
-            var data = DbContext.T_ESMin.Where(m => m.DevId == devId).OrderByDescending(min => min.UpdateTime)
+            var limit = DateTime.Now.AddMinutes(-1);
+            var data = DbContext.T_ESMin.Where(m => m.DevId == devId && m.UpdateTime > limit).OrderByDescending(min => min.UpdateTime)
                 .FirstOrDefault();
             if (data == null)
             {
