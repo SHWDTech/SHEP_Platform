@@ -18,6 +18,7 @@ namespace VehicleDustMonitor.Xamarin.application
             base.OnCreate();
             SdUtils.Init(this);
             UpdateUtil.Init(this);
+            VehicleRecordHelper.Init(this);
         }
     }
 

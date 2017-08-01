@@ -4,104 +4,124 @@
     android:layout_height="wrap_content"
     android:background="#FFDAFF7F"
     android:padding="8dp">
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical">
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dip">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textColor="#FF7F3300"
-          android:textSize="16dip"
-          android:text="记录名称："
-          android:textStyle="italic" />
-      <TextView
-          android:id="@+id/recordName"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textSize="14dip"
-          android:textColor="#FF267F00"/>
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF7F3300"
+                android:textSize="16dip"
+                android:text="记录名称："
+                android:textStyle="italic" />
+            <TextView
+                android:id="@+id/recordName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dip"
+                android:textColor="#FF267F00" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF7F3300"
+                android:textSize="16dip"
+                android:text="备注："
+                android:textStyle="italic" />
+            <TextView
+                android:id="@+id/recordComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dip"
+                android:textColor="#FF267F00" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF7F3300"
+                android:textSize="16dip"
+                android:text="开始时间："
+                android:textStyle="italic" />
+            <TextView
+                android:id="@+id/startDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dip"
+                android:textColor="#FF267F00" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF7F3300"
+                android:textSize="16dip"
+                android:text="结束时间："
+                android:textStyle="italic" />
+            <TextView
+                android:id="@+id/endDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dip"
+                android:textColor="#FF267F00" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF7F3300"
+                android:textSize="16dip"
+                android:text="平均值："
+                android:textStyle="italic" />
+            <TextView
+                android:id="@+id/average"
+                android:layout_width="60dip"
+                android:layout_height="wrap_content"
+                android:textSize="14dip"
+                android:textColor="#FF267F00" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF7F3300"
+                android:textSize="16dip"
+                android:text="是否上传："
+                android:textStyle="italic" />
+            <TextView
+                android:id="@+id/hasupload"
+                android:layout_width="60dip"
+                android:layout_height="wrap_content"
+                android:textSize="14dip"
+                android:textColor="#FF267F00" />
+            <ImageView
+                android:id="@+id/doupload"
+                android:src="@mipmap/inbox_upload"
+                android:clickable="true"
+                android:scaleType="centerInside"
+                android:layout_width="20dip"
+                android:layout_height="20dip" />
+        </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dip">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textColor="#FF7F3300"
-          android:textSize="16dip"
-          android:text="备注："
-          android:textStyle="italic" />
-      <TextView
-          android:id="@+id/recordComment"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textSize="14dip"
-          android:textColor="#FF267F00"/>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dip">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textColor="#FF7F3300"
-          android:textSize="16dip"
-          android:text="开始时间："
-          android:textStyle="italic" />
-      <TextView
-          android:id="@+id/startDateTime"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textSize="14dip"
-          android:textColor="#FF267F00"/>
-    </LinearLayout>
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:paddingLeft="10dip">
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#FF7F3300"
-        android:textSize="16dip"
-        android:text="结束时间："
-        android:textStyle="italic" />
-      <TextView
-        android:id="@+id/endDateTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14dip"
-        android:textColor="#FF267F00"/>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dip">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textColor="#FF7F3300"
-          android:textSize="16dip"
-          android:text="平均值："
-          android:textStyle="italic" />
-      <TextView
-          android:id="@+id/average"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textSize="14dip"
-          android:textColor="#FF267F00"/>
-    </LinearLayout>
-  </LinearLayout>
 </RelativeLayout>

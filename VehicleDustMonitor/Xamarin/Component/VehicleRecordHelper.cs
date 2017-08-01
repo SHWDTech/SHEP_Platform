@@ -12,7 +12,14 @@ namespace VehicleDustMonitor.Xamarin.Component
 
         public static readonly string DatabaseFileName = "VehicleRecord.sqlite";
 
-        public VehicleRecordHelper(Context context) : this(context, DatabaseFileName, null, DatabaseVersion)
+        public static VehicleRecordHelper Instance { get; set; }
+
+        public static void Init(Context context)
+        {
+            Instance = new VehicleRecordHelper(context);
+        }
+
+        private VehicleRecordHelper(Context context) : this(context, DatabaseFileName, null, DatabaseVersion)
         {
             
         }

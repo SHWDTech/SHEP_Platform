@@ -17,10 +17,11 @@ using VehicleDustMonitor.Xamarin.Component;
 using VehicleDustMonitor.Xamarin.Model;
 using AlertDialog = Android.Support.V7.App.AlertDialog;
 using Android.Graphics;
+using VehicleDustMonitor.Xamarin.application;
 
 namespace VehicleDustMonitor.Xamarin.activity
 {
-    [Activity(Label = nameof(VehicleDustMonitor))]
+    [Activity(Label = nameof(MainActivity))]
     public class MainActivity : AppCompatActivity
     {
         [BindView(Resource.Id.lineChart)] protected LineChart RecentDataChart { get; set; }
@@ -84,8 +85,7 @@ namespace VehicleDustMonitor.Xamarin.activity
             Cheeseknife.Bind(this);
             TxtTitle.Text = "未开始记录";
             _requestDataHandler = new RecentDataRequestHandler(this);
-            _sqlHelper = new VehicleRecordHelper(this);
-            _requestDataHandler.SendEmptyMessage(0);
+            _sqlHelper = VehicleRecordHelper.Instance;
             LoadBasicInfomation();
             RefreshCordinate(null, null);
             CheckUpdate();
@@ -116,6 +116,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                 return;
             }
             InitChartView();
+            _requestDataHandler.SendEmptyMessage(0);
         }
 
         protected override void OnDestroy()
@@ -132,40 +133,10 @@ namespace VehicleDustMonitor.Xamarin.activity
             RecentDataChart.ScaleYEnabled = false;
             RecentDataChart.SetPinchZoom(true);
             RecentDataChart.EnableScroll();
-
             RecentDataChart.Description.Enabled = false;
-
             RecentDataChart.XAxis.Enabled = false;
             RecentDataChart.AxisLeft.Enabled = false;
             RecentDataChart.AxisRight.Enabled = false;
-        }
-
-        private void CheckUpdate()
-        {
-            ApiManager.GetVersionCode(new HttpResponseHandler
-            {
-                OnResponse = args =>
-                {
-                    var info = JsonConvert.DeserializeObject<VehicleAndroidVersionInfo>(args.Response);
-                    if (info.VersionCode > UpdateUtil.Instance.CurrentVersionCode)
-                    {
-                        RunOnUiThread(() =>
-                        {
-                            using (var builder = new AlertDialog.Builder(this))
-                            {
-                                builder.SetMessage($"发现新版本，版本号：{info.VersionName}，是否更新？")
-                                    .SetPositiveButton("立即更新", delegate
-                                    {
-                                        DoUpdate(info);
-                                    })
-                                    .SetNegativeButton("稍后再说", delegate { })
-                                    .Create()
-                                    .Show();
-                            }
-                        });
-                    }
-                }
-            });
         }
 
         private static void DoUpdate(VehicleAndroidVersionInfo info)
@@ -254,10 +225,12 @@ namespace VehicleDustMonitor.Xamarin.activity
             RunOnUiThread(() =>
             {
                 var dataTime = DateTime.Parse(lastData.UpdateTime);
+                SharedData.LastUpdateDateTime = dataTime;
+                SharedData.LastDustValue = Math.Round(int.Parse(lastData.Tp) / 1000.0, 3);
                 if (_vehicleRecord != null && _isRecordStarted && dataTime > _lastDataDateTime)
                 {
                     _lastDataDateTime = dataTime;
-                    _vehicleRecord.RecordDatas.Add(Math.Round(int.Parse(lastData.Tp) / 1000.0, 3));
+                    _vehicleRecord.RecordDatas.Add(SharedData.LastDustValue);
                     SetLineChartData();
                 }
                 TxtLastData.Text = $"{Math.Round(int.Parse(lastData.Tp) / 1000.0, 3)} mg/m³";
@@ -515,6 +488,27 @@ namespace VehicleDustMonitor.Xamarin.activity
             SaveRecord();
         }
 
+        private void CheckUpdate()
+        {
+            if (SharedData.VersionInfo.VersionCode > UpdateUtil.Instance.CurrentVersionCode)
+            {
+                RunOnUiThread(() =>
+                {
+                    using (var builder = new AlertDialog.Builder(this))
+                    {
+                        builder.SetMessage($"发现新版本，版本号：{SharedData.VersionInfo.VersionName}，是否更新？")
+                            .SetPositiveButton("立即更新", delegate
+                            {
+                                DoUpdate(SharedData.VersionInfo);
+                            })
+                            .SetNegativeButton("稍后再说", delegate { })
+                            .Create()
+                            .Show();
+                    }
+                });
+            }
+        }
+
         private void SaveRecord()
         {
             var db = _sqlHelper.WritableDatabase;
@@ -527,11 +521,12 @@ namespace VehicleDustMonitor.Xamarin.activity
             values.Put(VehicleRecordEntity.ColumnNameAverage, $"{Math.Round(_vehicleRecord.RecordDatas.Count > 0 ? _vehicleRecord.RecordDatas.Average() : 0, 3)}");
             values.Put(VehicleRecordEntity.ColumnNameLat, $"{_cordinate.Lat}");
             values.Put(VehicleRecordEntity.ColumnNameLng, $"{_cordinate.Lng}");
-            var newRowId = db.Insert(VehicleRecordEntity.TableName, null, values);
+            values.Put(VehicleRecordEntity.ColumnNameUploaded, 0);
+            _vehicleRecord.DatabaseId = VehicleRecordEntity.DoInsert(db, null, values);
             values.Clear();
             foreach (var recordData in _vehicleRecord.RecordDatas)
             {
-                values.Put(VehicleRecordValuesEntity.ColumnNameRecordId, newRowId);
+                values.Put(VehicleRecordValuesEntity.ColumnNameRecordId, _vehicleRecord.DatabaseId);
                 values.Put(VehicleRecordValuesEntity.ColumnNameValue, recordData);
                 db.Insert(VehicleRecordValuesEntity.TableName, null, values);
             }
@@ -560,11 +555,15 @@ namespace VehicleDustMonitor.Xamarin.activity
                     var success = JsonConvert.DeserializeObject<bool>(args.Response);
                     if (success)
                     {
-                        _vehicleRecord = null;
                         RunOnUiThread(() =>
                         {
                             Toast.MakeText(this, "上传成功！", ToastLength.Short).Show();
                             TxtTitle.Text = "记录已上传";
+                            var values = new ContentValues();
+                            values.Put(VehicleRecordEntity.ColumnNameUploaded, 1);
+                            VehicleRecordEntity.DoUpdate(_sqlHelper.WritableDatabase, _vehicleRecord.DatabaseId,
+                                values);
+                            _vehicleRecord = null;
                         });
                     }
                     else

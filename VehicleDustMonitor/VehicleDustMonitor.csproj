@@ -103,7 +103,9 @@
   <ItemGroup>
     <Compile Include="Xamarin\activity\CurrentPositionActivity.cs" />
     <Compile Include="Xamarin\activity\HistoryRecordActivity.cs" />
+    <Compile Include="Xamarin\activity\SplashActivity.cs" />
     <Compile Include="Xamarin\adapter\HistoryRecordAdapter.cs" />
+    <Compile Include="Xamarin\application\SharedData.cs" />
     <Compile Include="Xamarin\application\VehicleDustApplication.cs" />
     <Compile Include="Xamarin\Component\LineChartFormatter.cs" />
     <Compile Include="Xamarin\Component\SdUtils.cs" />
@@ -154,6 +156,9 @@
     <AndroidResource Include="Resources\layout\item_vehicle_record.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\activity_splash.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -198,6 +203,12 @@
       <Project>{e3d286ea-759c-409e-9ee7-07db07d9de4d}</Project>
       <Name>AMap_2DMap</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xhdpi\inbox_upload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap-xhdpi\splash.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

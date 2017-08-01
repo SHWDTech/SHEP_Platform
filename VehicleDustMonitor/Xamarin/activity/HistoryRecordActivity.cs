@@ -29,7 +29,7 @@ namespace VehicleDustMonitor.Xamarin.activity
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_history_records);
             Cheeseknife.Bind(this);
-            _sqlHelper = new VehicleRecordHelper(this);
+            _sqlHelper = VehicleRecordHelper.Instance;
             LoadRecoreds();
         }
 
@@ -37,11 +37,15 @@ namespace VehicleDustMonitor.Xamarin.activity
         {
             var readingColumn = new []
             {
+                VehicleRecordEntity.ColumnNameId,
                 VehicleRecordEntity.ColumnNameRecordName,
                 VehicleRecordEntity.ColumnNameComment,
                 VehicleRecordEntity.ColumnNameStartDateTime,
                 VehicleRecordEntity.ColumnNameEndDateTIme,
-                VehicleRecordEntity.ColumnNameAverage
+                VehicleRecordEntity.ColumnNameAverage,
+                VehicleRecordEntity.ColumnNameLat,
+                VehicleRecordEntity.ColumnNameLng,
+                VehicleRecordEntity.ColumnNameUploaded
             };
 
             var cursor = _sqlHelper.ReadableDatabase.Query(VehicleRecordEntity.TableName, readingColumn, null, null,
@@ -52,11 +56,15 @@ namespace VehicleDustMonitor.Xamarin.activity
             {
                 var item = new HistoryRecordItem
                 {
+                    Id = cursor.GetLong(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameId)),
                     RecordName = cursor.GetString(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameRecordName)),
                     Comment = cursor.GetString(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameComment)),
                     StartDateTime = DateTime.Parse(cursor.GetString(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameStartDateTime))),
                     EndDateTime = DateTime.Parse(cursor.GetString(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameEndDateTIme))),
-                    AverageValue = cursor.GetDouble(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameAverage))
+                    AverageValue = cursor.GetDouble(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameAverage)),
+                    Lat = cursor.GetString(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameLat)),
+                    Lng = cursor.GetString(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameLng)),
+                    HasUpload = cursor.GetInt(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameUploaded)) == 1
                 };
                 items.Add(item);
                 canRead = cursor.MoveToNext();

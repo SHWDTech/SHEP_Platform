@@ -1,18 +1,21 @@
 ﻿using System.Collections.Generic;
-using Android.App;
+using Android.Content;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
+using VehicleDustMonitor.Xamarin.activity;
+using VehicleDustMonitor.Xamarin.Component;
 using VehicleDustMonitor.Xamarin.Model;
 
 namespace VehicleDustMonitor.Xamarin.adapter
 {
-    class HistoryRecordAdapter : BaseAdapter<HistoryRecordItem>
+    internal class HistoryRecordAdapter : BaseAdapter<HistoryRecordItem>
     {
-        readonly Activity _context;
+        private readonly HistoryRecordActivity _context;
 
         private List<HistoryRecordItem> Items { get; }
 
-        public HistoryRecordAdapter(Activity context, List<HistoryRecordItem> items)
+        public HistoryRecordAdapter(HistoryRecordActivity context, List<HistoryRecordItem> items)
         {
             _context = context;
             Items = items;
@@ -40,16 +43,62 @@ namespace VehicleDustMonitor.Xamarin.adapter
             view.FindViewById<TextView>(Resource.Id.startDateTime).Text = $"{item.StartDateTime:yyyy-MM-dd HH:mm:ss}";
             view.FindViewById<TextView>(Resource.Id.endDateTime).Text = $"{item.EndDateTime:yyyy-MM-dd HH:mm:ss}";
             view.FindViewById<TextView>(Resource.Id.average).Text = $"{item.AverageValue}";
+            view.FindViewById<TextView>(Resource.Id.hasupload).Text = item.HasUpload ? "已上传" : "未上传";
+            var uploadBtn = view.FindViewById<ImageView>(Resource.Id.doupload);
+            if (item.HasUpload)
+            {
+                uploadBtn.Visibility = ViewStates.Gone;
+            }
+            uploadBtn.Click += (sender, clickArgs) =>
+            {
+                var record = new VehicleRecord
+                {
+                    RecordName = item.RecordName,
+                    Comment = item.Comment,
+                    DevId = item.DevId,
+                    StartDateTime = item.StartDateTime,
+                    EndDateTime = item.EndDateTime,
+                    DatabaseId = item.Id
+                };
+                ApiManager.UploadRecord(record, item.Lat, item.Lng, new HttpResponseHandler
+                {
+                    OnResponse = args =>
+                    {
+                        var success = JsonConvert.DeserializeObject<bool>(args.Response);
+                        if (success)
+                        {
+                            _context.RunOnUiThread(() =>
+                            {
+                                Toast.MakeText(_context, "上传成功！", ToastLength.Short).Show();
+                                var values = new ContentValues();
+                                values.Put(VehicleRecordEntity.ColumnNameUploaded, 1);
+                                VehicleRecordEntity.DoUpdate(VehicleRecordHelper.Instance.WritableDatabase, record.DatabaseId,
+                                    values);
+                                uploadBtn.Visibility = ViewStates.Gone;
+                                view.FindViewById<TextView>(Resource.Id.hasupload).Text = "已上传";
+                            });
+                        }
+                        else
+                        {
+                            _context.RunOnUiThread(() =>
+                            {
+                                Toast.MakeText(_context, "上传失败！", ToastLength.Short).Show();
+                            });
+                        }
+                    },
+                    OnError = args =>
+                    {
+                        _context.RunOnUiThread(() =>
+                        {
+                            Toast.MakeText(_context, "上传失败！", ToastLength.Short).Show();
+                        });
+                    }
+                });
+            };
             return view;
         }
 
         //Fill in cound here, currently 0
         public override int Count => Items.Count;
-    }
-
-    class HistoryRecordAdapterViewHolder : Java.Lang.Object
-    {
-        //Your adapter views to re-use
-        //public TextView Title { get; set; }
     }
 }

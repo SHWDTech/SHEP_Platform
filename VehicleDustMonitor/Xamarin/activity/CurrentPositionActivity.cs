@@ -14,7 +14,7 @@ namespace VehicleDustMonitor.Xamarin.activity
         private LatLng _currentLatLng;
 
         [OnClick(Resource.Id.back)]
-        private void Back(object sender, EventArgs args)
+        protected void Back(object sender, EventArgs args)
         {
             Finish();
         }
@@ -30,13 +30,11 @@ namespace VehicleDustMonitor.Xamarin.activity
             var lng = bundle.GetDouble("Lng", 0);
             _currentLatLng = new LatLng(lat, lng);
             InitData();
-            // Create your application here
         }
 
         private void InitData()
         {
             var bundle = Intent.Extras;
-
             var transaction = FragmentManager.BeginTransaction();
             var mapFragment = new CategoryMapFragment(_currentLatLng) {Arguments = bundle};
             transaction.Add(Resource.Id.map_content, mapFragment).Commit();

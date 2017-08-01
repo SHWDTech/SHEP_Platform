@@ -14,7 +14,7 @@ using VehicleDustMonitor.Xamarin.Model;
 
 namespace VehicleDustMonitor.Xamarin.activity
 {
-    [Activity(Label = "卫东车载扬尘监控", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = nameof(LoginActivity))]
     public class LoginActivity : AppCompatActivity
     {
         [BindView(Resource.Id.txtAccount)]
@@ -31,11 +31,6 @@ namespace VehicleDustMonitor.Xamarin.activity
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.activity_login);
             Cheeseknife.Bind(this);
-            var authed = GetSharedPreferences(nameof(VehicleDustMonitor), FileCreationMode.Private).GetBoolean("Authenticated", false);
-            if (!authed) return;
-            var intent = new Intent(this, typeof(MainActivity));
-            StartActivity(intent);
-            Finish();
         }
 
 
