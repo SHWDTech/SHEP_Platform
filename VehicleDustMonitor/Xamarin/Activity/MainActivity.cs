@@ -441,7 +441,8 @@ namespace VehicleDustMonitor.Xamarin.activity
             var now = DateTime.Now;
             _vehicleRecord.EndDateTime = now;
             TxtEndDateTime.Text = $"{now: MM-dd HH:mm:ss}";
-            _vehicleRecord.RecordName = $"车载扬尘记录-工地{TxtProjectName.Text}-{_vehicleRecord.StartDateTime}至{_vehicleRecord.EndDateTime}";
+            var recordName = string.IsNullOrWhiteSpace(TxtProjectName.Text) ? "无" : TxtProjectName.Text;
+            _vehicleRecord.RecordName = $"{recordName}";
 
             CheckRecordBeforeSave();
         }
