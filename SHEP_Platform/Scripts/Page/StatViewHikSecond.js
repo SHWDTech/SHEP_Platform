@@ -19,6 +19,7 @@ $(function () {
     StatMonitor = document.getElementById('StatMonitor');
     StatMonitor.SetConnectServer(location.host);
     StatMonitor.SetupCamera($('#cameraId').val());
+    StatMonitor.SetupDevId($('#devId').val());
 });
 
 var SwitchMonitorStatus = function () {

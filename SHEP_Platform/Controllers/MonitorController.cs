@@ -444,6 +444,7 @@ namespace SHEP_Platform.Controllers
         {
             WdContext.SiteMapMenu.ActionMenu.Name = "工程实时状况查看";
             ViewBag.CameraId = id;
+            ViewBag.DevId = DbContext.T_Camera.FirstOrDefault(c => c.CameraName == id)?.DevId;
             return View();
         }
     }
