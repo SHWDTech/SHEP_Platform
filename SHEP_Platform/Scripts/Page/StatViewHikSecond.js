@@ -19,13 +19,13 @@ $(function () {
     StatMonitor = document.getElementById('StatMonitor');
     StatMonitor.SetConnectServer(location.host);
     StatMonitor.SetupCamera($('#cameraId').val());
-    StatMonitor.SetupDevId($('#devId').val());
 });
 
 var SwitchMonitorStatus = function () {
     if (!started) {
         if (StatMonitor.StartMonitor() === 0) {
             started = true;
+            StatMonitor.SetupDevId($('#devId').val());
             $('#monitorSwitch').val('结束');
         }
     } else {
