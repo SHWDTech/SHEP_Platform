@@ -26,7 +26,7 @@ namespace SHEP_Platform.ScheduleJobs
                         PolluteType = PolluteType.NotOverRange
                     };
 
-                    var devIds = ctx.T_Devs.Where(dev => dev.StatId == stat.ToString()).Select(devId => devId.Id).ToArray();
+                    var devIds = ctx.T_Devs.Where(dev => dev.StatId == stat.Id.ToString()).Select(devId => devId.Id).ToArray();
 
                     var tpTotal = 0.0d;
                     var dbTotal = 0.0d;
