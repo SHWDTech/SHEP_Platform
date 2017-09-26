@@ -33,7 +33,7 @@ namespace SHEP_Platform
 
             var trigger = TriggerBuilder.Create()
                 .StartNow()
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(2).RepeatForever())
                 .Build();
 
             scheduler.ScheduleJob(job, trigger);

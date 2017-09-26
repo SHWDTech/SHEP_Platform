@@ -13,31 +13,20 @@ namespace SHEP_Platform.ScheduleJobs
         {
             using (var ctx = new ESMonitorEntities())
             {
-                var statIds = ctx.T_Stats.AsQueryable().Select(s => s.Id);
-                foreach (var id in statIds)
+                var statIds = ctx.T_Stats;
+                foreach (var stat in statIds)
                 {
-                    T_Stats loadStat = null;
-                    var cacheName = $"StatStatus:id={id}";
-                    var cache = PlatformCaches.GetCache(cacheName);
-                    StatStatus status;
-                    if (cache != null)
+                    var cacheName = $"StatStatus:id={stat.Id}";
+                    var status = new StatStatus
                     {
-                        status = cache.CacheItem as StatStatus;
-                    }
-                    else
-                    {
-                        loadStat = ctx.T_Stats.First(s => s.Id == id);
-                        status = new StatStatus
-                        {
-                            Id = loadStat.Id,
-                            Name = loadStat.StatName,
-                            Longitude = loadStat.Longitude,
-                            Latitude = loadStat.Latitude,
-                            PolluteType = PolluteType.NotOverRange
-                        };
-                    }
+                        Id = stat.Id,
+                        Name = stat.StatName,
+                        Longitude = stat.Longitude,
+                        Latitude = stat.Latitude,
+                        PolluteType = PolluteType.NotOverRange
+                    };
 
-                    var devIds = ctx.T_Devs.Where(dev => dev.StatId == id.ToString()).Select(devId => devId.Id).ToArray();
+                    var devIds = ctx.T_Devs.Where(dev => dev.StatId == stat.ToString()).Select(devId => devId.Id).ToArray();
 
                     var tpTotal = 0.0d;
                     var dbTotal = 0.0d;
@@ -69,26 +58,13 @@ namespace SHEP_Platform.ScheduleJobs
                     status.UpdateTime = lastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss");
                     status.PolluteType = PolluteType.NotOverRange;
                     PlatformCaches.Add(cacheName, status, cacheType:"statStatus");
-                    StatList model;
-                    var modelCacheName = $"StatList:id={id}";
-                    var modelCache = PlatformCaches.GetCache(modelCacheName);
-                    if (modelCache != null)
+                    var modelCacheName = $"StatList:id={stat.Id}";
+                    var model = new StatList
                     {
-                        model = modelCache.CacheItem as StatList;
-                    }
-                    else
-                    {
-                        if (loadStat == null)
-                        {
-                            loadStat = ctx.T_Stats.First(s => s.Id == id);
-                        }
-                        model = new StatList
-                        {
-                            Id = loadStat.Id,
-                            Name = loadStat.StatName,
-                            Address = loadStat.Address
-                        };
-                    }
+                        Id = stat.Id,
+                        Name = stat.StatName,
+                        Address = stat.Address
+                    };
                     PlatformCaches.Add(modelCacheName, model, cacheType: "statList");
                 }
             }
