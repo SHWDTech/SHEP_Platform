@@ -45,6 +45,10 @@ namespace SHEP_Platform.Models.Home
         public string AvgDb { get; set; }
 
         public string Address { get; set; }
+
+        public string Longitude { get; set; }
+
+        public string Latitude { get; set; }
     }
 
     public class AlarmInfo

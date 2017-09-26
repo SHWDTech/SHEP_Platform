@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHEP_Platform", "SHEP_Platform\SHEP_Platform.csproj", "{C74A38A6-CFDF-44B4-BF4E-4C01248F7EE0}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JavaLibrary", "JavaLibrary", "{81FC571F-0E11-4896-B864-DB087CDA0812}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMap_2DMap", "AMap_2DMap\AMap_2DMap.csproj", "{E3D286EA-759C-409E-9EE7-07DB07D9DE4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform.Cache", "..\WDYunPlatform\Platform.Cache\Platform.Cache.csproj", "{5EE1E1C1-00A8-4D4C-A0EA-55CB528F7ED7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{E3D286EA-759C-409E-9EE7-07DB07D9DE4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3D286EA-759C-409E-9EE7-07DB07D9DE4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3D286EA-759C-409E-9EE7-07DB07D9DE4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EE1E1C1-00A8-4D4C-A0EA-55CB528F7ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EE1E1C1-00A8-4D4C-A0EA-55CB528F7ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EE1E1C1-00A8-4D4C-A0EA-55CB528F7ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EE1E1C1-00A8-4D4C-A0EA-55CB528F7ED7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,5 +73,8 @@ Global
 		{F25245D0-9216-4141-86CD-970EF1B7DC4C} = {1995ABD1-97F3-4A9F-A837-AA62B916EE11}
 		{81FC571F-0E11-4896-B864-DB087CDA0812} = {1995ABD1-97F3-4A9F-A837-AA62B916EE11}
 		{E3D286EA-759C-409E-9EE7-07DB07D9DE4D} = {81FC571F-0E11-4896-B864-DB087CDA0812}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A363ED50-F5DB-465A-8E8E-C1AFEA577D3D}
 	EndGlobalSection
 EndGlobal
