@@ -4,19 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div style="float: right;">
-    <input type="hidden" value="@ViewBag.CameraId" id="cameraId"/>
-    <input type="hidden" value="@ViewBag.DevId" id="devId"/>
-    <div id="ocxAlarm" style="display: none;">
-        <p>查看视频请先安装视频插件，<span><a href="/Resources/WdMonitorView.msi">点击此处下载安装</a></span>。<span style="color: red;">并以管理员权限运行安装。</span></p>
-    </div>
-    <object classid="clsid:41353907-A6CF-4BDF-9AE0-EB06F8C48414"
-            width="800" height="600" id="StatMonitor" style="z-index: -1;"></object>
-</div>
-<div style="margin-right: 25px;">
+@*<div style="float: left; margin-right: 15px;">
     <div class="form-inline">
         <div style="margin-bottom: 30px;">
-            <input type="button" class="form-control camerabtn"/>
+            <input type="button" class="form-control camerabtn" />
             <input type="button" onmousedown="Up()" onmouseup="Stop()" onmouseleave="Stop()" value="上" class="form-control camerabtn">
             <input type="button" class="form-control camerabtn" />
         </div>
@@ -30,7 +21,23 @@
             <input type="button" onmousedown="Down()" onmouseup="Stop()" onmouseleave="Stop()" value="下" class="form-control camerabtn">
             <input type="button" onmousedown="ZoomOut()" onmouseup="Stop()" onmouseleave="Stop()" value="远景" class="form-control camerabtn">
         </div>
-</div>
+        <div style="margin-bottom: 30px;">
+            <input type="button" onmousedown="ZoomIn()" onmouseup="Stop()" onmouseleave="Stop()" value="搜索录像" class="form-control camerabtn">
+            <input type="button" onmousedown="Down()" onmouseup="Stop()" onmouseleave="Stop()" value="" class="form-control camerabtn">
+            <input type="button" onmousedown="ZoomOut()" onmouseup="Stop()" onmouseleave="Stop()" value="回放" class="form-control camerabtn">
+        </div>
+    </div>
+</div>*@
+<div style="margin-left: 275px;">
+    <input type="hidden" value="@ViewBag.CameraId" id="cameraId" />
+    <input type="hidden" value="@ViewBag.DevId" id="devId" />
+    <div id="ocxAlarm" style="display: none;">
+        <p>查看视频请先安装视频插件，<span><a href="/Resources/WdMonitorView.msi">点击此处下载安装</a></span>。<span style="color: red;">并以管理员权限运行安装。</span></p>
+    </div>
+    <div style="z-index: -1;">
+        <object classid="clsid:41353907-A6CF-4BDF-9AE0-EB06F8C48414"
+                width="800" height="600" id="StatMonitor"></object>
+    </div>
 </div>
 
 @section scripts {
