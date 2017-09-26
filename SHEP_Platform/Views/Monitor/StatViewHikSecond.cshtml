@@ -4,30 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<div style="float: left; margin-right: 15px;">
-    <div class="form-inline">
-        <div style="margin-bottom: 30px;">
-            <input type="button" class="form-control camerabtn" />
-            <input type="button" onmousedown="Up()" onmouseup="Stop()" onmouseleave="Stop()" value="上" class="form-control camerabtn">
-            <input type="button" class="form-control camerabtn" />
-        </div>
-        <div style="margin-bottom: 30px;">
-            <input type="button" onmousedown="Left()" onmouseup="Stop()" onmouseleave="Stop()" value="左" class="form-control camerabtn">
-            <input type="button" onmousedown="SwitchMonitorStatus()" value="开始" class="form-control camerabtn" id="monitorSwitch">
-            <input type="button" onmousedown="Right()" onmouseup="Stop()" onmouseleave="Stop()" value="右" class="form-control camerabtn">
-        </div>
-        <div style="margin-bottom: 30px;">
-            <input type="button" onmousedown="ZoomIn()" onmouseup="Stop()" onmouseleave="Stop()" value="近景" class="form-control camerabtn">
-            <input type="button" onmousedown="Down()" onmouseup="Stop()" onmouseleave="Stop()" value="下" class="form-control camerabtn">
-            <input type="button" onmousedown="ZoomOut()" onmouseup="Stop()" onmouseleave="Stop()" value="远景" class="form-control camerabtn">
-        </div>
-        <div style="margin-bottom: 30px;">
-            <input type="button" onmousedown="ZoomIn()" onmouseup="Stop()" onmouseleave="Stop()" value="搜索录像" class="form-control camerabtn">
-            <input type="button" onmousedown="Down()" onmouseup="Stop()" onmouseleave="Stop()" value="" class="form-control camerabtn">
-            <input type="button" onmousedown="ZoomOut()" onmouseup="Stop()" onmouseleave="Stop()" value="回放" class="form-control camerabtn">
-        </div>
-    </div>
-</div>*@
 <div style="margin-left: 275px;">
     <input type="hidden" value="@ViewBag.CameraId" id="cameraId" />
     <input type="hidden" value="@ViewBag.DevId" id="devId" />
