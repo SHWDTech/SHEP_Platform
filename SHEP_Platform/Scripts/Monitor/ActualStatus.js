@@ -43,7 +43,7 @@ $(function () {
         mainChart = echarts.init(document.getElementById('divBar'));
     }
 
-    $('#minute').on('click', function() {
+    $('#minute').on('click', function () {
         ajaxFunction = 'getStatsActualData';
         load(lastStatId, lastStatName, 1);
     });
@@ -63,7 +63,7 @@ $(function () {
     });
 });
 
-var setDeviceMin = function(id) {
+var setDeviceMin = function (id) {
     var param = {
         'fun': 'setDeviceMin',
         'statid': id
@@ -71,7 +71,7 @@ var setDeviceMin = function(id) {
 
     $('#setMin').prop('disabled', 'disabled');
     $('#setMin').val('校零（执行中）');
-    $.post(ajaxUrl, param, function(ret) {
+    $.post(ajaxUrl, param, function (ret) {
         if (ret.taskAdd === true) {
             tasks = ret.tasks;
             questTaskResult(tasks, id);
@@ -79,16 +79,16 @@ var setDeviceMin = function(id) {
     });
 }
 
-var questTaskResult = function(tasks, statId) {
+var questTaskResult = function (tasks, statId) {
     var param = {
         'fun': 'questTaskResult',
         'tasks': JSON.stringify(tasks)
     }
 
     $('#setMin').val('校零（等待结果）');
-    $.post(ajaxUrl, param, function(ret) {
+    $.post(ajaxUrl, param, function (ret) {
         if (ret.success === false) {
-            requestId = setTimeout(function() { questTaskResult(tasks) }, 5000);
+            requestId = setTimeout(function () { questTaskResult(tasks) }, 5000);
         } else {
             clearTimeout(requestId);
             startProof(statId);
@@ -96,13 +96,13 @@ var questTaskResult = function(tasks, statId) {
     });
 }
 
-var startProof = function(statId) {
+var startProof = function (statId) {
     var param = {
         'fun': 'startProof',
         'statid': statId
     }
 
-    $.post(ajaxUrl, param, function(ret) {
+    $.post(ajaxUrl, param, function (ret) {
         if (ret.success === true) {
             $('#setMin').val('校零（完成）');
             $('#setMin').prop('disabled', '');
@@ -161,7 +161,7 @@ var load = function (id, name, type) {
     });
 };
 
-var setTable = function(ret, name) {
+var setTable = function (ret, name) {
     var current = ret.current;
     $('.statName').html(name);
     $('.pm').html(current.TP);
@@ -191,17 +191,20 @@ var setChart = function (ret, name, id, type) {
     var option = Echart_Tools.getOption();
 
     option.series = [];
-    option.legend.data = ['颗粒物', '噪音值', 'PM2.5', 'PM10'];
+    option.legend.data = ajaxFunction === 'getStatsActualData' ? ['颗粒物', '噪音值', 'PM2.5', 'PM10', '区县颗粒物', '全市颗粒物'] : ['颗粒物', '噪音值', 'PM2.5', 'PM10'];
     option.yAxis = [
-    {
-         type: 'value', name: 'db', axisLabel: { formatter: '{value}' }
-    }, {
-         type: 'value', name: 'tp', axisLabel: { formatter: '{value}' }
-    }];
+        {
+            type: 'value', name: 'db', axisLabel: { formatter: '{value}' }
+        }, {
+            type: 'value', name: 'tp', axisLabel: { formatter: '{value}' }
+        }];
     var seriesTp = Echart_Tools.getSeries('颗粒物', 'line', PollutantColor.PM);
     var seriesDb = Echart_Tools.getSeries('噪音值', 'line', PollutantColor.Noise);
     var seriesPm25 = Echart_Tools.getSeries('PM2.5', 'line', PollutantColor.PM25);
     var seriesPm100 = Echart_Tools.getSeries('PM10', 'line', PollutantColor.PM100);
+    var seriesPmCountry = Echart_Tools.getSeries('区县颗粒物', 'line', PollutantColor.TPCountry);
+    var seriesPmCity = Echart_Tools.getSeries('全市颗粒物', 'line', PollutantColor.TPCity);
+    seriesPmCountry.yAxisIndex = seriesPmCity.yAxisIndex = 1;
     seriesTp.yAxisIndex = 1;
     seriesPm25.yAxisIndex = 1;
     seriesPm100.yAxisIndex = 1;
@@ -211,22 +214,34 @@ var setChart = function (ret, name, id, type) {
     var seriesDbData = [];
     var seriesPm25Data = [];
     var seriesPm100Data = [];
+    var seriesPmCountryData = [];
+    var seriesPmCityData = [];
     $.each(list, function () {
         xAxisData.push($(this)[0].UpdateTime);
         seriesTpData.push($(this)[0].TP);
         seriesDbData.push($(this)[0].DB);
         seriesPm25Data.push($(this)[0].PM25);
         seriesPm100Data.push($(this)[0].PM100);
-        option.xAxis.data = xAxisData;
-        seriesTp.data = seriesTpData;
-        seriesDb.data = seriesDbData;
-        seriesPm25.data = seriesPm25Data;
-        seriesPm100.data = seriesPm100Data;
+        if (ajaxFunction === 'getStatsActualData') {
+            seriesPmCountryData.push($(this)[0].TPCountry);
+            seriesPmCityData.push($(this)[0].TPCity);
+        }
     });
+    option.xAxis.data = xAxisData;
+    seriesTp.data = seriesTpData;
+    seriesDb.data = seriesDbData;
+    seriesPm25.data = seriesPm25Data;
+    seriesPm100.data = seriesPm100Data;
     option.series.push(seriesTp);
     option.series.push(seriesDb);
     option.series.push(seriesPm25);
     option.series.push(seriesPm100);
+    if (ajaxFunction === 'getStatsActualData') {
+        seriesPmCountry.data = seriesPmCountryData;
+        seriesPmCity.data = seriesPmCityData;
+        option.series.push(seriesPmCountry);
+        option.series.push(seriesPmCity);
+    }
 
     if (!BaseInfo.IsMobileDevice) {
         mainChart.setOption(option);

@@ -30,5 +30,7 @@ var PollutantColor = {
     'PM': '#5d4bc1',
     'Noise': '#de366d',
     'PM25': '#0ecba8',
-    'PM100': '#d7761f'
+    'PM100': '#d7761f',
+    'TPCountry': '#f1b695',
+    'TPCity': '#263245'
 }

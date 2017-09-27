@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -37,6 +38,15 @@ namespace SHEP_Platform
                 .Build();
 
             scheduler.ScheduleJob(job, trigger);
+
+            var job1 = JobBuilder.Create<CalcMinuteAvgJob>()
+                .Build();
+
+            var trigger1 = TriggerBuilder.Create()
+                .StartAt(new DateTimeOffset(DateTime.Now.AddSeconds(60 - DateTime.Now.Second)))
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
+                .Build();
+            scheduler.ScheduleJob(job1, trigger1);
         }
     }
 }

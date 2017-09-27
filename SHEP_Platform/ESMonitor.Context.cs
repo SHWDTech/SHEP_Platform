@@ -56,6 +56,7 @@ namespace SHEP_Platform
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<T_Photos> T_Photos { get; set; }
         public virtual DbSet<VehicleRecord> VehicleRecord { get; set; }
+        public virtual DbSet<T_Statistics> T_Statistics { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {

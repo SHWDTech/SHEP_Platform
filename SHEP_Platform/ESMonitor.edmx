@@ -255,6 +255,19 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="Id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StageName" Type="nchar" MaxLength="10" Nullable="false" />
         </EntityType>
+        <EntityType Name="T_Statistics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TP" Type="float" />
+          <Property Name="DB" Type="float" />
+          <Property Name="PM25" Type="float" />
+          <Property Name="PM100" Type="float" />
+          <Property Name="country" Type="int" />
+          <Property Name="type" Type="smallint" />
+          <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="T_Stats">
           <Key>
             <PropertyRef Name="Id" />
@@ -283,9 +296,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <PropertyRef Name="ConfigId" />
           </Key>
           <Property Name="ConfigId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ConfigType" Type="nchar" MaxLength="50" Nullable="false" />
-          <Property Name="ConfigName" Type="nchar" MaxLength="50" Nullable="false" />
-          <Property Name="ConfigValue" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConfigType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConfigName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConfigValue" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityType Name="T_TaskNotice">
           <Key>
@@ -1078,6 +1091,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <EntitySet Name="T_Photos" EntityType="Self.T_Photos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Province" EntityType="Self.T_Province" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Stage" EntityType="Self.T_Stage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Statistics" EntityType="Self.T_Statistics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Stats" EntityType="Self.T_Stats" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_SysConfig" EntityType="Self.T_SysConfig" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_TaskNotice" EntityType="Self.T_TaskNotice" Schema="dbo" store:Type="Tables" />
@@ -2166,6 +2180,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <FunctionImport Name="CheckForDeviceNoiseExcessive" ReturnType="Collection(ESMonitorModel.CheckForDeviceNoiseExcessive_Result)" />
           <FunctionImport Name="CheckForTspExcessive" ReturnType="Collection(ESMonitorModel.CheckForTspExcessive_Result)" />
           <EntitySet Name="VehicleRecord" EntityType="ESMonitorModel.VehicleRecord" />
+          <EntitySet Name="T_Statistics" EntityType="ESMonitorModel.T_Statistics" />
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
@@ -2569,9 +2584,9 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
             <PropertyRef Name="ConfigId" />
           </Key>
           <Property Name="ConfigId" Type="Guid" Nullable="false" />
-          <Property Name="ConfigType" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="ConfigType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ConfigName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ConfigValue" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -2728,6 +2743,19 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="EndDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Lat" Type="Double" />
           <Property Name="Lng" Type="Double" />
+        </EntityType>
+        <EntityType Name="T_Statistics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="TP" Type="Double" />
+          <Property Name="DB" Type="Double" />
+          <Property Name="PM25" Type="Double" />
+          <Property Name="PM100" Type="Double" />
+          <Property Name="country" Type="Int32" />
+          <Property Name="type" Type="Int16" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3860,6 +3888,20 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="RecordName" ColumnName="RecordName" />
                 <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Statistics">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_Statistics">
+              <MappingFragment StoreEntitySet="T_Statistics">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="PM100" ColumnName="PM100" />
+                <ScalarProperty Name="PM25" ColumnName="PM25" />
+                <ScalarProperty Name="DB" ColumnName="DB" />
+                <ScalarProperty Name="TP" ColumnName="TP" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

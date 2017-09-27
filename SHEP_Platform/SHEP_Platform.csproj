@@ -209,6 +209,7 @@
     <Compile Include="Models\Api\ServerInfomation.cs" />
     <Compile Include="Models\Api\VehicleRecordUpload.cs" />
     <Compile Include="Process\GlobalConfig.cs" />
+    <Compile Include="ScheduleJobs\CalcMinuteAvgJob.cs" />
     <Compile Include="ScheduleJobs\UpdateStatStatusJob.cs" />
     <Compile Include="ShwdResult\ExcelResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -446,6 +447,9 @@
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_StatCompare_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_Statistics.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_Stats.cs">

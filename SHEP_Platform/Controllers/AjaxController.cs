@@ -197,6 +197,11 @@ namespace SHEP_Platform.Controllers
             var query = DbContext.T_ESMin.AsQueryable();
             var targetType = int.Parse(Request["targetType"]);
 
+            var country = DbContext.T_Stats.First(t => t.Id == targetId).Country;
+            var countryData = DbContext.T_Statistics
+                .Where(d => d.type == 1 && d.country == country && d.UpdateTime > startDate).ToList();
+            var cityData = DbContext.T_Statistics
+                .Where(d => d.type == 0 && d.UpdateTime > startDate).ToList();
             query = targetType == 1 ? query.Where(q => q.StatId == targetId) : query.Where(q => q.DevId == targetId);
             var dataResult = query.Where(item => item.UpdateTime > startDate)
                 .OrderBy(obj => obj.UpdateTime).ToList()
@@ -204,6 +209,8 @@ namespace SHEP_Platform.Controllers
                 .Select(i => new
                 {
                     TP = (i.TP / 1000).ToString("f3"),
+                    TPCountry = GetTpValue(countryData, i.UpdateTime.Value),
+                    TPCity = GetTpValue(cityData, i.UpdateTime.Value),
                     DB = i.DB.ToString("f3"),
                     PM25 = (i.PM25 / 1000).GetValueOrDefault().ToString("f3"),
                     PM100 = (i.PM100 / 1000).GetValueOrDefault().ToString("f3"),
@@ -241,6 +248,13 @@ namespace SHEP_Platform.Controllers
             };
 
             return Json(ret);
+        }
+
+        private string GetTpValue(List<T_Statistics> data, DateTime updateTime)
+        {
+            var ret = data.FirstOrDefault(d => d.UpdateTime - updateTime > TimeSpan.FromMinutes(1));
+            if (ret == null) return "0";
+            return (ret.TP.Value / 1000.0).ToString("f3");
         }
 
         private JsonResult GetStatsFifteenData()
