@@ -195,9 +195,10 @@ namespace SHEP_Platform.Controllers
             var targetId = int.Parse(Request["targetId"]);
             var startDate = DateTime.Now.AddHours(-1);
             var query = DbContext.T_ESMin.AsQueryable();
-            var targetType = int.Parse(Request["targetType"]);
+            var targetType = int.Parse(Request["targetType"]); //DbContext.T_Devs.First(d => d.Id == targetId).StatId
 
-            var country = DbContext.T_Stats.First(t => t.Id == targetId).Country;
+            var statId = targetType == 1 ? DbContext.T_Stats.First(t => t.Id == targetId).Id : int.Parse(DbContext.T_Devs.First(d => d.Id == targetId).StatId);
+            var country = DbContext.T_Stats.First(t => t.Id == statId).Country;
             var countryData = DbContext.T_Statistics
                 .Where(d => d.type == 1 && d.country == country && d.UpdateTime > startDate).ToList();
             var cityData = DbContext.T_Statistics
