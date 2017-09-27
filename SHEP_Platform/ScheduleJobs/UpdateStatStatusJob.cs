@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Platform.Cache;
 using Quartz;
@@ -63,7 +64,9 @@ namespace SHEP_Platform.ScheduleJobs
                     {
                         Id = stat.Id,
                         Name = stat.StatName,
-                        Address = stat.Address
+                        Address = stat.Address,
+                        Latitude = stat.Latitude.ToString(CultureInfo.InvariantCulture),
+                        Longitude = stat.Longitude.ToString(CultureInfo.InvariantCulture)
                     };
                     PlatformCaches.Add(modelCacheName, model, cacheType: "statList");
                 }
