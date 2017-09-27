@@ -3,7 +3,7 @@
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    min-height: 660px;
+    height: 100%;
     margin-left: 180px;
     border-left: 1px solid #e8e8e8;
     padding: 15px;
@@ -157,15 +157,18 @@ textarea {
     }
 
 .wapper {
+    position: absolute;
+    top: 104px;
+    bottom: 52px;
     width: 100%;
-    height: 100%;
-    display: block;
-    min-height: 660px;
 }
 
 .footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
     border-top: 1px solid #e7e7e7;
-    padding: 15px 15px 0 15px;
+    padding: 5px 0 0 0;
 }
 
     .footer p {

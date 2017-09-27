@@ -4,13 +4,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div style="margin-left: 275px;">
+<div style="margin-left: 275px; height: 100%;">
     <input type="hidden" value="@ViewBag.CameraId" id="cameraId" />
     <input type="hidden" value="@ViewBag.DevId" id="devId" />
     <div id="ocxAlarm" style="display: none;">
         <p>查看视频请先安装视频插件，<span><a href="/Resources/WdMonitorView.msi">点击此处下载安装</a></span>。<span style="color: red;">并以管理员权限运行安装。</span></p>
     </div>
-    <div style="z-index: -1;">
+    <div style="z-index: -1; height: 100%;">
         <object classid="clsid:41353907-A6CF-4BDF-9AE0-EB06F8C48414"
                 width="800" height="600" id="StatMonitor"></object>
     </div>
