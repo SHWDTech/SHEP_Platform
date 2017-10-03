@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -777,7 +778,14 @@ namespace SHEP_Platform.Controllers
 
             try
             {
-                var fileName = $"{GlobalConfig.HikPictureUrl}{DateTime.Now:yyyyMMddhhmmssfff}.jpg";
+                var devId = DbContext.T_Camera.First(c => c.UserName == userName).DevId;
+                var statId = DbContext.T_Devs.First(d => d.Id == devId).StatId;
+                var dir = $"\\HikPicture\\{statId}\\AlarmPic";
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                var fileName = $"{dir}\\{DateTime.Now:yyyyMMddhhmmssfff}.jpg";
                 var stream = System.IO.File.Create(fileName);
                 var picBytes = Convert.FromBase64String(picture.Replace(" ", "+"));
                 stream.Write(picBytes, 0, picBytes.Length);

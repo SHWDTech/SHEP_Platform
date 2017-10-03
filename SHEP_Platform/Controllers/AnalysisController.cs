@@ -102,15 +102,11 @@ namespace SHEP_Platform.Controllers
         {
             ViewBag.Stats = WdContext.StatList.Select(obj => new SelectListItem { Text = obj.StatName, Value = obj.Id.ToString() }).ToList();
             var stat = WdContext.StatList.First(obj => obj.Id == model.StatId);
-            var devs = DbContext.T_Devs.Where(obj => obj.StatId == stat.Id.ToString());
-            foreach (var dev in devs)
+            var dir = $"\\HikPicture\\{stat.Id}\\AlarmPic";
+            if (Directory.Exists(dir))
             {
-                var camera = DbContext.T_Camera.FirstOrDefault(obj => obj.DevId == dev.Id);
-                if (camera != null && Directory.Exists($"\\HikPicture\\{camera.UserName}\\AlarmPic"))
-                {
-                    var pics = Directory.GetFiles($"\\HikPicture\\{camera.UserName}\\AlarmPic");
-                    model.PicUrls.AddRange(pics);
-                }
+                var pics = Directory.GetFiles(dir);
+                model.PicUrls.AddRange(pics);
             }
 
             return View(model);
