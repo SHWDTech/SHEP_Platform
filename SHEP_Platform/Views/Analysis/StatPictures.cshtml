@@ -18,7 +18,7 @@
         @{
             foreach (var url in Model.PicUrls)
             {
-                <img src="@url" class="alarmPic"/>
+                <a href="@url" target="_blank"><img src="@url" class="alarmPic" /></a>
             }
         }
     </div>

@@ -330,8 +330,7 @@ namespace SHEP_Platform.Controllers
 
         public ActionResult StatTable(int id)
         {
-            int totalCount;
-            var dataList = GetStatDataList(id, out totalCount);
+            var dataList = GetStatDataList(id, out var totalCount);
 
             var ret = new
             {
@@ -344,8 +343,7 @@ namespace SHEP_Platform.Controllers
 
         public ActionResult DevTable(int id)
         {
-            int totalCount;
-            var dataList = GetDevDataList(id, out totalCount);
+            var dataList = GetDevDataList(id, out var totalCount);
 
             var ret = new
             {
