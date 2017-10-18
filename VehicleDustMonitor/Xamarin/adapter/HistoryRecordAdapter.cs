@@ -39,6 +39,7 @@ namespace VehicleDustMonitor.Xamarin.adapter
             var item = Items[position];
             var view = _context.LayoutInflater.Inflate(Resource.Layout.item_vehicle_record, null);
             view.FindViewById<TextView>(Resource.Id.recordName).Text = item.RecordName;
+            view.FindViewById<TextView>(Resource.Id.devId).Text = $"{item.DevId}";
             view.FindViewById<TextView>(Resource.Id.recordComment).Text = item.Comment;
             view.FindViewById<TextView>(Resource.Id.startDateTime).Text = $"{item.StartDateTime:yyyy-MM-dd HH:mm:ss}";
             view.FindViewById<TextView>(Resource.Id.endDateTime).Text = $"{item.EndDateTime:yyyy-MM-dd HH:mm:ss}";

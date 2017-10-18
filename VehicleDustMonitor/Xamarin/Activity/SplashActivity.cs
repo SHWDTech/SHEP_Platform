@@ -30,8 +30,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                 OnResponse = args =>
                 {
                     SharedData.VersionInfo = JsonConvert.DeserializeObject<VehicleAndroidVersionInfo>(args.Response);
-                    var authed = GetSharedPreferences(nameof(VehicleDustMonitor), FileCreationMode.Private).GetBoolean("Authenticated", false);
-                    if (!authed)
+                    if (!IsAuthenticated())
                     {
                         var intent = new Intent(this, typeof(LoginActivity));
                         StartActivity(intent);
@@ -41,7 +40,6 @@ namespace VehicleDustMonitor.Xamarin.activity
                     {
                         _startHandler.SendEmptyMessageDelayed(0, 2000);
                     }
-
                 }
             });
         }
@@ -51,6 +49,24 @@ namespace VehicleDustMonitor.Xamarin.activity
             var intent = new Intent(this, typeof(MainActivity));
             StartActivity(intent);
             Finish();
+        }
+
+        private bool IsAuthenticated()
+        {
+            var preferences = GetSharedPreferences(nameof(VehicleDustMonitor), FileCreationMode.Private);
+            var authed = preferences.GetBoolean("Authenticated", false);
+            if (!authed) return false;
+
+            var deviceName = preferences.GetString("SavedDeviceName", string.Empty);
+            if (string.IsNullOrWhiteSpace(deviceName)) return false;
+
+            var deviceNodeId = preferences.GetString("SavedDeviceNodeId", string.Empty);
+            if (string.IsNullOrWhiteSpace(deviceNodeId)) return false;
+
+            var deviceId = preferences.GetInt("SavedDeviceId", -1);
+            if (deviceId <= 0) return false;
+
+            return true;
         }
     }
 

@@ -38,6 +38,7 @@ namespace VehicleDustMonitor.Xamarin.activity
             var readingColumn = new []
             {
                 VehicleRecordEntity.ColumnNameId,
+                VehicleRecordEntity.ColumnNameDevId,
                 VehicleRecordEntity.ColumnNameRecordName,
                 VehicleRecordEntity.ColumnNameComment,
                 VehicleRecordEntity.ColumnNameStartDateTime,
@@ -57,6 +58,7 @@ namespace VehicleDustMonitor.Xamarin.activity
                 var item = new HistoryRecordItem
                 {
                     Id = cursor.GetLong(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameId)),
+                    DevId = cursor.GetInt(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameDevId)),
                     RecordName = cursor.GetString(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameRecordName)),
                     Comment = cursor.GetString(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameComment)),
                     StartDateTime = DateTime.Parse(cursor.GetString(cursor.GetColumnIndex(VehicleRecordEntity.ColumnNameStartDateTime))),

@@ -37,6 +37,25 @@
                 android:layout_height="wrap_content"
                 android:textColor="#FF7F3300"
                 android:textSize="16dip"
+                android:text="设备ID："
+                android:textStyle="italic" />
+            <TextView
+                android:id="@+id/devId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dip"
+                android:textColor="#FF267F00" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF7F3300"
+                android:textSize="16dip"
                 android:text="备注："
                 android:textStyle="italic" />
             <TextView

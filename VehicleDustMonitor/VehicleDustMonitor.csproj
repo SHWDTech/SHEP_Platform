@@ -33,6 +33,8 @@
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis />
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>PdbOnly</DebugType>
@@ -45,11 +47,14 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cheeseknife, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MisterJimson.Cheeseknife.1.1.0\lib\MonoAndroid10\Cheeseknife.dll</HintPath>
     </Reference>
+    <Reference Include="Java.Interop" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="MPAndroidChart, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
