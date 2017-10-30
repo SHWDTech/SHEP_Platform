@@ -49,7 +49,7 @@ namespace SHEP_Platform.Controllers
             }
 
             FormsAuthentication.SetAuthCookie(model.UserName, true);
-            var usrIdCookie = Request.Cookies?.Get("UserId") ?? new HttpCookie("UserId");
+            var usrIdCookie = Request.Cookies.Get("UserId") ?? new HttpCookie("UserId");
             usrIdCookie.Value = result.User.UserId.ToString();
             usrIdCookie.Expires = DateTime.Now.AddMonths(1);
             Response.AppendCookie(usrIdCookie);

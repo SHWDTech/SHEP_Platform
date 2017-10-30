@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 // ReSharper disable InconsistentNaming
 
@@ -119,5 +120,24 @@ namespace SHEP_Platform.Models.Monitor
         public string UpdateTime { get; set; } = "尚未收到任何数据";
 
         public bool Valid { get; set; }
+    }
+
+    public class PuTianDataExport
+    {
+        [Required]
+        public DateTime? StartDateTime { get; set; }
+
+        [Required]
+        public DateTime? EndDateTime { get; set; }
+
+        [Required]
+        public ExportDataType? DataType { get; set; }
+    }
+
+    public enum ExportDataType
+    {
+        Hour = 0x00,
+
+        Day = 0x01
     }
 }

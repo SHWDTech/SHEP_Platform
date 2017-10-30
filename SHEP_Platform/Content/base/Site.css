@@ -338,6 +338,14 @@ html > /**/ body #dateQuery {
 html > /**/ body #date-selecter {
     margin-right: 20px;
 }
+label.label60 {
+    -moz-min-width: 60px;
+    -ms-min-width: 60px;
+    -o-min-width: 60px;
+    -webkit-min-width: 60px;
+    min-width: 60px;
+    width: 60px;
+}
 
 label.label120 {
     -moz-min-width: 120px;

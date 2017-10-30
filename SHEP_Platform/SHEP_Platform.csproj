@@ -197,6 +197,7 @@
     <Compile Include="Common\TextMessageService.cs" />
     <Compile Include="Common\XmlSerializerHelper.cs" />
     <Compile Include="Controllers\AppServerController.cs" />
+    <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="DeviceException.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
@@ -1098,6 +1099,7 @@
     <Content Include="Views\Analysis\ProcessDeviceException.cshtml" />
     <Content Include="Views\Analysis\ExceptionComment.cshtml" />
     <Content Include="Views\Analysis\ExceptionHistory.cshtml" />
+    <Content Include="Views\Export\PutianExport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
