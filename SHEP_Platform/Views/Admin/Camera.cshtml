@@ -1,6 +1,6 @@
 ﻿@model T_Camera
 @{
-    
+
 }
 
 <div>
@@ -43,7 +43,18 @@
         </div>
     }
 </div>
+@section scripts{
+    @Scripts.Render("~/bundles/select2")
+    <script type="text/javascript">
+        $(function () {
+            $('#DevId').select2({
+                placeholder: "---选择设备---"
+            });
+        });
+    </script>
+}
 @section css{
+    @Styles.Render("~/Content/select2-bootstrap")
     <style type="text/css">
         label {
             width: 100px;

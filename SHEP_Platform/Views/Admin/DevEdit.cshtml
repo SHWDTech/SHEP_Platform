@@ -86,6 +86,7 @@
 
 @section css{
     @Styles.Render("~/Content/datetimepickercss")
+    @Styles.Render("~/Content/select2-bootstrap")
     <style type="text/css">
         label {
             width: 100px;
@@ -107,6 +108,7 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/datetimepicker")
+    @Scripts.Render("~/bundles/select2")
     <script type="text/javascript">
         $(function () {
             $('#StartTime').datetimepicker({
@@ -130,6 +132,10 @@
                     prefix = prefix + '0';
                 }
                 $('#hexAddr').html('0x' + prefix + hexAddr);
+            });
+
+            $('#StatId').select2({
+                placeholder: "---选择工地---"
             });
         });
     </script>
