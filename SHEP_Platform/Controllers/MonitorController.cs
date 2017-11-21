@@ -160,9 +160,9 @@ namespace SHEP_Platform.Controllers
                     {
                         var row = sheet.WorkSheetDatas.NewRow();
                         row["更新时间"] = esMin.UpdateTime.Value;
-                        row["总体扬尘值(mg/m³)"] = (esMin.TP / 1000).ToString("F2");
-                        row["PM2.5(mg/m³)"] = (esMin.PM25.Value / 1000).ToString("F2");
-                        row["PM10(mg/m³)"] = (esMin.PM100.Value / 1000).ToString("F2");
+                        row["总体扬尘值(mg/m³)"] = (esMin.TP / 1000).ToString("F3");
+                        row["PM2.5(mg/m³)"] = (esMin.PM25.Value / 1000).ToString("F3");
+                        row["PM10(mg/m³)"] = (esMin.PM100.Value / 1000).ToString("F3");
                         row["噪音值(dB)"] = esMin.DB.ToString("F2");
                         sheet.WorkSheetDatas.Rows.Add(row);
                     }
@@ -185,9 +185,9 @@ namespace SHEP_Platform.Controllers
                     {
                         var row = sheet.WorkSheetDatas.NewRow();
                         row["更新时间"] = esMin.UpdateTime.Value;
-                        row["总体扬尘值(mg/m³)"] = (esMin.TP / 1000).ToString("F2");
-                        row["PM2.5(mg/m³)"] = (esMin.PM25.Value / 1000).ToString("F2");
-                        row["PM10(mg/m³)"] = (esMin.PM100.Value / 1000).ToString("F2");
+                        row["总体扬尘值(mg/m³)"] = (esMin.TP / 1000).ToString("F3");
+                        row["PM2.5(mg/m³)"] = (esMin.PM25.Value / 1000).ToString("F3");
+                        row["PM10(mg/m³)"] = (esMin.PM100.Value / 1000).ToString("F3");
                         row["噪音值(dB)"] = esMin.DB.ToString("F2");
                         sheet.WorkSheetDatas.Rows.Add(row);
                     }
@@ -350,9 +350,9 @@ namespace SHEP_Platform.Controllers
                 .Select(obj => new
                 {
                     UpdateTime = obj.UpdateTime.Value,
-                    TP = (obj.TP / 1000).ToString("F2"),
-                    PM25 = (obj.PM25.Value / 1000).ToString("F2"),
-                    PM100 = (obj.PM100.Value / 1000).ToString("F2"),
+                    TP = (obj.TP / 1000).ToString("F3"),
+                    PM25 = (obj.PM25.Value / 1000).ToString("F3"),
+                    PM100 = (obj.PM100.Value / 1000).ToString("F3"),
                     DB = (obj.DB).ToString("F2")
                 })
                 .ToList();
@@ -382,9 +382,9 @@ namespace SHEP_Platform.Controllers
                 .Select(obj => new
                 {
                     UpdateTime = obj.UpdateTime.Value,
-                    TP = (obj.TP / 1000).ToString("F2"),
-                    PM25 = (obj.PM25.Value / 1000).ToString("F2"),
-                    PM100 = (obj.PM100.Value / 1000).ToString("F2"),
+                    TP = (obj.TP / 1000).ToString("F3"),
+                    PM25 = (obj.PM25.Value / 1000).ToString("F3"),
+                    PM100 = (obj.PM100.Value / 1000).ToString("F3"),
                     DB = (obj.DB).ToString("F2")
                 })
                 .ToList();
