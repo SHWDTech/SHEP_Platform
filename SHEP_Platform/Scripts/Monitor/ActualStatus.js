@@ -191,7 +191,8 @@ var setChart = function (ret, name, id, type) {
     var option = Echart_Tools.getOption();
 
     option.series = [];
-    option.legend.data = ajaxFunction === 'getStatsActualData' ? ['颗粒物', '噪音值', 'PM2.5', 'PM10', '区县颗粒物', '全市颗粒物'] : ['颗粒物', '噪音值', 'PM2.5', 'PM10'];
+    option.legend.data = ajaxFunction === 'getStatsActualData' ? ['颗粒物', '噪音值', 'PM2.5', 'PM10', '区县颗粒物', '全市颗粒物', '区县噪音值', '全市噪音值']
+        : ['颗粒物', '噪音值', 'PM2.5', 'PM10'];
     option.yAxis = [
         {
             type: 'value', name: 'db', axisLabel: { formatter: '{value}' }
@@ -204,6 +205,8 @@ var setChart = function (ret, name, id, type) {
     var seriesPm100 = Echart_Tools.getSeries('PM10', 'line', PollutantColor.PM100);
     var seriesPmCountry = Echart_Tools.getSeries('区县颗粒物', 'line', PollutantColor.TPCountry);
     var seriesPmCity = Echart_Tools.getSeries('全市颗粒物', 'line', PollutantColor.TPCity);
+    var seriesDbCountry = Echart_Tools.getSeries('区县噪音值', 'line', PollutantColor.DbCountry);
+    var seriesDbCity = Echart_Tools.getSeries('全市噪音值', 'line', PollutantColor.DbCity);
     seriesPmCountry.yAxisIndex = seriesPmCity.yAxisIndex = 1;
     seriesTp.yAxisIndex = 1;
     seriesPm25.yAxisIndex = 1;
@@ -216,6 +219,8 @@ var setChart = function (ret, name, id, type) {
     var seriesPm100Data = [];
     var seriesPmCountryData = [];
     var seriesPmCityData = [];
+    var seriesDbCountryData = [];
+    var seriesDbCityData = [];
     $.each(list, function () {
         xAxisData.push($(this)[0].UpdateTime);
         seriesTpData.push($(this)[0].TP);
@@ -225,6 +230,8 @@ var setChart = function (ret, name, id, type) {
         if (ajaxFunction === 'getStatsActualData') {
             seriesPmCountryData.push($(this)[0].TPCountry);
             seriesPmCityData.push($(this)[0].TPCity);
+            seriesDbCountryData.push($(this)[0].DbCountry);
+            seriesDbCityData.push($(this)[0].DbCity);
         }
     });
     option.xAxis.data = xAxisData;
@@ -239,8 +246,12 @@ var setChart = function (ret, name, id, type) {
     if (ajaxFunction === 'getStatsActualData') {
         seriesPmCountry.data = seriesPmCountryData;
         seriesPmCity.data = seriesPmCityData;
+        seriesDbCountry.data = seriesDbCountryData;
+        seriesDbCity.data = seriesDbCityData;
         option.series.push(seriesPmCountry);
         option.series.push(seriesPmCity);
+        option.series.push(seriesDbCountry);
+        option.series.push(seriesDbCity);
     }
 
     if (!BaseInfo.IsMobileDevice) {

@@ -213,6 +213,8 @@ namespace SHEP_Platform.Controllers
                     TP = (i.TP / 1000).ToString("f3"),
                     TPCountry = GetTpValue(countryData, i.UpdateTime.Value),
                     TPCity = GetTpValue(cityData, i.UpdateTime.Value),
+                    DbCountry = GetDbValue(countryData, i.UpdateTime.Value),
+                    DbCity = GetDbValue(cityData, i.UpdateTime.Value),
                     DB = i.DB.ToString("f3"),
                     PM25 = (i.PM25 / 1000).GetValueOrDefault().ToString("f3"),
                     PM100 = (i.PM100 / 1000).GetValueOrDefault().ToString("f3"),
@@ -257,6 +259,13 @@ namespace SHEP_Platform.Controllers
             var ret = data.FirstOrDefault(d => d.UpdateTime - updateTime > TimeSpan.FromMinutes(1));
             if (ret == null) return "0";
             return (ret.TP.Value / 1000.0).ToString("f3");
+        }
+
+        private string GetDbValue(List<T_Statistics> data, DateTime updateTime)
+        {
+            var ret = data.FirstOrDefault(d => d.UpdateTime - updateTime > TimeSpan.FromMinutes(1));
+            if (ret == null) return "0";
+            return (ret.DB.Value).ToString("f3");
         }
 
         private JsonResult GetStatsFifteenData()

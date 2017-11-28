@@ -32,5 +32,7 @@ var PollutantColor = {
     'PM25': '#0ecba8',
     'PM100': '#d7761f',
     'TPCountry': '#f1b695',
-    'TPCity': '#263245'
+    'TPCity': '#263245',
+    'DbCountry': '#999966',
+    'DbCity': '#3366ff'
 }
