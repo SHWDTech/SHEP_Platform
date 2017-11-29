@@ -90,7 +90,7 @@ namespace SHEP_Platform.Models.Monitor
             if (esMin != null)
             {
                 TP = $"{esMin.TP / 1000:F3}";
-                DB = $"{esMin.DB}";
+                DB = $"{esMin.DB:F3}";
                 PM25 = $"{esMin.PM25 / 1000:F3}";
                 PM100 = $"{esMin.PM100 / 1000:F3}";
                 Temperature = $"{esMin.Temperature}";
