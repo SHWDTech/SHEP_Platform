@@ -85,6 +85,8 @@ namespace SHEP_Platform.Models.Monitor
 
     public class RecentData
     {
+        private const string _defaultValue = "暂无数据";
+
         public RecentData(T_ESMin esMin)
         {
             if (esMin != null)
@@ -101,23 +103,23 @@ namespace SHEP_Platform.Models.Monitor
                 Valid = true;
             }
         }
-        public string TP { get; set; } = "暂无数据";
+        public string TP { get; set; } = _defaultValue;
 
-        public string DB { get; set; } = "暂无数据";
+        public string DB { get; set; } = _defaultValue;
 
-        public string PM25 { get; set; } = "暂无数据";
+        public string PM25 { get; set; } = _defaultValue;
 
-        public string PM100 { get; set; } = "暂无数据";
+        public string PM100 { get; set; } = _defaultValue;
 
-        public string Temperature { get; set; } = "暂无数据";
+        public string Temperature { get; set; } = _defaultValue;
 
-        public string Humidity { get; set; } = "暂无数据";
+        public string Humidity { get; set; } = _defaultValue;
 
-        public string WindSpeed { get; set; } = "暂无数据";
+        public string WindSpeed { get; set; } = _defaultValue;
 
-        public string WindDirection { get; set; } = "暂无数据";
+        public string WindDirection { get; set; } = _defaultValue;
 
-        public string UpdateTime { get; set; } = "尚未收到任何数据";
+        public string UpdateTime { get; set; } = _defaultValue;
 
         public bool Valid { get; set; }
     }
