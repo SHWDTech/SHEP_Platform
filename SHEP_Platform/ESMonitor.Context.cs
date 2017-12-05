@@ -57,6 +57,8 @@ namespace SHEP_Platform
         public virtual DbSet<T_Photos> T_Photos { get; set; }
         public virtual DbSet<VehicleRecord> VehicleRecord { get; set; }
         public virtual DbSet<T_Statistics> T_Statistics { get; set; }
+        public virtual DbSet<T_UnicomDevice> T_UnicomDevice { get; set; }
+        public virtual DbSet<T_UnicomProject> T_UnicomProject { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {
@@ -2291,6 +2293,23 @@ namespace SHEP_Platform
         public virtual ObjectResult<CheckForTspExcessive_Result> CheckForTspExcessive()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CheckForTspExcessive_Result>("CheckForTspExcessive");
+        }
+    
+        public virtual int T_Devs_UpdateGps(string lat, string lng, Nullable<int> statId)
+        {
+            var latParameter = lat != null ?
+                new ObjectParameter("lat", lat) :
+                new ObjectParameter("lat", typeof(string));
+    
+            var lngParameter = lng != null ?
+                new ObjectParameter("lng", lng) :
+                new ObjectParameter("lng", typeof(string));
+    
+            var statIdParameter = statId.HasValue ?
+                new ObjectParameter("statId", statId) :
+                new ObjectParameter("statId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("T_Devs_UpdateGps", latParameter, lngParameter, statIdParameter);
         }
     }
 }

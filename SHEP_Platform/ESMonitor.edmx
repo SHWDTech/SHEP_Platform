@@ -323,6 +323,26 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="Data" Type="binary" MaxLength="1000" Nullable="false" />
           <Property Name="Length" Type="smallint" Nullable="false" />
         </EntityType>
+        <EntityType Name="T_UnicomDevice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DevId" Type="int" Nullable="false" />
+          <Property Name="UnicomCode" Type="varchar" MaxLength="100" />
+          <Property Name="Max" Type="float" Nullable="false" />
+          <Property Name="Min" Type="float" Nullable="false" />
+          <Property Name="OnCalc" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_UnicomProject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatId" Type="int" Nullable="false" />
+          <Property Name="UnicomCode" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Stopped" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="T_UserAuthority">
           <Key>
             <PropertyRef Name="UserId" />
@@ -374,6 +394,11 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="StatId" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Table_1">
+          <Property Name="Guid" Type="nchar" MaxLength="10" />
+        </EntityType>-->
         <EntityType Name="VehicleRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -387,6 +412,11 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="Lat" Type="float" />
           <Property Name="Lng" Type="float" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="randview">
+          <Property Name="rd" Type="float" />
+        </EntityType>-->
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
           <End Role="T_Country" Type="Self.T_Country" Multiplicity="*" />
@@ -611,6 +641,11 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Parameter Name="EndTime" Type="datetime" Mode="In" />
           <Parameter Name="DevStatus" Type="tinyint" Mode="In" />
           <Parameter Name="VideoURL" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="T_Devs_UpdateGps" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="lat" Type="varchar" Mode="In" />
+          <Parameter Name="lng" Type="varchar" Mode="In" />
+          <Parameter Name="statId" Type="int" Mode="In" />
         </Function>
         <Function Name="T_ESDay_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="bigint" Mode="InOut" />
@@ -1096,6 +1131,8 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <EntitySet Name="T_SysConfig" EntityType="Self.T_SysConfig" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_TaskNotice" EntityType="Self.T_TaskNotice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Tasks" EntityType="Self.T_Tasks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_UnicomDevice" EntityType="Self.T_UnicomDevice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_UnicomProject" EntityType="Self.T_UnicomProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserAuthority" EntityType="Self.T_UserAuthority" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserGroup" EntityType="Self.T_UserGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserInGroups" EntityType="Self.T_UserInGroups" Schema="dbo" store:Type="Tables" />
@@ -2181,6 +2218,13 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <FunctionImport Name="CheckForTspExcessive" ReturnType="Collection(ESMonitorModel.CheckForTspExcessive_Result)" />
           <EntitySet Name="VehicleRecord" EntityType="ESMonitorModel.VehicleRecord" />
           <EntitySet Name="T_Statistics" EntityType="ESMonitorModel.T_Statistics" />
+          <EntitySet Name="T_UnicomDevice" EntityType="ESMonitorModel.T_UnicomDevice" />
+          <EntitySet Name="T_UnicomProject" EntityType="ESMonitorModel.T_UnicomProject" />
+          <FunctionImport Name="T_Devs_UpdateGps">
+            <Parameter Name="lat" Mode="In" Type="String" />
+            <Parameter Name="lng" Mode="In" Type="String" />
+            <Parameter Name="statId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
@@ -2756,6 +2800,26 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="country" Type="Int32" />
           <Property Name="type" Type="Int16" />
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="T_UnicomDevice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DevId" Type="Int32" Nullable="false" />
+          <Property Name="Max" Type="Double" Nullable="false" />
+          <Property Name="Min" Type="Double" Nullable="false" />
+          <Property Name="OnCalc" Type="Boolean" Nullable="false" />
+          <Property Name="UnicomCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="T_UnicomProject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatId" Type="Int32" Nullable="false" />
+          <Property Name="UnicomCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Stopped" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3906,6 +3970,29 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="T_UnicomDevice">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_UnicomDevice">
+              <MappingFragment StoreEntitySet="T_UnicomDevice">
+                <ScalarProperty Name="UnicomCode" ColumnName="UnicomCode" />
+                <ScalarProperty Name="OnCalc" ColumnName="OnCalc" />
+                <ScalarProperty Name="Min" ColumnName="Min" />
+                <ScalarProperty Name="Max" ColumnName="Max" />
+                <ScalarProperty Name="DevId" ColumnName="DevId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_UnicomProject">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_UnicomProject">
+              <MappingFragment StoreEntitySet="T_UnicomProject">
+                <ScalarProperty Name="Stopped" ColumnName="Stopped" />
+                <ScalarProperty Name="UnicomCode" ColumnName="UnicomCode" />
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="T_Devs_UpdateGps" FunctionName="ESMonitorModel.Store.T_Devs_UpdateGps" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

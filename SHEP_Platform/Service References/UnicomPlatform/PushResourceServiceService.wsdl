@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://resource.ems.ks/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="PushResourceServiceService" targetNamespace="http://resource.ems.ks/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://resource.ems.ks/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="pullDistrict" type="tns:pullDistrict" />
+      <xs:element name="pullDistrictResponse" type="tns:pullDistrictResponse" />
+      <xs:element name="pullProjectCategory" type="tns:pullProjectCategory" />
+      <xs:element name="pullProjectCategoryResponse" type="tns:pullProjectCategoryResponse" />
+      <xs:element name="pullProjectPeriod" type="tns:pullProjectPeriod" />
+      <xs:element name="pullProjectPeriodResponse" type="tns:pullProjectPeriodResponse" />
+      <xs:element name="pullProjectType" type="tns:pullProjectType" />
+      <xs:element name="pullProjectTypeResponse" type="tns:pullProjectTypeResponse" />
+      <xs:element name="pullRegion" type="tns:pullRegion" />
+      <xs:element name="pullRegionResponse" type="tns:pullRegionResponse" />
+      <xs:element name="pushDailyData" type="tns:pushDailyData" />
+      <xs:element name="pushDailyDataResponse" type="tns:pushDailyDataResponse" />
+      <xs:element name="pushDeviceStatus" type="tns:pushDeviceStatus" />
+      <xs:element name="pushDeviceStatusResponse" type="tns:pushDeviceStatusResponse" />
+      <xs:element name="pushDevices" type="tns:pushDevices" />
+      <xs:element name="pushDevicesResponse" type="tns:pushDevicesResponse" />
+      <xs:element name="pushHourlyData" type="tns:pushHourlyData" />
+      <xs:element name="pushHourlyDataResponse" type="tns:pushHourlyDataResponse" />
+      <xs:element name="pushProjectStatus" type="tns:pushProjectStatus" />
+      <xs:element name="pushProjectStatusResponse" type="tns:pushProjectStatusResponse" />
+      <xs:element name="pushProjects" type="tns:pushProjects" />
+      <xs:element name="pushProjectsResponse" type="tns:pushProjectsResponse" />
+      <xs:element name="pushRealTimeData" type="tns:pushRealTimeData" />
+      <xs:element name="pushRealTimeDataResponse" type="tns:pushRealTimeDataResponse" />
+      <xs:element name="registerVendor" type="tns:registerVendor" />
+      <xs:element name="registerVendorResponse" type="tns:registerVendorResponse" />
+      <xs:complexType name="pullProjectCategory">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pullProjectCategoryResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="pullProjectCategoryFlag" type="tns:emsPrjCategory" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="emsPrjCategory">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:int" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pullProjectType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pullProjectTypeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="pullProjectTypeFlag" type="tns:emsPrjType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="emsPrjType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:int" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pullProjectPeriod">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pullProjectPeriodResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="pullProjectPeriodFlag" type="tns:emsPrjPeriod" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="emsPrjPeriod">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:int" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushDevices">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="emsDeviceList" type="tns:emsDevice" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="emsDevice">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:string" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+          <xs:element minOccurs="0" name="ipAddr" type="xs:string" />
+          <xs:element minOccurs="0" name="macAddr" type="xs:string" />
+          <xs:element minOccurs="0" name="port" type="xs:string" />
+          <xs:element minOccurs="0" name="version" type="xs:string" />
+          <xs:element minOccurs="0" name="projectCode" type="xs:string" />
+          <xs:element minOccurs="0" name="longitude" type="xs:string" />
+          <xs:element minOccurs="0" name="latitude" type="xs:string" />
+          <xs:element minOccurs="0" name="startDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="endDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="installDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="onlineStatus" type="xs:boolean" />
+          <xs:element minOccurs="0" name="videoUrl" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushDevicesResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="deviceCodes" type="tns:resultData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="resultData">
+        <xs:sequence>
+          <xs:element name="result">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="entry">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" name="key" type="xs:anyType" />
+                      <xs:element minOccurs="0" name="value" type="xs:anyType" />
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushHourlyData">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="emsDataList" type="tns:emsData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="emsData">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="devCode" type="xs:string" />
+          <xs:element minOccurs="0" name="prjCode" type="xs:string" />
+          <xs:element name="prjType" type="xs:int" />
+          <xs:element name="dust" type="xs:float" />
+          <xs:element name="maxDust" type="xs:float" />
+          <xs:element name="minDust" type="xs:float" />
+          <xs:element name="temperature" type="xs:float" />
+          <xs:element name="maxTemperature" type="xs:float" />
+          <xs:element name="minTemperature" type="xs:float" />
+          <xs:element name="humidity" type="xs:float" />
+          <xs:element name="maxHumidity" type="xs:float" />
+          <xs:element name="minHumidity" type="xs:float" />
+          <xs:element name="noise" type="xs:int" />
+          <xs:element name="maxNoise" type="xs:int" />
+          <xs:element name="minNoise" type="xs:int" />
+          <xs:element name="pressure" type="xs:float" />
+          <xs:element name="maxPressure" type="xs:float" />
+          <xs:element name="minPressure" type="xs:float" />
+          <xs:element name="rainfall" type="xs:float" />
+          <xs:element name="maxRainfall" type="xs:float" />
+          <xs:element name="minRainfall" type="xs:float" />
+          <xs:element name="windSpeed" type="xs:float" />
+          <xs:element name="windDirection" type="xs:int" />
+          <xs:element name="dateTime" type="xs:long" />
+          <xs:element minOccurs="0" name="dustFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="noiseFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="humiFlag" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushHourlyDataResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="pushHourlyDataFlag" type="tns:resultData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushDailyData">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="emsDataList" type="tns:emsData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushDailyDataResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="pushDailyDataFlag" type="tns:resultData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushRealTimeData">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="emsDataList" type="tns:emsData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushRealTimeDataResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="pushRealTimeDataFlag" type="tns:resultData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushDeviceStatus">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="emsDeviceList" type="tns:emsDevice" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushDeviceStatusResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="deviceStatusCodes" type="tns:resultData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pullRegion">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pullRegionResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="pullRegionFlag" type="tns:emsRegion" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="emsRegion">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:int" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushProjects">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="emsProjectList" type="tns:emsProject" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="emsProject">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:string" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+          <xs:element minOccurs="0" name="district" type="xs:string" />
+          <xs:element minOccurs="0" name="prjType" type="xs:int" />
+          <xs:element minOccurs="0" name="prjCategory" type="xs:int" />
+          <xs:element minOccurs="0" name="prjPeriod" type="xs:int" />
+          <xs:element minOccurs="0" name="region" type="xs:int" />
+          <xs:element minOccurs="0" name="street" type="xs:string" />
+          <xs:element minOccurs="0" name="longitude" type="xs:string" />
+          <xs:element minOccurs="0" name="latitude" type="xs:string" />
+          <xs:element minOccurs="0" name="contractors" type="xs:string" />
+          <xs:element minOccurs="0" name="superintendent" type="xs:string" />
+          <xs:element minOccurs="0" name="telephone" type="xs:string" />
+          <xs:element minOccurs="0" name="address" type="xs:string" />
+          <xs:element minOccurs="0" name="siteArea" type="xs:float" />
+          <xs:element minOccurs="0" name="buildingArea" type="xs:float" />
+          <xs:element minOccurs="0" name="startDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="endDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="stage" type="xs:string" />
+          <xs:element minOccurs="0" name="isCompleted" type="xs:boolean" />
+          <xs:element minOccurs="0" name="status" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushProjectsResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="projectCodes" type="tns:resultData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushProjectStatus">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="emsProjectList" type="tns:emsProject" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pushProjectStatusResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="projectStatusCodes" type="tns:resultData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="registerVendor">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="registerVendorResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pullDistrict">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="vendorCode" type="xs:string" />
+          <xs:element minOccurs="0" name="parentDistrict" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pullDistrictResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="districts" type="tns:emsDistrict" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="emsDistrict">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:string" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="pullDistrict">
+    <wsdl:part name="parameters" element="tns:pullDistrict" />
+  </wsdl:message>
+  <wsdl:message name="pushDailyData">
+    <wsdl:part name="parameters" element="tns:pushDailyData" />
+  </wsdl:message>
+  <wsdl:message name="registerVendorResponse">
+    <wsdl:part name="parameters" element="tns:registerVendorResponse" />
+  </wsdl:message>
+  <wsdl:message name="pullProjectPeriodResponse">
+    <wsdl:part name="parameters" element="tns:pullProjectPeriodResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushDeviceStatusResponse">
+    <wsdl:part name="parameters" element="tns:pushDeviceStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushRealTimeDataResponse">
+    <wsdl:part name="parameters" element="tns:pushRealTimeDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushDevices">
+    <wsdl:part name="parameters" element="tns:pushDevices" />
+  </wsdl:message>
+  <wsdl:message name="pullProjectType">
+    <wsdl:part name="parameters" element="tns:pullProjectType" />
+  </wsdl:message>
+  <wsdl:message name="pullRegion">
+    <wsdl:part name="parameters" element="tns:pullRegion" />
+  </wsdl:message>
+  <wsdl:message name="pushHourlyDataResponse">
+    <wsdl:part name="parameters" element="tns:pushHourlyDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="pullProjectPeriod">
+    <wsdl:part name="parameters" element="tns:pullProjectPeriod" />
+  </wsdl:message>
+  <wsdl:message name="pullDistrictResponse">
+    <wsdl:part name="parameters" element="tns:pullDistrictResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushDailyDataResponse">
+    <wsdl:part name="parameters" element="tns:pushDailyDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushProjectStatusResponse">
+    <wsdl:part name="parameters" element="tns:pushProjectStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushRealTimeData">
+    <wsdl:part name="parameters" element="tns:pushRealTimeData" />
+  </wsdl:message>
+  <wsdl:message name="pullProjectTypeResponse">
+    <wsdl:part name="parameters" element="tns:pullProjectTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushProjects">
+    <wsdl:part name="parameters" element="tns:pushProjects" />
+  </wsdl:message>
+  <wsdl:message name="pushDeviceStatus">
+    <wsdl:part name="parameters" element="tns:pushDeviceStatus" />
+  </wsdl:message>
+  <wsdl:message name="pullRegionResponse">
+    <wsdl:part name="parameters" element="tns:pullRegionResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushHourlyData">
+    <wsdl:part name="parameters" element="tns:pushHourlyData" />
+  </wsdl:message>
+  <wsdl:message name="pushDevicesResponse">
+    <wsdl:part name="parameters" element="tns:pushDevicesResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushProjectStatus">
+    <wsdl:part name="parameters" element="tns:pushProjectStatus" />
+  </wsdl:message>
+  <wsdl:message name="pullProjectCategoryResponse">
+    <wsdl:part name="parameters" element="tns:pullProjectCategoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="pushProjectsResponse">
+    <wsdl:part name="parameters" element="tns:pushProjectsResponse" />
+  </wsdl:message>
+  <wsdl:message name="registerVendor">
+    <wsdl:part name="parameters" element="tns:registerVendor" />
+  </wsdl:message>
+  <wsdl:message name="pullProjectCategory">
+    <wsdl:part name="parameters" element="tns:pullProjectCategory" />
+  </wsdl:message>
+  <wsdl:portType name="PushResourceService">
+    <wsdl:operation name="pullProjectCategory">
+      <wsdl:input name="pullProjectCategory" message="tns:pullProjectCategory" />
+      <wsdl:output name="pullProjectCategoryResponse" message="tns:pullProjectCategoryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pullProjectType">
+      <wsdl:input name="pullProjectType" message="tns:pullProjectType" />
+      <wsdl:output name="pullProjectTypeResponse" message="tns:pullProjectTypeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pullProjectPeriod">
+      <wsdl:input name="pullProjectPeriod" message="tns:pullProjectPeriod" />
+      <wsdl:output name="pullProjectPeriodResponse" message="tns:pullProjectPeriodResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pushDevices">
+      <wsdl:input name="pushDevices" message="tns:pushDevices" />
+      <wsdl:output name="pushDevicesResponse" message="tns:pushDevicesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pushHourlyData">
+      <wsdl:input name="pushHourlyData" message="tns:pushHourlyData" />
+      <wsdl:output name="pushHourlyDataResponse" message="tns:pushHourlyDataResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pushDailyData">
+      <wsdl:input name="pushDailyData" message="tns:pushDailyData" />
+      <wsdl:output name="pushDailyDataResponse" message="tns:pushDailyDataResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pushRealTimeData">
+      <wsdl:input name="pushRealTimeData" message="tns:pushRealTimeData" />
+      <wsdl:output name="pushRealTimeDataResponse" message="tns:pushRealTimeDataResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pushDeviceStatus">
+      <wsdl:input name="pushDeviceStatus" message="tns:pushDeviceStatus" />
+      <wsdl:output name="pushDeviceStatusResponse" message="tns:pushDeviceStatusResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pullRegion">
+      <wsdl:input name="pullRegion" message="tns:pullRegion" />
+      <wsdl:output name="pullRegionResponse" message="tns:pullRegionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pushProjects">
+      <wsdl:input name="pushProjects" message="tns:pushProjects" />
+      <wsdl:output name="pushProjectsResponse" message="tns:pushProjectsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pushProjectStatus">
+      <wsdl:input name="pushProjectStatus" message="tns:pushProjectStatus" />
+      <wsdl:output name="pushProjectStatusResponse" message="tns:pushProjectStatusResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="registerVendor">
+      <wsdl:input name="registerVendor" message="tns:registerVendor" />
+      <wsdl:output name="registerVendorResponse" message="tns:registerVendorResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="pullDistrict">
+      <wsdl:input name="pullDistrict" message="tns:pullDistrict" />
+      <wsdl:output name="pullDistrictResponse" message="tns:pullDistrictResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PushResourceServiceServiceSoapBinding" type="tns:PushResourceService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="pullProjectCategory">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pullProjectCategory">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pullProjectCategoryResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pullProjectType">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pullProjectType">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pullProjectTypeResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pullProjectPeriod">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pullProjectPeriod">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pullProjectPeriodResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pushDevices">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pushDevices">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pushDevicesResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pushHourlyData">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pushHourlyData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pushHourlyDataResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pushDailyData">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pushDailyData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pushDailyDataResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pushDeviceStatus">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pushDeviceStatus">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pushDeviceStatusResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pushRealTimeData">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pushRealTimeData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pushRealTimeDataResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pullRegion">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pullRegion">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pullRegionResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pushProjects">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pushProjects">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pushProjectsResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pushProjectStatus">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pushProjectStatus">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pushProjectStatusResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="pullDistrict">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="pullDistrict">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="pullDistrictResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registerVendor">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="registerVendor">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="registerVendorResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PushResourceServiceService">
+    <wsdl:port name="PushResourceServicePort" binding="tns:PushResourceServiceServiceSoapBinding">
+      <soap:address location="http://112.64.17.60:9080/services/pushResource" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

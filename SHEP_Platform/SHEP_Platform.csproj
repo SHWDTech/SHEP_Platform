@@ -108,6 +108,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -195,6 +196,7 @@
     <Compile Include="Common\LogService.cs" />
     <Compile Include="Common\RedisService.cs" />
     <Compile Include="Common\TextMessageService.cs" />
+    <Compile Include="Common\UnicomService.cs" />
     <Compile Include="Common\XmlSerializerHelper.cs" />
     <Compile Include="Controllers\AppServerController.cs" />
     <Compile Include="Controllers\ExportController.cs" />
@@ -210,9 +212,15 @@
     <Compile Include="Models\Api\DeviceRecentData.cs" />
     <Compile Include="Models\Api\ServerInfomation.cs" />
     <Compile Include="Models\Api\VehicleRecordUpload.cs" />
+    <Compile Include="Models\PlatformRegister\UnicomPlatformRegisterModel.cs" />
     <Compile Include="Process\GlobalConfig.cs" />
     <Compile Include="ScheduleJobs\CalcMinuteAvgJob.cs" />
     <Compile Include="ScheduleJobs\UpdateStatStatusJob.cs" />
+    <Compile Include="Service References\UnicomPlatform\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="ShwdResult\ExcelResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -482,6 +490,12 @@
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_Tasks_GetModel_Result.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_UnicomDevice.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_UnicomProject.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
     <Compile Include="T_UserAuthority.cs">
@@ -1046,6 +1060,12 @@
     <Content Include="Scripts\Utility\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\Utility\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Service References\UnicomPlatform\configuration91.svcinfo" />
+    <None Include="Service References\UnicomPlatform\configuration.svcinfo" />
+    <None Include="Service References\UnicomPlatform\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1102,6 +1122,67 @@
     <Content Include="Views\Analysis\ExceptionHistory.cshtml" />
     <Content Include="Views\Export\PutianExport.cshtml" />
     <Content Include="Views\PlatformRegister\UnicomProject.cshtml" />
+    <Content Include="Views\PlatformRegister\UniComProjectManage.cshtml" />
+    <None Include="Service References\UnicomPlatform\PushResourceServiceService.wsdl" />
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.emsDistrict.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.emsPrjCategory.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.emsPrjPeriod.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.emsPrjType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.emsRegion.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pullDistrictResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pullProjectCategoryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pullProjectPeriodResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pullProjectTypeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pullRegionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pushDailyDataResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pushDevicesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pushDeviceStatusResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pushHourlyDataResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pushProjectsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pushProjectStatusResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.pushRealTimeDataResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.registerVendorResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\UnicomPlatform\SHEP_Platform.UnicomPlatform.resultData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Views\PlatformRegister\UniComDeviceManage.cshtml" />
+    <Content Include="Views\PlatformRegister\UnicomDevice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1130,6 +1211,9 @@
       <Project>{109B3496-CD72-4527-BAA3-1737EE73D80E}</Project>
       <Name>DeviceExceptionChecker</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\UnicomPlatform\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

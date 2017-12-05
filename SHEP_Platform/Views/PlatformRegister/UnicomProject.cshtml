@@ -1,7 +1,201 @@
-﻿@model dynamic
-
+﻿@model SHEP_Platform.Models.PlatformRegister.UnicomPlatformRegisterModel
 @{
-    ViewBag.Title = "联通平台项目注册";
+    ViewBag.Title = "注册联通平台工地";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>title</h2>
+
+<div class="col-md-12" style="margin-top: 15px;">
+    @using (Html.BeginForm("UnicomProject", "PlatformRegister", FormMethod.Post, new { Id = "registerForm" }))
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>工程信息</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-condensed table-hover">
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.StatId)
+                        </td>
+                        <td colspan="3">
+                            @Html.DisplayFor(m => m.StatId)
+                            @Html.HiddenFor(m => m.StatId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.RegisterCode)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.RegisterCode, new { @readonly = "readonly", @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.Name)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Name, new { @readonly = "readonly", @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                    <td>
+                        @Html.LabelFor(m => m.District)
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.District, new SelectList(Model.Districts, "Name", "Name"), "选择区县", new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.ProjectType)
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.ProjectType, new SelectList(Model.ProjectTypes, "Code", "Name"), "选择工程类型", new { @class = "form-control" })
+                    </td>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.ProjectCategory)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.ProjectCategory, new SelectList(Model.ProjectCategories, "Code", "Name"), "选择工程性质", new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.ProjectPeriod)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.ProjectPeriod, new SelectList(Model.ProjectPeriods, "Code", "Name"), "选择工程工期", new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.Region)
+                        </td>
+                        <td colspan="3">
+                            @Html.DropDownListFor(m => m.Region, new SelectList(Model.Regions, "Code", "Name"), "选择工程区域", new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.Longitude)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Longitude, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.Latitude)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Latitude, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.Street)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Street, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.Address)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.Contractors)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Contractors, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.Superintendent)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Superintendent, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.Telephone)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Telephone, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.Stage)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Stage, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.SiteArea)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.SiteArea, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.BuildingArea)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.BuildingArea, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.StartDate)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.EndDate)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.IsCompleted)
+                        </td>
+                        <td colspan="3">
+                            @Html.CheckBoxFor(m => m.IsCompleted)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            @Html.ValidationMessage("RegisterError")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2">
+                            <input type="submit" class="btn btn-default" value="确认提交" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+@section css{
+    @Styles.Render("~/Content/datetimepickercss")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/datetimepicker")
+    <script type="text/javascript">
+        $(function () {
+            $('#StartDate').datetimepicker({
+                locale: 'zh-cn',
+                format: 'YYYY-MM-DD'
+            });
+
+            $('#EndDate').datetimepicker({
+                locale: 'zh-cn',
+                format: 'YYYY-MM-DD'
+            });
+        });
+    </script>
+}

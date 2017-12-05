@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "联通平台设备注册管理";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+<div>
+    @{
+        var table = Html.BootstrapTable(null, TablePaginationOption.server, new
+        {
+            id = "unicomDeviceRegisterTable",
+            data_page_size = 25,
+            data_reset_offset = true,
+            data_url = "/PlatformRegister/UnicomDeviceTable",
+            data_height = 600
+        });
+        var builder = table.Column("监测点名称", "StatName")
+            .Column("设备名称", "DeviceName")
+            .Column("联通平台编号", "UnicomCode")
+            .Column("是否已注册", "")
+            .Apply(ColumnOption.formatter, "unicomDeviceRegFormatter")
+            .Column("是否已注销", "Stopped")
+            .Apply(ColumnOption.formatter, "unicomDeviceCancelFormatter")
+            .Column("操作")
+            .Apply(ColumnOption.width, "120")
+            .Apply(ColumnOption.formatter, "unicomDeviceOperateFormatter")
+            .Apply(ColumnOption.events, "unicomDeviceCancelEvents");
+    }
+    @(builder)
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")
+    <script type="text/javascript">
+        window.unicomDeviceRegFormatter = function(index, row, element) {
+            if (row.UnicomCode.length <= 0) {
+                return '未注册';
+            } else {
+                return '已注册';
+            }
+        };
+
+        window.unicomDeviceCancelFormatter = function(index, row, element) {
+            if (row.UnicomCode.length > 0 && row.Stopped) {
+                return '已注销';
+            } else {
+                return '-';
+            }
+        };
+
+        window.unicomDeviceOperateFormatter = function(index, row, element) {
+            if (row.UnicomCode.length <= 0) {
+                return [
+                    '<a class="update" href="/PlatformRegister/UnicomDevice?deviceId=' + row.Id + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-registration-mark">注册</span></a>'
+                ].join('');
+            } else if (row.UnicomCode.length > 0 && !row.Stopped) {
+                return [
+                    '<a class="delete" href="javascript:void(0)"><span class="glyphicon glyphicon-remove">注销</span></a>'
+                ].join('');
+            }
+        };
+
+        window.unicomDeviceCancelEvents = {
+            'click .delete': function (e, value, row) {
+                if (confirm('确定注销该设备吗？')) {
+                    $.get('/PlatformRegister/UnicomCancel?deviceId=' + row.Id, null, function (ret) {
+                        if (ret === 'success') {
+                            msg.info('注销成功');
+                        }
+                    });
+                }
+            }
+        };
+
+        $(function () {
+            $('#unicomRegisterTable').bootstrapTable();
+        });
+    </script>
+}

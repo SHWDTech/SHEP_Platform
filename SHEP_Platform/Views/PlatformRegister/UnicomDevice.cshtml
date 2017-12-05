@@ -1,0 +1,163 @@
+﻿@model SHEP_Platform.Models.PlatformRegister.UnicomPlatformDeviceModel
+@{
+    ViewBag.Title = "注册联通平台设备";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-md-12" style="margin-top: 15px;">
+    @using (Html.BeginForm("UnicomDevice", "PlatformRegister", FormMethod.Post, new { Id = "registerForm" }))
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>工程信息</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-condensed table-hover">
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m.Code)
+                            @Html.HiddenFor(m => m.Code)
+                            @Html.HiddenFor(m => m.TpMax)
+                            @Html.HiddenFor(m => m.TpMin)
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.Name)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.ProjectCode)
+                        </td>
+                        <td colspan="3">
+                            @Html.DropDownListFor(m => m.ProjectCode, new SelectList(Model.Projects, "Code", "Name"), "选择所属工程", new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.UnicomName)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.UnicomName, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.Version)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Version, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.IpAddr)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.IpAddr, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.MacAddr)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.MacAddr, new { @class = "form-control" })
+                        </td>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.Longitude)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Longitude, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.Latitude)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.Latitude, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.StartDate)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.EndDate)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.InstallDate)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.InstallDate, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.VideoUrl)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.VideoUrl, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.OnlineStatus)
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.OnlineStatus)
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.IsTransfer)
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.IsTransfer)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            @Html.ValidationMessage("RegisterError")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2">
+                            <input type="submit" class="btn btn-default" value="确认提交" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+@section css{
+    @Styles.Render("~/Content/datetimepickercss")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/datetimepicker")
+    <script type="text/javascript">
+        $(function () {
+            $('#StartDate').datetimepicker({
+                locale: 'zh-cn',
+                format: 'YYYY-MM-DD'
+            });
+
+            $('#EndDate').datetimepicker({
+                locale: 'zh-cn',
+                format: 'YYYY-MM-DD'
+            });
+            $('#InstallDate').datetimepicker({
+                locale: 'zh-cn',
+                format: 'YYYY-MM-DD'
+            });
+        });
+    </script>
+}
