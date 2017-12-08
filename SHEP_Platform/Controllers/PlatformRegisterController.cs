@@ -6,6 +6,7 @@ using SHEP_Platform.Models.Api;
 using SHEP_Platform.Models.PlatformRegister;
 using SHEP_Platform.UnicomPlatform;
 using SHWDTech.Platform.Utility;
+using System.Collections.Generic;
 
 namespace SHEP_Platform.Controllers
 {
@@ -167,17 +168,22 @@ namespace SHEP_Platform.Controllers
 
             var count = DbContext.T_Devs.Count();
 
-            var devsInfo = (from dev in DbContext.T_Devs.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit)
-                let reg = regedDevs.FirstOrDefault(r => r.DevId == dev.Id)
-                let stat = DbContext.T_Stats.FirstOrDefault(s => s.Id.ToString() == dev.StatId)
-                select new
+            var devsInfo = new List<UnicomDeviceManageModel>();
+
+            foreach (var dev in DbContext.T_Devs.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit))
+            {
+                var regDev = regedDevs.FirstOrDefault(r => r.DevId == dev.Id);
+                var stat = DbContext.T_Stats.First(p => p.Id.ToString() == dev.StatId);
+                var model = new UnicomDeviceManageModel
                 {
-                    dev.Id,
-                    stat.StatName,
+                    Id = dev.Id,
+                    StatName = stat.StatName,
                     DeviceName = dev.DevCode,
-                    UnicomCode = reg == null ? string.Empty : reg.UnicomCode,
-                    Stopped = reg == null || reg.OnCalc
-                }).ToList();
+                    UnicomCode = regDev == null ? string.Empty : regDev.UnicomCode,
+                    Stopped = regDev == null || regDev.OnCalc
+                };
+                devsInfo.Add(model);
+            }
 
             return Json(new
             {
@@ -195,6 +201,7 @@ namespace SHEP_Platform.Controllers
             var model = new UnicomPlatformDeviceModel
             {
                 Name = dev.DevCode,
+                DevId = dev.Id,
                 UnicomName = string.Empty,
                 IpAddr = string.Empty,
                 MacAddr = string.Empty,
@@ -245,10 +252,12 @@ namespace SHEP_Platform.Controllers
             {
                 try
                 {
+                    var stat = DbContext.T_UnicomProject.First(s => s.UnicomCode == model.ProjectCode);
                     model.Code = result.result[0].key.ToString();
                     var unicomDevice = new T_UnicomDevice
                     {
                         DevId = model.DevId,
+                        StatId = stat.StatId,
                         UnicomCode = model.Code,
                         OnCalc = true,
                         Max = model.TpMax,
@@ -272,6 +281,23 @@ namespace SHEP_Platform.Controllers
             }
             LoadDeviceParams(model);
             return View(model);
+        }
+
+        public ActionResult UnicomDeviceCancel(int deviceId)
+        {
+            var dev = DbContext.T_UnicomDevice.FirstOrDefault(p => p.DevId == deviceId);
+            if (dev == null) return Json("failed", JsonRequestBehavior.AllowGet);
+            dev.OnCalc = false;
+            try
+            {
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                LogService.Instance.Error("注销设备联通平台异常。", ex);
+                return Json("failed", JsonRequestBehavior.AllowGet);
+            }
+            return Json("success", JsonRequestBehavior.AllowGet);
         }
 
         private static void LoadParams(UnicomPlatformRegisterModel model)

@@ -47,6 +47,16 @@ namespace SHEP_Platform
                 .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
                 .Build();
             scheduler.ScheduleJob(job1, trigger1);
+
+            var jobUnicom = JobBuilder.Create<UnicomPlatformDataTransactionJob>()
+                .Build();
+
+            var triggerUnicom = TriggerBuilder.Create()
+                .StartNow()
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
+                .Build();
+
+            scheduler.ScheduleJob(jobUnicom, triggerUnicom);
         }
     }
 }

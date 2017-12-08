@@ -20,5 +20,6 @@ namespace SHEP_Platform
         public double Min { get; set; }
         public bool OnCalc { get; set; }
         public string UnicomCode { get; set; }
+        public int StatId { get; set; }
     }
 }

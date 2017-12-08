@@ -215,6 +215,7 @@
     <Compile Include="Models\PlatformRegister\UnicomPlatformRegisterModel.cs" />
     <Compile Include="Process\GlobalConfig.cs" />
     <Compile Include="ScheduleJobs\CalcMinuteAvgJob.cs" />
+    <Compile Include="ScheduleJobs\UnicomPlatformDataTransactionJob.cs" />
     <Compile Include="ScheduleJobs\UpdateStatStatusJob.cs" />
     <Compile Include="Service References\UnicomPlatform\Reference.cs">
       <AutoGen>True</AutoGen>

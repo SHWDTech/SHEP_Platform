@@ -150,4 +150,17 @@ namespace SHEP_Platform.Models.PlatformRegister
 
         public List<UnicomPlatformParams> Projects { get; set; }
     }
+
+    public class UnicomDeviceManageModel
+    {
+        public int Id { get; set; }
+
+        public string StatName { get; set; }
+
+        public string DeviceName { get; set; }
+
+        public string UnicomCode { get; set; }
+
+        public bool Stopped { get; set; }
+    }
 }

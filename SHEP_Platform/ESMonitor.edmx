@@ -329,6 +329,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DevId" Type="int" Nullable="false" />
+          <Property Name="StatId" Type="int" Nullable="false" />
           <Property Name="UnicomCode" Type="varchar" MaxLength="100" />
           <Property Name="Max" Type="float" Nullable="false" />
           <Property Name="Min" Type="float" Nullable="false" />
@@ -2811,6 +2812,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary k
           <Property Name="Min" Type="Double" Nullable="false" />
           <Property Name="OnCalc" Type="Boolean" Nullable="false" />
           <Property Name="UnicomCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="StatId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="T_UnicomProject">
           <Key>
@@ -3973,6 +3975,7 @@ warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary k
           <EntitySetMapping Name="T_UnicomDevice">
             <EntityTypeMapping TypeName="ESMonitorModel.T_UnicomDevice">
               <MappingFragment StoreEntitySet="T_UnicomDevice">
+                <ScalarProperty Name="StatId" ColumnName="StatId" />
                 <ScalarProperty Name="UnicomCode" ColumnName="UnicomCode" />
                 <ScalarProperty Name="OnCalc" ColumnName="OnCalc" />
                 <ScalarProperty Name="Min" ColumnName="Min" />

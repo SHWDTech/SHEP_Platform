@@ -62,7 +62,7 @@
         window.unicomDeviceCancelEvents = {
             'click .delete': function (e, value, row) {
                 if (confirm('确定注销该设备吗？')) {
-                    $.get('/PlatformRegister/UnicomCancel?deviceId=' + row.Id, null, function (ret) {
+                    $.get('/PlatformRegister/UnicomDeviceCancel?deviceId=' + row.Id, null, function (ret) {
                         if (ret === 'success') {
                             msg.info('注销成功');
                         }
