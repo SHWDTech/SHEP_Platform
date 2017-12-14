@@ -353,7 +353,11 @@ namespace SHEP_Platform.Controllers
                     TP = (obj.TP / 1000).ToString("F3"),
                     PM25 = (obj.PM25.Value / 1000).ToString("F3"),
                     PM100 = (obj.PM100.Value / 1000).ToString("F3"),
-                    DB = (obj.DB).ToString("F2")
+                    DB = (obj.DB).ToString("F2"),
+                    Temperature = (obj.Temperature).ToString(),
+                    Humidity=(obj.Humidity).ToString(),
+                    WindSpeed=(obj.WindSpeed).ToString("F1"),
+                    WindDirection=(obj.WindDirection).ToString()
                 })
                 .ToList();
 
@@ -385,7 +389,11 @@ namespace SHEP_Platform.Controllers
                     TP = (obj.TP / 1000).ToString("F3"),
                     PM25 = (obj.PM25.Value / 1000).ToString("F3"),
                     PM100 = (obj.PM100.Value / 1000).ToString("F3"),
-                    DB = (obj.DB).ToString("F2")
+                    DB = (obj.DB).ToString("F2"),
+                    Temperature = (obj.Temperature).ToString(),
+                    Humidity = (obj.Humidity).ToString(),
+                    WindSpeed = (obj.WindSpeed).ToString("F1"),
+                    WindDirection = (obj.WindDirection).ToString()
                 })
                 .ToList();
 
