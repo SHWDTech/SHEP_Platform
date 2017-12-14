@@ -335,7 +335,7 @@ namespace SHEP_Platform.Controllers
             var limit = int.Parse(Request["limit"]);
             var offset = int.Parse(Request["offset"]);
             var startDate = DateTime.Parse(Request["start"]);
-            var endDate = DateTime.Parse(Request["end"]);
+            var endDate = DateTime.Parse(Request["end"]).AddDays(1);
 
             if (stat == null)
             {
@@ -371,7 +371,7 @@ namespace SHEP_Platform.Controllers
             var limit = int.Parse(Request["limit"]);
             var offset = int.Parse(Request["offset"]);
             var startDate = DateTime.Parse(Request["start"]);
-            var endDate = DateTime.Parse(Request["end"]);
+            var endDate = DateTime.Parse(Request["end"]).AddDays(1);
 
             if (dev == null)
             {

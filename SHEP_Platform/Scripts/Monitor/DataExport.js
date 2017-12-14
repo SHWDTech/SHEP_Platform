@@ -21,11 +21,12 @@ $(function () {
         var endDate = new Date();
         disableDatePicker();
         if ($('.daterange').val() === QueryDateRange.Today) {
-            endDate.setDate(startDate.getDate() + 1);
+            endDate.setDate(startDate.getDate());
             startDateCtrl.val(startDate.Format('yyyy-MM-dd'));
             endDateCtrl.val(endDate.Format('yyyy-MM-dd'));
         }else if ($('.daterange').val() === QueryDateRange.LastDay) {
             startDate.setDate(endDate.getDate() - 1);
+            endDate = startDate;
             startDateCtrl.val(startDate.Format('yyyy-MM-dd'));
             endDateCtrl.val(endDate.Format('yyyy-MM-dd'));
         } else if ($('.daterange').val() === QueryDateRange.LastWeek) {
