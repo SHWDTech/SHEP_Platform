@@ -205,5 +205,15 @@ namespace HikCameraConfiger
         {
             NET_DVR_Cleanup();
         }
+
+        private void TxtMessage_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
+        }
+
+        private void CmbCompany_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

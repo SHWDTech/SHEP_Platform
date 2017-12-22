@@ -6,7 +6,6 @@ using System.Web.Security;
 using SHEP_Platform.Common;
 using SHEP_Platform.Models.Account;
 using SHEP_Platform.Process;
-
 namespace SHEP_Platform.Controllers
 {
     public class AccountController : ControllerBase
@@ -64,8 +63,8 @@ namespace SHEP_Platform.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            FormsAuthentication.SignOut();
-            return RedirectToAction(nameof(Login), "Account");
+           FormsAuthentication.SignOut();
+           return RedirectToAction(nameof(Login), "Account");
         }
 
         [AllowAnonymous]

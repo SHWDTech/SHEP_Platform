@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using SHEP_Platform.Common;
-
 namespace SHEP_Platform.Controllers
 {
 
@@ -52,8 +51,8 @@ namespace SHEP_Platform.Controllers
             }
             else
             {
-                FormsAuthentication.SignOut();
-                ctx.Result = RedirectToAction("Login", "Account");
+                 FormsAuthentication.SignOut();
+                 ctx.Result = RedirectToAction("Login", "Account");
             }
         }
 

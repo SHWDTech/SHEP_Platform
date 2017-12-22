@@ -28,6 +28,16 @@
     @Scripts.Render("~/bundles/base")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/Utility/Layout.js"></script>
+    <script type="text/javascript">
+        function Exit(){
+            if (confirm("您确定要退出本系统么？")) {
+                window.location.href = "Login";
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="navbar navbar-default topheadnav">
@@ -54,7 +64,7 @@
                     </div>
                 </li>
                 <li>
-                    <a href="javascript:document.getElementById('logoutForm').submit()">退出</a>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" onclick=" return Exit()">退出</a>
                 </li>
             </ul>
         }
@@ -117,7 +127,7 @@
                                 <li>@Html.ActionLink("设备测试", "DeviceRecent", "Admin")</li>
                                 <li>@Html.ActionLink("新增用户", "UserEdit", "Admin", new { id = "" }, null)</li>
                                 <li>@Html.ActionLink("用户管理", "UserManage", "Admin")</li>
-                                <li>@Html.ActionLink("新增摄像头", "Camera", "Admin", new { id = ""}, null)</li>
+                                <li>@Html.ActionLink("新增摄像头", "Camera", "Admin", new { id = "" }, null)</li>
                                 <li>@Html.ActionLink("管理摄像头", "CameraManage", "Admin")</li>
                                 <li>@Html.ActionLink("联通平台工程管理", "UniComProjectManage", "PlatformRegister")</li>
                                 <li>@Html.ActionLink("联通平台设备管理", "UniComDeviceManage", "PlatformRegister")</li>

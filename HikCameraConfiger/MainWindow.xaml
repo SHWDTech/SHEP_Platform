@@ -29,7 +29,7 @@
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Top" Margin="0, 10, 0, 0">
                     <Label Content="注册公司："></Label>
-                    <ComboBox x:Name="CmbCompany" Width="150" VerticalContentAlignment="Center"></ComboBox>
+                    <ComboBox x:Name="CmbCompany" Width="150" VerticalContentAlignment="Center" SelectionChanged="CmbCompany_SelectionChanged"></ComboBox>
                     <Label Content="选择设备"></Label>
                     <ComboBox x:Name="CmbDevice" Width="210" VerticalContentAlignment="Center"></ComboBox>
                     <Button Content="开始注册" Width="100" Margin="10,0,0,0" Click="StartRegister"></Button>
@@ -38,7 +38,7 @@
             </DockPanel>
         </GroupBox>
         <GroupBox Grid.Row="1" Header="运行信息">
-            <TextBox x:Name="TxtMessage" IsReadOnly="True" Background="#f0f0f0"></TextBox>
+            <TextBox x:Name="TxtMessage" IsReadOnly="True" Background="#f0f0f0" TextChanged="TxtMessage_TextChanged"></TextBox>
         </GroupBox>
     </Grid>
 </Window>
