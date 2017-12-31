@@ -145,7 +145,7 @@ namespace SHEP_Platform.Controllers
                 devs = Request["devs"]?.Split(',');
             }
             var startDate = DateTime.Parse(Request["startDate"]);
-            var endDate = DateTime.Parse(Request["endDate"]);
+            var endDate = DateTime.Parse(Request["endDate"]).AddDays(1);
 
             var dataSource = new List<WorkSheet>();
             if (stats != null)

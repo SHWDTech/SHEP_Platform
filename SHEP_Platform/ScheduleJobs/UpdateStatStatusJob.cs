@@ -15,6 +15,8 @@ namespace SHEP_Platform.ScheduleJobs
             using (var ctx = new ESMonitorEntities())
             {
                 var statIds = ctx.T_Stats;
+                var checkDate = DateTime.Now.AddMinutes(-2);
+                var recentDatas = ctx.T_ESMin.Where(m => m.UpdateTime > checkDate).ToList();
                 foreach (var stat in statIds)
                 {
                     var cacheName = $"StatStatus:id={stat.Id}";
@@ -38,7 +40,8 @@ namespace SHEP_Platform.ScheduleJobs
                     var lastUpdateTime = DateTime.Now;
                     foreach (var devid in devIds)
                     {
-                        var esMin = ctx.T_ESMin.OrderByDescending(obj => obj.UpdateTime).FirstOrDefault(es => es.DevId == devid);
+                        var esMin = recentDatas.FirstOrDefault(m =>
+                            m.StatId == stat.Id && m.DevId == devid);
                         if (esMin != null)
                         {
                             tpTotal += esMin.TP;

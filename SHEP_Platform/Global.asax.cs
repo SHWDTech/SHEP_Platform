@@ -44,7 +44,7 @@ namespace SHEP_Platform
 
             var trigger1 = TriggerBuilder.Create()
                 .StartAt(new DateTimeOffset(DateTime.Now.AddSeconds(60 - DateTime.Now.Second)))
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever())
                 .Build();
             scheduler.ScheduleJob(job1, trigger1);
 
