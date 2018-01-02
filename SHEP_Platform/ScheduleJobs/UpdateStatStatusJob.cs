@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using ESMonitor.Model;
+using Newtonsoft.Json;
 using Platform.Cache;
 using Quartz;
+using SHEP_Platform.Common;
 using SHEP_Platform.Enums;
 using SHEP_Platform.Models.Home;
 
@@ -15,8 +18,7 @@ namespace SHEP_Platform.ScheduleJobs
             using (var ctx = new ESMonitorEntities())
             {
                 var statIds = ctx.T_Stats;
-                var checkDate = DateTime.Now.AddMinutes(-2);
-                var recentDatas = ctx.T_ESMin.Where(m => m.UpdateTime > checkDate).ToList();
+                var allDevs = ctx.T_Devs.ToList();
                 foreach (var stat in statIds)
                 {
                     var cacheName = $"StatStatus:id={stat.Id}";
@@ -29,36 +31,34 @@ namespace SHEP_Platform.ScheduleJobs
                         PolluteType = PolluteType.NotOverRange
                     };
 
-                    var devIds = ctx.T_Devs.Where(dev => dev.StatId == stat.Id.ToString()).Select(devId => devId.Id).ToArray();
+                    var devIds = allDevs.Where(dev => dev.StatId == stat.Id.ToString()).Select(devId => devId.Id).ToArray();
 
                     var tpTotal = 0.0d;
                     var dbTotal = 0.0d;
                     var pm25Total = 0.0d;
                     var pm100Total = 0.0d;
-                    var vocTotal = 0.0d;
                     var validDev = 0;
                     var lastUpdateTime = DateTime.Now;
                     foreach (var devid in devIds)
                     {
-                        var esMin = recentDatas.FirstOrDefault(m =>
-                            m.StatId == stat.Id && m.DevId == devid);
-                        if (esMin != null)
+                        var devData = RedisService.GetRedisDatabase().StringGet($"DustLastValue:{stat.Id}-{devid}");
+
+                        if (devData.HasValue)
                         {
-                            tpTotal += esMin.TP;
-                            dbTotal += esMin.DB;
-                            pm25Total += esMin.PM25.GetValueOrDefault();
-                            pm100Total += esMin.PM100.GetValueOrDefault();
-                            vocTotal += esMin.VOCs.GetValueOrDefault();
-                            validDev += 1;
-                            if (esMin.UpdateTime != null) lastUpdateTime = esMin.UpdateTime.Value;
+                            var esMin = JsonConvert.DeserializeObject<EsMin>(devData);
+                            tpTotal += esMin.Tp;
+                            dbTotal += esMin.Db;
+                            pm25Total += esMin.Pm25;
+                            pm100Total += esMin.Pm100;
+                            lastUpdateTime = esMin.UpdateTime;
                         }
+                        validDev += 1;
                     }
 
                     status.AvgTp = (tpTotal / validDev / 1000.0).ToString("f3");
                     status.AvgDb = (dbTotal / validDev).ToString("f3");
                     status.AvgPm25 = (pm25Total / validDev / 1000.0).ToString("f3");
                     status.AvgPm100 = (pm100Total / validDev / 1000.0).ToString("f3");
-                    status.AvgVoc = (vocTotal / validDev).ToString("f3");
                     status.UpdateTime = lastUpdateTime.ToString("yyyy-MM-dd HH:mm:ss");
                     status.PolluteType = PolluteType.NotOverRange;
                     PlatformCaches.Add(cacheName, status, cacheType:"statStatus");
