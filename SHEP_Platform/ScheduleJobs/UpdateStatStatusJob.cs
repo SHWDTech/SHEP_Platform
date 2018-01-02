@@ -30,29 +30,35 @@ namespace SHEP_Platform.ScheduleJobs
                         Latitude = stat.Latitude,
                         PolluteType = PolluteType.NotOverRange
                     };
-
-                    var devIds = allDevs.Where(dev => dev.StatId == stat.Id.ToString()).Select(devId => devId.Id).ToArray();
-
+                    
                     var tpTotal = 0.0d;
                     var dbTotal = 0.0d;
                     var pm25Total = 0.0d;
                     var pm100Total = 0.0d;
                     var validDev = 0;
                     var lastUpdateTime = DateTime.Now;
-                    foreach (var devid in devIds)
+                    var devIds = allDevs.Where(dev => dev.StatId == stat.Id.ToString()).Select(devId => devId.Id).ToArray();
+                    if (devIds.Length <= 0)
                     {
-                        var devData = RedisService.GetRedisDatabase().StringGet($"DustLastValue:{stat.Id}-{devid}");
-
-                        if (devData.HasValue)
+                        validDev = 1;
+                    }
+                    else
+                    {
+                        foreach (var devid in devIds)
                         {
-                            var esMin = JsonConvert.DeserializeObject<EsMin>(devData);
-                            tpTotal += esMin.Tp;
-                            dbTotal += esMin.Db;
-                            pm25Total += esMin.Pm25;
-                            pm100Total += esMin.Pm100;
-                            lastUpdateTime = esMin.UpdateTime;
+                            var devData = RedisService.GetRedisDatabase().StringGet($"DustLastValue:{stat.Id}-{devid}");
+
+                            if (devData.HasValue)
+                            {
+                                var esMin = JsonConvert.DeserializeObject<EsMin>(devData);
+                                tpTotal += esMin.Tp;
+                                dbTotal += esMin.Db;
+                                pm25Total += esMin.Pm25;
+                                pm100Total += esMin.Pm100;
+                                lastUpdateTime = esMin.UpdateTime;
+                            }
+                            validDev += 1;
                         }
-                        validDev += 1;
                     }
 
                     status.AvgTp = (tpTotal / validDev / 1000.0).ToString("f3");
