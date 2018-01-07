@@ -80,7 +80,7 @@ namespace SHEP_Platform.Controllers
             }
 
             WdContext.SiteMapMenu.ActionMenu.Name = "编辑监测点";
-            StatEditViewModel model = new StatEditViewModel();
+            var model = new StatEditViewModel();
             if (string.IsNullOrWhiteSpace(id))
             {
                 WdContext.SiteMapMenu.ActionMenu.Name = "新增监测点";
@@ -171,7 +171,7 @@ namespace SHEP_Platform.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("StatManage", "Admin");
+            return RedirectToAction(nameof(StatManage), "Admin");
         }
 
         [HttpGet]
@@ -330,7 +330,7 @@ namespace SHEP_Platform.Controllers
                 transaction.Complete();
             }
 
-            return RedirectToAction("DevManage", "Admin");
+            return RedirectToAction(nameof(DevManage), "Admin");
         }
 
         [HttpGet]
@@ -392,7 +392,7 @@ namespace SHEP_Platform.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        private string GetRoleName(int roleId)
+        private static string GetRoleName(int roleId)
         {
             switch (roleId)
             {
@@ -418,7 +418,7 @@ namespace SHEP_Platform.Controllers
             user.Status = 1;
             DbContext.SaveChanges();
 
-            return RedirectToAction("UserManage", "Admin");
+            return RedirectToAction(nameof(UserManage), "Admin");
         }
 
         [HttpGet]
@@ -451,7 +451,7 @@ namespace SHEP_Platform.Controllers
             user.Pwd = Global.GetMd5(model.Password);
             DbContext.SaveChanges();
 
-            return RedirectToAction("UserManage", "Admin");
+            return RedirectToAction(nameof(UserManage), "Admin");
         }
 
         public ActionResult UnLock(string id)
@@ -465,7 +465,7 @@ namespace SHEP_Platform.Controllers
             user.Status = 2;
             DbContext.SaveChanges();
 
-            return RedirectToAction("UserManage", "Admin");
+            return RedirectToAction(nameof(UserManage), "Admin");
         }
 
         [HttpGet]
@@ -527,17 +527,17 @@ namespace SHEP_Platform.Controllers
 
             var statusList = new List<SelectListItem>
             {
-                new SelectListItem()
+                new SelectListItem
                 {
                     Text = "超级管理员",
                     Value = "1"
                 },
-                new SelectListItem()
+                new SelectListItem
                 {
                     Text = "管理员",
                     Value = "2"
                 },
-                new SelectListItem()
+                new SelectListItem
                 {
                     Text = "工地负责人",
                     Value = "3"
@@ -623,24 +623,24 @@ namespace SHEP_Platform.Controllers
                 return UserEditError(model);
             }
 
-            return RedirectToAction("UserManage", "Admin");
+            return RedirectToAction(nameof(UserManage), "Admin");
         }
 
         private ActionResult UserEditError(UserEditViewModel model)
         {
             var statusList = new List<SelectListItem>
             {
-                new SelectListItem()
+                new SelectListItem
                 {
                     Text = "超级管理员",
                     Value = "1"
                 },
-                new SelectListItem()
+                new SelectListItem
                 {
                     Text = "管理员",
                     Value = "2"
                 },
-                new SelectListItem()
+                new SelectListItem
                 {
                     Text = "工地负责人",
                     Value = "3"
@@ -668,7 +668,7 @@ namespace SHEP_Platform.Controllers
         public ActionResult Camera(string id)
         {
             var statIds = WdContext.StatList.Select(obj => obj.Id.ToString()).ToList();
-            ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId)).Select(item => new SelectListItem() { Text = item.DevCode, Value = item.Id.ToString() }).ToList();
+            ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId)).Select(item => new SelectListItem { Text = item.DevCode, Value = item.Id.ToString() }).ToList();
 
             T_Camera model;
             if (string.IsNullOrWhiteSpace(id))
@@ -712,7 +712,7 @@ namespace SHEP_Platform.Controllers
             {
                 LogService.Instance.Error("保存摄像头信息失败！", ex);
                 var statIds = WdContext.StatList.Select(obj => obj.Id.ToString()).ToList();
-                ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId)).Select(item => new SelectListItem() { Text = item.DevCode, Value = item.Id.ToString() }).ToList();
+                ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId)).Select(item => new SelectListItem { Text = item.DevCode, Value = item.Id.ToString() }).ToList();
 
                 foreach (var error in ex.EntityValidationErrors)
                 {
@@ -724,7 +724,7 @@ namespace SHEP_Platform.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("CameraManage");
+            return RedirectToAction(nameof(CameraManage));
         }
 
         [HttpGet]
@@ -807,7 +807,7 @@ namespace SHEP_Platform.Controllers
         {
             return Json(new DeviceActivity(devId), JsonRequestBehavior.AllowGet);
         }
-        
+
 
         public ActionResult DevRecentData(int devId)
         {
