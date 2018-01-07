@@ -19,7 +19,7 @@
             @Html.ValidationMessageFor(m => m.StatCode, "", new { @class = "text-danger" })
             <div class="form-group">
                 @Html.LabelFor(m => m.StatName)
-                @Html.TextBoxFor(m => m.StatName, new { @class = "form-control", placeholder = "请输入监测点名称" })
+                @Html.TextBoxFor(m => m.StatName, new { @class = "form-control", placeholder = "请输入监测点名称"})
                 <span style="color: red">*</span>
             </div>
             @Html.ValidationMessageFor(m => m.StatName, "", new { @class = "text-danger" })

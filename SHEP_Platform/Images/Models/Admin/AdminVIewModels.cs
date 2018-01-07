@@ -14,8 +14,8 @@ namespace SHEP_Platform.Models.Admin
             StatList = new List<T_Stats>();
             PageIndex = 0;
             PageSize = 10;
-        }
 
+        }
         public List<T_Stats> StatList { get; set; }
 
         public int PageSize { get; set; }
@@ -26,7 +26,7 @@ namespace SHEP_Platform.Models.Admin
     public class StatEditViewModel
     {
         public int Id { get; set; }
-
+        [Required]
         [MaxLength(25)]
         [DisplayName("监测点编码")]
         public string StatCode { get; set; }
@@ -36,7 +36,6 @@ namespace SHEP_Platform.Models.Admin
         [MaxLength(25)]
         [DisplayName("监测点名称")]
         public string StatName { get; set; }
-
         [MaxLength(10)]
         [DisplayName("负责人")]
         public string ChargeMan { get; set; }

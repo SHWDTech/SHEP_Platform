@@ -21,6 +21,17 @@ namespace SHEP_Platform.Models.Api
         public string QueryName { get; set; }
     }
 
+    public class StatQueryTablePost : TablePost
+    {
+        public int Country { get; set; }
+
+        public string Chargeman { get; set; }
+
+        public string Department { get; set; }
+
+        public string Address { get; set; }
+    }
+
     public class ExceptionHistoryTablePost : TablePost
     {
         public int? DevId { get; set; }

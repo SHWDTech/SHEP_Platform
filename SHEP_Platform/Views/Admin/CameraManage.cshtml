@@ -4,6 +4,17 @@
 }
 
 <link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+<div class="control-layer horizontal-group" style="display:flex;height:34px;line-height:34px;padding:1px;" ">
+    <span class="span60">所属设备:</span>
+    <select class="form-control" id="" style="width:120px;">
+        <option value="0">全部</option>
+    </select>
+    <span class="span60">序列号:</span>
+    <select class="form-control" id="" style="width:120px;">
+        <option value="0">全部</option>
+    </select>
+    <input type="button" value="查询" id="" />
+</div>
 <div>
     @{
         var table = Html.BootstrapTable(null, TablePaginationOption.server, new

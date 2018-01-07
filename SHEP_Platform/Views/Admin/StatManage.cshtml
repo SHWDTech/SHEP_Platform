@@ -1,11 +1,25 @@
 ﻿@using SHEP_Platform.Models.Admin
 @model StatManageViewModel
-
 @{
     ViewBag.Title = "系统管理";
 }
 
 <link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+<style type="text/css">
+</style>
+<div class="control-layer horizontal-group" style="display:flex;height:34px;line-height:34px;padding:1px; margin-bottom: 15px;">
+    <span class="span60">区县：</span>
+    <select class="form-control" id="Country" name="Country" style="width:120px;">
+        <option value="0">全部</option>
+    </select>
+    <span class="span60" style="margin: 0 15px;">负责人:</span>
+    <input type="text" class="form-control" id="ChargeMan" style="width:120px;"></>
+    <span class="span60" style="margin: 0 15px;">施工单位:</span>
+    <input type="text" class="form-control" id="Department" style="width:120px;"></>
+    <span class="span60" style="margin: 0 15px;">施工地址:</span>
+    <input type="text" class="form-control" id="Address" style="width:120px;" /></>
+    <input type="button" class="btn btn-primary" value="查询" id="search" style="margin: 0 15px;"/>
+</div>
 <div>
     @{
         var table = Html.BootstrapTable(null, TablePaginationOption.server, new
@@ -17,13 +31,14 @@
             data_height = 600
         });
         var builder = table.Column("监测点编号", "StatCode")
-            .Column("系统编号","Id")
+            .Column("系统编号", "Id")
             .Column("监测点名称", "StatName")
             .Column("负责人", "ChargeMan")
             .Column("联系电话", "Telepone")
             .Column("施工单位", "Department")
             .Column("施工地址", "Address")
             .Column("占地面积", "Square")
+            .Column("区县", "CountryName").Apply(ColumnOption.width, "120")
             .Column("操作")
             .Apply(ColumnOption.width, "120")
             .Apply(ColumnOption.formatter, "statMgrFormatter")
@@ -31,9 +46,12 @@
     }
     @(builder)
 </div>
-
+@section css{
+    @Styles.Render("~/Content/select2-bootstrap")
+}
 @section scripts{
     @Scripts.Render("~/bundles/bootstrap-table")
+    @Scripts.Render("~/bundles/select2")
     <script type="text/javascript">
         window.statMgrFormatter = function (index, row, element) {
             return [
@@ -45,7 +63,7 @@
         window.statMgrEvents = {
             'click .delete': function (e, value, row) {
                 if (confirm('确定删除该工地吗？')) {
-                    $.get('/Admin/StatDelete/' + row.Id, null, function(ret) {
+                    $.get('/Admin/StatDelete/' + row.Id, null, function (ret) {
                         if (ret.msg === 'success') {
                             $('#' + id).remove();
                             msg.info('删除成功');
@@ -56,7 +74,40 @@
         };
 
         $(function () {
-            $('#statmgrTable').bootstrapTable();
-        });
+            $("#Country").select2();
+            $.get('/Admin/GetALLAreaList', null, function (ret) {
+                var selecter = $("#Country").select2({
+                    data: ret
+                })
+            })
+
+            var searchList = {
+                Country: $('#Country').val(),
+                ChargeMan: $('#ChargeMan').val(),
+                Department: $('#Department').val(),
+                Address: $('#Address').val()
+            };
+
+            $('#statmgrTable').bootstrapTable('refreshOptions', {
+                url: '/Admin/StatsTable',
+                queryParams: function (params) {
+                    params.Country = searchList.Country;
+                    params.ChargeMan = searchList.ChargeMan;
+                    params.Department = searchList.Department;
+                    params.Address = searchList.Address;
+                    return params;
+                }
+            });
+
+            $('#search').on('click', function () {
+                searchList = {
+                    Country: $('#Country').val(),
+                    ChargeMan: $('#ChargeMan').val(),
+                    Department: $('#Department').val(),
+                    Address: $('#Address').val()
+                }
+                $('#statmgrTable').bootstrapTable('refresh');
+            });
+        })
     </script>
 }

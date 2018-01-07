@@ -26,7 +26,7 @@ namespace SHEP_Platform
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<T_AlarmType> T_AlarmType { get; set; }
         public virtual DbSet<T_Country> T_Country { get; set; }
         public virtual DbSet<T_DevAddr> T_DevAddr { get; set; }

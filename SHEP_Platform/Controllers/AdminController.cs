@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.Transactions;
 using SHEP_Platform.Models.Api;
 using SHWDTech.Platform.Utility;
-
 namespace SHEP_Platform.Controllers
 {
     public class AdminController : ControllerBase
@@ -32,15 +31,27 @@ namespace SHEP_Platform.Controllers
             return View();
         }
 
-        public ActionResult StatsTable(NameQueryTablePost post)
+        public ActionResult StatsTable(StatQueryTablePost post)
         {
             var query = DbContext.T_Stats.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(post.QueryName))
+            if (post.Country != 0)
             {
-                query = query.Where(d => d.StatName.Contains(post.QueryName));
+                query = query.Where(stat => stat.Country == post.Country);
             }
-
+            if(!string.IsNullOrWhiteSpace(post.Chargeman))
+            {
+                query = query.Where(stat => stat.ChargeMan.Contains(post.Chargeman));
+            }
+            if (!string.IsNullOrWhiteSpace(post.Address))
+            {
+                query = query.Where(stat => stat.Address.Contains(post.Address));
+            }
+            if (!string.IsNullOrWhiteSpace(post.Department))
+            {
+                query = query.Where(stat => stat.Department.Contains(post.Department));
+            }
             var total = query.Count();
+            var countrys = DbContext.T_Country.AsQueryable();
             var rows = query.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit).ToList()
                 .Select(s => new
                 {
@@ -51,7 +62,8 @@ namespace SHEP_Platform.Controllers
                     s.Telepone,
                     s.Department,
                     s.Address,
-                    s.Square
+                    s.Square,
+                    CountryName = countrys.FirstOrDefault(c => c.Id == s.Country).Country 
                 });
             return Json(new
             {
@@ -59,7 +71,6 @@ namespace SHEP_Platform.Controllers
                 rows
             }, JsonRequestBehavior.AllowGet);
         }
-
         [HttpGet]
         public ActionResult StatEdit(string id)
         {
@@ -817,6 +828,12 @@ namespace SHEP_Platform.Controllers
                     UpdateTime = $"{d.UpdateTime:yyyy-MM-dd HH:mm:ss fff}"
                 });
             return Json(rows, JsonRequestBehavior.AllowGet);
+        }
+        //获取区县信息
+        public ActionResult GetALLAreaList()
+        {
+            var countries = DbContext.T_Country.Select(item=> new { id=item.Id,text=item.Country}).ToList();
+            return Json(countries, JsonRequestBehavior.AllowGet);
         }
     }
 }
