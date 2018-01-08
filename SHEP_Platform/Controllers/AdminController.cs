@@ -210,12 +210,31 @@ namespace SHEP_Platform.Controllers
 
         public ActionResult DevsTable(NameQueryTablePost post)
         {
-            var query = DbContext.T_Devs.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(post.QueryName))
+            //var query = DbContext.T_Devs.AsQueryable();
+            var query = from dev in DbContext.T_Devs
+                        let addr = DbContext.T_DevAddr.FirstOrDefault(a => a.DevId == dev.Id)
+                        let stat = DbContext.T_Stats.FirstOrDefault(stat => stat.Id.ToString() == dev.StatId)
+                        select new
+                        {
+                            dev.StatId,
+                            dev.DevStatus,
+                            dev.Id,
+                            dev.DevCode,
+                            addr.NodeId,
+                            stat.StatName
+                        };
+            if(!string.IsNullOrWhiteSpace(post.StatName))
             {
-                query = query.Where(d => d.DevCode.Contains(post.QueryName));
+                query = query.Where(d => d.StatName.Contains( post.StatName));
             }
-
+            if(!string.IsNullOrWhiteSpace(post.DevCode))
+            {
+                query = query.Where(d => d.DevCode.Contains( post.DevCode));
+            }
+            if(!string.IsNullOrWhiteSpace(post.NODEID))
+            {
+                query = query.Where(d => d.NodeId.ToString() == post.NODEID);
+            }
             var total = query.Count();
             var rows = query.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit).ToList()
                 .Select(dev => new
@@ -223,7 +242,9 @@ namespace SHEP_Platform.Controllers
                     dev.Id,
                     dev.DevCode,
                     DbContext.T_Stats.FirstOrDefault(obj => obj.Id.ToString() == dev.StatId)?.StatName,
+
                     NodeId = Global.BytesToInt32(DbContext.T_DevAddr.First(d => d.DevId == dev.Id).NodeId, 0, false),
+
                     Status = dev.DevStatus == 1 ? "启用" : "停用"
                 });
             return Json(new

@@ -2,23 +2,17 @@
 @model DevManageViewModel
 
 @{
-            ViewBag.Title = "系统管理";
+    ViewBag.Title = "系统管理";
 }
 <link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
-<div class="control-layer horizontal-group" style="display:flex;height:34px;line-height:34px;padding:1px;"">
-    <span class="span60">监测点:</span>
-    <select class="form-control" id="" style="width:120px;">
-        <option value="0">全部</option>
-    </select>
-    <span class="span60">设备名称:</span>
-    <select class="form-control" id="" style="width:120px;">
-        <option value="0">全部</option>
-    </select>
-    <span class="span60">设备NODEID：</span>
-    <select class="form-control" id="" style="width:120px;">
-        <option value="0">全部</option>
-    </select>
-    <input type="button" value="查询" id="research"/>
+<div class="control-layer horizontal-group" style="display:flex;height:34px;line-height:34px;padding:1px; margin-bottom: 15px;">
+    <span class="span60" style="margin: 0 15px;">监测点名称:</span>
+    <input class="form-control" id="StatName" style="width:120px;"></>
+    <span class="span60" style="margin: 0 15px;">设备名称:</span>
+    <input class="form-control" id="DevCode" style="width:120px;"></>
+    <span class="span60" style="margin: 0 15px;">设备NODEID：</span>
+    <input class="form-control" id="NODEID" style="width:120px;"></>
+    <input type="button" value="查询" id="research" class="btn btn-primary" style="margin: 0 20px;" />
 </div>
 <div>
     @{
@@ -42,9 +36,14 @@
     }
     @(builder)
 </div>
-
+@*@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")*@
+@section css{
+    @Styles.Render("~/Content/select2-bootstrap")
+}
 @section scripts{
     @Scripts.Render("~/bundles/bootstrap-table")
+    @Scripts.Render("~/bundles/select2")
     <script type="text/javascript">
         window.devMgrFormatter = function (index, row, element) {
             return [
@@ -67,7 +66,29 @@
         };
 
         $(function () {
-            $('#devmgrTable').bootstrapTable();
-        });
+            //$('#devmgrTable').bootstrapTable();
+            var searchlist = {
+                StatName: $('#StatName').val(),
+                DevCode: $('#DevCode').val(),
+                NODEID: $('#NODEID').val()
+            };
+            $('#devmgrTable').bootstrapTable('refreshOptions', {
+                url: '/Admin/DevsTable',
+                queryParams: function (params) {
+                    params.StatName = searchlist.StatName;
+                    params.DevCode = searchlist.DevCode;
+                    params.NODEID = searchlist.NODEID;
+                    return params;
+                }
+            });
+            $('#research').on('click', function () {
+                searchList = {
+                    StatName: $('#StatName').val(),
+                    DevCode: $('#DevCode').val(),
+                    NODEID: $('#NODEID').val()
+                }
+                $('#devmgrTable').bootstrapTable('refresh');
+            });
+        })
     </script>
 }

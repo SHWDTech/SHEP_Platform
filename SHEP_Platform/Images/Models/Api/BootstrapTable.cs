@@ -18,6 +18,9 @@ namespace SHEP_Platform.Models.Api
 
     public class NameQueryTablePost : TablePost
     {
+        public string StatName { get; set; }
+        public string DevCode { get; set; }
+        public string NODEID { get; set; }
         public string QueryName { get; set; }
     }
 
