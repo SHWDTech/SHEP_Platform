@@ -210,7 +210,6 @@ namespace SHEP_Platform.Controllers
 
         public ActionResult DevsTable(NameQueryTablePost post)
         {
-            //var query = DbContext.T_Devs.AsQueryable();
             var query = from dev in DbContext.T_Devs
                         let addr = DbContext.T_DevAddr.FirstOrDefault(a => a.DevId == dev.Id)
                         let stat = DbContext.T_Stats.FirstOrDefault(stat => stat.Id.ToString() == dev.StatId)
@@ -231,9 +230,11 @@ namespace SHEP_Platform.Controllers
             {
                 query = query.Where(d => d.DevCode.Contains( post.DevCode));
             }
-            if(!string.IsNullOrWhiteSpace(post.NODEID))
+            if(!string.IsNullOrWhiteSpace(post.NodeId))
             {
-                query = query.Where(d => d.NodeId.ToString() == post.NODEID);
+                var nodeidBytes = BitConverter.GetBytes(int.Parse(post.NodeId));
+                Array.Reverse(nodeidBytes);
+                query = query.Where(d => d.NodeId == nodeidBytes);
             }
             var total = query.Count();
             var rows = query.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit).ToList()
