@@ -76,10 +76,10 @@
         $(function () {
             $("#Country").select2();
             $.get('/Admin/GetALLAreaList', null, function (ret) {
-                var selecter = $("#Country").select2({
+                $("#Country").select2({
                     data: ret
-                })
-            })
+                });
+            });
 
             var searchList = {
                 Country: $('#Country').val(),
@@ -108,6 +108,6 @@
                 }
                 $('#statmgrTable').bootstrapTable('refresh');
             });
-        })
+        });
     </script>
 }

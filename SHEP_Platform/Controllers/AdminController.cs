@@ -208,9 +208,8 @@ namespace SHEP_Platform.Controllers
             return View();
         }
 
-        public ActionResult DevsTable(DevQueryTablePost post)
+        public ActionResult DevsTable(NameQueryTablePost post)
         {
-            //var query = DbContext.T_Devs.AsQueryable();
             var query = from dev in DbContext.T_Devs
                         let addr = DbContext.T_DevAddr.FirstOrDefault(a => a.DevId == dev.Id)
                         let stat = DbContext.T_Stats.FirstOrDefault(stat => stat.Id.ToString() == dev.StatId)
@@ -223,20 +222,19 @@ namespace SHEP_Platform.Controllers
                             addr.NodeId,
                             stat.StatName
                         };
-            if (!string.IsNullOrWhiteSpace(post.StatName)) 
+            if(!string.IsNullOrWhiteSpace(post.StatName))
             {
-                query = query.Where(d=> d.StatName.Contains(post.StatName));
+                query = query.Where(d => d.StatName.Contains( post.StatName));
             }
             if(!string.IsNullOrWhiteSpace(post.DevCode))
             {
-                query = query.Where(d=> d.DevCode.Contains(post.DevCode));
+                query = query.Where(d => d.DevCode.Contains( post.DevCode));
             }
-            if(!string.IsNullOrWhiteSpace(post.NODEID))
+            if(!string.IsNullOrWhiteSpace(post.NodeId))
             {
-                //query = query.Where(d => d.NodeId.ToString() == post.NODEID);
-                var nodeidbytes = BitConverter.GetBytes(int.Parse(post.NODEID));//将nodeid转换为字节数组
-                Array.Reverse(nodeidbytes);//将转换之后的nodeid翻转排序
-                query = query.Where(d => d.NodeId == nodeidbytes);
+                var nodeidBytes = BitConverter.GetBytes(int.Parse(post.NodeId));
+                Array.Reverse(nodeidBytes);
+                query = query.Where(d => d.NodeId == nodeidBytes);
             }
             var total = query.Count();
             var rows = query.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit).ToList()
@@ -754,26 +752,14 @@ namespace SHEP_Platform.Controllers
         [HttpGet]
         public ActionResult CameraManage() => View();
 
-        public ActionResult CamsTable(CamsQueryTablePost post)
+        public ActionResult CamsTable(NameQueryTablePost post)
         {
-            var query = from cam in DbContext.T_Camera
-                        let dev = DbContext.T_Devs.FirstOrDefault(dev => dev.Id == cam.DevId)
-                        select new
-                        {
-                            cam.ID,
-                            cam.CameraName,
-                            cam.UserName,
-                            cam.DevId,
-                            dev.DevCode
-                        };
-            if(!string.IsNullOrWhiteSpace(post.DevCode))
+            var query = DbContext.T_Camera.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(post.QueryName))
             {
-                query = query.Where(d => d.DevCode.Contains(post.DevCode));
+                query = query.Where(d => d.CameraName.Contains(post.QueryName));
             }
-            if(!string.IsNullOrWhiteSpace(post.UserName))
-            {
-                query = query.Where(d => d.UserName.Contains(post.UserName));
-            }
+
             var total = query.Count();
             var rows = query.OrderBy(d => d.ID).Skip(post.offset).Take(post.limit).ToList()
                 .Select(c => new

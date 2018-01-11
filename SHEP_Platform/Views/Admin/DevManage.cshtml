@@ -11,8 +11,8 @@
     <span class="span60" style="margin: 0 15px;">设备名称:</span>
     <input class="form-control" id="DevCode" style="width:120px;"></>
     <span class="span60" style="margin: 0 15px;">设备NODEID：</span>
-    <input class="form-control" id="NODEID" style="width:120px;"></>
-    <input type="button" value="查询" id="research" class="btn btn-success" style="margin: 0 20px;" />
+    <input class="form-control" id="NodeId" style="width:120px;"></>
+    <input type="button" value="查询" id="search" class="btn btn-primary" style="margin: 0 20px;" />
 </div>
 <div>
     @{
@@ -36,14 +36,14 @@
     }
     @(builder)
 </div>
-@section scripts{
-    @Scripts.Render("~/bundles/bootstrap-table")
-@*@section css{
+@*@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")*@
+@section css{
     @Styles.Render("~/Content/select2-bootstrap")
 }
 @section scripts{
     @Scripts.Render("~/bundles/bootstrap-table")
-    @Scripts.Render("~/bundles/select2")*@
+    @Scripts.Render("~/bundles/select2")
     <script type="text/javascript">
         window.devMgrFormatter = function (index, row, element) {
             return [
@@ -65,29 +65,32 @@
             }
         };
 
-        $(function () {
+        $(function() {
             var searchlist = {
                 StatName: $('#StatName').val(),
                 DevCode: $('#DevCode').val(),
-                NODEID: $('#NODEID').val()
+                NodeId: $('#NodeId').val()
             };
-            $('#devmgrTable').bootstrapTable('refreshOptions', {
-                url: '/Admin/DevsTable',
-                queryParams: function (params) {
-                    params.StatName = searchlist.StatName;
-                    params.DevCode = searchlist.DevCode;
-                    params.NODEID = searchlist.NODEID;
-                    return params;
-                }
-            });
-            $('#research').on('click', function () {
-                searchlist = {
-                    StatName: $('#StatName').val(),
-                    DevCode: $('#DevCode').val(),
-                    NODEID: $('#NODEID').val()
-                }
-                $('#devmgrTable').bootstrapTable('refresh');
-            });
-        })
+
+            $('#devmgrTable').bootstrapTable('refreshOptions',
+                {
+                    url: '/Admin/DevsTable',
+                    queryParams: function(params) {
+                        params.StatName = searchlist.StatName;
+                        params.DevCode = searchlist.DevCode;
+                        params.NodeId = searchlist.NodeId;
+                        return params;
+                    }
+                });
+            $('#search').on('click',
+                function() {
+                    searchlist = {
+                        StatName: $('#StatName').val(),
+                        DevCode: $('#DevCode').val(),
+                        NodeId: $('#NodeId').val()
+                    }
+                    $('#devmgrTable').bootstrapTable('refresh');
+                });
+        });
     </script>
 }

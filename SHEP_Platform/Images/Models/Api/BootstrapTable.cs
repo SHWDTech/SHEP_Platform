@@ -18,20 +18,12 @@ namespace SHEP_Platform.Models.Api
 
     public class NameQueryTablePost : TablePost
     {
-        public string QueryName { get; set; }
-    }
-    public class CamsQueryTablePost:TablePost
-    {
-        public string DevCode { get; set; }
-
-        public string UserName { get; set; }
-    }
-    public class DevQueryTablePost:TablePost
-    {
         public string StatName { get; set; }
         public string DevCode { get; set; }
-        public string NODEID { get; set; }
+        public string NodeId { get; set; }
+        public string QueryName { get; set; }
     }
+
     public class StatQueryTablePost : TablePost
     {
         public int Country { get; set; }
