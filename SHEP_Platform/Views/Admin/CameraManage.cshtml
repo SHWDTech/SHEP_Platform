@@ -4,16 +4,12 @@
 }
 
 <link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
-<div class="control-layer horizontal-group" style="display:flex;height:34px;line-height:34px;padding:1px;" ">
-    <span class="span60">所属设备:</span>
-    <select class="form-control" id="" style="width:120px;">
-        <option value="0">全部</option>
-    </select>
-    <span class="span60">序列号:</span>
-    <select class="form-control" id="" style="width:120px;">
-        <option value="0">全部</option>
-    </select>
-    <input type="button" value="查询" id="" />
+<div class="control-layer horizontal-group" style="display:flex;height:34px;line-height:34px;padding:1px;margin-bottom: 15px;">
+    <span class="span60" style="margin: 0 15px;">所属设备:</span>
+    <input class="form-control" id="DevCode" style="width:120px;"></>
+    <span class="span60" style="margin: 0 15px;">序列号:</span>
+    <input class="form-control" id="UserName" style="width:120px;"></>
+    <input type="button" value="查询" id="search" style="margin: 0 20px;" class="btn btn-success" />
 </div>
 <div>
     @{
@@ -38,30 +34,48 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/bootstrap-table")
-    <script type="text/javascript">
-        window.camMgrFormatter = function (index, row, element) {
-            return [
-                '<a class="update" href="/Admin/Camera/' + row.ID + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
-                '<a class="delete" href="javascript:void(0)" style="margin-right: 5px;"><span class="glyphicon glyphicon-remove">删除</span></a>',
-                '<a class="view" href="/Monitor/StatViewHikSecond?id=' + row.UserName + '" ><span class="glyphicon glyphicon-camera">查看</span></a>'
-            ].join('');
-        }
-
-        window.camMgrEvents = {
-            'click .delete': function (e, value, row) {
-                if (confirm('确定删除该摄像头吗？')) {
-                    $.get('/Admin/CameraDelete/' + row.ID, null, function (ret) {
-                        if (ret.msg === 'success') {
-                            $('#' + id).remove();
-                            msg.info('删除成功');
-                        }
-                    });
-                }
+        <script type="text/javascript">
+            window.camMgrFormatter = function (index, row, element) {
+                return [
+                    '<a class="update" href="/Admin/Camera/' + row.ID + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
+                    '<a class="delete" href="javascript:void(0)" style="margin-right: 5px;"><span class="glyphicon glyphicon-remove">删除</span></a>',
+                    '<a class="view" href="/Monitor/StatViewHikSecond?id=' + row.UserName + '" ><span class="glyphicon glyphicon-camera">查看</span></a>'
+                ].join('');
             }
-        };
 
-        $(function () {
-            $('#cammgrTable').bootstrapTable();
-        });
-    </script>
-}
+            window.camMgrEvents = {
+                'click .delete': function (e, value, row) {
+                    if (confirm('确定删除该摄像头吗？')) {
+                        $.get('/Admin/CameraDelete/' + row.ID, null, function (ret) {
+                            if (ret.msg === 'success') {
+                                $('#' + id).remove();
+                                msg.info('删除成功');
+                            }
+                        });
+                    }
+                }
+            };
+
+            $(function () {
+                var searchlist = {
+                    DevCode: $('#DevCode').val(),
+                    UserName: $('#UserName').val()
+                };
+                $('#cammgrTable').bootstrapTable('refreshOptions', {
+                    url: '/Admin/CamsTable',
+                    queryParams: function (params) {
+                        params.DevCode = searchlist.DevCode;
+                        params.UserName = searchlist.UserName;
+                        return params;
+                    }
+                });
+                $('#search').on('click', function () {
+                    searchlist = {
+                        DevCode: $('#DevCode').val(),
+                        UserName: $('#UserName').val()
+                    }
+                    $('#cammgrTable').bootstrapTable('refresh');
+                })
+            });
+        </script>
+    }

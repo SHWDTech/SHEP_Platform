@@ -2,10 +2,19 @@
 @model UserManageViewModel
 
 @{
-            ViewBag.Title = "系统管理";
+    ViewBag.Title = "系统管理";
 }
 
 <link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+@*<div class="control-layer horizontal-group" style="display:flex;height:34px;line-height:34px;padding:1px; margin-bottom: 15px;">
+    <span class="span60" style="margin: 0 15px;">用户名：</span>
+    <input type="text" id="Username" class="form-control" style="width:120px;" />
+    <span class="span60" style="margin: 0 15px;">区县：</span>
+    <select class="form-control" id="Country" name="Country" style="width:120px;">
+        <option value="0">全部</option>
+    </select>
+    <input type="button" class="btn btn-success" value="查询" id="search" style="margin: 0 15px;" />
+</div>*@
 <div>
     @{
         var table = Html.BootstrapTable(null, TablePaginationOption.server, new
@@ -32,40 +41,46 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/bootstrap-table")
-    <script type="text/javascript">
-        window.userMgrFormatter = function (index, row, element) {
-            if (row.Status == "审核通过") {
-                return [
-                    '<a class="update" href="/Admin/UserEdit/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
-                    '<a class="password" href="/Admin/EditPwd/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">修改密码</span></a>',
-                    '<a class="password" href="/Admin/Lock/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-lock">锁定</span></a>',
-                    '<a class="delete" href="javascript:void(0)"><span class="glyphicon glyphicon-remove">删除</span></a>'
-                ].join('');
-            } else {
-                return [
-                    '<a class="update" href="/Admin/UserEdit/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
-                    '<a class="password" href="/Admin/EditPwd/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
-                    '<a class="password" href="/Admin/UnLock/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-tags">审核通过</span></a>',
-                    '<a class="delete" href="javascript:void(0)"><span class="glyphicon glyphicon-remove">删除</span></a>'
-                ].join('');
-            }
-        }
-
-        window.userMgrEvents = {
-            'click .delete': function (e, value, row) {
-                if (confirm('确定删除该用户吗？')) {
-                    $.get('/Admin/UserDelete/' + row.UserId, null, function (ret) {
-                        if (ret.msg === 'success') {
-                            $('#' + id).remove();
-                            msg.info('删除成功');
-                        }
-                    });
+    @*@section css{
+        @Styles.Render("~/Content/select2-bootstrap")
+    }
+    @section scripts{
+        @Scripts.Render("~/bundles/bootstrap-table")
+        @Scripts.Render("~/bundles/select2")*@
+        <script type="text/javascript">
+            window.userMgrFormatter = function (index, row, element) {
+                if (row.Status == "审核通过") {
+                    return [
+                        '<a class="update" href="/Admin/UserEdit/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
+                        '<a class="password" href="/Admin/EditPwd/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">修改密码</span></a>',
+                        '<a class="password" href="/Admin/Lock/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-lock">锁定</span></a>',
+                        '<a class="delete" href="javascript:void(0)"><span class="glyphicon glyphicon-remove">删除</span></a>'
+                    ].join('');
+                } else {
+                    return [
+                        '<a class="update" href="/Admin/UserEdit/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
+                        '<a class="password" href="/Admin/EditPwd/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
+                        '<a class="password" href="/Admin/UnLock/' + row.UserId + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-tags">审核通过</span></a>',
+                        '<a class="delete" href="javascript:void(0)"><span class="glyphicon glyphicon-remove">删除</span></a>'
+                    ].join('');
                 }
             }
-        };
 
-        $(function () {
-            $('#usermgrTable').bootstrapTable();
-        });
-    </script>
-}
+            window.userMgrEvents = {
+                'click .delete': function (e, value, row) {
+                    if (confirm('确定删除该用户吗？')) {
+                        $.get('/Admin/UserDelete/' + row.UserId, null, function (ret) {
+                            if (ret.msg === 'success') {
+                                $('#' + id).remove();
+                                msg.info('删除成功');
+                            }
+                        });
+                    }
+                }
+            };
+
+            $(function () {
+                $('#usermgrTable').bootstrapTable();
+            });
+        </script>
+    }

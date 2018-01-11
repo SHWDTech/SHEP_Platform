@@ -12,7 +12,7 @@
     <input class="form-control" id="DevCode" style="width:120px;"></>
     <span class="span60" style="margin: 0 15px;">设备NODEID：</span>
     <input class="form-control" id="NODEID" style="width:120px;"></>
-    <input type="button" value="查询" id="research" class="btn btn-primary" style="margin: 0 20px;" />
+    <input type="button" value="查询" id="research" class="btn btn-success" style="margin: 0 20px;" />
 </div>
 <div>
     @{
@@ -36,14 +36,14 @@
     }
     @(builder)
 </div>
-@*@section scripts{
-    @Scripts.Render("~/bundles/bootstrap-table")*@
-@section css{
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")
+@*@section css{
     @Styles.Render("~/Content/select2-bootstrap")
 }
 @section scripts{
     @Scripts.Render("~/bundles/bootstrap-table")
-    @Scripts.Render("~/bundles/select2")
+    @Scripts.Render("~/bundles/select2")*@
     <script type="text/javascript">
         window.devMgrFormatter = function (index, row, element) {
             return [
@@ -66,7 +66,6 @@
         };
 
         $(function () {
-            //$('#devmgrTable').bootstrapTable();
             var searchlist = {
                 StatName: $('#StatName').val(),
                 DevCode: $('#DevCode').val(),
@@ -82,7 +81,7 @@
                 }
             });
             $('#research').on('click', function () {
-                searchList = {
+                searchlist = {
                     StatName: $('#StatName').val(),
                     DevCode: $('#DevCode').val(),
                     NODEID: $('#NODEID').val()
