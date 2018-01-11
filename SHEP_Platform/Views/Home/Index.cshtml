@@ -36,6 +36,6 @@
     <script type="text/javascript" src="/Scripts/Common/MapManipulation.js"></script>
     <script type="text/javascript" src="/Scripts/Page/Home.js"></script>
     <script type="text/javascript">
-        var statusInfo = JSON.parse('@Html.Raw(ViewBag.Status)');
+        var statusInfo = @Html.Raw(ViewBag.Status);
     </script>
 }
