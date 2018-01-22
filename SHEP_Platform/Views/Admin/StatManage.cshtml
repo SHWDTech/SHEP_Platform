@@ -33,6 +33,8 @@
         var builder = table.Column("监测点编号", "StatCode")
             .Column("系统编号", "Id")
             .Column("监测点名称", "StatName")
+            .Apply(ColumnOption.formatter, "StatusFormatter")
+            .Apply(ColumnOption.events, "StatusEvents")
             .Column("负责人", "ChargeMan")
             .Column("联系电话", "Telepone")
             .Column("施工单位", "Department")
@@ -53,6 +55,17 @@
     @Scripts.Render("~/bundles/bootstrap-table")
     @Scripts.Render("~/bundles/select2")
     <script type="text/javascript">
+        window.StatusFormatter = function (index, row, element) {
+            return [
+                '<a class="stat" href="/Monitor/ActualStatus/' + row.Id+'" >' + row.StatName + '</a>'
+            ].join('');
+        }
+        window.StatusEvents = {
+            'click.stat': function (e, value, row) {
+                load(row.Id, row.StatName, 1);
+            }
+        }
+
         window.statMgrFormatter = function (index, row, element) {
             return [
                 '<a class="update" href="/Admin/StatEdit/' + row.Id + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
