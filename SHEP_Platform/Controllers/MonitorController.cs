@@ -9,7 +9,6 @@ using OfficeOpenXml.Style;
 using SHEP_Platform.Enums;
 using SHEP_Platform.Models.Monitor;
 using SHEP_Platform.ShwdResult;
-
 // ReSharper disable PossibleInvalidOperationException
 
 namespace SHEP_Platform.Controllers

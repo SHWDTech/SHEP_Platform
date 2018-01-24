@@ -38,6 +38,10 @@ namespace SHEP_Platform.Controllers
             {
                 query = query.Where(stat => stat.Country == post.Country);
             }
+            if(!string.IsNullOrWhiteSpace(post.StatName))
+            {
+                query = query.Where(stat => stat.StatName.Contains(post.StatName));
+            }
             if(!string.IsNullOrWhiteSpace(post.Chargeman))
             {
                 query = query.Where(stat => stat.ChargeMan.Contains(post.Chargeman));

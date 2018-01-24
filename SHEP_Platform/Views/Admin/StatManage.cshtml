@@ -12,6 +12,8 @@
     <select class="form-control" id="Country" name="Country" style="width:120px;">
         <option value="0">全部</option>
     </select>
+    <span class="span60" style="margin: 0 15px;">监测点名称：</span>
+    <input type="text" class="form-control" id="StatName" style="width:120px;"/>
     <span class="span60" style="margin: 0 15px;">负责人:</span>
     <input type="text" class="form-control" id="ChargeMan" style="width:120px;"></>
     <span class="span60" style="margin: 0 15px;">施工单位:</span>
@@ -57,7 +59,7 @@
     <script type="text/javascript">
         window.StatusFormatter = function (index, row, element) {
             return [
-                '<a class="stat" href="/Monitor/ActualStatus/' + row.Id+'" >' + row.StatName + '</a>'
+                '<a class="stat" href="/Monitor/ActualStatus/' + row.Id + '" >' + row.StatName + '</a>'
             ].join('');
         }
         window.StatusEvents = {
@@ -96,6 +98,7 @@
 
             var searchList = {
                 Country: $('#Country').val(),
+                StatName: $('#StatName').val(),
                 ChargeMan: $('#ChargeMan').val(),
                 Department: $('#Department').val(),
                 Address: $('#Address').val()
@@ -105,6 +108,7 @@
                 url: '/Admin/StatsTable',
                 queryParams: function (params) {
                     params.Country = searchList.Country;
+                    params.StatName = searchList.StatName;
                     params.ChargeMan = searchList.ChargeMan;
                     params.Department = searchList.Department;
                     params.Address = searchList.Address;
@@ -115,6 +119,7 @@
             $('#search').on('click', function () {
                 searchList = {
                     Country: $('#Country').val(),
+                    StatName: $('#StatName').val(),
                     ChargeMan: $('#ChargeMan').val(),
                     Department: $('#Department').val(),
                     Address: $('#Address').val()

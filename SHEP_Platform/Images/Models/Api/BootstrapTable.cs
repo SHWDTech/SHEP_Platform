@@ -28,6 +28,8 @@ namespace SHEP_Platform.Models.Api
     {
         public int Country { get; set; }
 
+        public string StatName { get; set; }
+
         public string Chargeman { get; set; }
 
         public string Department { get; set; }
