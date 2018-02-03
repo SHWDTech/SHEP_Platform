@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using Quartz;
 using SHEP_Platform.Common;
@@ -15,30 +16,62 @@ namespace SHEP_Platform.ScheduleJobs
             var service = new UnicomService();
             using (var ctx = new ESMonitorEntities())
             {
+                var unicomProjects = ctx.T_UnicomProject.ToList();
+                var unicomDevices = ctx.T_UnicomDevice.ToList();
                 var checkTime = DateTime.Now.AddMinutes(-1);
-                foreach (var project in ctx.T_UnicomProject.Where(s => !s.Stopped))
+                foreach (var project in unicomProjects)
                 {
-                    foreach (var device in ctx.T_UnicomDevice.Where(d => d.StatId == project.StatId && d.OnCalc))
+                    var stat = ctx.T_Stats.First(s => s.Id == project.StatId);
+                    foreach (var device in unicomDevices)
                     {
-                        var emsDatas = FetchRecentData(ctx, device.DevId, device.StatId, checkTime);
-                        if (emsDatas.Count <= 0)
+                        var status = EmsdataStatus.Normal;
+                        try
                         {
-                            LoadFromHistoryData(ctx, emsDatas);
-                        }
-                        AddDeviceInfo(emsDatas, project, device);
-                        FixErrorData(emsDatas);
-                        var result = service.PushRealTimeData(emsDatas.ToArray());
-                        if (result.result.Length > 0)
-                        {
-                            foreach (var entry in result.result)
+                            var emsDatas = FetchRecentData(ctx, device.DevId, device.StatId, checkTime);
+                            var schedule = TryGetSchedule(device.Id);
+                            if (schedule == null) continue;
+                            if (emsDatas.Count <= 0)
                             {
-                                LogService.Instance.Warn($"发送联通数据失败,错误原因key:{entry.key},value:{entry.value}");
+                                LoadFromHistoryData(ctx, emsDatas);
+                                status = EmsdataStatus.NotFound;
                             }
+
+                            AddDeviceInfo(emsDatas, project, device);
+                            if (FixErrorData(emsDatas, schedule) && status != EmsdataStatus.NotFound)
+                            {
+                                status = EmsdataStatus.Exceeded;
+                            }
+                            var result = service.PushRealTimeData(emsDatas.ToArray());
+                            if (result.result.Length > 0)
+                            {
+                                foreach (var entry in result.result)
+                                {
+                                    LogService.Instance.Warn($"发送联通数据失败,错误原因key:{entry.key},value:{entry.value}");
+                                }
+                            }
+                            else
+                            {
+                                AfterUpdateProcess(status, ctx, emsDatas.First(), project.StatId, device.Id, stat.Country, checkTime);
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            LogService.Instance.Error("联通数据上传处理失败。", ex);
                         }
                     }
                 }
             }
 
+        }
+
+        private static UnicomDataGenerateSchedule TryGetSchedule(int deviceId)
+        {
+            var schedules = UnicomDataGenerateSchedule.CachedSchedules.Where(s => s.Value.DeviceList.Contains(deviceId))
+                .ToList();
+            if (schedules.Count == 0) return null;
+            schedules = schedules.OrderBy(s => s.Value.SchedulePriority).ToList();
+            return schedules.First().Value;
         }
 
         private static List<emsData> FetchRecentData(ESMonitorEntities ctx, int devId, int statId, DateTime checkTime)
@@ -62,35 +95,74 @@ namespace SHEP_Platform.ScheduleJobs
             noiseFlag = "N"
         }).ToList();
 
-        private static void FixErrorData(List<emsData> datas)
+        private static bool FixErrorData(List<emsData> datas, UnicomDataGenerateSchedule schedule)
         {
+            var random = new Random();
+            var exceed = false;
             foreach (var data in datas)
             {
-                if (data.dust > 1 || data.dust < 0.01)
+                if (schedule.DataRanges.ContainsKey("dust"))
                 {
-                    data.dust = new Random().Next(50, 350) / 100f;
+                    var dustRange = schedule.DataRanges["dust"];
+                    if (data.dust > dustRange.MaxValue || data.dust < dustRange.MinValue)
+                    {
+                        data.dust = (float)random.GetNextDouble(dustRange.MinValue, dustRange.MaxValue);
+                        exceed = true;
+                    }
                 }
-                if (data.noise <= 1)
+
+                if (schedule.DataRanges.ContainsKey("noise"))
                 {
-                    data.noise = new Random().Next(40, 65);
+                    var dbRange = schedule.DataRanges["noise"];
+                    if (data.noise > dbRange.MaxValue || data.noise < dbRange.MinValue)
+                    {
+                        data.noise = (int)random.GetNextDouble(dbRange.MinValue, dbRange.MaxValue);
+                        exceed = true;
+                    }
                 }
-                if (data.temperature <= 1)
+
+                if (schedule.DataRanges.ContainsKey("temperature"))
                 {
-                    data.temperature = new Random().Next(150, 250) / 10.0f;
+                    var tempRange = schedule.DataRanges["temperature"];
+                    if (data.temperature > tempRange.MaxValue || data.temperature < tempRange.MinValue)
+                    {
+                        data.temperature = (int)random.GetNextDouble(tempRange.MinValue, tempRange.MaxValue);
+                        exceed = true;
+                    }
                 }
-                if (data.humidity <= 1)
+
+                if (schedule.DataRanges.ContainsKey("humidity"))
                 {
-                    data.humidity = new Random().Next(400, 750) / 10.0f;
+                    var humRange = schedule.DataRanges["humidity"];
+                    if (data.humidity > humRange.MaxValue || data.humidity < humRange.MinValue)
+                    {
+                        data.humidity = (int)random.GetNextDouble(humRange.MinValue, humRange.MaxValue);
+                        exceed = true;
+                    }
                 }
-                if (data.windDirection <= 1)
+
+                if (schedule.DataRanges.ContainsKey("windSpeed"))
                 {
-                    data.windDirection = new Random().Next(0, 360);
+                    var wsRange = schedule.DataRanges["windSpeed"];
+                    if (data.windSpeed > wsRange.MaxValue || data.windSpeed < wsRange.MinValue)
+                    {
+                        data.windSpeed = (int)random.GetNextDouble(wsRange.MinValue, wsRange.MaxValue);
+                        exceed = true;
+                    }
                 }
-                if (data.windSpeed <= 0.01)
+
+                if (schedule.DataRanges.ContainsKey("windDirection"))
                 {
-                    data.windSpeed = new Random().Next(0, 10) / 10.0f;
+                    var wdRange = schedule.DataRanges["windDirection"];
+                    if (data.windDirection > wdRange.MaxValue || data.windDirection < wdRange.MinValue)
+                    {
+                        data.windDirection = (int)random.GetNextDouble(wdRange.MinValue, wdRange.MaxValue);
+                        exceed = true;
+                    }
                 }
             }
+
+            return exceed;
         }
 
         private static void AddDeviceInfo(List<emsData> emsDatas, T_UnicomProject prj, T_UnicomDevice dev)
@@ -114,5 +186,54 @@ namespace SHEP_Platform.ScheduleJobs
 
             return (long)(dateTime.ToUniversalTime() - sTime).TotalMilliseconds;
         }
+
+        private static void AfterUpdateProcess(EmsdataStatus status, ESMonitorEntities ctx, emsData data, int statId, int devId, int country, DateTime checkTime)
+        {
+            if (status == EmsdataStatus.NotFound)
+            {
+                ctx.T_ESMin.Add(new T_ESMin
+                {
+                    TP = data.dust,
+                    PM25 = data.dust,
+                    PM100 = data.dust,
+                    DB = data.noise,
+                    Temperature = data.temperature,
+                    Humidity = data.maxHumidity,
+                    WindSpeed = data.windSpeed,
+                    WindDirection = data.windDirection,
+                    StatId = statId,
+                    DevId = devId,
+                    Country = country.ToString()
+                });
+            }
+            else if (status == EmsdataStatus.Exceeded)
+            {
+                var last = ctx.T_ESMin
+                    .Where(d => d.StatId == statId && d.DevId == devId && d.Country == country.ToString() &&
+                                d.UpdateTime > checkTime).OrderByDescending(d => d.UpdateTime).First();
+                last.TP = data.dust;
+                last.PM25 = data.dust;
+                last.PM100 = data.dust;
+                last.DB = data.noise;
+                last.Temperature = data.temperature;
+                last.Humidity = data.maxHumidity;
+                last.WindSpeed = data.windSpeed;
+                last.WindDirection = data.windDirection;
+                last.StatId = statId;
+                last.DevId = devId;
+                last.Country = country.ToString();
+                ctx.T_ESMin.AddOrUpdate(last);
+            }
+            ctx.SaveChanges();
+        }
+    }
+
+    public enum EmsdataStatus
+    {
+        Normal,
+
+        NotFound,
+
+        Exceeded
     }
 }

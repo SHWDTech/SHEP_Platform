@@ -350,4 +350,71 @@ namespace SHEP_Platform.Models.Admin
 
         public string LastSend { get; set; } = "服务器尚无记录。";
     }
+
+    public class UnicomScheduleViewModel
+    {
+        public int Id { get; set; } = -1;
+
+        [Required]
+        [Display(Name = "名称")]
+        public string ScheduleName { get; set; }
+
+        [Required]
+        [Display(Name = "优先级")]
+        public int SchedulePriority { get; set; }
+
+        [Required]
+        [Display(Name = "扬尘最大值")]
+        public double? DustMax { get; set; }
+
+        [Required]
+        [Display(Name = "扬尘最小值")]
+        public double? DustMin { get; set; }
+
+        [Required]
+        [Display(Name = "噪音最大值")]
+        public double? NoiseMax { get; set; }
+
+        [Required]
+        [Display(Name = "噪音最小值")]
+        public double? NoiseMin { get; set; }
+
+        [Required]
+        [Display(Name = "温度最大值")]
+        public double? TemperatureMax { get; set; }
+
+        [Required]
+        [Display(Name = "温度最小值")]
+        public double? TemperatureMin { get; set; }
+
+        [Required]
+        [Display(Name = "湿度最大值")]
+        public double? HumidityMax { get; set; }
+
+        [Required]
+        [Display(Name = "湿度最小值")]
+        public double? HumidityMin { get; set; }
+
+        [Required]
+        [Display(Name = "风速最大值")]
+        public double? WindSpeedMax { get; set; }
+
+        [Required]
+        [Display(Name = "风速最小值")]
+        public double? WindSpeedMin { get; set; }
+
+        [Required]
+        [Display(Name = "风向最大值")]
+        public double? WindDirectionMax { get; set; }
+
+        [Required]
+        [Display(Name = "风向最小值")]
+        public double? WindDirectionMin { get; set; }
+
+        [Required]
+        [Display(Name = "适用设备")]
+        public List<SelectListItem> DeviceList { get; set; } = new List<SelectListItem>();
+
+        public int[] AdaptedDevices { get; set; }
+    }
 }

@@ -26,7 +26,7 @@ namespace SHEP_Platform
         {
             throw new UnintentionalCodeFirstException();
         }
-
+    
         public virtual DbSet<T_AlarmType> T_AlarmType { get; set; }
         public virtual DbSet<T_Country> T_Country { get; set; }
         public virtual DbSet<T_DevAddr> T_DevAddr { get; set; }
@@ -59,6 +59,9 @@ namespace SHEP_Platform
         public virtual DbSet<T_Statistics> T_Statistics { get; set; }
         public virtual DbSet<T_UnicomDevice> T_UnicomDevice { get; set; }
         public virtual DbSet<T_UnicomProject> T_UnicomProject { get; set; }
+        public virtual DbSet<T_UnicomSchedule> T_UnicomSchedule { get; set; }
+        public virtual DbSet<T_UnicomScheduleConfig> T_UnicomScheduleConfig { get; set; }
+        public virtual DbSet<T_UnicomScheduleDevice> T_UnicomScheduleDevice { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {

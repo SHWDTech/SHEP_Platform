@@ -4,11 +4,13 @@ using System.Web.Mvc;
 using SHEP_Platform.Common;
 using SHEP_Platform.Models.Admin;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Transactions;
 using SHEP_Platform.Models.Api;
 using SHWDTech.Platform.Utility;
+// ReSharper disable PossibleInvalidOperationException
 namespace SHEP_Platform.Controllers
 {
     public class AdminController : ControllerBase
@@ -38,11 +40,11 @@ namespace SHEP_Platform.Controllers
             {
                 query = query.Where(stat => stat.Country == post.Country);
             }
-            if(!string.IsNullOrWhiteSpace(post.StatName))
+            if (!string.IsNullOrWhiteSpace(post.StatName))
             {
                 query = query.Where(stat => stat.StatName.Contains(post.StatName));
             }
-            if(!string.IsNullOrWhiteSpace(post.Chargeman))
+            if (!string.IsNullOrWhiteSpace(post.Chargeman))
             {
                 query = query.Where(stat => stat.ChargeMan.Contains(post.Chargeman));
             }
@@ -67,7 +69,7 @@ namespace SHEP_Platform.Controllers
                     s.Department,
                     s.Address,
                     s.Square,
-                    CountryName = countrys.FirstOrDefault(c => c.Id == s.Country).Country 
+                    CountryName = countrys.FirstOrDefault(c => c.Id == s.Country).Country
                 });
             return Json(new
             {
@@ -226,15 +228,15 @@ namespace SHEP_Platform.Controllers
                             addr.NodeId,
                             stat.StatName
                         };
-            if(!string.IsNullOrWhiteSpace(post.StatName))
+            if (!string.IsNullOrWhiteSpace(post.StatName))
             {
-                query = query.Where(d => d.StatName.Contains( post.StatName));
+                query = query.Where(d => d.StatName.Contains(post.StatName));
             }
-            if(!string.IsNullOrWhiteSpace(post.DevCode))
+            if (!string.IsNullOrWhiteSpace(post.DevCode))
             {
-                query = query.Where(d => d.DevCode.Contains( post.DevCode));
+                query = query.Where(d => d.DevCode.Contains(post.DevCode));
             }
-            if(!string.IsNullOrWhiteSpace(post.NodeId))
+            if (!string.IsNullOrWhiteSpace(post.NodeId))
             {
                 var nodeidBytes = BitConverter.GetBytes(int.Parse(post.NodeId));
                 Array.Reverse(nodeidBytes);
@@ -858,8 +860,174 @@ namespace SHEP_Platform.Controllers
         //获取区县信息
         public ActionResult GetALLAreaList()
         {
-            var countries = DbContext.T_Country.Select(item=> new { id=item.Id,text=item.Country}).ToList();
+            var countries = DbContext.T_Country.Select(item => new { id = item.Id, text = item.Country }).ToList();
             return Json(countries, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UnicomSchedule() => View();
+
+        public ActionResult UnicomScheduleTable(TablePost post)
+        {
+            var total = DbContext.T_UnicomSchedule.Count();
+            var rows = DbContext.T_UnicomSchedule
+                .OrderByDescending(o => o.Id)
+                .Skip(post.offset)
+                .Take(post.limit)
+                .ToList();
+            return Json(new
+            {
+                total,
+                rows
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult UnicomScheduleEdit(int? scheduleId)
+        {
+            List<int> scheduleDeviceeList;
+            var model = new UnicomScheduleViewModel();
+            if (scheduleId != null)
+            {
+                scheduleDeviceeList = DbContext.T_UnicomScheduleDevice.Where(d => d.ScheduleId == scheduleId)
+                    .Select(s => s.DeviceId).ToList();
+                var schedule = DbContext.T_UnicomSchedule.First(s => s.Id == scheduleId.Value);
+                model.ScheduleName = schedule.ScheduleName;
+                model.SchedulePriority = schedule.SchedulePriority;
+                var configs = DbContext.T_UnicomScheduleConfig.Where(c => c.ScheduleId == schedule.Id).ToList();
+                var dust = configs.First(c => c.DataName == "dust");
+                model.DustMax = dust.MaxValue;
+                model.DustMin = dust.MinValue;
+                var noise = configs.First(c => c.DataName == "noise");
+                model.NoiseMax = noise.MaxValue;
+                model.NoiseMin = noise.MinValue;
+                var temperature = configs.First(c => c.DataName == "temperature");
+                model.TemperatureMax = temperature.MaxValue;
+                model.TemperatureMin = temperature.MinValue;
+                var humidity = configs.First(c => c.DataName == "humidity");
+                model.HumidityMax = humidity.MaxValue;
+                model.HumidityMin = humidity.MinValue;
+                var windSpeed = configs.First(c => c.DataName == "windSpeed");
+                model.WindSpeedMax = windSpeed.MaxValue;
+                model.WindSpeedMin = windSpeed.MinValue;
+                var windDirection = configs.First(c => c.DataName == "windDirection");
+                model.WindDirectionMax = windDirection.MaxValue;
+                model.WindDirectionMin = windDirection.MinValue;
+            }
+            else
+            {
+                scheduleDeviceeList = new List<int>();
+            }
+            var allDevices = DbContext.T_Devs.Select(d => new { Name = d.DevCode, d.Id, d.StatId })
+                .ToList().Select(d => new { d.Name, d.Id, WdContext.StatList.First(s => s.Id.ToString() == d.StatId).StatName });
+            foreach (var dev in allDevices)
+            {
+                var select = new SelectListItem { Value = dev.Id.ToString(), Text = $"{dev.Name} - {dev.StatName}" };
+                if (scheduleDeviceeList.Contains(dev.Id))
+                {
+                    select.Selected = true;
+                }
+                model.DeviceList.Add(select);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UnicomScheduleEdit(UnicomScheduleViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    var schedule = model.Id > 0
+                        ? DbContext.T_UnicomSchedule.First(s => s.Id == model.Id)
+                        : new T_UnicomSchedule();
+                    schedule.ScheduleName = model.ScheduleName;
+                    schedule.SchedulePriority = model.SchedulePriority;
+                    DbContext.T_UnicomSchedule.AddOrUpdate(schedule);
+                    DbContext.SaveChanges();
+                    if (model.Id > 0)
+                    {
+                        var configs = DbContext.T_UnicomScheduleConfig.Where(c => c.ScheduleId == model.Id).ToList();
+                        var devices = DbContext.T_UnicomScheduleDevice.Where(d => d.ScheduleId == model.Id).ToList();
+                        DbContext.T_UnicomScheduleConfig.RemoveRange(configs);
+                        DbContext.T_UnicomScheduleDevice.RemoveRange(devices);
+                    }
+
+                    var newConfigs = new List<T_UnicomScheduleConfig>
+                    {
+                        new T_UnicomScheduleConfig
+                        {
+                            DataName = "dust",
+                            ScheduleId = schedule.Id,
+                            MaxValue = model.DustMax.Value,
+                            MinValue = model.DustMin.Value
+                        },
+                        new T_UnicomScheduleConfig
+                        {
+                            DataName = "noise",
+                            ScheduleId = schedule.Id,
+                            MaxValue = model.NoiseMax.Value,
+                            MinValue = model.NoiseMin.Value
+                        },
+                        new T_UnicomScheduleConfig
+                        {
+                            DataName = "temperature",
+                            ScheduleId = schedule.Id,
+                            MaxValue = model.TemperatureMax.Value,
+                            MinValue = model.TemperatureMin.Value
+                        },
+                        new T_UnicomScheduleConfig
+                        {
+                            DataName = "humidity",
+                            ScheduleId = schedule.Id,
+                            MaxValue = model.HumidityMax.Value,
+                            MinValue = model.HumidityMin.Value
+                        },
+                        new T_UnicomScheduleConfig
+                        {
+                            DataName = "windSpeed",
+                            ScheduleId = schedule.Id,
+                            MaxValue = model.WindSpeedMax.Value,
+                            MinValue = model.WindSpeedMin.Value
+                        },
+                        new T_UnicomScheduleConfig
+                        {
+                            DataName = "windDirection",
+                            ScheduleId = schedule.Id,
+                            MaxValue = model.WindDirectionMax.Value,
+                            MinValue = model.WindDirectionMin.Value
+                        }
+                    };
+                    DbContext.T_UnicomScheduleConfig.AddRange(newConfigs);
+                    var newDevices = new List<T_UnicomScheduleDevice>();
+                    foreach (var device in model.AdaptedDevices)
+                    {
+                        newDevices.Add(new T_UnicomScheduleDevice
+                        {
+                            ScheduleId = (int)schedule.Id,
+                            DeviceId = device
+                        });
+                    }
+
+                    DbContext.T_UnicomScheduleDevice.AddRange(newDevices);
+                    DbContext.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "更新失败");
+                    LogService.Instance.Error("更新联通平台计划失败。", ex);
+                    return View(model);
+                }
+                scope.Complete();
+            }
+
+            return RedirectToAction(nameof(UnicomSchedule));
         }
     }
 }

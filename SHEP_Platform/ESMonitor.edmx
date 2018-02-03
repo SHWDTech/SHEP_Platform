@@ -344,6 +344,32 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="UnicomCode" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Stopped" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="T_UnicomSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SchedulePriority" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_UnicomScheduleConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleId" Type="bigint" Nullable="false" />
+          <Property Name="DataName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MaxValue" Type="float" Nullable="false" />
+          <Property Name="MinValue" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_UnicomScheduleDevice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleId" Type="int" Nullable="false" />
+          <Property Name="DeviceId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="T_UserAuthority">
           <Key>
             <PropertyRef Name="UserId" />
@@ -395,11 +421,6 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="StatId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Table_1">
-          <Property Name="Guid" Type="nchar" MaxLength="10" />
-        </EntityType>-->
         <EntityType Name="VehicleRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -413,11 +434,6 @@ warning 6013: The table/view 'ESMonitor2.dbo.Table_1' does not have a primary ke
           <Property Name="Lat" Type="float" />
           <Property Name="Lng" Type="float" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="randview">
-          <Property Name="rd" Type="float" />
-        </EntityType>-->
         <Association Name="FK_T_Country_T_Province">
           <End Role="T_Province" Type="Self.T_Province" Multiplicity="1" />
           <End Role="T_Country" Type="Self.T_Country" Multiplicity="*" />
@@ -1134,6 +1150,9 @@ warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary k
           <EntitySet Name="T_Tasks" EntityType="Self.T_Tasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UnicomDevice" EntityType="Self.T_UnicomDevice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UnicomProject" EntityType="Self.T_UnicomProject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_UnicomSchedule" EntityType="Self.T_UnicomSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_UnicomScheduleConfig" EntityType="Self.T_UnicomScheduleConfig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_UnicomScheduleDevice" EntityType="Self.T_UnicomScheduleDevice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserAuthority" EntityType="Self.T_UserAuthority" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserGroup" EntityType="Self.T_UserGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_UserInGroups" EntityType="Self.T_UserInGroups" Schema="dbo" store:Type="Tables" />
@@ -2226,6 +2245,9 @@ warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary k
             <Parameter Name="lng" Mode="In" Type="String" />
             <Parameter Name="statId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="T_UnicomSchedule" EntityType="ESMonitorModel.T_UnicomSchedule" />
+          <EntitySet Name="T_UnicomScheduleConfig" EntityType="ESMonitorModel.T_UnicomScheduleConfig" />
+          <EntitySet Name="T_UnicomScheduleDevice" EntityType="ESMonitorModel.T_UnicomScheduleDevice" />
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
@@ -2822,6 +2844,32 @@ warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary k
           <Property Name="StatId" Type="Int32" Nullable="false" />
           <Property Name="UnicomCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Stopped" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_UnicomSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SchedulePriority" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_UnicomScheduleConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleId" Type="Int64" Nullable="false" />
+          <Property Name="DataName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MaxValue" Type="Double" Nullable="false" />
+          <Property Name="MinValue" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_UnicomScheduleDevice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleId" Type="Int32" Nullable="false" />
+          <Property Name="DeviceId" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3996,6 +4044,35 @@ warning 6013: The table/view 'ESMonitor2.dbo.randview' does not have a primary k
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="T_Devs_UpdateGps" FunctionName="ESMonitorModel.Store.T_Devs_UpdateGps" />
+          <EntitySetMapping Name="T_UnicomSchedule">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_UnicomSchedule">
+              <MappingFragment StoreEntitySet="T_UnicomSchedule">
+                <ScalarProperty Name="SchedulePriority" ColumnName="SchedulePriority" />
+                <ScalarProperty Name="ScheduleName" ColumnName="ScheduleName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_UnicomScheduleConfig">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_UnicomScheduleConfig">
+              <MappingFragment StoreEntitySet="T_UnicomScheduleConfig">
+                <ScalarProperty Name="MinValue" ColumnName="MinValue" />
+                <ScalarProperty Name="MaxValue" ColumnName="MaxValue" />
+                <ScalarProperty Name="DataName" ColumnName="DataName" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_UnicomScheduleDevice">
+            <EntityTypeMapping TypeName="ESMonitorModel.T_UnicomScheduleDevice">
+              <MappingFragment StoreEntitySet="T_UnicomScheduleDevice">
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

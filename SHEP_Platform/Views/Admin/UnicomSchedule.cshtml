@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "联通平台数据管理";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+<div style="margin-bottom: 15px;">
+    <a class="btn btn-primary" href="/Admin/UnicomScheduleEdit">新增</a>
+</div>
+<div>
+    @{
+        var table = Html.BootstrapTable(null, TablePaginationOption.server, new
+        {
+            id = "statmgrTable",
+            data_page_size = 25,
+            data_reset_offset = true,
+            data_url = "/Admin/UnicomScheduleTable",
+            data_height = 600
+        });
+        var builder = table.Column("方案名称", "ScheduleName")
+            .Column("方案优先级", "SchedulePriority")
+            .Column("操作")
+            .Apply(ColumnOption.width, "120")
+            .Apply(ColumnOption.formatter, "unicomScheduleFormatter")
+            .Apply(ColumnOption.events, "unicomScheduleEvents");
+    }
+    @(builder)
+</div>
+@section css{
+    @Styles.Render("~/Content/select2-bootstrap")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")
+    <script type="text/javascript">
+        window.unicomScheduleFormatter = function (index, row, element) {
+            return [
+                '<a class="update" href="/Admin/UnicomScheduleEdit/?scheduleId=' + row.Id + '" style="margin-right: 5px;"><span class="glyphicon glyphicon-edit">更新</span></a>',
+                '<a class="delete" href="javascript:void(0)"><span class="glyphicon glyphicon-remove">删除</span></a>'
+            ].join('');
+        }
+
+        window.unicomScheduleEvents = {
+            'click .delete': function (e, value, row) {
+                if (confirm('确定删除该方案吗？')) {
+                    $.get('/Admin/UnicomScheduleDelete/' + row.Id, null, function (ret) {
+                        if (ret.msg === 'success') {
+                            $('#' + id).remove();
+                            msg.info('删除成功');
+                        }
+                    });
+                }
+            }
+        };
+    </script>
+}

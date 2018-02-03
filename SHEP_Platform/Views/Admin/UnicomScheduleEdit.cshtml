@@ -1,0 +1,153 @@
+﻿@model SHEP_Platform.Models.Admin.UnicomScheduleViewModel
+@{
+    ViewBag.Title = "联通平台数据方案编辑";
+}
+
+@using (Html.BeginForm("UnicomScheduleEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", Id = "UnicomScheduleForm" }))
+{
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <p style="text-align: center; font-size: 20px">联通平台数据方案编辑</p>
+        </div>
+        <div class="panel-body">
+            <input type="hidden" />
+            <table class="table table-bordered table-hover table-striped">
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.ScheduleName)
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBoxFor(m => m.ScheduleName, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.SchedulePriority)
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBoxFor(m => m.SchedulePriority, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.DustMax)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.DustMax, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.DustMin)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.DustMin, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.NoiseMax)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.NoiseMax, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.NoiseMin)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.NoiseMin, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.TemperatureMax)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.TemperatureMax, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.TemperatureMin)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.TemperatureMin, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.HumidityMax)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.HumidityMax, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.HumidityMin)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.HumidityMin, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.WindSpeedMax)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.WindSpeedMax, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.WindSpeedMin)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.WindSpeedMin, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.WindDirectionMax)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.WindDirectionMax, new { @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.WindDirectionMin)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.WindDirectionMin, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.DeviceList)
+                        </td>
+                        <td colspan="7">
+                            <select id="AdaptedDevices" name="AdaptedDevices" multiple="multiple" class="form-control">
+                                <optgroup label="工地">
+                                    @{
+                                        foreach (var stat in Model.DeviceList)
+                                        {
+                                            var selected = stat.Selected ? "selected" : "";
+                                            <option value="@stat.Value" @selected>@stat.Text</option>
+                                        }
+                                    }
+                                </optgroup>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8">
+                            @Html.ValidationSummary()
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8">
+                            <input type="submit" class="btn btn-primary" value="提交" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@section css{
+    @Styles.Render("~/Content/select2-bootstrap")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/select2")
+    <script type="text/javascript">
+        $('#AdaptedDevices').select2({
+            placeholder: "---选择设备---"
+        });
+    </script>
+}
