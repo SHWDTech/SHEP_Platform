@@ -40,22 +40,27 @@ namespace SHEP_Platform.Controllers
             {
                 query = query.Where(stat => stat.Country == post.Country);
             }
+
             if (!string.IsNullOrWhiteSpace(post.StatName))
             {
                 query = query.Where(stat => stat.StatName.Contains(post.StatName));
             }
+
             if (!string.IsNullOrWhiteSpace(post.Chargeman))
             {
                 query = query.Where(stat => stat.ChargeMan.Contains(post.Chargeman));
             }
+
             if (!string.IsNullOrWhiteSpace(post.Address))
             {
                 query = query.Where(stat => stat.Address.Contains(post.Address));
             }
+
             if (!string.IsNullOrWhiteSpace(post.Department))
             {
                 query = query.Where(stat => stat.Department.Contains(post.Department));
             }
+
             var total = query.Count();
             var countrys = DbContext.T_Country.AsQueryable();
             var rows = query.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit).ToList()
@@ -77,6 +82,7 @@ namespace SHEP_Platform.Controllers
                 rows
             }, JsonRequestBehavior.AllowGet);
         }
+
         [HttpGet]
         public ActionResult StatEdit(string id)
         {
@@ -217,37 +223,41 @@ namespace SHEP_Platform.Controllers
         public ActionResult DevsTable(NameQueryTablePost post)
         {
             var query = from dev in DbContext.T_Devs
-                        let addr = DbContext.T_DevAddr.FirstOrDefault(a => a.DevId == dev.Id)
-                        let stat = DbContext.T_Stats.FirstOrDefault(stat => stat.Id.ToString() == dev.StatId)
-                        select new
-                        {
-                            dev.StatId,
-                            dev.DevStatus,
-                            dev.Id,
-                            dev.DevCode,
-                            addr.NodeId,
-                            stat.StatName
-                        };
+                let addr = DbContext.T_DevAddr.FirstOrDefault(a => a.DevId == dev.Id)
+                let stat = DbContext.T_Stats.FirstOrDefault(stat => stat.Id.ToString() == dev.StatId)
+                select new
+                {
+                    dev.StatId,
+                    dev.DevStatus,
+                    dev.Id,
+                    dev.DevCode,
+                    addr.NodeId,
+                    stat.StatName
+                };
             if (!string.IsNullOrWhiteSpace(post.StatName))
             {
                 query = query.Where(d => d.StatName.Contains(post.StatName));
             }
+
             if (!string.IsNullOrWhiteSpace(post.DevCode))
             {
                 query = query.Where(d => d.DevCode.Contains(post.DevCode));
             }
+
             if (!string.IsNullOrWhiteSpace(post.NodeId))
             {
                 var nodeidBytes = BitConverter.GetBytes(int.Parse(post.NodeId));
                 Array.Reverse(nodeidBytes);
                 query = query.Where(d => d.NodeId == nodeidBytes);
             }
+
             var total = query.Count();
             var rows = query.OrderBy(d => d.Id).Skip(post.offset).Take(post.limit).ToList()
                 .Select(dev => new
                 {
                     dev.Id,
                     dev.DevCode,
+                    dev.StatId,
                     DbContext.T_Stats.FirstOrDefault(obj => obj.Id.ToString() == dev.StatId)?.StatName,
 
                     NodeId = Global.BytesToInt32(DbContext.T_DevAddr.First(d => d.DevId == dev.Id).NodeId, 0, false),
@@ -292,7 +302,8 @@ namespace SHEP_Platform.Controllers
                 model.StatId = int.Parse(dev.StatId);
                 model.VideoUrl = dev.VideoURL;
 
-                model.Addr = Global.BytesToInt32(DbContext.T_DevAddr.First(d => d.DevId == dev.Id).NodeId, 0, false).ToString();
+                model.Addr = Global.BytesToInt32(DbContext.T_DevAddr.First(d => d.DevId == dev.Id).NodeId, 0, false)
+                    .ToString();
             }
 
             ViewBag.ReturnUrl = "/Admin/DevManage";
@@ -331,12 +342,14 @@ namespace SHEP_Platform.Controllers
                             ModelState.AddModelError("Addr", "设备ID不能为空。");
                             return View(model);
                         }
+
                         var addr = Global.StringTohexStringByte(model.Addr);
                         if (DbContext.T_DevAddr.Any(a => a.NodeId.Equals(addr)))
                         {
                             ModelState.AddModelError("Addr", "设备ID已经存在。");
                             return View(model);
                         }
+
                         DbContext.T_Devs.Add(dev);
                         DbContext.SaveChanges();
                         var devAddr = new T_DevAddr
@@ -346,6 +359,7 @@ namespace SHEP_Platform.Controllers
                         };
                         DbContext.T_DevAddr.Add(devAddr);
                     }
+
                     DbContext.SaveChanges();
                 }
                 catch (Exception ex)
@@ -469,6 +483,7 @@ namespace SHEP_Platform.Controllers
                 ModelState.AddModelError("", "密码不能为空。");
                 return View(model);
             }
+
             if (model.Password != model.ConfirmPassword)
             {
                 ModelState.AddModelError("", "两次输入的密码不一致，请重新输入。");
@@ -577,11 +592,12 @@ namespace SHEP_Platform.Controllers
             var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
             foreach (var stat in stats)
             {
-                var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
+                var select = new SelectListItem {Value = stat.Id.ToString(), Text = stat.StatName};
                 if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
                 {
                     select.Selected = true;
                 }
+
                 model.StatsList.Add(select);
             }
 
@@ -602,7 +618,9 @@ namespace SHEP_Platform.Controllers
                 return UserEditError(model);
             }
 
-            var user = model.UserId == -1 ? new T_Users() : DbContext.T_Users.First(item => item.UserId == model.UserId);
+            var user = model.UserId == -1
+                ? new T_Users()
+                : DbContext.T_Users.First(item => item.UserId == model.UserId);
 
             user.Mobile = model.Mobile;
             user.Email = model.EmailAddress;
@@ -627,15 +645,17 @@ namespace SHEP_Platform.Controllers
                 {
                     DbContext.T_UserStats.Remove(authedStat);
                 }
+
                 var authStats = Request["stats"];
                 if (!string.IsNullOrWhiteSpace(authStats))
                 {
                     var statLIst = authStats.Split(',').Select(int.Parse);
                     foreach (var stat in statLIst)
                     {
-                        DbContext.T_UserStats.Add(new T_UserStats { UserId = user.UserId, StatId = stat });
+                        DbContext.T_UserStats.Add(new T_UserStats {UserId = user.UserId, StatId = stat});
                     }
                 }
+
                 DbContext.SaveChanges();
             }
             catch (DbEntityValidationException ex)
@@ -682,13 +702,15 @@ namespace SHEP_Platform.Controllers
             var userStats = DbContext.T_UserStats.Where(obj => obj.UserId == model.UserId).ToList();
             foreach (var stat in stats)
             {
-                var select = new SelectListItem { Value = stat.Id.ToString(), Text = stat.StatName };
+                var select = new SelectListItem {Value = stat.Id.ToString(), Text = stat.StatName};
                 if (userStats.FirstOrDefault(obj => obj.StatId == stat.Id) != null)
                 {
                     select.Selected = true;
                 }
+
                 model.StatsList.Add(select);
             }
+
             return View(model);
         }
 
@@ -696,13 +718,14 @@ namespace SHEP_Platform.Controllers
         public ActionResult Camera(string id)
         {
             var statIds = WdContext.StatList.Select(obj => obj.Id.ToString()).ToList();
-            ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId)).Select(item => new SelectListItem { Text = item.DevCode, Value = item.Id.ToString() }).ToList();
+            ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId))
+                .Select(item => new SelectListItem {Text = item.DevCode, Value = item.Id.ToString()}).ToList();
 
             T_Camera model;
             if (string.IsNullOrWhiteSpace(id))
             {
                 WdContext.SiteMapMenu.ActionMenu.Name = "新增摄像头";
-                model = new T_Camera { ID = -1 };
+                model = new T_Camera {ID = -1};
             }
             else
             {
@@ -740,7 +763,8 @@ namespace SHEP_Platform.Controllers
             {
                 LogService.Instance.Error("保存摄像头信息失败！", ex);
                 var statIds = WdContext.StatList.Select(obj => obj.Id.ToString()).ToList();
-                ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId)).Select(item => new SelectListItem { Text = item.DevCode, Value = item.Id.ToString() }).ToList();
+                ViewBag.DevList = DbContext.T_Devs.Where(obj => statIds.Contains(obj.StatId))
+                    .Select(item => new SelectListItem {Text = item.DevCode, Value = item.Id.ToString()}).ToList();
 
                 foreach (var error in ex.EntityValidationErrors)
                 {
@@ -749,6 +773,7 @@ namespace SHEP_Platform.Controllers
                         ModelState.AddModelError(dbValidationError.PropertyName, dbValidationError.ErrorMessage);
                     }
                 }
+
                 return View(model);
             }
 
@@ -824,10 +849,10 @@ namespace SHEP_Platform.Controllers
         public ActionResult AllDevice()
         {
             return Json(DbContext.T_Devs.Select(d => new
-            {
-                id = d.Id,
-                text = d.DevCode
-            })
+                {
+                    id = d.Id,
+                    text = d.DevCode
+                })
                 .ToList(), JsonRequestBehavior.AllowGet);
         }
 
@@ -857,10 +882,11 @@ namespace SHEP_Platform.Controllers
                 });
             return Json(rows, JsonRequestBehavior.AllowGet);
         }
+
         //获取区县信息
         public ActionResult GetALLAreaList()
         {
-            var countries = DbContext.T_Country.Select(item => new { id = item.Id, text = item.Country }).ToList();
+            var countries = DbContext.T_Country.Select(item => new {id = item.Id, text = item.Country}).ToList();
             return Json(countries, JsonRequestBehavior.AllowGet);
         }
 
@@ -891,6 +917,7 @@ namespace SHEP_Platform.Controllers
                 scheduleDeviceeList = DbContext.T_UnicomScheduleDevice.Where(d => d.ScheduleId == scheduleId)
                     .Select(s => s.DeviceId).ToList();
                 var schedule = DbContext.T_UnicomSchedule.First(s => s.Id == scheduleId.Value);
+                model.Id = schedule.Id;
                 model.ScheduleName = schedule.ScheduleName;
                 model.SchedulePriority = schedule.SchedulePriority;
                 var configs = DbContext.T_UnicomScheduleConfig.Where(c => c.ScheduleId == schedule.Id).ToList();
@@ -917,15 +944,18 @@ namespace SHEP_Platform.Controllers
             {
                 scheduleDeviceeList = new List<int>();
             }
-            var allDevices = DbContext.T_Devs.Select(d => new { Name = d.DevCode, d.Id, d.StatId })
-                .ToList().Select(d => new { d.Name, d.Id, WdContext.StatList.First(s => s.Id.ToString() == d.StatId).StatName });
+
+            var allDevices = DbContext.T_Devs.Select(d => new {Name = d.DevCode, d.Id, d.StatId})
+                .ToList().Select(d =>
+                    new {d.Name, d.Id, WdContext.StatList.First(s => s.Id.ToString() == d.StatId).StatName});
             foreach (var dev in allDevices)
             {
-                var select = new SelectListItem { Value = dev.Id.ToString(), Text = $"{dev.Name} - {dev.StatName}" };
+                var select = new SelectListItem {Value = dev.Id.ToString(), Text = $"{dev.Name} - {dev.StatName}"};
                 if (scheduleDeviceeList.Contains(dev.Id))
                 {
                     select.Selected = true;
                 }
+
                 model.DeviceList.Add(select);
             }
 
@@ -1010,7 +1040,7 @@ namespace SHEP_Platform.Controllers
                     {
                         newDevices.Add(new T_UnicomScheduleDevice
                         {
-                            ScheduleId = (int)schedule.Id,
+                            ScheduleId = (int) schedule.Id,
                             DeviceId = device
                         });
                     }
@@ -1024,10 +1054,43 @@ namespace SHEP_Platform.Controllers
                     LogService.Instance.Error("更新联通平台计划失败。", ex);
                     return View(model);
                 }
+
                 scope.Complete();
             }
 
             return RedirectToAction(nameof(UnicomSchedule));
+        }
+
+        public ActionResult UnicomScheduleDelete(long id)
+        {
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    var schedule = DbContext.T_UnicomSchedule.First(s => s.Id == id);
+                    var configs = DbContext.T_UnicomScheduleConfig.Where(c => c.ScheduleId == id).ToList();
+                    var scheduleDevices =
+                        DbContext.T_UnicomScheduleDevice.Where(d => d.ScheduleId == (int) id).ToList();
+                    DbContext.T_UnicomSchedule.Remove(schedule);
+                    DbContext.T_UnicomScheduleConfig.RemoveRange(configs);
+                    DbContext.T_UnicomScheduleDevice.RemoveRange(scheduleDevices);
+                    DbContext.SaveChanges();
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    LogService.Instance.Error("删除联通平台数据方案失败", ex);
+                    return Json(new
+                    {
+                        msg = "failed"
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            return Json(new
+            {
+                msg = "success"
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

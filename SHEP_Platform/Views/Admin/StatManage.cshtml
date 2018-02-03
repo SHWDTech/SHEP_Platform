@@ -62,11 +62,6 @@
                 '<a class="stat" href="/Monitor/ActualStatus/' + row.Id + '" >' + row.StatName + '</a>'
             ].join('');
         }
-        window.StatusEvents = {
-            'click.stat': function (e, value, row) {
-                load(row.Id, row.StatName, 1);
-            }
-        }
 
         window.statMgrFormatter = function (index, row, element) {
             return [

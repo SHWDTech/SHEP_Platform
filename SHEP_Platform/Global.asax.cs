@@ -57,7 +57,7 @@ namespace SHEP_Platform
                         if (device.ScheduleId != schedule.Id) continue;
                         sch.DeviceList.Add(device.DeviceId);
                     }
-                    UnicomDataGenerateSchedule.CachedSchedules.Add(schedule.ScheduleName, sch);
+                    UnicomDataGenerateSchedule.CachedSchedules.Add(schedule.Id.ToString(), sch);
                 }
             }
         }

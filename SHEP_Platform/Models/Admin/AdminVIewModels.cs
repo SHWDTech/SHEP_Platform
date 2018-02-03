@@ -353,7 +353,7 @@ namespace SHEP_Platform.Models.Admin
 
     public class UnicomScheduleViewModel
     {
-        public int Id { get; set; } = -1;
+        public long Id { get; set; } = -1;
 
         [Required]
         [Display(Name = "名称")]

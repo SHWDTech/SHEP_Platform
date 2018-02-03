@@ -25,8 +25,8 @@
             data_height = 600
         });
         var builder = table.Column("监测点名称", "StatName")
-            //.Apply(ColumnOption.formatter, "StatusFormatter")
-            //.Apply(ColumnOption.events, "StatusEvents")
+            .Apply(ColumnOption.formatter, "StatusFormatter")
+            .Apply(ColumnOption.events, "StatusEvents")
             .Column("设备ID", "Id")
             .Column("设备名称", "DevCode")
             .Column("设备NODEID", "NodeId")
@@ -47,16 +47,11 @@
     @Scripts.Render("~/bundles/bootstrap-table")
     @Scripts.Render("~/bundles/select2")
     <script type="text/javascript">
-        //window.StatusFormatter = function (index, row, element) {
-        //    return [
-        //        '<a class="Status" href="/Monitor/DevTable/' + row.Id + '">' + row.StatName + '</a>'
-        //    ].join('');
-        //}
-        //window.StatusEvents = {
-        //    'click.Status': function (e, value, row) {
-        //        load(row.Id,row.StatName, 1);
-        //    }
-        //}
+        window.StatusFormatter = function (index, row, element) {
+            return [
+                '<a class="Status" href="/Monitor/ActualStatus/' + row.StatId + '">' + row.StatName + '</a>'
+            ].join('');
+        }
 
         window.devMgrFormatter = function (index, row, element) {
             return [

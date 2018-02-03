@@ -42,7 +42,6 @@
                 if (confirm('确定删除该方案吗？')) {
                     $.get('/Admin/UnicomScheduleDelete/' + row.Id, null, function (ret) {
                         if (ret.msg === 'success') {
-                            $('#' + id).remove();
                             msg.info('删除成功');
                         }
                     });
