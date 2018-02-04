@@ -16,49 +16,47 @@ namespace SHEP_Platform.ScheduleJobs
             var service = new UnicomService();
             using (var ctx = new ESMonitorEntities())
             {
-                var unicomProjects = ctx.T_UnicomProject.ToList();
-                var unicomDevices = ctx.T_UnicomDevice.ToList();
+                var unicomProjects = ctx.T_UnicomProject.Where(p => !p.Stopped).ToList();
+                var unicomDevices = ctx.T_UnicomDevice.Where(d => d.OnCalc).ToList();
                 var checkTime = DateTime.Now.AddMinutes(-1);
-                foreach (var project in unicomProjects)
+                foreach (var device in unicomDevices)
                 {
-                    var stat = ctx.T_Stats.First(s => s.Id == project.StatId);
-                    foreach (var device in unicomDevices)
+                    var project = unicomProjects.FirstOrDefault(s => s.StatId == device.StatId);
+                    if (project == null) continue;
+                    var stat = ctx.T_Stats.First(s => s.Id == device.StatId);
+                    var status = EmsdataStatus.Normal;
+                    try
                     {
-                        var status = EmsdataStatus.Normal;
-                        try
+                        var emsDatas = FetchRecentData(ctx, device.DevId, device.StatId, checkTime);
+                        var schedule = TryGetSchedule(device.Id);
+                        if (emsDatas.Count <= 0)
                         {
-                            var emsDatas = FetchRecentData(ctx, device.DevId, device.StatId, checkTime);
-                            var schedule = TryGetSchedule(device.Id);
-                            if (schedule == null) continue;
-                            if (emsDatas.Count <= 0)
-                            {
-                                LoadFromHistoryData(ctx, emsDatas);
-                                status = EmsdataStatus.NotFound;
-                            }
-
-                            AddDeviceInfo(emsDatas, project, device);
-                            if (FixErrorData(emsDatas, schedule) && status != EmsdataStatus.NotFound)
-                            {
-                                status = EmsdataStatus.Exceeded;
-                            }
-                            var result = service.PushRealTimeData(emsDatas.ToArray());
-                            if (result.result.Length > 0)
-                            {
-                                foreach (var entry in result.result)
-                                {
-                                    LogService.Instance.Warn($"发送联通数据失败,错误原因key:{entry.key},value:{entry.value}");
-                                }
-                            }
-                            else
-                            {
-                                AfterUpdateProcess(status, ctx, emsDatas.First(), project.StatId, device.Id, stat.Country, checkTime);
-                            }
-
+                            LoadFromHistoryData(ctx, emsDatas);
+                            status = EmsdataStatus.NotFound;
                         }
-                        catch (Exception ex)
+
+                        AddDeviceInfo(emsDatas, project, device);
+                        if (FixErrorData(emsDatas, schedule) && status != EmsdataStatus.NotFound)
                         {
-                            LogService.Instance.Error("联通数据上传处理失败。", ex);
+                            status = EmsdataStatus.Exceeded;
                         }
+                        var result = service.PushRealTimeData(emsDatas.ToArray());
+                        if (result.result.Length > 0)
+                        {
+                            foreach (var entry in result.result)
+                            {
+                                LogService.Instance.Warn($"发送联通数据失败,错误原因key:{entry.key},value:{entry.value}");
+                            }
+                        }
+                        else
+                        {
+                            AfterUpdateProcess(status, ctx, emsDatas.First(), project.StatId, device.Id, stat.Country, checkTime);
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        LogService.Instance.Error("联通数据上传处理失败。", ex);
                     }
                 }
             }
@@ -97,6 +95,7 @@ namespace SHEP_Platform.ScheduleJobs
 
         private static bool FixErrorData(List<emsData> datas, UnicomDataGenerateSchedule schedule)
         {
+            if (schedule == null) return false;
             var random = new Random();
             var exceed = false;
             foreach (var data in datas)
