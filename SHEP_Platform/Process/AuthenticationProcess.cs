@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using SHEP_Platform.Common;
 using SHEP_Platform.Enums;
 
@@ -8,6 +9,9 @@ namespace SHEP_Platform.Process
     public class AuthenticationProcess
     {
         private ESMonitorEntities DbContext { get; }
+
+        public HttpRequestBase Request { get; set; }
+
         public AuthenticationProcess()
         {
             DbContext = new ESMonitorEntities();
@@ -34,6 +38,14 @@ namespace SHEP_Platform.Process
                 result.ResultType = LoginResultType.ValidUserName;
                 result.ErrorElement = "PassWord";
                 result.ErrorMessage = "密码错误";
+                var investigate = new Investigate
+                {
+                    IpAddr = Request.UserHostAddress,
+                    Message = $"用户尝试登陆失败，错误原因：密码错误，用户名：{userName}",
+                    MessageTime = DateTime.Now
+                };
+                DbContext.Investigate.Add(investigate);
+                DbContext.SaveChanges();
                 return result;
             }
 
@@ -41,6 +53,15 @@ namespace SHEP_Platform.Process
             {
                 result.ResultType = LoginResultType.AccountLocked;
                 result.ErrorMessage = "账户已锁定";
+                var investigate = new Investigate
+                {
+                    IpAddr = Request.UserHostAddress,
+                    Message = $"用户尝试登陆失败，错误原因：账户已锁定，用户名：{userName}",
+                    MessageTime = DateTime.Now,
+                    UserId = loginUser.UserId
+                };
+                DbContext.Investigate.Add(investigate);
+                DbContext.SaveChanges();
                 return result;
             }
 
@@ -48,6 +69,15 @@ namespace SHEP_Platform.Process
             {
                 result.ResultType = LoginResultType.AccountLocked;
                 result.ErrorMessage = "用户未审核";
+                var investigate = new Investigate
+                {
+                    IpAddr = Request.UserHostAddress,
+                    Message = $"用户尝试登陆失败，错误原因：用户未审核，用户名：{userName}",
+                    MessageTime = DateTime.Now,
+                    UserId = loginUser.UserId
+                };
+                DbContext.Investigate.Add(investigate);
+                DbContext.SaveChanges();
                 return result;
             }
 
@@ -55,6 +85,14 @@ namespace SHEP_Platform.Process
 
             try
             {
+                var investigate = new Investigate
+                {
+                    IpAddr = Request.UserHostAddress,
+                    Message = $"用户尝试登陆成功，用户名：{userName}",
+                    MessageTime = DateTime.Now,
+                    UserId = loginUser.UserId
+                };
+                DbContext.Investigate.Add(investigate);
                 DbContext.SaveChanges();
             }
             catch (Exception e)

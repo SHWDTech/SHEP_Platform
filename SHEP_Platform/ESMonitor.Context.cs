@@ -62,6 +62,7 @@ namespace SHEP_Platform
         public virtual DbSet<T_UnicomSchedule> T_UnicomSchedule { get; set; }
         public virtual DbSet<T_UnicomScheduleConfig> T_UnicomScheduleConfig { get; set; }
         public virtual DbSet<T_UnicomScheduleDevice> T_UnicomScheduleDevice { get; set; }
+        public virtual DbSet<Investigate> Investigate { get; set; }
     
         public virtual int T_Alarms_ADD(ObjectParameter id, Nullable<int> statId, Nullable<int> devId, Nullable<short> dustType, Nullable<double> faultVal, Nullable<System.DateTime> updateTime, string country)
         {

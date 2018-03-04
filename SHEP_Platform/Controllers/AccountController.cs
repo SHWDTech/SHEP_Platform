@@ -36,7 +36,7 @@ namespace SHEP_Platform.Controllers
                 return View(model);
             }
 
-
+            AccountProcess.Request = Request;
 
             var result = AccountProcess.Login(model.UserName, model.Password);
 

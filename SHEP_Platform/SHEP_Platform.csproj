@@ -209,6 +209,9 @@
     <Compile Include="DeviceException.cs">
       <DependentUpon>ESMonitor.tt</DependentUpon>
     </Compile>
+    <Compile Include="Investigate.cs">
+      <DependentUpon>ESMonitor.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Analysis\AlarmDetailsViewModel.cs" />
     <Compile Include="Models\Analysis\StatPicViewModel.cs" />
     <Compile Include="Models\Api\AppServer.cs" />
@@ -1202,6 +1205,7 @@
     <Content Include="Views\PlatformRegister\UnicomDevice.cshtml" />
     <Content Include="Views\Admin\UnicomSchedule.cshtml" />
     <Content Include="Views\Admin\UnicomScheduleEdit.cshtml" />
+    <Content Include="Views\Admin\Investigate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

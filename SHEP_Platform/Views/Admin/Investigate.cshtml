@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "用户登陆审查";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap-table.css">
+<div>
+    @{
+        var table = Html.BootstrapTable(null, TablePaginationOption.server, new
+        {
+            id = "investigateTable",
+            data_page_size = 25,
+            data_reset_offset = true,
+            data_url = "/Admin/InvestigateTablle",
+            data_height = 600
+        });
+        var builder = table.Column("序号", "Id")
+            .Column("请求地址", "IpAddr")
+            .Column("审查结果", "Message")
+            .Column("审查时间", "MessageTime");
+    }
+    @(builder)
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/bootstrap-table")
+}

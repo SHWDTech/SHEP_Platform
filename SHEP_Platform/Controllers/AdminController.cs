@@ -1092,5 +1092,28 @@ namespace SHEP_Platform.Controllers
                 msg = "success"
             }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Investigate() => View();
+
+        public ActionResult InvestigateTablle(TablePost post)
+        {
+            var total = DbContext.Investigate.Count();
+            var rows = DbContext.Investigate.OrderBy(i => i.MessageTime)
+                .Skip(post.offset)
+                .Take(post.limit)
+                .ToList()
+                .Select(i => new
+                {
+                    i.Id,
+                    i.IpAddr,
+                    i.Message,
+                    MessageTime = i.MessageTime.ToString("yyyy-MM-dd HH:mm:ss")
+                });
+            return Json(new
+            {
+                total,
+                rows
+            }, JsonRequestBehavior.AllowGet); ;
+        }
     }
 }

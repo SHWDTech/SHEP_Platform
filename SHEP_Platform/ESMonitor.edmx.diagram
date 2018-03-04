@@ -45,6 +45,7 @@
         <EntityTypeShape EntityType="ESMonitorModel.T_UnicomSchedule" Width="1.5" PointX="16.375" PointY="10.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_UnicomScheduleConfig" Width="1.5" PointX="5.375" PointY="17.75" />
         <EntityTypeShape EntityType="ESMonitorModel.T_UnicomScheduleDevice" Width="1.5" PointX="17.375" PointY="13.75" />
+        <EntityTypeShape EntityType="ESMonitorModel.Investigate" Width="1.5" PointX="17.375" PointY="16.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

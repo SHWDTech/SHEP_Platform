@@ -22,6 +22,16 @@
           <Property Name="Comment" Type="varchar" MaxLength="2000" />
           <Property Name="ProcessDateTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="Investigate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="IpAddr" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="MessageTime" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -1128,6 +1138,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
         </Function>
         <EntityContainer Name="ESMonitorModelStoreContainer">
           <EntitySet Name="DeviceException" EntityType="Self.DeviceException" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Investigate" EntityType="Self.Investigate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_AlarmType" EntityType="Self.T_AlarmType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Camera" EntityType="Self.T_Camera" Schema="dbo" store:Type="Tables" />
@@ -2248,6 +2259,7 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <EntitySet Name="T_UnicomSchedule" EntityType="ESMonitorModel.T_UnicomSchedule" />
           <EntitySet Name="T_UnicomScheduleConfig" EntityType="ESMonitorModel.T_UnicomScheduleConfig" />
           <EntitySet Name="T_UnicomScheduleDevice" EntityType="ESMonitorModel.T_UnicomScheduleDevice" />
+          <EntitySet Name="Investigate" EntityType="ESMonitorModel.Investigate" />
         </EntityContainer>
         <ComplexType Name="T_Alarms_GetDustOverDataCount_Result">
           <Property Type="String" Name="StatName" Nullable="false" MaxLength="50" />
@@ -2870,6 +2882,16 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ScheduleId" Type="Int32" Nullable="false" />
           <Property Name="DeviceId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Investigate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="IpAddr" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="MessageTime" Type="DateTime" Nullable="false" Precision="7" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4069,6 +4091,17 @@ warning 6002: The table/view 'ESMonitor2.dbo.T_Offset' does not have a primary k
               <MappingFragment StoreEntitySet="T_UnicomScheduleDevice">
                 <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Investigate">
+            <EntityTypeMapping TypeName="ESMonitorModel.Investigate">
+              <MappingFragment StoreEntitySet="Investigate">
+                <ScalarProperty Name="MessageTime" ColumnName="MessageTime" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="IpAddr" ColumnName="IpAddr" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
