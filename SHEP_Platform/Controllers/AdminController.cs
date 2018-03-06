@@ -134,6 +134,45 @@ namespace SHEP_Platform.Controllers
         [HttpPost]
         public ActionResult StatEdit(StatEditViewModel model)
         {
+            model.StageList = new SelectList(DbContext.T_Stage, "Id", "StageName", model.Stage);
+
+            model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Country);
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (HasSqlInject(model.StatCode))
+            {
+                ModelState.AddModelError("StatCode", "包含非法字符，请重新输入。");
+                return View(model);
+            }
+
+            if (HasSqlInject(model.StatName))
+            {
+                ModelState.AddModelError("StatName", "包含非法字符，请重新输入。");
+                return View(model);
+            }
+
+            if (HasSqlInject(model.ChargeMan))
+            {
+                ModelState.AddModelError("ChargeMan", "包含非法字符，请重新输入。");
+                return View(model);
+            }
+
+            if (HasSqlInject(model.Telepone))
+            {
+                ModelState.AddModelError("Telepone", "包含非法字符，请重新输入。");
+                return View(model);
+            }
+
+            if (HasSqlInject(model.Address))
+            {
+                ModelState.AddModelError("Address", "包含非法字符，请重新输入。");
+                return View(model);
+            }
+
             if (!ViewBag.IsAdmin)
             {
                 return RedirectToAction("Index", "Home");
@@ -176,15 +215,29 @@ namespace SHEP_Platform.Controllers
                         ModelState.AddModelError(dbValidationError.PropertyName, dbValidationError.ErrorMessage);
                     }
                 }
-
-                model.StageList = new SelectList(DbContext.T_Stage, "Id", "StageName", model.Stage);
-
-                model.CountryList = new SelectList(DbContext.T_Country, "Id", "Country", model.Country);
                 return View(model);
             }
 
             return RedirectToAction(nameof(StatManage), "Admin");
         }
+
+        private bool HasSqlInject(string content)
+        {
+            foreach (var sqlWord in SqlWords)
+            {
+                if (content.Contains(sqlWord))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static readonly string[] SqlWords = {
+            "and", "exec", "insert", "select", "delete", "update", "chr", "mid", "master", "or",
+            "truncate","char","declare", "join"
+        };
 
         [HttpGet]
         public JsonResult StatDelete(int id)

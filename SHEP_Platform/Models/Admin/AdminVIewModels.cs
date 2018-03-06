@@ -75,11 +75,9 @@ namespace SHEP_Platform.Models.Admin
         [DisplayName("开始时间")]
         public DateTime ProStartTime { get; set; }
 
-        [Required]
         [DisplayName("施工进展")]
         public byte Stage { get; set; }
 
-        [Required]
         [DisplayName("阶段")]
         public string ProType { get; set; }
 
@@ -89,11 +87,9 @@ namespace SHEP_Platform.Models.Admin
 
         public virtual T_AlarmType T_AlarmType { get; set; }
 
-        [Required]
         [DisplayName("所属区域")]
         public virtual T_Country T_Country { get; set; }
 
-        [Required]
         [DisplayName("施工进展")]
         public virtual T_Stage T_Stage { get; set; }
         public SelectList StageList { get; set; }

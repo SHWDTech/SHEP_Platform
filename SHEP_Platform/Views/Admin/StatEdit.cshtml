@@ -8,92 +8,82 @@
 <div style="position: relative;">
     <div style="width: 360px;">
         @using (Html.BeginForm("StatEdit", "Admin", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-inline", role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.Id)
-            <div class="form-group">
-                @Html.LabelFor(m => m.StatCode)
-                @Html.TextBoxFor(m => m.StatCode, new { @class = "form-control", placeholder = "请输入监测点编码" })
-                <span style="color: red">*</span>
-            </div>
-            @Html.ValidationMessageFor(m => m.StatCode, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.StatName)
-                @Html.TextBoxFor(m => m.StatName, new { @class = "form-control", placeholder = "请输入监测点名称"})
-                <span style="color: red">*</span>
-            </div>
-            @Html.ValidationMessageFor(m => m.StatName, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.ChargeMan)
-                @Html.TextBoxFor(m => m.ChargeMan, new { @class = "form-control", placeholder = "请输入负责人" })
-                <span style="color: red">*</span>
-            </div>
-            @Html.ValidationMessageFor(m => m.ChargeMan, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Telepone)
-                @Html.TextBoxFor(m => m.Telepone, new { @class = "form-control", placeholder = "请输入联系电话" })
-                <span style="color: red">*</span>
-            </div>
-            @Html.ValidationMessageFor(m => m.Telepone, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Department)
-                @Html.TextBoxFor(m => m.Department, new { @class = "form-control", placeholder = "请输入施工单位" })
-                <span style="color: red">*</span>
-            </div>
-            @Html.ValidationMessageFor(m => m.Department, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Address)
-                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "请输入施工地址" })
-                <span style="color: red">*</span>
-            </div>
-            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Street)
-                @Html.TextBoxFor(m => m.Street, new { @class = "form-control", placeholder = "请输入所属街道" })
-                <span style="color: red">*</span>
-            </div>
-            @Html.ValidationMessageFor(m => m.Street, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Country)
-                @Html.DropDownListFor(m => m.Country, Model.CountryList, new { @class = "form-control" })
-                <span style="color: red">*</span>
-            </div>
-            @Html.ValidationMessageFor(m => m.Country, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Square)
-                @Html.TextBoxFor(m => m.Square, new { @class = "form-control" })
-            </div>
-            @Html.ValidationMessageFor(m => m.Square, "", new { @class = "text-danger" })
-            <div class="form-group" style="position: relative;">
-                @Html.LabelFor(m => m.ProStartTime)
-                @Html.TextBoxFor(m => m.ProStartTime, new { @class = "form-control" })
-            </div>
-            @Html.ValidationMessageFor(m => m.ProStartTime, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Stage)
-                @Html.DropDownListFor(m => m.Stage, Model.StageList, new { @class = "form-control" })
-            </div>
-            @Html.ValidationMessageFor(m => m.Stage, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Longitude)
-                @Html.TextBoxFor(m => m.Longitude, new { @class = "form-control", placeholder = "请输入监测点经度" })
-            </div>
-            @Html.ValidationMessageFor(m => m.Longitude, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Latitude)
-                @Html.TextBoxFor(m => m.Latitude, new { @class = "form-control", placeholder = "请输入监测点纬度" })
-            </div>
-            @Html.ValidationMessageFor(m => m.Latitude, "", new { @class = "text-danger" })
-            <div class="form-group" style="width: 100%;">
-                <p id="gpsResult" style="color: red;"></p>
-            </div>
-            <div class="form-group">
-                <a class="btn btn-primary" onclick="AddCoorinateTask()">校准工地位置</a>
-                <button type="submit" class="btn btn-success">
-                    提交
-                </button>
-            </div>
-        }
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        <div class="form-group">
+            @Html.LabelFor(m => m.StatCode)
+            @Html.TextBoxFor(m => m.StatCode, new { @class = "form-control", placeholder = "请输入监测点编码" })
+            <span style="color: red">*</span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.StatName)
+            @Html.TextBoxFor(m => m.StatName, new { @class = "form-control", placeholder = "请输入监测点名称" })
+            <span style="color: red">*</span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ChargeMan)
+            @Html.TextBoxFor(m => m.ChargeMan, new { @class = "form-control", placeholder = "请输入负责人" })
+            <span style="color: red">*</span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Telepone)
+            @Html.TextBoxFor(m => m.Telepone, new { @class = "form-control", placeholder = "请输入联系电话" })
+            <span style="color: red">*</span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Department)
+            @Html.TextBoxFor(m => m.Department, new { @class = "form-control", placeholder = "请输入施工单位" })
+            <span style="color: red">*</span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address)
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "请输入施工地址" })
+            <span style="color: red">*</span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Street)
+            @Html.TextBoxFor(m => m.Street, new { @class = "form-control", placeholder = "请输入所属街道" })
+            <span style="color: red">*</span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Country)
+            @Html.DropDownListFor(m => m.Country, Model.CountryList, new { @class = "form-control" })
+            <span style="color: red">*</span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Square)
+            @Html.TextBoxFor(m => m.Square, new { @class = "form-control" })
+        </div>
+        <div class="form-group" style="position: relative;">
+            @Html.LabelFor(m => m.ProStartTime)
+            @Html.TextBoxFor(m => m.ProStartTime, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Stage)
+            @Html.DropDownListFor(m => m.Stage, Model.StageList, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Longitude)
+            @Html.TextBoxFor(m => m.Longitude, new { @class = "form-control", placeholder = "请输入监测点经度" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Latitude)
+            @Html.TextBoxFor(m => m.Latitude, new { @class = "form-control", placeholder = "请输入监测点纬度" })
+        </div>
+        <div class="form-group">
+            @Html.ValidationSummary()
+        </div>
+        <div class="form-group" style="width: 100%;">
+            <p id="gpsResult" style="color: red;"></p>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-primary" onclick="AddCoorinateTask()">校准工地位置</a>
+            <button type="submit" class="btn btn-success">
+                提交
+            </button>
+        </div>
+}
     </div>
     <div id="mapContainer" style="position: absolute; top: 0; left: 360px; width: 900px; height: 640px;">
 
