@@ -24,7 +24,7 @@
                             @Html.LabelFor(m => m.SchedulePriority)
                         </td>
                         <td colspan="3">
-                            @Html.TextBoxFor(m => m.SchedulePriority, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.SchedulePriority, new { @class = "form-control", placeholder = "值越小，优先级越高。" })
                         </td>
                     </tr>
                     <tr>
@@ -32,25 +32,25 @@
                             @Html.LabelFor(m => m.DustMax)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.DustMax, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.DustMax, new { @class = "form-control", placeholder = "单位ug，取值范围不大于0-3000" })
                         </td>
                         <td>
                             @Html.LabelFor(m => m.DustMin)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.DustMin, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.DustMin, new { @class = "form-control", placeholder = "单位ug，取值范围不大于0-3000" })
                         </td>
                         <td>
                             @Html.LabelFor(m => m.NoiseMax)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.NoiseMax, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.NoiseMax, new { @class = "form-control", placeholder = "单位dB，取值范围0-100" })
                         </td>
                         <td>
                             @Html.LabelFor(m => m.NoiseMin)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.NoiseMin, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.NoiseMin, new { @class = "form-control", placeholder = "单位dB，取值范围0-100" })
                         </td>
                     </tr>
                     <tr>
@@ -58,25 +58,25 @@
                             @Html.LabelFor(m => m.TemperatureMax)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.TemperatureMax, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.TemperatureMax, new { @class = "form-control", placeholder = "单位℃，取值范围0-100" })
                         </td>
                         <td>
                             @Html.LabelFor(m => m.TemperatureMin)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.TemperatureMin, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.TemperatureMin, new { @class = "form-control", placeholder = "单位℃，取值范围0-100" })
                         </td>
                         <td>
                             @Html.LabelFor(m => m.HumidityMax)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.HumidityMax, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.HumidityMax, new { @class = "form-control", placeholder = "单位%，取值范围0-100" })
                         </td>
                         <td>
                             @Html.LabelFor(m => m.HumidityMin)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.HumidityMin, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.HumidityMin, new { @class = "form-control", placeholder = "单位%，取值范围0-100" })
                         </td>
                     </tr>
                     <tr>
@@ -84,25 +84,25 @@
                             @Html.LabelFor(m => m.WindSpeedMax)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.WindSpeedMax, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.WindSpeedMax, new { @class = "form-control", placeholder = "单位m/s，取值范围0-100" })
                         </td>
                         <td>
                             @Html.LabelFor(m => m.WindSpeedMin)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.WindSpeedMin, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.WindSpeedMin, new { @class = "form-control", placeholder = "单位m/s，取值范围0-100" })
                         </td>
                         <td>
                             @Html.LabelFor(m => m.WindDirectionMax)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.WindDirectionMax, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.WindDirectionMax, new { @class = "form-control", placeholder = "单位°，取值范围0-360" })
                         </td>
                         <td>
                             @Html.LabelFor(m => m.WindDirectionMin)
                         </td>
                         <td>
-                            @Html.TextBoxFor(m => m.WindDirectionMin, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.WindDirectionMin, new { @class = "form-control", placeholder = "单位°，取值范围0-360" })
                         </td>
                     </tr>
                     <tr>
