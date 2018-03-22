@@ -180,7 +180,7 @@ namespace SHEP_Platform.Controllers
                     StatName = stat.StatName,
                     DeviceName = dev.DevCode,
                     UnicomCode = regDev == null ? string.Empty : regDev.UnicomCode,
-                    Stopped = regDev == null || regDev.OnCalc
+                    Stopped = regDev == null || !regDev.OnCalc
                 };
                 devsInfo.Add(model);
             }
