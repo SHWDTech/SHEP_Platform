@@ -97,7 +97,7 @@ namespace SHEP_Platform.ScheduleJobs
             return EsMinToEmsDatas(recent);
         }
 
-        private static List<emsData> EsMinToEmsDatas(IEnumerable<T_ESMin> esMins) => esMins.Select(esMin => new emsData
+        private static List<emsData> EsMinToEmsDatas(IEnumerable<T_ESMin> esMins) => esMins.Where(m => m.UpdateTime != null).Select(esMin => new emsData
         {
             dust = (float)esMin.TP / 1000,
             temperature = (float)esMin.Temperature,
@@ -193,7 +193,7 @@ namespace SHEP_Platform.ScheduleJobs
 
         private static void LoadFromHistoryData(ESMonitorEntities ctx, List<emsData> emsDatas)
         {
-            var value = ctx.T_ESMin.OrderBy(m => m.UpdateTime).Take(1).ToList();
+            var value = ctx.T_ESMin.OrderByDescending(m => m.UpdateTime).Take(1).ToList();
             emsDatas.AddRange(EsMinToEmsDatas(value));
         }
 
@@ -221,6 +221,7 @@ namespace SHEP_Platform.ScheduleJobs
                     StatId = statId,
                     DevId = devId,
                     DataStatus = "N",
+                    UpdateTime = DateTime.Now,
                     Country = country.ToString()
                 });
             }
