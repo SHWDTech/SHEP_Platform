@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.Validation;
 using System.Linq;
+using System.Text;
 using Quartz;
 using SHEP_Platform.Common;
 using SHEP_Platform.UnicomPlatform;
@@ -56,6 +58,22 @@ namespace SHEP_Platform.ScheduleJobs
                     }
                     catch (Exception ex)
                     {
+                        if (ex is DbEntityValidationException)
+                        {
+                            var evEx = ex as DbEntityValidationException;
+                            var errors = evEx.EntityValidationErrors;
+                            var builder = new StringBuilder();
+                            foreach (var error in errors)
+                            {
+                                foreach (var validationError in error.ValidationErrors)
+                                {
+                                    builder.Append(validationError.PropertyName).Append(" => ")
+                                        .Append(validationError.ErrorMessage).Append("\r\n");
+                                }
+                            }
+                            LogService.Instance.Error($"错误详情:{builder}", evEx);
+                            return;
+                        }
                         LogService.Instance.Error("联通数据上传处理失败。", ex);
                     }
                 }
@@ -192,7 +210,7 @@ namespace SHEP_Platform.ScheduleJobs
             {
                 ctx.T_ESMin.Add(new T_ESMin
                 {
-                    TP = data.dust,
+                    TP = data.dust * 1000,
                     PM25 = data.dust,
                     PM100 = data.dust,
                     DB = data.noise,
@@ -202,6 +220,7 @@ namespace SHEP_Platform.ScheduleJobs
                     WindDirection = data.windDirection,
                     StatId = statId,
                     DevId = devId,
+                    DataStatus = "N",
                     Country = country.ToString()
                 });
             }
@@ -210,7 +229,7 @@ namespace SHEP_Platform.ScheduleJobs
                 var last = ctx.T_ESMin
                     .Where(d => d.StatId == statId && d.DevId == devId && d.Country == country.ToString() &&
                                 d.UpdateTime > checkTime).OrderByDescending(d => d.UpdateTime).First();
-                last.TP = data.dust;
+                last.TP = data.dust * 1000;
                 last.PM25 = data.dust;
                 last.PM100 = data.dust;
                 last.DB = data.noise;
